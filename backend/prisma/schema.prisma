@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserAuth {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  profile   UserProfile?
+  oauth     OAuthAccount[]
+  createdAt DateTime @default(now())
+}
+
+model UserProfile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      UserAuth @relation(fields: [userId], references: [id])
+  name         String?
+  avatarUrl    String?
+  importedData Json?
+  smartProfile Json?
+  githubAnalysis Json?
+  linkedinInsights Json?
+  careerIntelligence Json?
+}
+
+model OAuthAccount {
+  id              String   @id @default(uuid())
+  userId          String
+  provider        String
+  providerUserId  String
+  accessToken     String?
+  user            UserAuth @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerUserId])
+}
