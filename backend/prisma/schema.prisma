@@ -7,12 +7,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ────────────────────────────────────────────────────────────
+// EXISTING MODELS (preserved for backward compatibility)
+// ────────────────────────────────────────────────────────────
+
 model UserAuth {
   id        String   @id @default(uuid())
   email     String   @unique
   profile   UserProfile?
   oauth     OAuthAccount[]
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ── Onboarding & connection tracking ──
+  githubConnected  Boolean @default(false)
+  linkedinImported Boolean @default(false)
+  onboardingStage  String  @default("new")
 }
 
 model UserProfile {
@@ -21,11 +31,6 @@ model UserProfile {
   user      UserAuth @relation(fields: [userId], references: [id])
   name         String?
   avatarUrl    String?
-  importedData Json?
-  smartProfile Json?
-  githubAnalysis Json?
-  linkedinInsights Json?
-  careerIntelligence Json?
 }
 
 model OAuthAccount {
@@ -38,3 +43,5 @@ model OAuthAccount {
 
   @@unique([provider, providerUserId])
 }
+
+// Removed all Career Intelligence architecture tables.

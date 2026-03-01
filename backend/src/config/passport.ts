@@ -78,6 +78,8 @@ passport.use(
         async (req: any, accessToken: string, _refreshToken: string, profile: any, done: (error: any, user?: any) => void) => {
             try {
                 const githubId = profile.id;
+                const username = profile.username;
+                const avatarUrl = profile.photos?.[0]?.value;
 
                 // ⭐ get logged-in user from JWT middleware
                 const userId = req.userId;
@@ -86,7 +88,11 @@ passport.use(
                     return done(new Error("User not authenticated before GitHub connect"));
                 }
 
-                // upsert oauth link — always store latest accessToken
+                // Encrypt the token before storing
+                const { encryptToken } = await import("../utils/encryption.js");
+                const encryptedToken = encryptToken(accessToken);
+
+                // upsert oauth link — store ENCRYPTED accessToken
                 await prisma.oAuthAccount.upsert({
                     where: {
                         provider_providerUserId: {
@@ -94,37 +100,32 @@ passport.use(
                             providerUserId: githubId,
                         },
                     },
-                    update: { accessToken },
+                    update: { accessToken: encryptedToken },
                     create: {
                         provider: "github",
                         providerUserId: githubId,
                         userId,
-                        accessToken,
+                        accessToken: encryptedToken,
                     },
                 });
 
-                // fetch repos
-                const reposRes = await fetch("https://api.github.com/user/repos", {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                        Accept: "application/vnd.github+json",
-                    },
-                });
-
-                const repos = await reposRes.json();
-
-                // store repos in profile JSON
-                await prisma.userProfile.update({
-                    where: { userId },
-                    data: {
-                        importedData: {
-                            githubRepos: repos,
-                        },
-                    },
-                });
-
-                const user = await prisma.userAuth.findUnique({
+                // update user flags
+                let user = await prisma.userAuth.findUnique({
                     where: { id: userId },
+                });
+
+                if (!user) {
+                    return done(new Error("User not found"));
+                }
+
+                const onboardingStage = user.onboardingStage === "new" ? "github_connected" : user.onboardingStage;
+
+                user = await prisma.userAuth.update({
+                    where: { id: userId },
+                    data: {
+                        githubConnected: true,
+                        onboardingStage,
+                    },
                 });
 
                 return done(null, user);
