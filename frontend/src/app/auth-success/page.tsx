@@ -14,7 +14,7 @@ function AuthSuccessHandler() {
         const token = searchParams.get("token");
         if (token) {
             login(token);
-            router.replace("/");
+            router.replace("/dashboard");
         } else {
             router.replace("/Authentication?error=no_token");
         }

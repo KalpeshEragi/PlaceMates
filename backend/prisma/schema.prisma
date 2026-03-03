@@ -7,41 +7,124 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ────────────────────────────────────────────────────────────
-// EXISTING MODELS (preserved for backward compatibility)
-// ────────────────────────────────────────────────────────────
-
 model UserAuth {
-  id        String   @id @default(uuid())
-  email     String   @unique
+  id        String         @id @default(uuid())
+  email     String         @unique
   profile   UserProfile?
   oauth     OAuthAccount[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
 
   // ── Onboarding & connection tracking ──
-  githubConnected  Boolean @default(false)
-  linkedinImported Boolean @default(false)
-  onboardingStage  String  @default("new")
+  githubConnected   Boolean @default(false)
+  githubAccessToken String?
+  linkedinImported  Boolean @default(false)
+  linkedinZipPath   String?
+  onboardingStage   String  @default("new")
+
+  githubRepos GithubRepository[]
+  linkedinInsight      LinkedinInsight?
+  linkedinSkillInsight LinkedinSkillInsight[]
 }
 
 model UserProfile {
   id        String   @id @default(uuid())
   userId    String   @unique
   user      UserAuth @relation(fields: [userId], references: [id])
-  name         String?
-  avatarUrl    String?
+  name      String?
+  avatarUrl String?
 }
 
 model OAuthAccount {
-  id              String   @id @default(uuid())
-  userId          String
-  provider        String
-  providerUserId  String
-  accessToken     String?
-  user            UserAuth @relation(fields: [userId], references: [id])
+  id             String   @id @default(uuid())
+  userId         String
+  provider       String
+  providerUserId String
+  accessToken    String?
+  user           UserAuth @relation(fields: [userId], references: [id])
 
   @@unique([provider, providerUserId])
 }
 
-// Removed all Career Intelligence architecture tables.
+model GithubRepository {
+  id           String   @id @default(uuid())
+  userId       String
+  user         UserAuth @relation(fields: [userId], references: [id])
+  repoId       Int      @unique
+  name         String
+  description  String?
+  language     String?
+  stars        Int
+  forks        Int
+  size         Int
+  repoUrl      String
+  updatedAt    DateTime
+  lastSyncedAt DateTime @default(now())
+  createdAt    DateTime @default(now())
+
+  // ── Analysis fields (populated by githubAnalysisService) ──
+  totalLoc       Int?
+  locByLanguage  Json?
+  readmeSummary  String?
+  detectedDomain String?
+  resumeScore    Float?
+  impactScore    Float?
+  finalScore     Float?
+  processedAt    DateTime?
+
+  @@index([userId])
+}
+
+model UserSkillInsight {
+  id            String   @id @default(uuid())
+  userId        String
+  skillName     String
+  strengthScore Float
+  source        String
+  createdAt     DateTime @default(now())
+
+  @@unique([userId, skillName])
+  @@index([userId])
+}
+
+model UserDashboardInsight {
+  id             String   @id @default(uuid())
+  userId         String   @unique
+  topProjects    Json
+  topSkills      Json
+  topDomains     Json
+  lastComputedAt DateTime
+}
+
+model LinkedinInsight {
+  id                         String   @id @default(uuid())
+  userId                     String   @unique
+  totalExperienceYears       Float?
+  careerGrowthSpeed          Float?
+  primaryDomain              String?
+  secondaryDomain            String?
+  technicalOrientation       String?
+  leadershipScore            Int?
+  impactScore                Int?
+  ownershipScore             Int?
+  profileScore               Int?
+  careerSummary              String?
+  strengthsSummary           String?
+  improvementSuggestions     String?
+  processedAt                DateTime?
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
+
+  user UserAuth @relation(fields: [userId], references: [id])
+}
+
+model LinkedinSkillInsight {
+  id         String   @id @default(uuid())
+  userId     String
+  skillName  String
+  frequency  Int
+  cluster    String?
+  createdAt  DateTime @default(now())
+
+  user UserAuth @relation(fields: [userId], references: [id])
+}

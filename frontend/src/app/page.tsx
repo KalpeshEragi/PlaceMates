@@ -5,8 +5,10 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ArrowRight, Sparkles, Users, Briefcase, MessageCircle, Play, CheckCircle2 } from 'lucide-react'
+import { useAuth } from '@/lib/auth-context'
 
 export default function LandingPage() {
+    const { user, loading } = useAuth()
     const [isScrolled, setIsScrolled] = useState(false)
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
@@ -96,14 +98,26 @@ export default function LandingPage() {
                         </span>
                     </div>
                     <div className="flex items-center gap-6">
-                        <Link href="/Authentication" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-                            Sign In
-                        </Link>
-                        <Link href="/Authentication">
-                            <Button className="bg-foreground text-background hover:bg-foreground/90 rounded-full px-6 shadow-lg hover:shadow-xl transition-all duration-300">
-                                Get Started
-                            </Button>
-                        </Link>
+                        {loading ? (
+                            <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                        ) : user ? (
+                            <Link href="/profile">
+                                <Button className="bg-foreground text-background hover:bg-foreground/90 rounded-full px-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                                    Go to Profile
+                                </Button>
+                            </Link>
+                        ) : (
+                            <>
+                                <Link href="/Authentication" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                                    Sign In
+                                </Link>
+                                <Link href="/Authentication">
+                                    <Button className="bg-foreground text-background hover:bg-foreground/90 rounded-full px-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                                        Get Started
+                                    </Button>
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             </nav>
@@ -139,9 +153,9 @@ export default function LandingPage() {
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-4">
-                                <Link href="/Authentication">
+                                <Link href={user ? "/profile" : "/Authentication"}>
                                     <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 rounded-full px-8 h-14 text-lg shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group">
-                                        Start Free Today
+                                        {user ? "Go to Profile" : "Start Free Today"}
                                         <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                     </Button>
                                 </Link>
@@ -318,9 +332,9 @@ export default function LandingPage() {
                         Join thousands of students who have transformed their career journey with PlaceMate. Your future starts here.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link href="/Authentication">
+                        <Link href={user ? "/profile" : "/Authentication"}>
                             <Button size="lg" className="bg-white text-indigo-600 hover:bg-white/90 rounded-full px-8 h-14 text-lg shadow-2xl hover:shadow-white/25 transition-all duration-300 hover:-translate-y-1">
-                                Join for Free
+                                {user ? "Go to Profile" : "Join for Free"}
                             </Button>
                         </Link>
                     </div>
