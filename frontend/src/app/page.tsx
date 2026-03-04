@@ -101,9 +101,9 @@ export default function LandingPage() {
                         {loading ? (
                             <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
                         ) : user ? (
-                            <Link href="/profile">
+                            <Link href="/dashboard">
                                 <Button className="bg-foreground text-background hover:bg-foreground/90 rounded-full px-6 shadow-lg hover:shadow-xl transition-all duration-300">
-                                    Go to Profile
+                                    Go to Dashboard
                                 </Button>
                             </Link>
                         ) : (
@@ -153,9 +153,9 @@ export default function LandingPage() {
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-4">
-                                <Link href={user ? "/profile" : "/Authentication"}>
+                                <Link href={user ? "/dashboard" : "/Authentication"}>
                                     <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 rounded-full px-8 h-14 text-lg shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group">
-                                        {user ? "Go to Profile" : "Start Free Today"}
+                                        {user ? "Go to Dashboard" : "Start Free Today"}
                                         <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                     </Button>
                                 </Link>
@@ -332,9 +332,9 @@ export default function LandingPage() {
                         Join thousands of students who have transformed their career journey with PlaceMate. Your future starts here.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link href={user ? "/profile" : "/Authentication"}>
+                        <Link href={user ? "/dashboard" : "/Authentication"}>
                             <Button size="lg" className="bg-white text-indigo-600 hover:bg-white/90 rounded-full px-8 h-14 text-lg shadow-2xl hover:shadow-white/25 transition-all duration-300 hover:-translate-y-1">
-                                {user ? "Go to Profile" : "Join for Free"}
+                                {user ? "Go to Dashboard" : "Join for Free"}
                             </Button>
                         </Link>
                     </div>

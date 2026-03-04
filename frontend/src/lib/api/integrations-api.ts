@@ -40,7 +40,7 @@ export const integrationsApi = {
       throw new Error("Not authenticated");
     }
 
-    window.location.href = `${API_BASE}/auth/github`;
+    window.location.href = `${API_BASE}/auth/github?token=${token}`;
   },
 
   async uploadLinkedinZip(file: File): Promise<void> {

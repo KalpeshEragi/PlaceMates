@@ -129,6 +129,24 @@ export const githubApi = {
     }
   },
 
+  async listRepos(): Promise<GithubRepo[]> {
+    // Sync repos first, then fetch insights to get the repo list
+    await this.syncRepos();
+    const insights = await this.getInsights();
+    return insights.repositories.map((repo) => ({
+      id: Number(repo.id) || 0,
+      name: repo.name,
+      full_name: repo.name,
+      private: false,
+      html_url: repo.repoUrl,
+      description: repo.description,
+      language: repo.language,
+      stargazers_count: repo.stars,
+      forks_count: repo.forks,
+      updated_at: repo.processedAt ?? new Date().toISOString(),
+    }));
+  },
+
   async getInsights(): Promise<InsightsResponse> {
     const response = await fetch(`${API_BASE}/github/insights`, {
       method: "GET",

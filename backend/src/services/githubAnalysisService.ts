@@ -49,7 +49,7 @@ async function cloneRepoToTemp(
   await fs.promises.mkdir(baseTmp, { recursive: true });
 
   const dest = path.join(baseTmp, name);
-  await fs.promises.rm(dest, { recursive: true, force: true }).catch(() => {});
+  await fs.promises.rm(dest, { recursive: true, force: true }).catch(() => { });
   await fs.promises.mkdir(dest, { recursive: true });
 
   const git = simpleGit();
@@ -134,24 +134,8 @@ async function computeDashboardInsights(userId: string): Promise<void> {
 }
 
 export async function processUserGithubRepositories(userId: string): Promise<void> {
-  // #region agent log
-  fetch("http://127.0.0.1:7372/ingest/e3b54500-4740-42e0-928d-c8b2cad6f3e9", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Debug-Session-Id": "ce8545",
-    },
-    body: JSON.stringify({
-      sessionId: "ce8545",
-      runId: "pre-fix",
-      hypothesisId: "H5",
-      location: "backend/services/githubAnalysisService.ts:processUserGithubRepositories",
-      message: "processUserGithubRepositories started",
-      data: { userId },
-      timestamp: Date.now(),
-    }),
-  }).catch(() => {});
-  // #endregion agent log
+
+
 
   const token = await getUserGithubAccessToken(userId);
 
@@ -231,7 +215,7 @@ export async function processUserGithubRepositories(userId: string): Promise<voi
       console.error(`Error processing repo ${repo.repoUrl}`, err);
     } finally {
       if (tmpDir) {
-        await fs.promises.rm(tmpDir, { recursive: true, force: true }).catch(() => {});
+        await fs.promises.rm(tmpDir, { recursive: true, force: true }).catch(() => { });
       }
     }
   }

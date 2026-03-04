@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CheckCircle2, Github, Loader2, Upload } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, BarChart3, CheckCircle2, Github, Loader2, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
@@ -172,73 +173,16 @@ export default function DashboardPage() {
   }
 
   async function handleGithubAnalyze() {
-    // #region agent log
-    fetch("http://127.0.0.1:7372/ingest/e3b54500-4740-42e0-928d-c8b2cad6f3e9", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Debug-Session-Id": "ce8545",
-      },
-      body: JSON.stringify({
-        sessionId: "ce8545",
-        runId: "pre-fix",
-        hypothesisId: "H1",
-        location: "frontend/dashboard/page.tsx:handleGithubAnalyze",
-        message: "handleGithubAnalyze invoked",
-        data: {},
-        timestamp: Date.now(),
-      }),
-    }).catch(() => {});
-    // #endregion agent log
 
     setIsAnalyzingGithub(true);
     try {
       await githubApi.analyzeRepos();
-      // #region agent log
-      fetch("http://127.0.0.1:7372/ingest/e3b54500-4740-42e0-928d-c8b2cad6f3e9", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Debug-Session-Id": "ce8545",
-        },
-        body: JSON.stringify({
-          sessionId: "ce8545",
-          runId: "pre-fix",
-          hypothesisId: "H2",
-          location: "frontend/dashboard/page.tsx:handleGithubAnalyze",
-          message: "githubApi.analyzeRepos success",
-          data: {},
-          timestamp: Date.now(),
-        }),
-      }).catch(() => {});
-      // #endregion agent log
 
       toast({
         title: "Analysis started",
         description: "Repository analysis has been queued. This may take a few minutes.",
       });
     } catch (error) {
-      // #region agent log
-      fetch("http://127.0.0.1:7372/ingest/e3b54500-4740-42e0-928d-c8b2cad6f3e9", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Debug-Session-Id": "ce8545",
-        },
-        body: JSON.stringify({
-          sessionId: "ce8545",
-          runId: "pre-fix",
-          hypothesisId: "H3",
-          location: "frontend/dashboard/page.tsx:handleGithubAnalyze",
-          message: "githubApi.analyzeRepos error",
-          data: {
-            message: (error as Error).message,
-          },
-          timestamp: Date.now(),
-        }),
-      }).catch(() => {});
-      // #endregion agent log
-
       toast({
         title: "Analysis failed",
         description: (error as Error).message,
@@ -370,6 +314,29 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </div>
+
+        {/* View Insights link */}
+        {status.github_connected && (
+          <Card className="border-dashed border-2 border-primary/30 bg-primary/5 hover:bg-primary/10 transition-all duration-300">
+            <CardContent className="flex items-center justify-between p-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center">
+                  <BarChart3 className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <p className="font-semibold">GitHub Insights</p>
+                  <p className="text-sm text-muted-foreground">View AI-powered analysis of your repositories</p>
+                </div>
+              </div>
+              <Link href="/dashboard/insights">
+                <Button className="gap-2">
+                  View Insights
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );

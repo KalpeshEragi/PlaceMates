@@ -84,24 +84,6 @@ export async function analyzeGithubRepos(req: AuthRequest, res: Response) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  // #region agent log
-  fetch("http://127.0.0.1:7372/ingest/e3b54500-4740-42e0-928d-c8b2cad6f3e9", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Debug-Session-Id": "ce8545",
-    },
-    body: JSON.stringify({
-      sessionId: "ce8545",
-      runId: "pre-fix",
-      hypothesisId: "H4",
-      location: "backend/controllers/githubController.ts:analyzeGithubRepos",
-      message: "analyzeGithubRepos invoked",
-      data: { hasUserId: !!req.userId },
-      timestamp: Date.now(),
-    }),
-  }).catch(() => { });
-  // #endregion agent log
 
   processUserGithubRepositories(req.userId).catch((err) => {
     console.error("GitHub repo analysis failed:", err);
