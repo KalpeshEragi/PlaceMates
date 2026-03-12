@@ -43,22 +43,22 @@ export async function githubCallback(req: AuthRequest, res: Response) {
   const state = req.query.state as string | undefined;
 
   if (!code || !state) {
-    return res.redirect(`${env.FRONTEND_URL}/dashboard?error=missing_oauth_params`);
+    return res.redirect(`${env.FRONTEND_URL}/connect-accounts?error=missing_oauth_params`);
   }
 
   let userId: string;
   try {
     const decoded = jwt.verify(state, env.JWT_SECRET) as { userId?: string; type?: string };
     if (!decoded.userId || decoded.type !== "github_oauth_state") {
-      return res.redirect(`${env.FRONTEND_URL}/dashboard?error=invalid_state`);
+      return res.redirect(`${env.FRONTEND_URL}/connect-accounts?error=invalid_state`);
     }
     userId = decoded.userId;
   } catch {
-    return res.redirect(`${env.FRONTEND_URL}/dashboard?error=invalid_state`);
+    return res.redirect(`${env.FRONTEND_URL}/connect-accounts?error=invalid_state`);
   }
 
   if (!env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
-    return res.redirect(`${env.FRONTEND_URL}/dashboard?error=oauth_not_configured`);
+    return res.redirect(`${env.FRONTEND_URL}/connect-accounts?error=oauth_not_configured`);
   }
 
   try {
@@ -75,7 +75,7 @@ export async function githubCallback(req: AuthRequest, res: Response) {
 
     const accessToken = tokenRes.data.access_token;
     if (!accessToken) {
-      return res.redirect(`${env.FRONTEND_URL}/dashboard?error=token_exchange_failed`);
+      return res.redirect(`${env.FRONTEND_URL}/connect-accounts?error=token_exchange_failed`);
     }
 
     await prisma.userAuth.update({
@@ -87,9 +87,9 @@ export async function githubCallback(req: AuthRequest, res: Response) {
     });
     await advanceStage(userId, "github_connected");
 
-    return res.redirect(`${env.FRONTEND_URL}/dashboard?github=connected`);
+    return res.redirect(`${env.FRONTEND_URL}/connect-accounts?github=connected`);
   } catch (error) {
     console.error("GitHub OAuth callback failed:", error);
-    return res.redirect(`${env.FRONTEND_URL}/dashboard?error=github_oauth_failed`);
+    return res.redirect(`${env.FRONTEND_URL}/connect-accounts?error=github_oauth_failed`);
   }
 }

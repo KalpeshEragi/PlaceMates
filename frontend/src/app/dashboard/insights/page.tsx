@@ -17,7 +17,22 @@ import {
     Zap,
     AlertCircle,
     GitBranch,
+    Activity,
+    Linkedin,
 } from 'lucide-react';
+import {
+    RadarChart,
+    Radar,
+    PolarGrid,
+    PolarAngleAxis,
+    PolarRadiusAxis,
+    PieChart,
+    Pie,
+    Cell,
+    Tooltip,
+    ResponsiveContainer,
+    Legend,
+} from 'recharts';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -45,7 +60,14 @@ import {
     type InsightSkill,
     type InsightDomain,
     type InsightRepository,
+    type GitHubActivityResponse,
 } from '@/lib/api/github-api';
+import { linkedinApi, type LinkedinInsightsResponse } from '@/lib/api/linkedin-api';
+import LinkedinInsightsView, {
+    LinkedinInsightsSkeleton,
+    LinkedinEmptyState,
+    LinkedinErrorState,
+} from '@/components/linkedin-insights';
 
 /* ── Helpers ────────────────────────────────────────────── */
 
@@ -314,9 +336,23 @@ export default function InsightsPage() {
     const router = useRouter();
     const { user, loading: authLoading } = useAuth();
 
+    // ── Tab state ──
+    const [activeTab, setActiveTab] = useState<'github' | 'linkedin'>('github');
+
+    // ── GitHub state ──
     const [data, setData] = useState<InsightsResponse | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    // Activity data for radar + pie charts
+    const [activityData, setActivityData] = useState<GitHubActivityResponse | null>(null);
+    const [activityLoading, setActivityLoading] = useState(true);
+
+    // ── LinkedIn state ──
+    const [linkedinData, setLinkedinData] = useState<LinkedinInsightsResponse | null>(null);
+    const [linkedinLoading, setLinkedinLoading] = useState(false);
+    const [linkedinError, setLinkedinError] = useState<string | null>(null);
+    const [linkedinFetched, setLinkedinFetched] = useState(false);
 
     async function fetchInsights() {
         setLoading(true);
@@ -331,6 +367,33 @@ export default function InsightsPage() {
         }
     }
 
+    async function fetchActivity() {
+        setActivityLoading(true);
+        try {
+            const result = await githubApi.getActivity();
+            setActivityData(result);
+        } catch (err) {
+            console.error('Activity fetch failed:', err);
+        } finally {
+            setActivityLoading(false);
+        }
+    }
+
+    async function fetchLinkedinInsights() {
+        if (linkedinFetched) return;
+        setLinkedinLoading(true);
+        setLinkedinError(null);
+        try {
+            const result = await linkedinApi.getInsights();
+            setLinkedinData(result);
+            setLinkedinFetched(true);
+        } catch (err) {
+            setLinkedinError((err as Error).message);
+        } finally {
+            setLinkedinLoading(false);
+        }
+    }
+
     useEffect(() => {
         if (!authLoading && !user) {
             router.replace('/Authentication');
@@ -338,8 +401,16 @@ export default function InsightsPage() {
         }
         if (user) {
             fetchInsights();
+            fetchActivity();
         }
     }, [authLoading, user, router]);
+
+    // Lazy-load LinkedIn data when tab switches
+    useEffect(() => {
+        if (activeTab === 'linkedin' && user && !linkedinFetched) {
+            fetchLinkedinInsights();
+        }
+    }, [activeTab, user, linkedinFetched]);
 
     // Auth loading gate
     if (authLoading || !user) {
@@ -392,7 +463,7 @@ export default function InsightsPage() {
                 <div className="mb-10 space-y-2">
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium border border-primary/20 mb-4">
                         <TrendingUp className="w-4 h-4" />
-                        Repository Intelligence
+                        {activeTab === 'github' ? 'Repository Intelligence' : 'Professional Intelligence'}
                     </div>
                     <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
                         Your{' '}
@@ -401,12 +472,43 @@ export default function InsightsPage() {
                         </span>
                     </h1>
                     <p className="text-lg text-muted-foreground max-w-2xl">
-                        AI-powered analysis of your GitHub repositories — skills, scores, and
-                        domain intelligence at a glance.
+                        {activeTab === 'github'
+                            ? 'AI-powered analysis of your GitHub repositories — skills, scores, and domain intelligence at a glance.'
+                            : 'AI-powered analysis of your LinkedIn profile — career timeline, skill validation, and professional intelligence.'}
                     </p>
+
+                    {/* ── GitHub / LinkedIn Toggle ──────────── */}
+                    <div className="pt-4 relative z-20">
+                        <div className="inline-flex items-center rounded-full bg-muted/50 p-1 border border-border/50">
+                            <button
+                                onClick={() => setActiveTab('github')}
+                                className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                                    activeTab === 'github'
+                                        ? 'bg-foreground text-background shadow-lg'
+                                        : 'text-muted-foreground hover:text-foreground'
+                                }`}
+                            >
+                                <GitBranch className="w-4 h-4" />
+                                GitHub
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('linkedin')}
+                                className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                                    activeTab === 'linkedin'
+                                        ? 'bg-foreground text-background shadow-lg'
+                                        : 'text-muted-foreground hover:text-foreground'
+                                }`}
+                            >
+                                <Linkedin className="w-4 h-4" />
+                                LinkedIn
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Content States */}
+                {activeTab === 'github' ? (
+                    <>
                 {loading ? (
                     <InsightsSkeleton />
                 ) : error ? (
@@ -468,6 +570,165 @@ export default function InsightsPage() {
                                 </Card>
                             ))}
                         </div>
+
+                        {/* ── GitHub Activity Section (Radar + Pie) ──── */}
+                        <section>
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center text-white">
+                                    <Activity className="w-4 h-4" />
+                                </div>
+                                <h2 className="text-2xl font-bold tracking-tight">GitHub Activity</h2>
+                                {activityData && (
+                                    <Badge variant="secondary" className="ml-auto">
+                                        {activityData.stats.totalEvents} events · {activityData.stats.activeDays} active days
+                                    </Badge>
+                                )}
+                            </div>
+
+                            {activityLoading ? (
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <Card className="border-0 bg-muted/30 p-6">
+                                        <Skeleton className="h-6 w-40 mb-4" />
+                                        <Skeleton className="h-[300px] w-full rounded-xl" />
+                                    </Card>
+                                    <Card className="border-0 bg-muted/30 p-6">
+                                        <Skeleton className="h-6 w-40 mb-4" />
+                                        <Skeleton className="h-[300px] w-full rounded-xl" />
+                                    </Card>
+                                </div>
+                            ) : activityData ? (
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    {/* Radar Chart — AI-Scored Dimensions */}
+                                    <Card className="border-0 bg-muted/30 overflow-hidden group hover:bg-muted/50 transition-all duration-500">
+                                        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                        <CardContent className="relative p-6">
+                                            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Developer Profile</h3>
+                                            <ResponsiveContainer width="100%" height={320}>
+                                                <RadarChart data={activityData.radarData} cx="50%" cy="50%" outerRadius="70%">
+                                                    <PolarGrid stroke="rgba(81, 82, 146, 0.15)" />
+                                                    <PolarAngleAxis
+                                                        dataKey="category"
+                                                        tick={{ fill: 'hsl(var(--foreground))', fontSize: 11 }}
+                                                    />
+                                                    <PolarRadiusAxis
+                                                        angle={30}
+                                                        domain={[0, 100]}
+                                                        tick={{ fill: 'hsl(var(--foreground))', fontSize: 10 }}
+                                                        axisLine={false}
+                                                    />
+                                                    <Radar
+                                                        name="Score"
+                                                        dataKey="value"
+                                                        stroke="#818cf8"
+                                                        fill="url(#radarGradient)"
+                                                        fillOpacity={0.5}
+                                                        strokeWidth={2}
+                                                    />
+                                                    <defs>
+                                                        <linearGradient id="radarGradient" x1="0" y1="0" x2="0" y2="1">
+                                                            <stop offset="0%" stopColor="#818cf8" stopOpacity={0.8} />
+                                                            <stop offset="100%" stopColor="#a78bfa" stopOpacity={0.3} />
+                                                        </linearGradient>
+                                                    </defs>
+                                                    <Tooltip
+                                                        contentStyle={{
+                                                            backgroundColor: 'hsl(var(--background))',
+                                                            border: '1px solid hsl(var(--border))',
+                                                            borderRadius: '12px',
+                                                            padding: '8px 12px',
+                                                            fontSize: '13px',
+                                                        }}
+                                                        formatter={(value: any) => [`${value}/100`, 'Score']}
+                                                    />
+                                                </RadarChart>
+                                            </ResponsiveContainer>
+                                            {/* Score pills below radar */}
+                                            <div className="flex flex-wrap gap-2 mt-4 justify-center">
+                                                {activityData.radarData.map((d) => (
+                                                    <span
+                                                        key={d.category}
+                                                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs bg-primary/10 text-primary border border-primary/20"
+                                                    >
+                                                        {d.category}: <strong>{d.value}</strong>
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+
+                                    {/* Pie Chart — Activity Breakdown */}
+                                    <Card className="border-0 bg-muted/30 overflow-hidden group hover:bg-muted/50 transition-all duration-500">
+                                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                        <CardContent className="relative p-6">
+                                            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">Activity Breakdown</h3>
+                                            {activityData.pieData.length > 0 ? (
+                                                <ResponsiveContainer width="100%" height={320}>
+                                                    <PieChart>
+                                                        <Pie
+                                                            data={activityData.pieData}
+                                                            cx="50%"
+                                                            cy="50%"
+                                                            innerRadius={60}
+                                                            outerRadius={110}
+                                                            paddingAngle={3}
+                                                            dataKey="value"
+                                                            strokeWidth={0}
+                                                        >
+                                                            {activityData.pieData.map((entry, index) => (
+                                                                <Cell key={`cell-${index}`} fill={entry.fill} />
+                                                            ))}
+                                                        </Pie>
+                                                        <Tooltip
+                                                            contentStyle={{
+                                                                backgroundColor: 'hsl(var(--background))',
+                                                                border: '1px solid hsl(var(--border))',
+                                                                borderRadius: '12px',
+                                                                padding: '8px 12px',
+                                                                fontSize: '13px',
+                                                            }}
+                                                        />
+                                                        <Legend
+                                                            verticalAlign="bottom"
+                                                            iconType="circle"
+                                                            iconSize={8}
+                                                            formatter={(value: string) => (
+                                                                <span style={{ color: 'hsl(var(--foreground))', fontSize: '12px' }}>{value}</span>
+                                                            )}
+                                                        />
+                                                    </PieChart>
+                                                </ResponsiveContainer>
+                                            ) : (
+                                                <div className="flex items-center justify-center h-[320px] text-muted-foreground text-sm">
+                                                    No activity events found
+                                                </div>
+                                            )}
+                                            {/* Top collaborated repos */}
+                                            {activityData.stats.topCollaboratedRepos.length > 0 && (
+                                                <div className="mt-4 space-y-1.5">
+                                                    <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Top Collaborated Repos</p>
+                                                    <div className="flex flex-wrap gap-1.5">
+                                                        {activityData.stats.topCollaboratedRepos.map((repo) => (
+                                                            <span
+                                                                key={repo}
+                                                                className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                                                            >
+                                                                {repo}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </CardContent>
+                                    </Card>
+                                </div>
+                            ) : (
+                                <Card className="border-0 bg-muted/30">
+                                    <CardContent className="p-6 text-center text-muted-foreground">
+                                        Unable to load activity data. Make sure GitHub is connected.
+                                    </CardContent>
+                                </Card>
+                            )}
+                        </section>
 
                         {/* ── SECTION A: Top Projects ────────────────── */}
                         {data!.topProjects.length > 0 && (
@@ -531,7 +792,7 @@ export default function InsightsPage() {
                             </section>
                         )}
 
-                        {/* ── SECTION D: All Repositories Table ──────── */}
+                        {/* ── SECTION D: Top Repositories Table ──────── */}
                         {data!.repositories.length > 0 && (
                             <section>
                                 <div className="flex items-center gap-3 mb-6">
@@ -539,7 +800,7 @@ export default function InsightsPage() {
                                         <BarChart3 className="w-4 h-4" />
                                     </div>
                                     <h2 className="text-2xl font-bold tracking-tight">
-                                        All Repositories
+                                        Top Repositories
                                     </h2>
                                     <Badge variant="secondary" className="ml-auto">
                                         {data!.repositories.length} repos
@@ -624,6 +885,19 @@ export default function InsightsPage() {
                             </section>
                         )}
                     </div>
+                )}
+                    </>
+                ) : (
+                    /* ── LinkedIn Insights Tab ── */
+                    linkedinLoading ? (
+                        <LinkedinInsightsSkeleton />
+                    ) : linkedinError ? (
+                        <LinkedinErrorState message={linkedinError} onRetry={() => { setLinkedinFetched(false); fetchLinkedinInsights(); }} />
+                    ) : !linkedinData?.linkedinImported || !linkedinData?.parsedProfile ? (
+                        <LinkedinEmptyState />
+                    ) : (
+                        <LinkedinInsightsView data={linkedinData} />
+                    )
                 )}
             </div>
         </div>

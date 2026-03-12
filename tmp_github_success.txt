@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState, Suspense } from "react";
 import { useRouter } from "next/navigation";
@@ -22,7 +22,7 @@ function GitHubSuccessHandler() {
 
                 // Short delay so user sees the success state
                 setTimeout(() => {
-                    if (mounted) router.replace("/");
+                    if (mounted) router.replace("/connect-accounts");
                 }, 1200);
             } catch {
                 if (!mounted) return;
@@ -30,7 +30,7 @@ function GitHubSuccessHandler() {
 
                 // Redirect anyway after a moment
                 setTimeout(() => {
-                    if (mounted) router.replace("/");
+                    if (mounted) router.replace("/connect-accounts");
                 }, 2000);
             }
         }
@@ -51,7 +51,7 @@ function GitHubSuccessHandler() {
                     <>
                         <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
                         <p className="text-muted-foreground">
-                            Syncing your GitHub account…
+                            Syncing your GitHub accountÔÇª
                         </p>
                     </>
                 )}
@@ -63,7 +63,7 @@ function GitHubSuccessHandler() {
                             GitHub connected successfully!
                         </p>
                         <p className="text-sm text-muted-foreground">
-                            Redirecting to dashboard…
+                            Redirecting to dashboardÔÇª
                         </p>
                     </>
                 )}
@@ -75,7 +75,7 @@ function GitHubSuccessHandler() {
                             Something went wrong
                         </p>
                         <p className="text-sm text-muted-foreground">
-                            Redirecting to dashboard…
+                            Redirecting to dashboardÔÇª
                         </p>
                     </>
                 )}

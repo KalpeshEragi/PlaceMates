@@ -1,0 +1,166 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserAuth {
+  id        String         @id @default(uuid())
+  email     String         @unique
+  profile   UserProfile?
+  oauth     OAuthAccount[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  // ?????? Onboarding & connection tracking ??????
+  githubConnected   Boolean @default(false)
+  githubAccessToken String?
+  linkedinImported  Boolean @default(false)
+  linkedinZipPath   String?
+  onboardingStage   String  @default("new")
+
+  githubRepos GithubRepository[]
+  linkedinInsight      LinkedinInsight?
+  linkedinSkillInsight LinkedinSkillInsight[]
+  portfolio            UserPortfolio?
+  jobDescriptionInsights JobDescriptionInsight[]
+}
+
+model UserProfile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      UserAuth @relation(fields: [userId], references: [id])
+  name      String?
+  avatarUrl String?
+}
+
+model OAuthAccount {
+  id             String   @id @default(uuid())
+  userId         String
+  provider       String
+  providerUserId String
+  accessToken    String?
+  user           UserAuth @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerUserId])
+}
+
+model GithubRepository {
+  id           String   @id @default(uuid())
+  userId       String
+  user         UserAuth @relation(fields: [userId], references: [id])
+  repoId       Int      @unique
+  name         String
+  description  String?
+  language     String?
+  stars        Int
+  forks        Int
+  size         Int
+  repoUrl      String
+  updatedAt    DateTime
+  lastSyncedAt DateTime @default(now())
+  createdAt    DateTime @default(now())
+
+  // ?????? Analysis fields (populated by githubAnalysisService) ??????
+  totalLoc       Int?
+  locByLanguage  Json?
+  readmeSummary  String?
+  detectedDomain String?
+  resumeScore    Float?
+  impactScore    Float?
+  finalScore     Float?
+  processedAt    DateTime?
+
+  @@index([userId])
+}
+
+model UserSkillInsight {
+  id            String   @id @default(uuid())
+  userId        String
+  skillName     String
+  strengthScore Float
+  source        String
+  createdAt     DateTime @default(now())
+
+  @@unique([userId, skillName])
+  @@index([userId])
+}
+
+model UserDashboardInsight {
+  id             String   @id @default(uuid())
+  userId         String   @unique
+  topProjects    Json
+  topSkills      Json
+  topDomains     Json
+  lastComputedAt DateTime
+}
+
+model LinkedinInsight {
+  id                         String   @id @default(uuid())
+  userId                     String   @unique
+  totalExperienceYears       Float?
+  careerGrowthSpeed          Float?
+  primaryDomain              String?
+  secondaryDomain            String?
+  technicalOrientation       String?
+  leadershipScore            Int?
+  impactScore                Int?
+  ownershipScore             Int?
+  profileScore               Int?
+  careerSummary              String?
+  strengthsSummary           String?
+  improvementSuggestions     String?
+  processedAt                DateTime?
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
+
+  user   UserAuth               @relation(fields: [userId], references: [id])
+  skills LinkedinSkillInsight[]
+}
+
+model LinkedinSkillInsight {
+  id         String   @id @default(uuid())
+  userId     String
+  insightId  String?
+  skillName  String
+  frequency  Int
+  cluster    String?
+  createdAt  DateTime @default(now())
+
+  user    UserAuth         @relation(fields: [userId], references: [id])
+  insight LinkedinInsight? @relation(fields: [insightId], references: [id])
+
+  @@index([userId])
+}
+
+model UserPortfolio {
+  id             String   @id @default(uuid())
+  userId         String   @unique
+  publicEmail    String
+  githubUrl      String?
+  linkedinUrl    String?
+  websiteUrl     String?
+  portfolioSlug  String   @unique
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user UserAuth @relation(fields: [userId], references: [id])
+}
+
+model JobDescriptionInsight {
+  id              String   @id @default(uuid())
+  userId          String
+  role            String?
+  requiredSkills  Json
+  domain          String?
+  keywords        Json
+  experienceLevel String?
+  createdAt       DateTime @default(now())
+
+  user UserAuth @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}

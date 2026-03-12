@@ -72,6 +72,32 @@ export interface InsightsResponse {
   repositories: InsightRepository[];
 }
 
+/* ── Activity Types (Radar + Pie charts) ───────────────── */
+
+export interface RadarDataPoint {
+  category: string;
+  value: number;
+  fullMark: number;
+}
+
+export interface PieDataPoint {
+  name: string;
+  value: number;
+  fill: string;
+}
+
+export interface ActivityStats {
+  totalEvents: number;
+  activeDays: number;
+  topCollaboratedRepos: string[];
+}
+
+export interface GitHubActivityResponse {
+  radarData: RadarDataPoint[];
+  pieData: PieDataPoint[];
+  stats: ActivityStats;
+}
+
 export const githubApi = {
   async syncRepos(): Promise<{ syncedCount: number }> {
     const response = await fetch(`${API_BASE}/github/sync`, {
@@ -169,6 +195,30 @@ export const githubApi = {
     }
 
     return body as InsightsResponse;
+  },
+
+  async getActivity(): Promise<GitHubActivityResponse> {
+    const response = await fetch(`${API_BASE}/github/activity`, {
+      method: "GET",
+      headers: {
+        ...authHeaders(),
+      },
+      cache: "no-store",
+    });
+
+    const body = await response.json().catch(() => ({}));
+
+    if (response.status === 401) {
+      throw new Error(body.error || "You are not authenticated. Please log in again.");
+    }
+
+    if (!response.ok) {
+      throw new Error(
+        body.message || body.error || "Failed to fetch GitHub activity data"
+      );
+    }
+
+    return body as GitHubActivityResponse;
   },
 };
 

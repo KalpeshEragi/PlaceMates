@@ -1,0 +1,9 @@
+﻿src/services/skillInsightsService.ts(61,31): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(arg: PrismaPromise<any>[], options?: { isolationLevel?: TransactionIsolationLevel | undefined; } | undefined): Promise<any[]>', gave the following error.
+    Argument of type 'Promise<unknown>[]' is not assignable to parameter of type 'PrismaPromise<any>[]'.
+      Type 'Promise<unknown>' is not assignable to type 'PrismaPromise<any>'.
+        Types of property '[Symbol.toStringTag]' are incompatible.
+          Type 'string' is not assignable to type '"PrismaPromise"'.
+  Overload 2 of 2, '(fn: (prisma: Omit<PrismaClient<PrismaClientOptions, never, DefaultArgs>, "$connect" | "$disconnect" | "$on" | "$transaction" | "$extends">) => Promise<...>, options?: { ...; } | undefined): Promise<...>', gave the following error.
+    Argument of type 'Promise<unknown>[]' is not assignable to parameter of type '(prisma: Omit<PrismaClient<PrismaClientOptions, never, DefaultArgs>, "$connect" | "$disconnect" | "$on" | "$transaction" | "$extends">) => Promise<...>'.
+      Type 'Promise<unknown>[]' provides no match for the signature '(prisma: Omit<PrismaClient<PrismaClientOptions, never, DefaultArgs>, "$connect" | "$disconnect" | "$on" | "$transaction" | "$extends">): Promise<...>'.

@@ -1,0 +1,35 @@
+﻿ M backend/src/controllers/authController.ts
+ M backend/src/controllers/githubController.ts
+ M backend/src/controllers/linkedinController.ts
+ M backend/src/routes/github.ts
+ M backend/src/routes/linkedin.ts
+ M frontend/src/app/Authentication/page.tsx
+ M frontend/src/app/auth-success/page.tsx
+ M frontend/src/app/dashboard/insights/page.tsx
+ D frontend/src/app/github-success/page.tsx
+ M frontend/src/app/layout.tsx
+ M frontend/src/app/page.tsx
+ M frontend/src/lib/api/github-api.ts
+?? backend/out.txt
+?? backend/src/services/githubActivityService.ts
+?? backend/ts_check.log
+?? backend/uploads/linkedin/5903400a-d76c-4694-80b5-1c7265af508b-1773231538298.zip
+?? backend/uploads/linkedin/5903400a-d76c-4694-80b5-1c7265af508b-1773243120003.zip
+?? backend/uploads/linkedin/5903400a-d76c-4694-80b5-1c7265af508b-1773290704754.zip
+?? backend/uploads/linkedin/5903400a-d76c-4694-80b5-1c7265af508b-1773290998896.zip
+?? backend/uploads/linkedin/9c9eaf62-9292-4a7d-bec0-00e8556e0568-1773305754759.zip
+?? backend/uploads/linkedin/9c9eaf62-9292-4a7d-bec0-00e8556e0568-1773305786032.zip
+?? backend/uploads/linkedin/9c9eaf62-9292-4a7d-bec0-00e8556e0568-1773305795896.zip
+?? backend/uploads/linkedin/9c9eaf62-9292-4a7d-bec0-00e8556e0568-1773305902239.zip
+?? backend/uploads/linkedin/eb6914be-6201-49e0-9936-7e4b285055ea-1773167176996.zip
+?? diff_files.txt
+?? diff_files_utf8.txt
+?? frontend/src/app/connect-accounts/
+?? frontend/src/app/debug/
+?? frontend/src/components/linkedin-insights.tsx
+?? frontend/src/lib/api/connect-api.ts
+?? frontend/src/lib/api/linkedin-api.ts
+?? local_status.txt
+?? tmp_connect_accounts.txt
+?? tmp_connect_api.txt
+?? tmp_github_success.txt

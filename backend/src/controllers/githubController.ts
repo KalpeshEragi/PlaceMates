@@ -2,6 +2,7 @@ import type { Response } from "express";
 import type { AuthRequest } from "../middleware/auth";
 import { GitHubUnauthorizedError, syncUserGithubRepos } from "../services/githubService";
 import { processUserGithubRepositories } from "../services/githubAnalysisService";
+import { fetchGithubActivitySummary } from "../services/githubActivityService";
 import { prisma } from "../lib/prisma";
 
 export async function getGithubInsights(req: AuthRequest, res: Response) {
@@ -96,3 +97,51 @@ export async function analyzeGithubRepos(req: AuthRequest, res: Response) {
   });
 }
 
+// ── Debug endpoint: return all stored GitHub data ──────────
+export async function getGithubData(req: AuthRequest, res: Response) {
+  if (!req.userId) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  try {
+    const [repositories, dashboardInsight, skillInsights] = await Promise.all([
+      prisma.githubRepository.findMany({
+        where: { userId: req.userId },
+        orderBy: { finalScore: "desc" },
+      }),
+      prisma.userDashboardInsight.findUnique({
+        where: { userId: req.userId },
+      }),
+      prisma.userSkillInsight.findMany({
+        where: { userId: req.userId },
+        orderBy: { strengthScore: "desc" },
+      }),
+    ]);
+
+    return res.status(200).json({
+      repositories,
+      dashboardInsight,
+      skillInsights,
+    });
+  } catch (error) {
+    console.error("Failed to fetch GitHub data:", error);
+    return res.status(500).json({ error: "Failed to fetch GitHub data" });
+  }
+}
+
+export async function getGithubActivity(req: AuthRequest, res: Response) {
+  if (!req.userId) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  try {
+    const activityData = await fetchGithubActivitySummary(req.userId);
+    return res.status(200).json(activityData);
+  } catch (error) {
+    console.error("Failed to fetch GitHub activity:", error);
+    return res.status(500).json({
+      error: "activity_fetch_failed",
+      message: "Failed to fetch GitHub activity data. Please try again later.",
+    });
+  }
+}

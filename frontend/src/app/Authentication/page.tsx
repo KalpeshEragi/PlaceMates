@@ -24,7 +24,7 @@ export default function AuthenticationPage() {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
-        if (!loading && user) router.replace("/dashboard");
+        if (!loading && user) router.replace("/connect-accounts");
     }, [user, loading, router]);
 
     useEffect(() => {
