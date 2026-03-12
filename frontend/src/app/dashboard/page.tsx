@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CheckCircle2, Github, Loader2, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,8 +9,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/lib/auth-context";
 import { integrationsApi, type IntegrationStatus } from "@/lib/api/integrations-api";
 import { githubApi } from "@/lib/api/github-api";
+import { linkedinApi } from "@/lib/api/linkedin-api";
 
-export default function DashboardPage() {
+function DashboardContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, loading } = useAuth();
@@ -24,6 +25,8 @@ export default function DashboardPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [isSyncingGithub, setIsSyncingGithub] = useState(false);
   const [isAnalyzingGithub, setIsAnalyzingGithub] = useState(false);
+  const [isAnalyzingLinkedin, setIsAnalyzingLinkedin] = useState(false);
+
 
   useEffect(() => {
     if (!loading && !user) {
@@ -188,7 +191,7 @@ export default function DashboardPage() {
         data: {},
         timestamp: Date.now(),
       }),
-    }).catch(() => {});
+    }).catch(() => { });
     // #endregion agent log
 
     setIsAnalyzingGithub(true);
@@ -210,7 +213,7 @@ export default function DashboardPage() {
           data: {},
           timestamp: Date.now(),
         }),
-      }).catch(() => {});
+      }).catch(() => { });
       // #endregion agent log
 
       toast({
@@ -236,7 +239,7 @@ export default function DashboardPage() {
           },
           timestamp: Date.now(),
         }),
-      }).catch(() => {});
+      }).catch(() => { });
       // #endregion agent log
 
       toast({
@@ -246,6 +249,28 @@ export default function DashboardPage() {
       });
     } finally {
       setIsAnalyzingGithub(false);
+    }
+  }
+
+  async function handleLinkedinAnalyze() {
+    setIsAnalyzingLinkedin(true);
+    try {
+      await linkedinApi.analyze();
+      toast({
+        title: "LinkedIn analysis started",
+        description: "Your LinkedIn profile is being analyzed. This may take a few seconds.",
+      });
+      setTimeout(() => {
+        router.push("/linkedin-insights");
+      }, 1500);
+    } catch (error) {
+      toast({
+        title: "Analysis failed",
+        description: (error as Error).message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsAnalyzingLinkedin(false);
     }
   }
 
@@ -339,9 +364,29 @@ export default function DashboardPage() {
               {statusLoading ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
               ) : status.linkedin_uploaded ? (
-                <div className="flex items-center gap-2 text-green-600">
-                  <CheckCircle2 className="h-5 w-5" />
-                  <span>LinkedIn ZIP Uploaded</span>
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-2 text-green-600">
+                    <CheckCircle2 className="h-5 w-5" />
+                    <span>LinkedIn ZIP Uploaded</span>
+                  </div>
+
+                  <Button
+                    onClick={handleLinkedinAnalyze}
+                    disabled={isAnalyzingLinkedin}
+                    className="w-full sm:w-fit"
+                  >
+                    {isAnalyzingLinkedin ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Analyzing LinkedIn...
+                      </>
+                    ) : (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4" />
+                        Analyze LinkedIn Profile
+                      </>
+                    )}
+                  </Button>
                 </div>
               ) : (
                 <div className="relative w-full">
@@ -372,5 +417,18 @@ export default function DashboardPage() {
         </div>
       </div>
     </div>
+  );
+
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-screen items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    }>
+      <DashboardContent />
+    </Suspense>
   );
 }

@@ -9,6 +9,9 @@ import authRouter from "./routes/auth.js";
 import linkedinRouter from "./routes/linkedin.js";
 import integrationsRouter from "./routes/integrations.js";
 import githubRouter from "./routes/github.js";
+import portfolioRouter from "./routes/portfolioRoutes.js";
+import publicPortfolioRouter from "./routes/publicPortfolioRoutes.js";
+import resumeRouter from "./routes/resumeRoutes.js";
 
 const app = express();
 
@@ -24,6 +27,9 @@ app.use("/api/auth", authRouter);
 app.use("/api/linkedin", linkedinRouter);
 app.use("/api/integrations", integrationsRouter);
 app.use("/api/github", githubRouter);
+app.use("/api/portfolio", publicPortfolioRouter);
+app.use("/api/portfolio", portfolioRouter);
+app.use("/api/resume", resumeRouter);
 
 // ── Error handler (must be last) ──────────────────────────
 app.use(errorHandler);

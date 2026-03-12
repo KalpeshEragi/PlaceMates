@@ -53,12 +53,12 @@ export async function aggregateSkillsForUser(
             increment: strength,
           },
         },
-      }) as any,
+      })
     );
   }
 
-  if (ops.length) {
-    await prisma.$transaction(ops);
+  if (ops.length > 0) {
+    await prisma.$transaction(ops as any);
   }
 }
 

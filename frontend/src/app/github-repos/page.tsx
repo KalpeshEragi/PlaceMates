@@ -40,11 +40,11 @@ export default function GithubReposPage() {
   async function handleFetchRepos() {
     setFetching(true);
     try {
-      const data = await githubApi.listRepos();
-      setRepos(data);
+      const data = await githubApi.getInsights();
+      setRepos(data.repositories as any);
       toast({
         title: "Repositories loaded",
-        description: `Fetched ${data.length} repositories from GitHub.`,
+        description: `Fetched ${data.repositories.length} repositories from GitHub.`,
       });
     } catch (error) {
       toast({
@@ -125,7 +125,8 @@ export default function GithubReposPage() {
                   >
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-medium">{repo.full_name}</span>
+                        {/* @ts-ignore */}
+                        <span className="font-medium">{repo.full_name || repo.name}</span>
                         {repo.private && (
                           <span className="rounded-full bg-yellow-100 px-2 py-0.5 text-xs text-yellow-800">
                             Private
@@ -141,8 +142,10 @@ export default function GithubReposPage() {
                         {repo.language && (
                           <span>Language: {repo.language}</span>
                         )}
-                        <span>⭐ {repo.stargazers_count}</span>
-                        <span>🍴 {repo.forks_count}</span>
+                        {/* @ts-ignore */}
+                        <span>⭐ {repo.stargazers_count ?? repo.stars}</span>
+                        {/* @ts-ignore */}
+                        <span>🍴 {repo.forks_count ?? repo.forks}</span>
                       </div>
                     </div>
                     <Button
@@ -151,10 +154,12 @@ export default function GithubReposPage() {
                       asChild
                     >
                       <a
-                        href={repo.html_url}
+                        /* @ts-ignore */
+                        href={repo.html_url || repo.repoUrl}
                         target="_blank"
                         rel="noreferrer"
-                        aria-label={`Open ${repo.full_name} on GitHub`}
+                        /* @ts-ignore */
+                        aria-label={`Open ${repo.full_name || repo.name} on GitHub`}
                       >
                         <ExternalLink className="h-4 w-4" />
                       </a>
