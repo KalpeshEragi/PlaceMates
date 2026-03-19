@@ -51,7 +51,6 @@ export async function getGithubInsights(req: AuthRequest, res: Response) {
   }
 }
 
-
 export async function syncGithubRepos(req: AuthRequest, res: Response) {
   if (!req.userId) {
     return res.status(401).json({ error: "Unauthorized" });
@@ -85,7 +84,6 @@ export async function analyzeGithubRepos(req: AuthRequest, res: Response) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-
   processUserGithubRepositories(req.userId).catch((err) => {
     console.error("GitHub repo analysis failed:", err);
   });
@@ -97,38 +95,6 @@ export async function analyzeGithubRepos(req: AuthRequest, res: Response) {
   });
 }
 
-// ── Debug endpoint: return all stored GitHub data ──────────
-export async function getGithubData(req: AuthRequest, res: Response) {
-  if (!req.userId) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-
-  try {
-    const [repositories, dashboardInsight, skillInsights] = await Promise.all([
-      prisma.githubRepository.findMany({
-        where: { userId: req.userId },
-        orderBy: { finalScore: "desc" },
-      }),
-      prisma.userDashboardInsight.findUnique({
-        where: { userId: req.userId },
-      }),
-      prisma.userSkillInsight.findMany({
-        where: { userId: req.userId },
-        orderBy: { strengthScore: "desc" },
-      }),
-    ]);
-
-    return res.status(200).json({
-      repositories,
-      dashboardInsight,
-      skillInsights,
-    });
-  } catch (error) {
-    console.error("Failed to fetch GitHub data:", error);
-    return res.status(500).json({ error: "Failed to fetch GitHub data" });
-  }
-}
-
 export async function getGithubActivity(req: AuthRequest, res: Response) {
   if (!req.userId) {
     return res.status(401).json({ error: "Unauthorized" });
@@ -137,11 +103,11 @@ export async function getGithubActivity(req: AuthRequest, res: Response) {
   try {
     const activityData = await fetchGithubActivitySummary(req.userId);
     return res.status(200).json(activityData);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Failed to fetch GitHub activity:", error);
     return res.status(500).json({
       error: "activity_fetch_failed",
-      message: "Failed to fetch GitHub activity data. Please try again later.",
+      message: error?.message || "Failed to fetch GitHub activity. Please try again later.",
     });
   }
 }

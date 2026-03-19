@@ -25,6 +25,8 @@ model UserAuth {
   githubRepos GithubRepository[]
   linkedinInsight      LinkedinInsight?
   linkedinSkillInsight LinkedinSkillInsight[]
+  portfolio            UserPortfolio?
+  jobDescriptionInsights JobDescriptionInsight[]
 }
 
 model UserProfile {
@@ -115,16 +117,50 @@ model LinkedinInsight {
   createdAt                  DateTime @default(now())
   updatedAt                  DateTime @updatedAt
 
-  user UserAuth @relation(fields: [userId], references: [id])
+  user   UserAuth               @relation(fields: [userId], references: [id])
+  skills LinkedinSkillInsight[]
 }
 
 model LinkedinSkillInsight {
   id         String   @id @default(uuid())
   userId     String
+  insightId  String?
   skillName  String
   frequency  Int
   cluster    String?
   createdAt  DateTime @default(now())
 
+  user    UserAuth         @relation(fields: [userId], references: [id])
+  insight LinkedinInsight? @relation(fields: [insightId], references: [id])
+
+  @@index([userId])
+}
+
+model UserPortfolio {
+  id             String   @id @default(uuid())
+  userId         String   @unique
+  publicEmail    String
+  githubUrl      String?
+  linkedinUrl    String?
+  websiteUrl     String?
+  portfolioSlug  String   @unique
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
   user UserAuth @relation(fields: [userId], references: [id])
+}
+
+model JobDescriptionInsight {
+  id              String   @id @default(uuid())
+  userId          String
+  role            String?
+  requiredSkills  Json
+  domain          String?
+  keywords        Json
+  experienceLevel String?
+  createdAt       DateTime @default(now())
+
+  user UserAuth @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
