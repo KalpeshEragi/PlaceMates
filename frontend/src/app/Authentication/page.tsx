@@ -152,7 +152,7 @@ export default function AuthenticationPage() {
                                     />
                                 ))}
                             </div>
-                            <p>Trusted by students across VJTI, SPIT &amp; more</p>
+                            <p>Trusted by students across Fcrit &amp; more</p>
                         </div>
                     </div>
 
