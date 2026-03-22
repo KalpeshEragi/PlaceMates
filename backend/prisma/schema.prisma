@@ -7,26 +7,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model UserAuth {
-  id        String         @id @default(uuid())
-  email     String         @unique
-  profile   UserProfile?
-  oauth     OAuthAccount[]
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
+// ─────────────────────────────────────────────────────────────
+// USER
+// ─────────────────────────────────────────────────────────────
 
-  // ── Onboarding & connection tracking ──
+model UserAuth {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Connection state
   githubConnected   Boolean @default(false)
   githubAccessToken String?
+  githubLogin       String? // resolved on first GitHub sync
   linkedinImported  Boolean @default(false)
-  linkedinZipPath   String?
+  linkedinZipPath   String? // path to uploaded ZIP for processing
   onboardingStage   String  @default("new")
 
-  githubRepos GithubRepository[]
-  linkedinInsight      LinkedinInsight?
-  linkedinSkillInsight LinkedinSkillInsight[]
-  portfolio            UserPortfolio?
-  jobDescriptionInsights JobDescriptionInsight[]
+  // Relations
+  profile        UserProfile?
+  oauth          OAuthAccount[]
+  projects       Project[]
+  skills         Skill[]
+  experiences    Experience[]
+  educations     Education[]
+  awards         Award[]
+  certifications Certification[]
+  summary        UserSummary?
+  portfolio      UserPortfolio?
 }
 
 model UserProfile {
@@ -48,119 +57,137 @@ model OAuthAccount {
   @@unique([provider, providerUserId])
 }
 
-model GithubRepository {
-  id           String   @id @default(uuid())
-  userId       String
-  user         UserAuth @relation(fields: [userId], references: [id])
-  repoId       Int      @unique
-  name         String
-  description  String?
-  language     String?
-  stars        Int
-  forks        Int
-  size         Int
-  repoUrl      String
-  updatedAt    DateTime
-  lastSyncedAt DateTime @default(now())
-  createdAt    DateTime @default(now())
+// ─────────────────────────────────────────────────────────────
+// GITHUB PIPELINE → Projects
+// ─────────────────────────────────────────────────────────────
 
-  // ── Analysis fields (populated by githubAnalysisService) ──
-  totalLoc       Int?
-  locByLanguage  Json?
-  readmeSummary  String?
-  detectedDomain String?
-  resumeScore    Float?
-  impactScore    Float?
-  finalScore     Float?
-  processedAt    DateTime?
+model Project {
+  id     String   @id @default(uuid())
+  userId String
+  user   UserAuth @relation(fields: [userId], references: [id])
+
+  name          String
+  repoUrl       String
+  domain        String?  // Frontend | Backend | ML | DevOps | Mobile
+  projectType   String   // "solo" | "collaborative"
+  collaborators Int      @default(1)
+  techStack     String[] // ordered by usage
+
+  // Two-stage bullets:
+  //   baseBullets  → AI-generated (no user metrics yet)
+  //   finalBullets → metrics injected after quiz
+  // description = denormalized single string for resume/portfolio display
+  baseBullets  String[]
+  finalBullets String[]
+  description  String?  @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, repoUrl]) // enables idempotent upsert on re-analysis
+  @@index([userId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// SHARED → Skills  (GitHub primary + LinkedIn supplementary)
+// ─────────────────────────────────────────────────────────────
+
+model Skill {
+  id     String   @id @default(uuid())
+  userId String
+  user   UserAuth @relation(fields: [userId], references: [id])
+
+  name   String  // normalized, e.g. "React", "Node.js", "Python"
+  domain String? // Frontend | Backend | ML | DevOps | Mobile | Other
+  source String  // "github" | "linkedin" | "both"
+
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// LINKEDIN PIPELINE → Experience, Education, Award, Certification
+// ─────────────────────────────────────────────────────────────
+
+model Experience {
+  id     String   @id @default(uuid())
+  userId String
+  user   UserAuth @relation(fields: [userId], references: [id])
+
+  role        String
+  company     String
+  startDate   String?  // "Jan 2022" — kept as LinkedIn string
+  endDate     String?  // null = present
+  description String?  @db.Text // AI-refined, resume-ready
 
   @@index([userId])
 }
 
-model UserSkillInsight {
-  id            String   @id @default(uuid())
-  userId        String
-  skillName     String
-  strengthScore Float
-  source        String
-  createdAt     DateTime @default(now())
+model Education {
+  id     String   @id @default(uuid())
+  userId String
+  user   UserAuth @relation(fields: [userId], references: [id])
 
-  @@unique([userId, skillName])
+  institution String
+  degree      String?
+  field       String?
+  startDate   String?
+  endDate     String?
+  gpa         String?
+
+  @@index([userId])
+}
+
+model Award {
+  id     String   @id @default(uuid())
+  userId String
+  user   UserAuth @relation(fields: [userId], references: [id])
+
+  title       String
+  description String? @db.Text
+  issuedAt    String?
+
   @@index([userId])
 }
 
-model UserDashboardInsight {
-  id             String   @id @default(uuid())
-  userId         String   @unique
-  topProjects    Json
-  topSkills      Json
-  topDomains     Json
-  lastComputedAt DateTime
-}
+model Certification {
+  id     String   @id @default(uuid())
+  userId String
+  user   UserAuth @relation(fields: [userId], references: [id])
 
-model LinkedinInsight {
-  id                         String   @id @default(uuid())
-  userId                     String   @unique
-  totalExperienceYears       Float?
-  careerGrowthSpeed          Float?
-  primaryDomain              String?
-  secondaryDomain            String?
-  technicalOrientation       String?
-  leadershipScore            Int?
-  impactScore                Int?
-  ownershipScore             Int?
-  profileScore               Int?
-  careerSummary              String?
-  strengthsSummary           String?
-  improvementSuggestions     String?
-  processedAt                DateTime?
-  createdAt                  DateTime @default(now())
-  updatedAt                  DateTime @updatedAt
-
-  user   UserAuth               @relation(fields: [userId], references: [id])
-  skills LinkedinSkillInsight[]
-}
-
-model LinkedinSkillInsight {
-  id         String   @id @default(uuid())
-  userId     String
-  insightId  String?
-  skillName  String
-  frequency  Int
-  cluster    String?
-  createdAt  DateTime @default(now())
-
-  user    UserAuth         @relation(fields: [userId], references: [id])
-  insight LinkedinInsight? @relation(fields: [insightId], references: [id])
+  name     String
+  issuer   String?
+  issuedAt String?
 
   @@index([userId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// COMBINED OUTPUT → Summary, Portfolio
+// ─────────────────────────────────────────────────────────────
+
+model UserSummary {
+  id     String   @id @default(uuid())
+  userId String   @unique
+  user   UserAuth @relation(fields: [userId], references: [id])
+
+  summaryText   String  @db.Text
+  primaryDomain String? // dominant domain across both pipelines
+
+  updatedAt DateTime @updatedAt
 }
 
 model UserPortfolio {
-  id             String   @id @default(uuid())
-  userId         String   @unique
-  publicEmail    String
-  githubUrl      String?
-  linkedinUrl    String?
-  websiteUrl     String?
-  portfolioSlug  String   @unique
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id     String   @id @default(uuid())
+  userId String   @unique
+  user   UserAuth @relation(fields: [userId], references: [id])
 
-  user UserAuth @relation(fields: [userId], references: [id])
-}
+  publicEmail   String
+  githubUrl     String?
+  linkedinUrl   String?
+  websiteUrl    String?
+  portfolioSlug String   @unique
 
-model JobDescriptionInsight {
-  id              String   @id @default(uuid())
-  userId          String
-  role            String?
-  requiredSkills  Json
-  domain          String?
-  keywords        Json
-  experienceLevel String?
-  createdAt       DateTime @default(now())
-
-  user UserAuth @relation(fields: [userId], references: [id])
-
-  @@index([userId])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
