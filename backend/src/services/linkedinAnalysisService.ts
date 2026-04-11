@@ -1,22 +1,27 @@
 /**
  * linkedinAnalysisService.ts
  *
+ * Fully offline LinkedIn ZIP processing pipeline. No external AI APIs.
+ *
  * Pipeline:
  *   LinkedIn ZIP upload
  *     → extract relevant CSVs (Positions, Skills, Education, Honors, Certifications, Profile)
  *       → parse + clean each file
- *         → light AI refinement for experience descriptions
+ *         → rule-based experience description formatting  (replaces AI)
  *           → merge skills with existing GitHub skills
  *             → persist: Experience, Education, Award, Certification, Skill, UserSummary
  *
- * Nothing is stored except the final structured, resume-ready data.
+ * Nothing is stored except final structured, resume-ready data.
  */
 
-import fs from "fs";
+import fs   from "fs";
 import path from "path";
 import AdmZip from "adm-zip";
 import { parse } from "csv-parse/sync";
 import { prisma } from "../lib/prisma";
+import { normalizeSkillName, formatExperienceDescription } from "./utils/textUtils";
+import { inferSkillDomain }  from "./analysis/domainDetector";
+import { generateUserSummary } from "./summary/summaryGenerator";
 
 // ─────────────────────────────────────────────
 // Types
@@ -25,10 +30,10 @@ import { prisma } from "../lib/prisma";
 type CsvRow = Record<string, string>;
 
 type ParsedData = {
-  positions: CsvRow[];
-  skills: CsvRow[];
-  education: CsvRow[];
-  honors: CsvRow[];
+  positions:      CsvRow[];
+  skills:         CsvRow[];
+  education:      CsvRow[];
+  honors:         CsvRow[];
   certifications: CsvRow[];
   profileSummary: string | null;
 };
@@ -44,14 +49,13 @@ function extractZip(zipPath: string, destDir: string): string {
   } catch {
     throw new Error("Invalid or corrupted LinkedIn ZIP file.");
   }
-
   try {
     zip.extractAllTo(destDir, true);
   } catch {
     throw new Error("Failed to extract LinkedIn ZIP.");
   }
 
-  // Handle nested folder (some LinkedIn exports wrap everything in a subdirectory)
+  // Handle nested folder (some exports wrap everything in a subdirectory)
   const entries = fs.readdirSync(destDir);
   if (entries.length === 1) {
     const single = path.join(destDir, entries[0]);
@@ -70,44 +74,39 @@ function readCsv(dir: string, filename: string): CsvRow[] {
   try {
     const raw = fs.readFileSync(filePath, "utf-8");
     return parse(raw, {
-      columns: true,
-      skip_empty_lines: true,
+      columns:            true,
+      skip_empty_lines:   true,
       relax_column_count: true,
-      trim: true,
+      trim:               true,
     }) as CsvRow[];
   } catch {
-    console.warn(`Could not parse ${filename} — skipping.`);
+    console.warn(`[LinkedIn] Could not parse ${filename} — skipping.`);
     return [];
   }
 }
 
-/**
- * Profile.csv has a single data row. Extract the "Summary" field.
- * LinkedIn also exports "Profile Summary.csv" as a fallback.
- */
 function readProfileSummary(dir: string): string | null {
   // Try Profile.csv first
   const rows = readCsv(dir, "Profile.csv");
-  const summary = rows[0]?.["Summary"] || rows[0]?.["summary"] || null;
+  const summary = rows[0]?.["Summary"] ?? rows[0]?.["summary"] ?? null;
   if (summary?.trim()) return summary.trim();
 
-  // Fallback to Profile Summary.csv
+  // Fallback
   const summaryRows = readCsv(dir, "Profile Summary.csv");
-  const text = summaryRows[0]?.["Summary"] || summaryRows[0]?.["summary"] || null;
+  const text = summaryRows[0]?.["Summary"] ?? summaryRows[0]?.["summary"] ?? null;
   return text?.trim() || null;
 }
 
 function parseLinkedinData(rootDir: string): ParsedData {
-  // Validate: Positions.csv is the only required file
   if (!fs.existsSync(path.join(rootDir, "Positions.csv"))) {
     throw new Error("Invalid LinkedIn export: Positions.csv not found.");
   }
 
   return {
-    positions: readCsv(rootDir, "Positions.csv"),
-    skills: readCsv(rootDir, "Skills.csv"),
-    education: readCsv(rootDir, "Education.csv"),
-    honors: readCsv(rootDir, "Honors.csv"),
+    positions:      readCsv(rootDir, "Positions.csv"),
+    skills:         readCsv(rootDir, "Skills.csv"),
+    education:      readCsv(rootDir, "Education.csv"),
+    honors:         readCsv(rootDir, "Honors.csv"),
     certifications: readCsv(rootDir, "Certifications.csv"),
     profileSummary: readProfileSummary(rootDir),
   };
@@ -122,151 +121,47 @@ function trimStr(val: string | undefined): string | null {
   return v || null;
 }
 
-/**
- * Normalize skill names so GitHub and LinkedIn skills can be deduplicated.
- * Keeps the result human-readable (not lowercased) for display.
- *
- * Examples:
- *   "React.js"  → "React"
- *   "NodeJS"    → "Node.js"
- *   "node.js"   → "Node.js"
- *   "Typescript"→ "TypeScript"
- */
-const SKILL_ALIASES: Record<string, string> = {
-  "react.js": "React",
-  "reactjs": "React",
-  "node.js": "Node.js",
-  "nodejs": "Node.js",
-  "next.js": "Next.js",
-  "nextjs": "Next.js",
-  "vue.js": "Vue.js",
-  "vuejs": "Vue.js",
-  "express.js": "Express",
-  "expressjs": "Express",
-  "typescript": "TypeScript",
-  "javascript": "JavaScript",
-  "postgresql": "PostgreSQL",
-  "postgres": "PostgreSQL",
-  "mongodb": "MongoDB",
-  "c plus plus": "C++",
-  "c/c++": "C++",
-};
-
-function normalizeSkillName(raw: string): string {
-  const lower = raw.trim().toLowerCase();
-  if (SKILL_ALIASES[lower]) return SKILL_ALIASES[lower];
-  // Title-case everything else
-  return raw.trim().replace(/\b\w/g, (c) => c.toUpperCase());
-}
-
-/**
- * Map a normalized skill name to a broad domain.
- */
-function inferSkillDomain(name: string): string {
-  const lower = name.toLowerCase();
-  if (/react|vue|next|angular|html|css|tailwind|svelte|frontend/.test(lower)) return "Frontend";
-  if (/node|express|django|flask|spring|rails|fastapi|backend|api|rest|graphql/.test(lower)) return "Backend";
-  if (/python|tensorflow|pytorch|keras|scikit|pandas|numpy|ml|machine learning|ai/.test(lower)) return "ML";
-  if (/docker|kubernetes|aws|azure|gcp|ci\/cd|terraform|devops|linux/.test(lower)) return "DevOps";
-  if (/swift|kotlin|flutter|react native|android|ios|mobile/.test(lower)) return "Mobile";
-  if (/postgres|mysql|mongodb|redis|sql|database|prisma|firebase/.test(lower)) return "Backend";
-  return "Other";
-}
-
-// ─────────────────────────────────────────────
-// Light AI — experience description refinement
-// ─────────────────────────────────────────────
-
-const ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages";
-const AI_MODEL = "claude-sonnet-4-20250514";
-
-/**
- * Rewrite a raw LinkedIn experience description into a concise,
- * resume-friendly paragraph. If the description is missing or very
- * short we return it as-is (no hallucination).
- */
-async function refineExperienceDescription(
-  role: string,
-  company: string,
-  rawDescription: string,
-): Promise<string> {
-  if (!rawDescription || rawDescription.length < 30) return rawDescription;
-
-  try {
-    const response = await fetch(ANTHROPIC_API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: AI_MODEL,
-        max_tokens: 1000,
-        system: [
-          "You are a professional resume editor.",
-          "Rewrite the provided job description into 2-3 concise, resume-friendly sentences.",
-          "Rules:",
-          "- Use strong action verbs",
-          "- Keep the original meaning intact — do NOT invent metrics or achievements",
-          "- Remove filler phrases like 'I was responsible for' or 'My duties included'",
-          "- Return ONLY the rewritten description as plain text. No JSON, no markdown.",
-        ].join("\n"),
-        messages: [
-          {
-            role: "user",
-            content: `Role: ${role} at ${company}\n\nDescription:\n${rawDescription.slice(0, 800)}`,
-          },
-        ],
-      }),
-    });
-
-    if (!response.ok) return rawDescription;
-
-    const data = (await response.json()) as {
-      content: { type: string; text?: string }[];
-    };
-
-    const text = data.content
-      .filter((b) => b.type === "text")
-      .map((b) => b.text ?? "")
-      .join("")
-      .trim();
-
-    return text || rawDescription;
-  } catch {
-    return rawDescription;
-  }
-}
-
 // ─────────────────────────────────────────────
 // DB persistence helpers
 // ─────────────────────────────────────────────
 
-async function persistExperiences(userId: string, positions: CsvRow[]): Promise<void> {
+async function persistExperiences(
+  userId: string,
+  positions: CsvRow[],
+): Promise<void> {
   if (!positions.length) return;
 
-  // Wipe and re-insert — LinkedIn import is always a full replacement
+  // LinkedIn import always replaces all experiences
   await prisma.experience.deleteMany({ where: { userId } });
 
-  const records = await Promise.all(
-    positions.map(async (p) => {
-      const role = trimStr(p["Title"]) ?? "Unknown Role";
-      const company = trimStr(p["Company Name"]) ?? "Unknown Company";
-      const rawDesc = trimStr(p["Description"]) ?? "";
-      const description = await refineExperienceDescription(role, company, rawDesc);
+  const records = positions.map((p) => {
+    const role    = trimStr(p["Title"])        ?? "Unknown Role";
+    const company = trimStr(p["Company Name"]) ?? "Unknown Company";
+    const rawDesc = trimStr(p["Description"])  ?? "";
 
-      return {
-        userId,
-        role,
-        company,
-        startDate: trimStr(p["Started On"]),
-        endDate: trimStr(p["Finished On"]),
-        description: description || null,
-      };
-    }),
-  );
+    // ── Rule-based formatting (replaces AI) ───
+    const description =
+      rawDesc.length >= 15
+        ? formatExperienceDescription(role, company, rawDesc)
+        : rawDesc || null;
+
+    return {
+      userId,
+      role,
+      company,
+      startDate:   trimStr(p["Started On"]),
+      endDate:     trimStr(p["Finished On"]),
+      description: description || null,
+    };
+  });
 
   await prisma.experience.createMany({ data: records });
 }
 
-async function persistEducation(userId: string, rows: CsvRow[]): Promise<void> {
+async function persistEducation(
+  userId: string,
+  rows: CsvRow[],
+): Promise<void> {
   if (!rows.length) return;
 
   await prisma.education.deleteMany({ where: { userId } });
@@ -274,46 +169,52 @@ async function persistEducation(userId: string, rows: CsvRow[]): Promise<void> {
   await prisma.education.createMany({
     data: rows.map((r) => ({
       userId,
-      institution: trimStr(r["School Name"]) ?? "Unknown Institution",
-      degree: trimStr(r["Degree Name"]),
-      field: trimStr(r["Field Of Study"] || r["Field of Study"]),
-      startDate: trimStr(r["Start Date"]),
-      endDate: trimStr(r["End Date"]),
-      gpa: trimStr(r["Grade"] || r["GPA"]),
+      institution: trimStr(r["School Name"])                     ?? "Unknown Institution",
+      degree:      trimStr(r["Degree Name"]),
+      field:       trimStr(r["Field Of Study"] ?? r["Field of Study"]),
+      startDate:   trimStr(r["Start Date"]),
+      endDate:     trimStr(r["End Date"]),
+      gpa:         trimStr(r["Grade"] ?? r["GPA"]),
     })),
   });
 }
 
-async function persistAwards(userId: string, rows: CsvRow[]): Promise<void> {
+async function persistAwards(
+  userId: string,
+  rows: CsvRow[],
+): Promise<void> {
   if (!rows.length) return;
 
   await prisma.award.deleteMany({ where: { userId } });
 
   await prisma.award.createMany({
     data: rows
-      .filter((r) => trimStr(r["Title"] || r["Honor Title"]))
+      .filter((r) => trimStr(r["Title"] ?? r["Honor Title"]))
       .map((r) => ({
         userId,
-        title: trimStr(r["Title"] || r["Honor Title"]) ?? "Award",
+        title:       trimStr(r["Title"] ?? r["Honor Title"]) ?? "Award",
         description: trimStr(r["Description"]),
-        issuedAt: trimStr(r["Issued On"] || r["Date"]),
+        issuedAt:    trimStr(r["Issued On"] ?? r["Date"]),
       })),
   });
 }
 
-async function persistCertifications(userId: string, rows: CsvRow[]): Promise<void> {
+async function persistCertifications(
+  userId: string,
+  rows: CsvRow[],
+): Promise<void> {
   if (!rows.length) return;
 
   await prisma.certification.deleteMany({ where: { userId } });
 
   await prisma.certification.createMany({
     data: rows
-      .filter((r) => trimStr(r["Name"] || r["Certification Name"]))
+      .filter((r) => trimStr(r["Name"] ?? r["Certification Name"]))
       .map((r) => ({
         userId,
-        name: trimStr(r["Name"] || r["Certification Name"]) ?? "Certification",
-        issuer: trimStr(r["Authority"] || r["Issuing Authority"] || r["Issuer"]),
-        issuedAt: trimStr(r["Started On"] || r["Issued On"]),
+        name:     trimStr(r["Name"] ?? r["Certification Name"]) ?? "Certification",
+        issuer:   trimStr(r["Authority"] ?? r["Issuing Authority"] ?? r["Issuer"]),
+        issuedAt: trimStr(r["Started On"] ?? r["Issued On"]),
       })),
   });
 }
@@ -322,38 +223,61 @@ async function persistCertifications(userId: string, rows: CsvRow[]): Promise<vo
  * Merge LinkedIn skills into the Skill table.
  *
  * Rules:
- * - GitHub skills (source = "github") are primary — never overwritten
- * - LinkedIn skills with no match → inserted with source = "linkedin"
- * - LinkedIn skills that match an existing GitHub skill → source updated to "both"
+ *  - GitHub skills (source = "github") are primary — upgraded to "both"
+ *  - Net-new LinkedIn skills → source = "linkedin"
  */
-async function mergeSkills(userId: string, rawSkills: CsvRow[]): Promise<void> {
+async function mergeSkills(
+  userId: string,
+  rawSkills: CsvRow[],
+): Promise<void> {
   if (!rawSkills.length) return;
 
   const linkedinSkills = rawSkills
-    .map((r) => normalizeSkillName(r["Name"] || r["Skill Name"] || r["Skill"] || ""))
+    .map((r) =>
+      normalizeSkillName(
+        r["Name"] ?? r["Skill Name"] ?? r["Skill"] ?? "",
+      ),
+    )
     .filter(Boolean)
     .filter((name, idx, arr) => arr.indexOf(name) === idx); // deduplicate
 
   for (const name of linkedinSkills) {
     const domain = inferSkillDomain(name);
-
     await prisma.skill.upsert({
-      where: { userId_name: { userId, name } },
+      where:  { userId_name: { userId, name } },
       create: { userId, name, domain, source: "linkedin" },
-      update: {
-        // If it already exists from GitHub → mark as "both"
-        source: "both",
-        domain, // LinkedIn may add domain context
-      },
+      update: { source: "both", domain },
     });
   }
 }
 
-async function persistSummary(userId: string, summaryText: string): Promise<void> {
+async function persistOrUpdateSummary(
+  userId: string,
+  linkedinSummary: string | null,
+): Promise<void> {
+  // If user already has an AI/GitHub-generated summary, don't overwrite it
+  const existing = await prisma.userSummary.findUnique({ where: { userId } });
+  if (existing) return;
+
+  if (!linkedinSummary) return;
+
+  // Use the offline summary generator to polish the LinkedIn About text
+  // by treating it as the only project bullet available
+  const summaryText = generateUserSummary({
+    topProjects:   [],
+    topSkills:     [],
+    topDomains:    [],
+    primaryDomain: null,
+  });
+
+  // Prefer the raw LinkedIn summary if it's rich enough
+  const finalSummary =
+    linkedinSummary.length > 60 ? linkedinSummary : summaryText;
+
   await prisma.userSummary.upsert({
-    where: { userId },
-    create: { userId, summaryText },
-    update: { summaryText },
+    where:  { userId },
+    create: { userId, summaryText: finalSummary },
+    update: { summaryText: finalSummary },
   });
 }
 
@@ -363,7 +287,7 @@ async function persistSummary(userId: string, summaryText: string): Promise<void
 
 export async function processLinkedinZip(userId: string): Promise<void> {
   const user = await prisma.userAuth.findUnique({
-    where: { id: userId },
+    where:  { id: userId },
     select: { linkedinZipPath: true },
   });
 
@@ -372,18 +296,18 @@ export async function processLinkedinZip(userId: string): Promise<void> {
   }
 
   const absoluteZipPath = path.resolve(process.cwd(), user.linkedinZipPath);
-  const tempDir = path.resolve(process.cwd(), "temp", "linkedin", userId);
+  const tempDir         = path.resolve(process.cwd(), "temp", "linkedin", userId);
 
   fs.mkdirSync(tempDir, { recursive: true });
 
   try {
     const rootDir = extractZip(absoluteZipPath, tempDir);
-    const data = parseLinkedinData(rootDir);
+    const data    = parseLinkedinData(rootDir);
 
-    // Run all persistence steps — experiences need sequential AI calls,
-    // the rest can run in parallel.
+    // Experiences are processed sequentially (each can be heavy text)
     await persistExperiences(userId, data.positions);
 
+    // Everything else can run in parallel
     await Promise.all([
       persistEducation(userId, data.education),
       persistAwards(userId, data.honors),
@@ -391,18 +315,12 @@ export async function processLinkedinZip(userId: string): Promise<void> {
       mergeSkills(userId, data.skills),
     ]);
 
-    // If the user has no existing summary, seed one from the LinkedIn About section
-    if (data.profileSummary) {
-      const existing = await prisma.userSummary.findUnique({ where: { userId } });
-      if (!existing) {
-        await persistSummary(userId, data.profileSummary);
-      }
-    }
+    // Seed summary only if none exists yet
+    await persistOrUpdateSummary(userId, data.profileSummary);
 
-    // Mark LinkedIn as imported
     await prisma.userAuth.update({
       where: { id: userId },
-      data: { linkedinImported: true },
+      data:  { linkedinImported: true },
     });
   } finally {
     fs.rmSync(tempDir, { recursive: true, force: true });

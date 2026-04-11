@@ -13,6 +13,15 @@ export const env = {
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET || "",
     GITHUB_REDIRECT_URI: process.env.GITHUB_REDIRECT_URI || "",
     TOKEN_ENCRYPTION_KEY: process.env.TOKEN_ENCRYPTION_KEY || "",
-    GEMINI_API_KEY: process.env.GEMINI_API_KEY || "",
+    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME || "",
+    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY || "",
+    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET || "",
+    N8N_WEBHOOK_URL: process.env.N8N_WEBHOOK_URL || "https://placeholder-n8n/webhook/n8n/match-jobs",
+    N8N_WEBHOOK_SECRET: process.env.N8N_WEBHOOK_SECRET || "",
+    INTERNAL_API_KEY: process.env.INTERNAL_API_KEY || "",
+    // LLM enrichment
+    LLM_PROVIDER: process.env.LLM_PROVIDER || "none",       // groq | ollama | none
+    LLM_API_KEY: process.env.LLM_API_KEY || "",
+    LLM_MODEL: process.env.LLM_MODEL || "llama-3.3-70b-versatile",
+    OLLAMA_BASE_URL: process.env.OLLAMA_BASE_URL || "http://localhost:11434",
 } as const;
-

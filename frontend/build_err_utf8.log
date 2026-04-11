@@ -1,0 +1,94 @@
+﻿
+> placemates-frontend@0.1.0 build
+> next build
+
+node.exe :  ΓÜá Warning: 
+Next.js inferred your 
+workspace root, but it 
+may not be correct.
+At C:\nvm4w\nodejs\npm.ps1
+:29 char:3
++   & $NODE_EXE 
+$NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (   
+  ΓÜá Warning: N...not    
+ be correct.:String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+ We detected multiple 
+lockfiles and selected 
+the directory of C:\AllImp
+projects\PlaceMates\packag
+e-lock.json as the root 
+directory.
+ To silence this warning, 
+set 
+`outputFileTracingRoot` 
+in your Next.js config, 
+or consider removing one 
+of the lockfiles if it's 
+not needed.
+   See https://nextjs.org/
+docs/app/api-reference/con
+fig/next-config-js/output#
+caveats for more 
+information.
+ Detected additional 
+lockfiles: 
+   * C:\AllImpprojects\Pla
+ceMates\frontend\package-l
+ock.json
+
+   Γû▓ Next.js 15.5.12
+
+   Creating an optimized production build ...
+ Γ£ô Compiled successfully in 3.9s
+   Linting and checking validity of types ...
+Failed to compile.
+
+./src/components/ui/chart.
+tsx:109:3
+Type error: Property 
+'payload' does not exist 
+on type 
+'Omit<Props<ValueType, 
+NameType>, PropertiesReadF
+romContext> & { active?: 
+boolean | undefined; 
+allowEscapeViewBox?: 
+AllowInDimension | 
+undefined; ... 24 more 
+...; wrapperStyle?: 
+CSSProperties | 
+undefined; } & 
+ClassAttributes<...> & 
+HTMLAttributes<...> & { 
+...; }'.
+
+[0m [90m 107 |[39m 
+[36mfunction[39m [33mCh
+artTooltipContent[39m({
+ [90m 108 |[39m   
+active[33m,[39m
+[31m[1m>[22m[39m[90m 
+109 |[39m   
+payload[33m,[39m
+ [90m     |[39m   
+[31m[1m^[22m[39m
+ [90m 110 |[39m   
+className[33m,[39m
+ [90m 111 |[39m   
+indicator [33m=[39m 
+[32m"dot"[39m[33m,[39m
+ [90m 112 |[39m   
+hideLabel [33m=[39m [36
+mfalse[39m[33m,[39m[0m
+Next.js build worker 
+exited with code: 1 and 
+signal: null

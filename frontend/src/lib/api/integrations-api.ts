@@ -25,6 +25,10 @@ export interface IntegrationStatus {
   githubLogin: string | null;
   linkedinImported: boolean;
   onboardingStage: OnboardingStage;
+  analysisStatus: "idle" | "running" | "success" | "failed";
+  analysisError: string | null;
+  selectedProjectCount?: number;
+  portfolioQuizCompleted?: boolean;
   /** Row counts — use to know if analysis has run yet */
   dataSummary: {
     projects: number;

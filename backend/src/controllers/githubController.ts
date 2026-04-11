@@ -48,13 +48,35 @@ export async function syncGithubRepos(req: AuthRequest, res: Response) {
 export async function analyzeGithubRepos(req: AuthRequest, res: Response) {
   if (!req.userId) return res.status(401).json({ error: "Unauthorized" });
 
-  processUserGithubRepositories(req.userId).catch((err) =>
-    console.error("[GitHub] Analysis pipeline failed:", err),
-  );
+  const userId = req.userId;
+
+  // Mark analysis as running
+  await prisma.userAuth.update({
+    where: { id: userId },
+    data: { analysisStatus: "running", analysisError: null },
+  });
+
+  // Fire and forget — track success/failure via DB
+  processUserGithubRepositories(userId)
+    .then(async () => {
+      await prisma.userAuth.update({
+        where: { id: userId },
+        data: { analysisStatus: "success", analysisError: null },
+      });
+      console.log(`[GitHub] Analysis completed for user ${userId}`);
+    })
+    .catch(async (err) => {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`[GitHub] Analysis pipeline failed for user ${userId}:`, message);
+      await prisma.userAuth.update({
+        where: { id: userId },
+        data: { analysisStatus: "failed", analysisError: message },
+      });
+    });
 
   return res.status(202).json({
     success: true,
-    status: "queued",
+    status: "running",
     message: "Analysis started. Projects and skills will be available shortly.",
   });
 }

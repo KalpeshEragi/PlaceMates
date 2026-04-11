@@ -24,15 +24,11 @@ function AuthSuccessHandler() {
                 // 1. Save token
                 login(token);
 
-                // 2. Fetch user state
-                const user = await authApi.getMe();
+                // 2. Verify token by fetching profile
+                await authApi.getMe();
 
-                // 3. Decide route
-                if (user.githubConnected && user.linkedinImported) {
-                    router.replace("/dashboard");
-                } else {
-                    router.replace("/onboarding");
-                }
+                // 3. Always enter deterministic onboarding flow
+                router.replace("/onboarding");
 
             } catch (err) {
                 console.error(err);

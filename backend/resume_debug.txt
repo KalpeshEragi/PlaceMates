@@ -1,0 +1,62 @@
+﻿--- P0 ---
+Arjun Mehta
+--- P1 ---
+Entry Level Software Engineer
+--- P2 ---
+Work Experience
+--- P3 ---
+
+--- P4 ---
+TechNova Solutions Pvt. Ltd., Mumbai, IN  
+--- P5 ---
+Software Development Intern	01/2024 ΓÇô 06/2024
+--- P6 ---
+Built 3 responsive React.js dashboards for client analytics, cutting manual reporting time by 40%.
+--- P7 ---
+Developed and documented 12 REST APIs in Node.js/Express, reducing average response time by 28%.
+--- P8 ---
+Integrated Razorpay payment gateway end-to-end, lowering payment failure rate by 15%.
+--- P9 ---
+Partnered with 5 cross-functional teams to ship 2 product releases on time and 20% under budget.
+--- P10 ---
+GitHub Community (Remote)  
+--- P11 ---
+Open Source Contributor	08/2023 ΓÇô 12/2023
+--- P12 ---
+Contributed to react-form-builder (2.4k GitHub stars) ΓÇö fixed 12 bugs and added 3 new field types.
+--- P13 ---
+Improved test coverage from 52% to 81% using Jest and React Testing Library across 2 repositories.
+--- P14 ---
+Volunteering Activities and Extracurriculars
+--- P15 ---
+
+--- P16 ---
+Google Developer Student Club (GDSC), VESIT  
+--- P17 ---
+Technical Lead	06/2022 ΓÇô 04/2023
+--- P18 ---
+Organised 8 workshops on web development and cloud technologies reaching 300+ students.
+--- P19 ---
+Mentored 20 junior developers through a 6-week project bootcamp; 15 shipped live projects.
+--- P20 ---
+Projects
+--- P21 ---
+
+--- P22 ---
+PlacementHub	03/2024
+--- P23 ---
+College placement portal serving 600+ students and 40+ companies, reducing manual effort by 65%.
+--- P24 ---
+Implemented RBAC, real-time notifications via Socket.io, and bulk resume upload to AWS S3.
+--- P25 ---
+AutoApply	11/2023
+--- P26 ---
+AI-powered job tool that tailors resumes to job descriptions using OpenAI API, cutting prep time by 70%.
+--- P27 ---
+Scraped 500+ listings daily via Apify with a relevance scoring engine achieving 85% accuracy.
+--- P28 ---
+DevChat	07/2023
+--- P29 ---
+Real-time chat app supporting 200+ concurrent users with room-based messaging and syntax highlighting.
+--- P30 ---
+Used Redis pub/sub for horizontal scaling, achieving sub-100ms message delivery under load testing.

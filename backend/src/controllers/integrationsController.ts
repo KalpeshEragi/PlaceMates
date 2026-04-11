@@ -20,6 +20,13 @@ export async function getIntegrationStatus(req: AuthRequest, res: Response) {
         githubLogin: true,
         linkedinImported: true,
         onboardingStage: true,
+        analysisStatus: true,
+        analysisError: true,
+        selectedProjectIds: true,
+        onboardingQuizCompletedAt: true,
+        onboardingOutputFinalizedAt: true,
+        portfolioTemplateId: true,
+        resumeTemplateId: true,
         _count: {
           select: {
             projects: true,
@@ -37,6 +44,13 @@ export async function getIntegrationStatus(req: AuthRequest, res: Response) {
       githubLogin: user.githubLogin ?? null,
       linkedinImported: user.linkedinImported,
       onboardingStage: user.onboardingStage,
+      analysisStatus: user.analysisStatus,
+      analysisError: user.analysisError ?? null,
+      selectedProjectCount: user.selectedProjectIds.length,
+      portfolioQuizCompleted: Boolean(user.onboardingQuizCompletedAt),
+      onboardingOutputFinalized: Boolean(user.onboardingOutputFinalizedAt),
+      portfolioTemplateId: user.portfolioTemplateId ?? null,
+      resumeTemplateId: user.resumeTemplateId ?? null,
       dataSummary: {
         projects: user._count.projects,
         skills: user._count.skills,

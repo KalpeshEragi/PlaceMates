@@ -24,6 +24,17 @@ model UserAuth {
   linkedinImported  Boolean @default(false)
   linkedinZipPath   String? // path to uploaded ZIP for processing
   onboardingStage   String  @default("new")
+  analysisStatus    String  @default("idle") // idle | running | success | failed
+  analysisError     String? // error message if analysis failed
+  portfolioTemplateId String? // e.g. "p1", "p2", "p3"
+  resumeTemplateId    String? // e.g. "r1", "r2"
+
+  /** Top portfolio projects chosen in onboarding (5–6 UUIDs, ordered) */
+  selectedProjectIds      String[]  @default([])
+  /** Set when user finishes the per-project quiz (persistent completion flag) */
+  onboardingQuizCompletedAt DateTime?
+  /** Set when user confirms template preview and saves final summary/bullets/skills */
+  onboardingOutputFinalizedAt DateTime?
 
   // Relations
   profile        UserProfile?
@@ -36,6 +47,10 @@ model UserAuth {
   certifications Certification[]
   summary        UserSummary?
   portfolio      UserPortfolio?
+  jobPreferences JobPreferences?
+  jobMatches      JobMatch[]
+  tailoredResumes TailoredResume[]
+  workflowRuns    WorkflowRun[]
 }
 
 model UserProfile {
@@ -44,6 +59,7 @@ model UserProfile {
   user      UserAuth @relation(fields: [userId], references: [id])
   name      String?
   avatarUrl String?
+  profileImageUrl String?  // Cloudinary URL for user-uploaded profile image
 }
 
 model OAuthAccount {
@@ -72,6 +88,31 @@ model Project {
   projectType   String   // "solo" | "collaborative"
   collaborators Int      @default(1)
   techStack     String[] // ordered by usage
+  /** Repo ranking score from GitHub analysis (for top-10 ordering) */
+  rankingScore  Float?
+  /** Cloudinary URL for optional project screenshot/image */
+  imageUrl      String?
+
+  // Raw GitHub metadata (for AI context)
+  stars           Int       @default(0)
+  forks           Int       @default(0)
+  repoDescription String?   @db.Text
+  readmeExcerpt   String?   @db.Text   // First 15 lines of README
+  lastPushedAt    DateTime?
+  repoSize        Int       @default(0)
+
+  // AI-generated enrichments (filled by single batch LLM call)
+  aiDescription   String?   @db.Text   // 2-3 sentence AI description
+  aiSkills        String[]  @default([])
+  aiComplexity    String?              // beginner | intermediate | advanced
+  aiUniqueAngle   String?   @db.Text   // What makes this project unique
+
+  // User quiz (onboarding)
+  projectIntent      String?
+  /** JSON: [{ "type": string, "value": number|null, "unit": string }] */
+  impactEntries      Json?
+  contributionArea   String?
+  quizExtraNotes     String?  @db.Text
 
   // Two-stage bullets:
   //   baseBullets  → AI-generated (no user metrics yet)
@@ -190,4 +231,100 @@ model UserPortfolio {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model JobPreferences {
+  id     String   @id @default(uuid())
+  userId String   @unique
+  user   UserAuth @relation(fields: [userId], references: [id])
+
+  primaryRole      String
+  secondaryRoles   String[]  @default([])
+  workType         String
+  locations        String[]  @default([])
+  minSalary        Float     @default(0)
+  currency         String    @default("INR")
+  experienceLevel  String
+  jobType          String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// Add to existing schema.prisma
+
+model Job {
+  id          String   @id @default(uuid())
+  title       String
+  company     String
+  location    String
+  description String   @db.Text
+  postedAt    DateTime @map("posted_at")
+  link        String   @unique
+  rawData     Json?    @map("raw_data")
+  
+  createdAt   DateTime @default(now())
+  
+  matches     JobMatch[]
+  resumes     TailoredResume[]
+  
+  @@index([postedAt])
+  @@map("Job")
+}
+
+model JobMatch {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  jobId       String   @map("job_id")
+  matchScore  Int      @map("match_score") // 0-100
+  
+  user        UserAuth @relation(fields: [userId], references: [id])
+  job         Job      @relation(fields: [jobId], references: [id])
+  
+  createdAt   DateTime @default(now())
+  
+  @@unique([userId, jobId])
+  @@index([userId, matchScore])
+  @@map("JobMatch")
+}
+
+model TailoredResume {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  jobId       String   @map("job_id")
+  resumeUrl   String   @map("resume_url")
+  
+  user        UserAuth @relation(fields: [userId], references: [id])
+  job         Job      @relation(fields: [jobId], references: [id])
+  
+  createdAt   DateTime @default(now())
+  
+  @@unique([userId, jobId])
+  @@index([userId])
+  @@map("TailoredResume")
+}
+
+// ─────────────────────────────────────────────────────────────
+// WORKFLOW RUNS → Track n8n trigger lifecycle
+// ─────────────────────────────────────────────────────────────
+
+model WorkflowRun {
+  id            String    @id @default(uuid())
+  userId        String    @map("user_id")
+  requestId     String    @unique @map("request_id")
+  triggerType   String    @default("manual") @map("trigger_type")   // "manual" | "cron"
+  status        String    @default("pending")                       // pending | processing | completed | failed
+  error         String?   @db.Text
+  resultSummary Json?     @map("result_summary")
+
+  startedAt     DateTime  @default(now()) @map("started_at")
+  completedAt   DateTime? @map("completed_at")
+
+  user          UserAuth  @relation(fields: [userId], references: [id])
+
+  @@index([userId, status])
+  @@index([requestId])
+  @@map("WorkflowRun")
 }

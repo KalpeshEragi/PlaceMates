@@ -133,7 +133,7 @@ export async function githubCallback(req: Request, res: Response) {
       console.error("[GitHub OAuth] Background sync failed:", err),
     );
 
-    return res.redirect(`${env.FRONTEND_URL}/dashboard?github=connected`);
+    return res.redirect(`${env.FRONTEND_URL}/onboarding?github=connected`);
   } catch (error) {
     console.error("[GitHub OAuth] Callback failed:", error);
     return res.redirect(`${env.FRONTEND_URL}/dashboard?error=github_oauth_failed`);

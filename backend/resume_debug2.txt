@@ -1,0 +1,112 @@
+﻿--- P0 ---
+
+--- P1 ---
+Contact
+--- P2 ---
+
+--- P3 ---
+Mumbai, India (Open to Remote)
+--- P4 ---
++91-9876543210
+--- P5 ---
+arjun.mehta@gmail.com
+--- P6 ---
+linkedin.com/in/arjunmehta
+--- P7 ---
+github.com/arjunmehta-dev
+--- P8 ---
+Skills
+--- P9 ---
+
+--- P10 ---
+Languages:
+--- P11 ---
+JavaScript, TypeScript
+--- P12 ---
+Python, Java, SQL
+--- P13 ---
+Frontend:
+--- P14 ---
+React.js, Next.js
+--- P15 ---
+Tailwind CSS, Redux
+--- P16 ---
+Backend:
+--- P17 ---
+Node.js, Express.js
+--- P18 ---
+REST APIs, GraphQL
+--- P19 ---
+Databases:
+--- P20 ---
+PostgreSQL, MongoDB
+--- P21 ---
+Redis, MySQL
+--- P22 ---
+Tools:
+--- P23 ---
+Git, Docker, AWS
+--- P24 ---
+Postman, Figma, Linux
+--- P25 ---
+Education
+--- P26 ---
+
+--- P27 ---
+VESIT, Mumbai
+--- P28 ---
+B.Tech ΓÇô Computer Science
+--- P29 ---
+Mumbai, MH ΓÇö 05/2024
+--- P30 ---
+CGPA: 8.7/10
+--- P31 ---
+Awards: Dean's List 2022 & 2023
+--- P32 ---
+(Top 10%), Best Final Year
+--- P33 ---
+Project Award 2024
+--- P34 ---
+Other
+--- P35 ---
+
+--- P36 ---
+AWS Certified Cloud Practitioner
+--- P37 ---
+ΓÇö 2024
+--- P38 ---
+Meta Frontend Developer Certificate
+--- P39 ---
+ΓÇö 2023
+--- P40 ---
+Google Data Analytics Certificate
+--- P41 ---
+ΓÇö 2023
+--- P42 ---
+Publications
+--- P43 ---
+
+--- P44 ---
+Mehta A. et al. "Automated Resume
+--- P45 ---
+Tailoring Using LLMs," IJCA
+--- P46 ---
+Vol.185, 2024.
+--- P47 ---
+
+--- P48 ---
+Mehta A., Shah R. "Scalable Chat
+--- P49 ---
+Architecture Using Redis Pub/Sub,"
+--- P50 ---
+NCETC, 2023.
+--- P51 ---
+Awards
+--- P52 ---
+
+--- P53 ---
+1st Place ΓÇö Smart India Hackathon 2023
+--- P54 ---
+Top 5% on LeetCode ΓÇö 400+ problems
+--- P55 ---
+Best Final Year Project, VESIT CSE 2024

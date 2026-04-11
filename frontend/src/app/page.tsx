@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { 
@@ -21,6 +22,7 @@ import {
 } from 'lucide-react'
 
 function App() {
+  const router = useRouter()
   const [isScrolled, setIsScrolled] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
@@ -184,7 +186,7 @@ function App() {
             <a href="#testimonials" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors hidden sm:block">
               Testimonials
             </a>
-            <Button className="bg-foreground text-background hover:bg-foreground/90 rounded-full px-6 shadow-lg hover:shadow-xl transition-all duration-300">
+            <Button onClick={() => router.push('/Authentication')} className="bg-foreground text-background hover:bg-foreground/90 rounded-full px-6 shadow-lg hover:shadow-xl transition-all duration-300">
               Get Started
             </Button>
           </div>
@@ -224,7 +226,7 @@ function App() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 rounded-full px-8 h-14 text-base shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300 group">
+                <Button onClick={() => router.push('/Authentication')} size="lg" className="bg-foreground text-background hover:bg-foreground/90 rounded-full px-8 h-14 text-base shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300 group">
                   Start Free Today
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
@@ -535,7 +537,7 @@ function App() {
             Join thousands of job seekers who use AI to discover opportunities, tailor resumes, and land their dream roles faster.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-indigo-600 hover:bg-white/90 rounded-full px-8 h-14 text-base shadow-2xl hover:shadow-white/25 transition-all duration-300 hover:-translate-y-0.5">
+            <Button onClick={() => router.push('/Authentication')} size="lg" className="bg-white text-indigo-600 hover:bg-white/90 rounded-full px-8 h-14 text-base shadow-2xl hover:shadow-white/25 transition-all duration-300 hover:-translate-y-0.5">
               Get Started Free
             </Button>
             <Button size="lg" variant="outline" className="border-2 border-white/30 text-white hover:bg-white/10 rounded-full px-8 h-14 text-base transition-all duration-300">

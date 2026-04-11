@@ -1,0 +1,4 @@
+﻿src/controllers/projectsController.ts(12,42): error TS1261: Already included file name 'C:/AllImpprojects/PlaceMates/backend/src/services/BulletGeneratorService.ts' differs from file name 'C:/AllImpprojects/PlaceMates/backend/src/services/bulletGeneratorService.ts' only in casing.
+  The file is in the program because:
+    Imported via "../services/BulletGeneratorService" from file 'C:/AllImpprojects/PlaceMates/backend/src/controllers/projectsController.ts'
+    Matched by include pattern 'src/**/*' in 'C:/AllImpprojects/PlaceMates/backend/tsconfig.json'
