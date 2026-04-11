@@ -60,6 +60,28 @@ passport.use(
 
                 return done(null, user);
             } catch (err) {
+                // #region agent log
+                const msg = err instanceof Error ? err.message : String(err);
+                fetch("http://127.0.0.1:7372/ingest/208aecbf-33e3-48e5-a39c-cca6cae8bcad", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Debug-Session-Id": "e6603f",
+                    },
+                    body: JSON.stringify({
+                        sessionId: "e6603f",
+                        location: "passport.ts:googleStrategy:catch",
+                        message: "Google OAuth strategy error",
+                        data: {
+                            hypothesisId: "H1",
+                            errSnippet: msg.slice(0, 280),
+                            columnMissing: /does not exist/i.test(msg),
+                        },
+                        timestamp: Date.now(),
+                        runId: "pre-migrate",
+                    }),
+                }).catch(() => {});
+                // #endregion
                 return done(err as Error);
             }
         }

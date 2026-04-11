@@ -1,19 +1,20 @@
 import { Router } from "express";
 import passport from "../config/passport";
 import jwt from "jsonwebtoken";
-import { prisma } from "../lib/prisma";
-import { requireAuth, AuthRequest } from "../middleware/auth";
+import { requireAuth } from "../middleware/auth";
 import { env } from "../config/env";
-import { githubCallback, startGithubOAuth } from "../controllers/authController";
-
-const router = Router();
-
-router.get(
+import { getMe, startGithubOAuth, githubCallback } from "../controllers/authController";
+import type { AuthRequest } from "../middleware/auth";
+ 
+const authRouter = Router();
+ 
+// Google OAuth
+authRouter.get(
   "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
+  passport.authenticate("google", { scope: ["profile", "email"] }),
 );
-
-router.get(
+ 
+authRouter.get(
   "/google/callback",
   passport.authenticate("google", {
     session: false,
@@ -24,24 +25,14 @@ router.get(
       expiresIn: "7d",
     });
     res.redirect(`${env.FRONTEND_URL}/auth-success?token=${token}`);
-  }
+  },
 );
-
-router.get("/me", requireAuth, async (req: AuthRequest, res) => {
-  const user = await prisma.userAuth.findUnique({
-    where: { id: req.userId },
-    include: {
-      profile: true,
-      oauth: {
-        select: { provider: true, providerUserId: true },
-      },
-    },
-  });
-
-  res.json(user);
-});
-
-router.get("/github", requireAuth, startGithubOAuth);
-router.get("/github/callback", githubCallback);
-
-export default router;
+ 
+// Current user
+authRouter.get("/me", requireAuth, getMe);
+ 
+// GitHub OAuth
+authRouter.get("/github", requireAuth, startGithubOAuth);
+authRouter.get("/github/callback", githubCallback);
+ 
+export default authRouter;

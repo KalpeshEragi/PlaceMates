@@ -19,9 +19,9 @@ export interface User {
     linkedinImported: boolean;
     onboardingStage: string;
     profile?: {
-        name?: string;
-        avatarUrl?: string;
-    };
+        name?: string | null;
+        avatarUrl?: string | null;
+    } | null;
 }
 
 interface AuthContextType {

@@ -1,156 +1,99 @@
+// src/lib/api/github-api.ts
+
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
-function getToken(): string | null {
-  if (typeof window === "undefined") {
-    return null;
-  }
-  return localStorage.getItem("token");
-}
-
 function authHeaders(): Record<string, string> {
-  const token = getToken();
+  if (typeof window === "undefined") return {};
+  const token = localStorage.getItem("token");
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-export type GithubRepo = {
-  id: number;
-  name: string;
-  full_name: string;
-  private: boolean;
-  html_url: string;
-  description: string | null;
-  language: string | null;
-  stargazers_count: number;
-  forks_count: number;
-  updated_at: string;
-};
+async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(),
+      ...(options.headers as Record<string, string>),
+    },
+    cache: "no-store",
+  });
 
-/* ── Insights Types ─────────────────────────────────────── */
+  const body = await res.json().catch(() => ({}));
 
-export interface InsightProject {
+  if (res.status === 401) {
+    if (body?.error === "github_token_expired") {
+      throw new Error(body.message || "Your GitHub connection has expired. Please reconnect.");
+    }
+    throw new Error(body.error || "Not authenticated. Please log in again.");
+  }
+
+  if (!res.ok) {
+    throw new Error(body.message || body.error || `API error ${res.status}`);
+  }
+
+  return body as T;
+}
+
+// ─── Types matching the Project model ────────────────────────
+
+export interface Project {
   id: string;
   name: string;
   repoUrl: string;
-  finalScore: number | null;
-  stars: number;
-  forks: number;
-  detectedDomain: string | null;
-  totalLoc: number | null;
+  domain: string | null;          // Frontend | Backend | ML | DevOps | Mobile
+  projectType: string;            // "solo" | "collaborative"
+  collaborators: number;
+  techStack: string[];
+  description: string | null;     // denormalized display string
+  baseBullets: string[];          // AI-generated, pre-quiz
+  finalBullets: string[];         // metric-injected, post-quiz
+  updatedAt: string;
 }
 
-export interface InsightSkill {
-  skillName: string;
-  strengthScore: number;
-  source: string;
-}
+// ─── Types matching the Skill model ──────────────────────────
 
-export interface InsightDomain {
-  domain: string;
-  count: number;
-}
-
-export interface InsightRepository {
+export interface Skill {
   id: string;
   name: string;
-  repoUrl: string;
-  description: string | null;
-  language: string | null;
-  stars: number;
-  forks: number;
-  totalLoc: number | null;
-  detectedDomain: string | null;
-  resumeScore: number | null;
-  impactScore: number | null;
-  finalScore: number | null;
-  processedAt: string | null;
+  domain: string | null;          // Frontend | Backend | ML | DevOps | Other
+  source: string;                 // "github" | "linkedin" | "both"
 }
 
-export interface InsightsResponse {
-  topProjects: InsightProject[];
-  topSkills: InsightSkill[];
-  topDomains: InsightDomain[];
-  repositories: InsightRepository[];
+// ─── GET /github/data response ───────────────────────────────
+
+export interface GithubDataResponse {
+  projects: Project[];
+  skills: Skill[];
 }
+
+// ─── API surface ─────────────────────────────────────────────
 
 export const githubApi = {
+  /**
+   * POST /github/sync
+   * Fetches all repos from GitHub API, resolves githubLogin, scores repos.
+   * No repo rows written to DB — only githubLogin on UserAuth.
+   */
   async syncRepos(): Promise<{ syncedCount: number }> {
-    const response = await fetch(`${API_BASE}/github/sync`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...authHeaders(),
-      },
-      cache: "no-store",
-    });
-
-    const body = await response.json().catch(() => ({}));
-
-    if (response.status === 401) {
-      if (body?.error === "github_token_expired") {
-        throw new Error(
-          body.message || "Your GitHub connection has expired. Please reconnect GitHub."
-        );
-      }
-
-      throw new Error(body.error || "You are not authenticated. Please log in again.");
-    }
-
-    if (!response.ok) {
-      throw new Error(
-        body.message || body.error || "Failed to sync GitHub repositories"
-      );
-    }
-
-    return {
-      syncedCount: body.syncedCount ?? 0,
-    };
+    return request<{ syncedCount: number }>("/github/sync", { method: "POST" });
   },
 
-  async analyzeRepos(): Promise<void> {
-    const response = await fetch(`${API_BASE}/github/analyze`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...authHeaders(),
-      },
-      cache: "no-store",
-    });
-
-    const body = await response.json().catch(() => ({}));
-
-    if (response.status === 401) {
-      throw new Error(body.error || "You are not authenticated. Please log in again.");
-    }
-
-    if (!response.ok) {
-      throw new Error(
-        body.message || body.error || "Failed to start GitHub repository analysis"
-      );
-    }
+  /**
+   * POST /github/analyze
+   * Fires the analysis pipeline async (returns 202 immediately).
+   * Pipeline: GitHub API → top 15 repos → bullets → skills → summary
+   */
+  async analyzeRepos(): Promise<{ status: string; message: string }> {
+    return request<{ status: string; message: string }>("/github/analyze", { method: "POST" });
   },
 
-  async getInsights(): Promise<InsightsResponse> {
-    const response = await fetch(`${API_BASE}/github/insights`, {
-      method: "GET",
-      headers: {
-        ...authHeaders(),
-      },
-      cache: "no-store",
-    });
-
-    const body = await response.json().catch(() => ({}));
-
-    if (response.status === 401) {
-      throw new Error(body.error || "You are not authenticated. Please log in again.");
-    }
-
-    if (!response.ok) {
-      throw new Error(
-        body.message || body.error || "Failed to fetch GitHub insights"
-      );
-    }
-
-    return body as InsightsResponse;
+  /**
+   * GET /github/data
+   * Returns Projects and GitHub-sourced Skills stored in DB.
+   * Call this to poll for results after analyzeRepos().
+   */
+  async getData(): Promise<GithubDataResponse> {
+    return request<GithubDataResponse>("/github/data");
   },
 };
-
