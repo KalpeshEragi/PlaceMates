@@ -1,0 +1,829 @@
+[
+{
+"domain": "Data Engineer",
+"experienceLevel": "Entry",
+"summary": "Data Engineer with 1.5 years of experience designing and orchestrating robust ETL pipelines. Proficient in optimizing batch processing and maintaining highly available data warehousing solutions. Passionate about transforming unstructured data into analytics-ready datasets with high fidelity.",
+"skills": [
+  "Python",
+  "SQL",
+  "ETL",
+  "Data Warehousing",
+  "Apache Spark",
+  "Apache Airflow",
+  "AWS Redshift",
+  "Git"
+],
+"experience": [
+  {
+    "role": "Data Engineering Intern",
+    "company": "DataFlow Analytics, Bangalore",
+    "duration": "Jan 2023 - Jul 2023",
+    "description": "Engineered automated ETL pipelines using Python and Apache Airflow to ingest daily logs from 50+ source systems. Optimized complex SQL queries in AWS Redshift, reducing batch processing time by 40% and ensuring 99.9% data accuracy for downstream BI dashboards."
+  }
+],
+"projects": [
+  {
+    "name": "E-Commerce Clickstream Pipeline",
+    "techStack": [
+      "Apache Spark",
+      "Python",
+      "AWS S3",
+      "SQL"
+    ],
+    "description": "Built a scalable data cleaning pipeline using PySpark to process 5 million daily clickstream records. Partitioned data in AWS S3 and loaded it into a data warehouse, decreasing analytics query latency by 60%."
+  },
+  {
+    "name": "Automated Data Quality Framework",
+    "techStack": [
+      "Python",
+      "Airflow",
+      "PostgreSQL"
+    ],
+    "description": "Developed an Airflow-orchestrated data validation tool that automatically detects nulls and schema anomalies in staging tables, elevating overall data accuracy by 15% before final warehouse ingestion."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science and Engineering",
+    "institution": "National Institute of Technology (NIT), Surathkal",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.8/10. Coursework included Distributed Databases and Big Data Analytics."
+  }
+],
+"certifications": [
+  {
+    "name": "AWS Certified Data Analytics - Specialty",
+    "issuer": "Amazon Web Services",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Reduced daily data ingestion failures to zero for three consecutive months during the DataFlow internship.",
+  "Secured 2nd place in the NIT Surathkal Datathon 2022."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Technical Coordinator",
+    "organization": "NIT Surathkal Data Science Club",
+    "description": "Organized hands-on workshops on SQL optimization and Apache Airflow for 100+ students."
+  }
+],
+"openSource": [
+  {
+    "project": "Apache Airflow",
+    "contribution": "Fixed a minor bug in the PostgresHook module regarding connection timeouts."
+  }
+],
+"hackathons": [
+  {
+    "name": "Smart India Hackathon",
+    "achievement": "Finalist",
+    "description": "Developed a real-time data processing backend for municipal water tracking."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Data Engineer",
+"experienceLevel": "Entry",
+"summary": "Results-oriented Data Engineer focused on real-time streaming architectures and modern data stacks. 1 year of experience in building scalable ETL pipelines and optimizing data warehousing environments for fintech applications. Dedicated to improving data freshness and query performance.",
+"skills": [
+  "Python",
+  "SQL",
+  "ETL",
+  "Data Warehousing",
+  "Apache Kafka",
+  "Snowflake",
+  "dbt",
+  "Docker"
+],
+"experience": [
+  {
+    "role": "Junior Data Engineer",
+    "company": "FinStream Tech, Mumbai",
+    "duration": "Aug 2023 - Present",
+    "description": "Maintained an event-driven architecture using Apache Kafka to stream live transaction data into Snowflake. Implemented incremental data models using dbt and SQL, which reduced data transformation time by 50% and improved reporting accuracy to 99.99%."
+  },
+  {
+    "role": "Data Analyst Intern",
+    "company": "FinStream Tech",
+    "duration": "Feb 2023 - Jul 2023",
+    "description": "Cleaned and normalized legacy CSV datasets using Python (Pandas) and loaded them into a central SQL database, enabling historic trend analysis."
+  }
+],
+"projects": [
+  {
+    "name": "Real-Time Fraud Detection Ingestion",
+    "techStack": [
+      "Apache Kafka",
+      "Python",
+      "SQL",
+      "PostgreSQL"
+    ],
+    "description": "Architected a Kafka streaming pipeline to ingest 10,000+ transaction events per minute. Applied real-time Python transformations to flag anomalies before sinking data into PostgreSQL."
+  },
+  {
+    "name": "SaaS Metrics Data Warehouse",
+    "techStack": [
+      "Snowflake",
+      "dbt",
+      "SQL",
+      "Python"
+    ],
+    "description": "Built an end-to-end ELT pipeline extracting data from CRM APIs via Python scripts. Modeled the data in Snowflake using dbt, accelerating executive dashboard loading times by 3x."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Information Technology",
+    "institution": "Veermata Jijabai Technological Institute (VJTI), Mumbai",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.6/10."
+  }
+],
+"certifications": [
+  {
+    "name": "SnowPro Core Certification",
+    "issuer": "Snowflake",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Recognized as 'Top Performer' for successfully migrating 500GB of legacy data to Snowflake with zero data loss.",
+  "Top 5% in the HackerEarth SQL and Data Structures Challenge."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Event Manager",
+    "organization": "VJTI Technovanza",
+    "description": "Managed the cloud database infrastructure for the fest registration portal, ensuring zero downtime."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "Data Engineer",
+"experienceLevel": "Entry",
+"summary": "Analytical Data Engineer with hands-on experience in Big Data ecosystems and cloud-native data processing. Highly skilled in writing robust Python ETL scripts and optimizing complex SQL queries. Driven to eliminate data silos and deliver high-quality, analytics-ready datasets.",
+"skills": [
+  "Python",
+  "SQL",
+  "ETL",
+  "Data Warehousing",
+  "PySpark",
+  "Google BigQuery",
+  "GCP Dataflow",
+  "Airflow"
+],
+"experience": [
+  {
+    "role": "Data Engineering Intern",
+    "company": "LogiAnalytics, Pune",
+    "duration": "Jan 2023 - Jun 2023",
+    "description": "Developed and orchestrated ETL workflows using Apache Airflow and PySpark to process 2TB of weekly logistics telemetry data. Re-engineered legacy SQL scripts in Google BigQuery, decreasing cluster compute costs by 20% and improving daily report generation speed by 45 minutes."
+  }
+],
+"projects": [
+  {
+    "name": "Unified Fleet Tracking Pipeline",
+    "techStack": [
+      "Python",
+      "PySpark",
+      "GCP BigQuery",
+      "Airflow"
+    ],
+    "description": "Created a batch processing pipeline that cleanses and deduplicates GPS ping data. Implemented rigorous data validation checks that boosted location accuracy metrics by 12%."
+  },
+  {
+    "name": "Customer Support NLP Data Prep",
+    "techStack": [
+      "Python",
+      "SQL",
+      "Pandas"
+    ],
+    "description": "Wrote an ETL job extracting unstructured text from support tickets. Standardized and cleaned the text using Python before loading it into a Data Warehouse, enabling ML teams to train sentiment models faster."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Engineering",
+    "institution": "Pune Institute of Computer Technology (PICT)",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.9/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Google Cloud Professional Data Engineer",
+    "issuer": "Google Cloud",
+    "year": "2023"
+  }
+],
+"publications": [
+  {
+    "title": "Optimizing Cost in Serverless Data Warehouses",
+    "description": "Published in the PICT technical magazine detailing BigQuery partitioning and clustering techniques.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Reduced pipeline failure rate from 10% to <1% by implementing comprehensive error handling and alerting in Airflow.",
+  "Winner of the PICT Codeathon 2022."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Project Mentor",
+    "organization": "PICT Data Science Group",
+    "description": "Mentored 5 teams on data cleaning and SQL schema design for their final year projects."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "DataHack Pune",
+    "achievement": "1st Runner Up",
+    "description": "Built an automated data scraping and warehousing pipeline for real estate pricing trends."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Data Engineer",
+"experienceLevel": "Entry",
+"summary": "Proactive Data Engineer with a strong foundation in distributed systems and data lakehouse architectures. 2 years of academic and freelance experience building ETL pipelines from scratch. Excels at using Python and Spark to clean messy data and designing optimal SQL schemas for Data Warehousing.",
+"skills": [
+  "Python",
+  "SQL",
+  "ETL",
+  "Data Warehousing",
+  "Databricks",
+  "Apache Spark",
+  "AWS Glue",
+  "AWS Athena"
+],
+"experience": [
+  {
+    "role": "Data Trainee",
+    "company": "EduTech Solutions, Delhi",
+    "duration": "Jul 2023 - Present",
+    "description": "Architected a serverless ETL pipeline using AWS Glue and Python to process student interaction data. Modeled a star schema in Amazon Redshift, improving query performance for the analytics team by 55% and ensuring 100% data consistency across reports."
+  },
+  {
+    "role": "Freelance Data Engineer",
+    "company": "Upwork",
+    "duration": "Aug 2022 - Jun 2023",
+    "description": "Designed custom web scraping and data integration pipelines for small businesses, loading cleaned data into PostgreSQL databases."
+  }
+],
+"projects": [
+  {
+    "name": "EdTech Analytics Data Lake",
+    "techStack": [
+      "Apache Spark",
+      "Databricks",
+      "Python",
+      "SQL"
+    ],
+    "description": "Migrated 500GB of raw JSON logs into a structured Delta Lake using Databricks. Implemented Spark transformations to flatten nested structures, reducing data processing time from 3 hours to 40 minutes."
+  },
+  {
+    "name": "Sales Data Consolidation System",
+    "techStack": [
+      "Python",
+      "SQL",
+      "AWS S3",
+      "AWS Athena"
+    ],
+    "description": "Built a daily Python cron job to fetch sales data from 3 third-party APIs. Stored data in S3 using Parquet format and queried via Athena, drastically cutting down storage and querying costs."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Software Engineering",
+    "institution": "Delhi Technological University (DTU), New Delhi",
+    "year": "2018 - 2022",
+    "details": "CGPA: 8.4/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Databricks Certified Data Engineer Associate",
+    "issuer": "Databricks",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Maintained a 100% Job Success Score on Upwork with 5-star client ratings for pipeline delivery.",
+  "Optimized an AWS Glue job to run 3x faster by adjusting worker types and partition sizes."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Core Team Member",
+    "organization": "DTU IEEE Student Branch",
+    "description": "Managed the backend database and registration data processing for the annual technical symposium."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "Data Engineer",
+"experienceLevel": "Entry",
+"summary": "Detail-oriented Big Data Engineer with experience in telecommunications and high-volume data ingestion. Proficient in leveraging Apache Spark and Kafka for both batch and stream processing. Passionate about ensuring data governance and writing clean, testable ETL code.",
+"skills": [
+  "Python",
+  "SQL",
+  "ETL",
+  "Data Warehousing",
+  "Apache Spark",
+  "Apache Kafka",
+  "Hadoop/Hive",
+  "Scala"
+],
+"experience": [
+  {
+    "role": "Big Data Engineering Intern",
+    "company": "CommTech India, Chennai",
+    "duration": "Jan 2023 - Jul 2023",
+    "description": "Contributed to the development of a real-time call detail record (CDR) ingestion pipeline using Apache Kafka and Spark Streaming. Designed Hive tables with optimal partitioning and bucketing strategies, decreasing data retrieval time by 70% and elevating reporting accuracy."
+  }
+],
+"projects": [
+  {
+    "name": "Network Log Aggregator",
+    "techStack": [
+      "Apache Kafka",
+      "Python",
+      "SQL",
+      "ETL"
+    ],
+    "description": "Built a real-time log aggregation pipeline to monitor cell tower health. Parsed and cleaned continuous streams using Python before loading aggregates into a SQL Data Warehouse."
+  },
+  {
+    "name": "Churn Prediction Data Prep",
+    "techStack": [
+      "PySpark",
+      "Hadoop",
+      "Hive",
+      "Python"
+    ],
+    "description": "Developed a Spark batch job to join billion-row customer demographic datasets with usage logs. Handled missing values and outlier detection, improving the accuracy of downstream ML models by 8%."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Science and Engineering",
+    "institution": "Anna University, Chennai",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.5/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Hadoop Fundamentals",
+    "issuer": "Cognitive Class (IBM)",
+    "year": "2022"
+  }
+],
+"publications": [],
+"achievements": [
+  "Resolved a major data skew issue in Spark during the CommTech internship, reducing out-of-memory errors to zero.",
+  "Top 100 in the TCS CodeVita global programming contest."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Vice President",
+    "organization": "Anna Univ Computer Society",
+    "description": "Spearheaded a campus-wide initiative to teach practical SQL and database design to over 300 non-CS engineering students."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "Telecom Hackathon 2022",
+    "achievement": "Winner",
+    "description": "Created a pipeline to detect SIM box fraud patterns in real-time."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Data Engineer",
+"experienceLevel": "Entry",
+"summary": "Data Engineer dedicated to building automated, scalable, and resilient data architectures. Possesses 1.5 years of experience in healthcare data platforms, excelling in Python-driven ETL and dimensional modeling in SQL data warehouses. Focused on data privacy, optimization, and reducing operational overhead.",
+"skills": [
+  "Python",
+  "SQL",
+  "ETL",
+  "Data Warehousing",
+  "Apache Airflow",
+  "Snowflake",
+  "AWS S3",
+  "Git"
+],
+"experience": [
+  {
+    "role": "Data Engineer 1",
+    "company": "HealthSync Analytics, Hyderabad",
+    "duration": "Jul 2023 - Present",
+    "description": "Managed end-to-end ETL pipelines for Electronic Health Records (EHR) using Python and Airflow. Transitioned on-premise SQL databases to Snowflake, enforcing strict role-based access control. Optimized data extraction queries, which lowered processing time by 35% and increased data mapping accuracy to 99%."
+  },
+  {
+    "role": "Data Intern",
+    "company": "HealthSync Analytics",
+    "duration": "Jan 2023 - Jun 2023",
+    "description": "Automated the extraction of daily billing reports from SFTP servers using Python, securely loading them into an AWS S3 data lake."
+  }
+],
+"projects": [
+  {
+    "name": "Patient Journey Analytics Pipeline",
+    "techStack": [
+      "Python",
+      "Apache Airflow",
+      "Snowflake",
+      "SQL"
+    ],
+    "description": "Designed a DAG in Airflow to orchestrate the daily loading of hospital admission data. Implemented dimensional modeling (Star Schema) in Snowflake, enabling analysts to query complex patient timelines in under 5 seconds."
+  },
+  {
+    "name": "PHI Data Anonymization Tool",
+    "techStack": [
+      "Python",
+      "Pandas",
+      "ETL"
+    ],
+    "description": "Created a lightweight Python utility to hash and mask Protected Health Information (PHI) within CSV files before they entered the analytics environment, ensuring 100% HIPAA compliance."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Information Technology",
+    "institution": "Indian Institute of Information Technology (IIIT), Hyderabad",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.7/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Data Engineering with Python",
+    "issuer": "DataCamp",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Awarded 'Spotlight Award' at HealthSync for independently refactoring a critical, failing legacy pipeline.",
+  "Secured 3rd rank in the IIIT Hyderabad internal SQL tuning competition."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Database Administrator",
+    "organization": "Felicity (IIIT Fest)",
+    "description": "Maintained the PostgreSQL database for the event app, optimizing indexes to handle 500+ concurrent reads."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "Data Engineer",
+"experienceLevel": "Entry",
+"summary": "Agile Data Engineer focused on event-streaming systems and scalable data infrastructure. 1 year of experience integrating microservices data into centralized Data Warehouses using Kafka, Spark, and SQL. Combines a strong software engineering background with a passion for robust data modeling.",
+"skills": [
+  "Python",
+  "SQL",
+  "ETL",
+  "Data Warehousing",
+  "Apache Kafka",
+  "Apache Flink",
+  "PostgreSQL",
+  "Docker"
+],
+"experience": [
+  {
+    "role": "Data Engineering Trainee",
+    "company": "TravelTech Hub, Gurgaon",
+    "duration": "Feb 2023 - Aug 2023",
+    "description": "Developed a real-time booking aggregation pipeline utilizing Apache Kafka and Apache Flink. Transformed and loaded nested JSON payloads into a relational PostgreSQL Data Warehouse. The new pipeline reduced data latency from 24 hours to 5 seconds and improved dashboard metric accuracy by 20%."
+  }
+],
+"projects": [
+  {
+    "name": "Dynamic Pricing Data Ingestion",
+    "techStack": [
+      "Apache Kafka",
+      "Python",
+      "SQL",
+      "ETL"
+    ],
+    "description": "Built a streaming application to consume real-time competitor pricing from APIs. Cleaned the data via Python microservices and upserted into a SQL database to feed the dynamic pricing algorithm."
+  },
+  {
+    "name": "Historical Booking Archive Migration",
+    "techStack": [
+      "Python",
+      "SQL",
+      "Data Warehousing"
+    ],
+    "description": "Automated the migration of 10 years of legacy booking records using batch Python scripts. Designed robust error handling and retry mechanisms, achieving a 100% successful migration with zero data loss."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science and Engineering",
+    "institution": "National Institute of Technology (NIT), Kurukshetra",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.3/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Confluent Certified Developer for Apache Kafka",
+    "issuer": "Confluent",
+    "year": "2023"
+  }
+],
+"publications": [
+  {
+    "title": "Real-time Stream Processing in Travel Aggregators",
+    "description": "Co-authored a paper presented at the college tech symposium comparing Flink and Spark Streaming.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Optimized the Kafka consumer logic at TravelTech Hub, reducing CPU utilization of the ingestion service by 30%.",
+  "Winner of the NIT Kurukshetra Techspardha Hackathon (Data track)."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Logistics Core Team",
+    "organization": "Techspardha",
+    "description": "Developed automated scripts to manage and sort participant data for multiple concurrent events."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": [
+  {
+    "organization": "Data for Good NGO",
+    "role": "Data Volunteer",
+    "description": "Helped a local NGO structure their donor Excel files into a normalized SQL database."
+  }
+]
+},
+{
+"domain": "Data Engineer",
+"experienceLevel": "Entry",
+"summary": "Process-driven Data Engineer with experience in agricultural tech and IoT data processing. Highly proficient in Python programming, complex SQL query design, and orchestrating workflows with Airflow. Focused on building fault-tolerant ETL pipelines to process large volumes of sensor data efficiently.",
+"skills": [
+  "Python",
+  "SQL",
+  "ETL",
+  "Data Warehousing",
+  "Apache Airflow",
+  "AWS S3",
+  "AWS Athena",
+  "Tableau"
+],
+"experience": [
+  {
+    "role": "Data Engineer Intern",
+    "company": "AgriSmart Data, Pune",
+    "duration": "Jan 2023 - Jul 2023",
+    "description": "Designed and deployed batch ETL pipelines using Apache Airflow to process soil moisture and temperature sensor data. Extracted logs from AWS S3, transformed them using Python, and loaded them into a cloud Data Warehouse. Reduced overall data processing time by 45% and improved anomaly detection accuracy."
+  }
+],
+"projects": [
+  {
+    "name": "Sensor Data Cleaning Pipeline",
+    "techStack": [
+      "Python",
+      "Pandas",
+      "SQL",
+      "Airflow"
+    ],
+    "description": "Built an automated Python application to detect and interpolate missing sensor readings. Scheduled via Airflow, this tool increased the completeness and accuracy of the analytics dataset by 18%."
+  },
+  {
+    "name": "Yield Prediction Data Mart",
+    "techStack": [
+      "AWS Athena",
+      "AWS S3",
+      "SQL",
+      "Data Warehousing"
+    ],
+    "description": "Architected a serverless data mart. Wrote optimized SQL queries in Athena to aggregate weather and crop data, enabling data scientists to train yield prediction models 3x faster."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Engineering",
+    "institution": "Maharashtra Institute of Technology (MIT), Pune",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.9/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Data Engineering on AWS",
+    "issuer": "Coursera",
+    "year": "2022"
+  }
+],
+"publications": [],
+"achievements": [
+  "Saved the company $300 monthly by implementing lifecycle policies and archiving cold data in S3 Glacier.",
+  "Top 10 Finalist in the Smart India Hackathon (Hardware/IoT Track)."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Tech Lead",
+    "organization": "MIT IoT Club",
+    "description": "Led a team of 6 to build a campus-wide weather monitoring system, managing the entire data pipeline architecture."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "Data Engineer",
+"experienceLevel": "Entry",
+"summary": "Innovative Data Engineer with a passion for building scalable ETL architectures and Big Data pipelines. Skilled at utilizing PySpark for distributed data processing and designing high-performance Data Warehouses using SQL. 2 years of project-based and internship experience driving data-driven decisions.",
+"skills": [
+  "Python",
+  "SQL",
+  "ETL",
+  "Data Warehousing",
+  "Apache Spark",
+  "Kafka",
+  "MongoDB",
+  "Linux"
+],
+"experience": [
+  {
+    "role": "Data Engineer",
+    "company": "RetailInsights, Noida",
+    "duration": "Aug 2023 - Present",
+    "description": "Architected a daily batch ETL pipeline using Apache Spark to consolidate point-of-sale data across 200+ retail stores. Designed the target schema in a SQL Data Warehouse, utilizing clustering and indexing to drop reporting query times from 5 minutes to under 15 seconds. Boosted inventory forecast accuracy by ensuring 100% data availability."
+  },
+  {
+    "role": "Data Analyst Intern",
+    "company": "RetailInsights",
+    "duration": "Feb 2023 - Jul 2023",
+    "description": "Wrote complex Python scripts to scrape competitor product pricing. Cleaned the unstructured data and loaded it into MongoDB for downstream analytics."
+  }
+],
+"projects": [
+  {
+    "name": "Clickstream Streaming Engine",
+    "techStack": [
+      "Apache Kafka",
+      "Apache Spark",
+      "Python",
+      "SQL"
+    ],
+    "description": "Developed a real-time event processing system capturing user clicks. Used Kafka for message brokering and Spark Streaming to compute real-time session metrics, sinking the results into a relational database."
+  },
+  {
+    "name": "Automated ETL Reconciliation Tool",
+    "techStack": [
+      "Python",
+      "SQL",
+      "ETL"
+    ],
+    "description": "Created a data reconciliation framework that compares source and target tables post-ETL load. Configured automated email alerts on data mismatch, improving overall pipeline reliability and data accuracy."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science",
+    "institution": "Jaypee Institute of Information Technology (JIIT), Noida",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.4/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Big Data Specialization",
+    "issuer": "UC San Diego (Coursera)",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Consistently maintained pipeline SLAs of 99.9% at RetailInsights.",
+  "Secured 1st Place in the JIIT Annual CodeFest (Data Engineering Challenge)."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Mentorship Head",
+    "organization": "JIIT Programming Hub",
+    "description": "Conducted Python and SQL boot camps for over 150 freshmen."
+  }
+],
+"openSource": [
+  {
+    "project": "Pandas",
+    "contribution": "Submitted a documentation enhancement for the merge/join operations."
+  }
+],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "Data Engineer",
+"experienceLevel": "Entry",
+"summary": "Enthusiastic and detail-oriented Data Engineer with hands-on experience in building robust batch processing systems and modernizing legacy databases. Highly proficient in Python, SQL, and maintaining reliable ETL workflows. Dedicated to optimizing data pipelines to deliver accurate, timely business intelligence.",
+"skills": [
+  "Python",
+  "SQL",
+  "ETL",
+  "Data Warehousing",
+  "SQL Server",
+  "SSIS",
+  "Pandas",
+  "Bash"
+],
+"experience": [
+  {
+    "role": "Junior Data Engineer",
+    "company": "SupplyChain Tech, Mumbai",
+    "duration": "Jul 2023 - Present",
+    "description": "Managed and optimized legacy ETL packages (SSIS) while gradually migrating them to Python-based workflows. Refactored poorly performing SQL Server stored procedures, reducing the nightly warehouse load time by 50%. Implemented strict data validation logic, increasing report accuracy metrics by 15%."
+  },
+  {
+    "role": "Database Developer Intern",
+    "company": "SupplyChain Tech",
+    "duration": "Jan 2023 - Jun 2023",
+    "description": "Assisted in the dimensional modeling of a new inventory data mart. Wrote Python scripts to parse massive XML vendor feeds and insert them into the SQL warehouse."
+  }
+],
+"projects": [
+  {
+    "name": "Vendor Data Standardization Pipeline",
+    "techStack": [
+      "Python",
+      "Pandas",
+      "SQL",
+      "ETL"
+    ],
+    "description": "Engineered an automated Python pipeline to standardize incoming CSV files from multiple vendors. Handled schema evolution and data type casting, eliminating manual data entry errors."
+  },
+  {
+    "name": "Historical Data Archiving System",
+    "techStack": [
+      "SQL",
+      "Bash",
+      "Python",
+      "Data Warehousing"
+    ],
+    "description": "Designed a batch job to partition and archive data older than 3 years from the active Data Warehouse into cold storage. Improved main table query performance by 30%."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Information Technology",
+    "institution": "Thadomal Shahani Engineering College (TSEC), Mumbai",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.6/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Microsoft Certified: Azure Data Fundamentals",
+    "issuer": "Microsoft",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Awarded 'Best Process Improvement' for successfully migrating the legacy XML parsing system to a highly efficient Python pipeline.",
+  "Top 5% in the TSEC Database Design competition."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Website Administrator",
+    "organization": "TSEC Students' Council",
+    "description": "Maintained the college fest website database, ensuring seamless registration and data extraction for event heads."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "Logistics Hackathon Mumbai",
+    "achievement": "Top 10 Finalist",
+    "description": "Built a predictive analytics pipeline for warehouse space utilization using Python and SQL."
+  }
+],
+"volunteerExperience": []
+}
+]

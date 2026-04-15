@@ -1,0 +1,841 @@
+[
+{
+"domain": "DevOps / Cloud Engineer",
+"experienceLevel": "Entry",
+"summary": "Cloud Engineer with 1.5 years of experience specializing in automating infrastructure and streamlining deployment workflows. Passionate about enhancing system reliability and developer productivity through scalable CI/CD pipelines and containerized microservices.",
+"skills": [
+  "AWS",
+  "Docker",
+  "Kubernetes",
+  "Jenkins",
+  "Terraform",
+  "Linux Administration",
+  "Bash Scripting",
+  "Git"
+],
+"experience": [
+  {
+    "role": "DevOps Engineer Intern",
+    "company": "CloudOps Tech, Bangalore",
+    "duration": "Jan 2023 - Jul 2023",
+    "description": "Designed and implemented an automated CI/CD pipeline using Jenkins and Docker. Containerized legacy Node.js applications, deploying them to an AWS EKS cluster, which reduced deployment time by 40% and improved application uptime to 99.99%."
+  }
+],
+"projects": [
+  {
+    "name": "Automated Web App Provisioning",
+    "techStack": [
+      "AWS EC2",
+      "Terraform",
+      "Docker",
+      "Nginx"
+    ],
+    "description": "Built an Infrastructure as Code (IaC) setup using Terraform to automatically provision scalable web servers on AWS EC2. Reduced manual infrastructure setup time from 4 hours to 5 minutes."
+  },
+  {
+    "name": "Microservices Monitoring Dashboard",
+    "techStack": [
+      "Kubernetes",
+      "Prometheus",
+      "Grafana",
+      "CI/CD"
+    ],
+    "description": "Deployed a centralized monitoring stack for a Kubernetes cluster. Created custom Grafana dashboards for resource utilization, dropping the Mean Time to Detect (MTTD) anomalies by 30%."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science and Engineering",
+    "institution": "National Institute of Technology (NIT), Surathkal",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.7/10. Core coursework included Distributed Systems and Computer Networks."
+  }
+],
+"certifications": [
+  {
+    "name": "AWS Certified Solutions Architect – Associate",
+    "issuer": "Amazon Web Services",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Awarded 'Best Intern Project' out of 50 interns at CloudOps Tech for the CI/CD automation initiative.",
+  "Successfully passed the AWS Certified Solutions Architect exam on the first attempt with a score of 890/1000."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Cloud Computing Lead",
+    "organization": "NIT Surathkal Tech Club",
+    "description": "Conducted hands-on workshops on Docker and AWS basics for over 200 sophomore engineering students."
+  }
+],
+"openSource": [
+  {
+    "project": "Jenkins",
+    "contribution": "Updated documentation regarding pipeline syntax for multi-branch declarative pipelines."
+  }
+],
+"hackathons": [
+  {
+    "name": "CloudHack 2022",
+    "achievement": "Top 10 Finalist",
+    "description": "Prototyped a serverless auto-scaling image processing pipeline using AWS Lambda and S3."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "DevOps / Cloud Engineer",
+"experienceLevel": "Entry",
+"summary": "Detail-oriented DevOps professional focused on highly available distributed systems and observability. Proven track record of migrating monoliths to Kubernetes and implementing robust CI/CD practices. Dedicated to minimizing downtime and optimizing cloud resource costs.",
+"skills": [
+  "Kubernetes",
+  "Docker",
+  "AWS",
+  "GitLab CI",
+  "Prometheus",
+  "Grafana",
+  "Python",
+  "Ansible"
+],
+"experience": [
+  {
+    "role": "Junior Site Reliability Engineer",
+    "company": "InfraScale Systems, Pune",
+    "duration": "Aug 2023 - Present",
+    "description": "Managed multi-environment AWS infrastructure supporting 100K+ daily active users. Implemented GitLab CI/CD pipelines for automated testing and container image builds, increasing deployment frequency from weekly to daily. Elevated system reliability, achieving 99.95% uptime over 6 months."
+  },
+  {
+    "role": "Cloud Infrastructure Intern",
+    "company": "InfraScale Systems",
+    "duration": "Feb 2023 - Jul 2023",
+    "description": "Automated server configuration management using Ansible, replacing manual shell scripts and reducing configuration drift errors by 60%."
+  }
+],
+"projects": [
+  {
+    "name": "K8s High-Availability Cluster Deployment",
+    "techStack": [
+      "Kubernetes",
+      "AWS EKS",
+      "Docker",
+      "Helm"
+    ],
+    "description": "Architected a fault-tolerant Kubernetes cluster utilizing AWS EKS. Implemented horizontal pod autoscaling and node autoscaling to handle sudden traffic spikes during simulated load testing."
+  },
+  {
+    "name": "Log Aggregation System",
+    "techStack": [
+      "AWS",
+      "Elasticsearch",
+      "Fluentd",
+      "Kibana"
+    ],
+    "description": "Set up an EFK stack to centralize logs from 15+ microservices. Reduced mean time to resolution (MTTR) for application bugs by providing developers with searchable real-time logs."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Information Technology",
+    "institution": "Pune Institute of Computer Technology (PICT)",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.9/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Certified Kubernetes Administrator (CKA)",
+    "issuer": "Cloud Native Computing Foundation (CNCF)",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Reduced monthly AWS billing by 15% at InfraScale by identifying and terminating orphaned EBS volumes and underutilized EC2 instances.",
+  "Winner of the PICT Network Troubleshooting Competition 2022."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Infrastructure Head",
+    "organization": "Impetus and Concepts (InC) TechFest",
+    "description": "Hosted the festival's registration portal on AWS, ensuring 100% uptime handling 15,000+ concurrent requests on day one."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "DevOps / Cloud Engineer",
+"experienceLevel": "Entry",
+"summary": "Cloud Operations Engineer with a strong software development background. 1 year of experience accelerating release cycles through GitOps and container orchestration. Thrives in fast-paced startup environments, balancing rapid feature deployment with strict infrastructure reliability standards.",
+"skills": [
+  "Docker",
+  "Kubernetes",
+  "AWS",
+  "GitHub Actions",
+  "ArgoCD",
+  "Node.js",
+  "Shell Scripting",
+  "Datadog"
+],
+"experience": [
+  {
+    "role": "DevOps Engineer 1",
+    "company": "FinCloud Technologies, Hyderabad",
+    "duration": "Jul 2023 - Present",
+    "description": "Spearheaded the transition from Jenkins to GitHub Actions, trimming the average CI/CD build time from 15 minutes to 6 minutes. Deployed microservices via ArgoCD (GitOps) into an AWS EKS environment, ensuring zero-downtime rolling updates and boosting platform availability to 99.98%."
+  }
+],
+"projects": [
+  {
+    "name": "Serverless Data Pipeline",
+    "techStack": [
+      "AWS Lambda",
+      "AWS SQS",
+      "Docker",
+      "CI/CD"
+    ],
+    "description": "Engineered an event-driven data processing pipeline using AWS Lambda and SQS. Containerized the Lambda deployment package with Docker, significantly improving local testing parity with production."
+  },
+  {
+    "name": "Infrastructure Cost Alerting Bot",
+    "techStack": [
+      "Python",
+      "AWS Cost Explorer API",
+      "Slack API"
+    ],
+    "description": "Developed a serverless Slack bot that pulls daily AWS spending metrics and alerts the team if usage spikes over a predefined threshold, helping prevent budget overruns."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science",
+    "institution": "Indian Institute of Technology (IIT), Hyderabad",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.5/10. Focus on Operating Systems and Cloud Architecture."
+  }
+],
+"certifications": [
+  {
+    "name": "AWS Certified Developer – Associate",
+    "issuer": "Amazon Web Services",
+    "year": "2023"
+  }
+],
+"publications": [
+  {
+    "title": "Evaluating GitOps Workflows for High-Velocity Microservice Deployments",
+    "description": "Published in the annual college technology journal. Discussed ArgoCD vs traditional CI push models.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Recognized as 'Rookie of the Quarter' at FinCloud for resolving a critical production memory leak in the Kubernetes cluster.",
+  "Secured 110th Rank in the TCS CodeVita Season 10."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "System Administrator",
+    "organization": "Elan & Nvision (Cultural & Tech Fest)",
+    "description": "Managed DNS, SSL certificates, and cloud hosting for all festival sub-domains."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "FinHack 2022",
+    "achievement": "Best DevOps Implementation",
+    "description": "Set up an automated infrastructure using Terraform and CI/CD for a mock trading platform within 24 hours."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "DevOps / Cloud Engineer",
+"experienceLevel": "Entry",
+"summary": "Proactive DevSecOps Engineer focusing on weaving security into the CI/CD pipeline. 2 years of academic and internship experience provisioning scalable AWS infrastructure and managing container lifecycles. Adept at identifying infrastructure bottlenecks and enforcing compliance as code.",
+"skills": [
+  "AWS",
+  "Docker",
+  "Kubernetes",
+  "CircleCI",
+  "Terraform",
+  "SonarQube",
+  "HashiCorp Vault",
+  "Linux"
+],
+"experience": [
+  {
+    "role": "Cloud Security & DevOps Intern",
+    "company": "SecureDeploy, Noida",
+    "duration": "Feb 2023 - Aug 2023",
+    "description": "Integrated SonarQube and Trivy into the CircleCI continuous integration pipeline to automatically scan Docker images for CVEs prior to deployment. Provisioned highly secure VPCs, Bastion Hosts, and IAM roles using Terraform. Increased overall infrastructure uptime to 99.99% through multi-AZ deployments."
+  }
+],
+"projects": [
+  {
+    "name": "Automated Secrets Management System",
+    "techStack": [
+      "HashiCorp Vault",
+      "Kubernetes",
+      "Docker",
+      "AWS"
+    ],
+    "description": "Deployed HashiCorp Vault on Kubernetes to manage database credentials and API keys dynamically. Replaced hardcoded secrets in CI/CD pipelines, preventing 100% of potential plaintext secret exposures."
+  },
+  {
+    "name": "Disaster Recovery Automation",
+    "techStack": [
+      "AWS Route53",
+      "AWS RDS",
+      "Bash"
+    ],
+    "description": "Scripted a cross-region disaster recovery plan. Automated RDS snapshot copying and Route53 DNS failover mechanisms, ensuring a Recovery Time Objective (RTO) of under 15 minutes."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Software Engineering",
+    "institution": "Delhi Technological University (DTU), New Delhi",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.8/10."
+  }
+],
+"certifications": [
+  {
+    "name": "AWS Certified Security - Specialty",
+    "issuer": "Amazon Web Services",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Reduced container image sizes by 40% globally across the engineering team by standardizing Alpine Linux base images.",
+  "Top 5% in the National Cyber Security Hackathon."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Core Team Member",
+    "organization": "DTU Open Source Initiative",
+    "description": "Maintained the club's internal servers and established automated backup routines."
+  }
+],
+"openSource": [
+  {
+    "project": "Trivy",
+    "contribution": "Submitted a bug fix resolving a false-positive vulnerability flag in a specific Debian package."
+  }
+],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "DevOps / Cloud Engineer",
+"experienceLevel": "Entry",
+"summary": "Results-driven Infrastructure Engineer with hands-on experience in high-traffic e-commerce environments. Highly skilled in AWS cloud provisioning, Kubernetes orchestration, and release engineering. Dedicated to replacing manual toil with robust automation scripts and CI/CD pipelines.",
+"skills": [
+  "AWS",
+  "Kubernetes",
+  "Docker",
+  "CI/CD",
+  "Bitbucket Pipelines",
+  "Nginx",
+  "Python",
+  "New Relic"
+],
+"experience": [
+  {
+    "role": "DevOps Engineer Trainee",
+    "company": "ShopScale E-Retail, Delhi",
+    "duration": "Jul 2023 - Present",
+    "description": "Architected CI/CD workflows using Bitbucket Pipelines to deploy containerized Spring Boot applications. Optimized AWS EKS node groups to scale automatically during flash sales, maintaining 100% uptime while handling 200% traffic spikes. Reduced deployment lead time from 2 hours to 15 minutes."
+  },
+  {
+    "role": "Systems Intern",
+    "company": "ShopScale E-Retail",
+    "duration": "Jan 2023 - Jun 2023",
+    "description": "Wrote Python scripts to automate daily EBS volume snapshots and cleanup retention policies, reducing AWS storage costs by $500/month."
+  }
+],
+"projects": [
+  {
+    "name": "Blue-Green Deployment Architecture",
+    "techStack": [
+      "AWS EC2",
+      "Docker",
+      "Nginx",
+      "CI/CD"
+    ],
+    "description": "Implemented a Blue-Green deployment strategy behind an Nginx reverse proxy. Achieved zero-downtime releases and enabled instantaneous rollback capabilities in case of application failure."
+  },
+  {
+    "name": "Cloud Performance Dashboard",
+    "techStack": [
+      "New Relic",
+      "AWS CloudWatch",
+      "Python"
+    ],
+    "description": "Aggregated application performance metrics into a unified New Relic dashboard, enabling the dev team to monitor database latency and API error rates in real-time."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Science",
+    "institution": "Netaji Subhas University of Technology (NSUT), Delhi",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.6/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Docker Certified Associate (DCA)",
+    "issuer": "Docker Inc.",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Awarded the 'Automation Champion' badge at ShopScale for eliminating manual deployment toil.",
+  "Consistently ranked in the top 3 during internal college coding leagues."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Technical Coordinator",
+    "organization": "NSUT Moksha (Cultural Fest)",
+    "description": "Engineered the backend architecture on AWS to smoothly handle over 30,000 unique visitors during ticket sales."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": [
+  {
+    "organization": "Delhi Tech for Good",
+    "role": "IT Volunteer",
+    "description": "Provided free web hosting setup and domain management for 5 local non-profit organizations."
+  }
+]
+},
+{
+"domain": "DevOps / Cloud Engineer",
+"experienceLevel": "Entry",
+"summary": "Enthusiastic Cloud DevOps Developer focused on modernizing legacy applications through containerization and cloud-native principles. 1.5 years of practical experience streamlining developer workflows and managing robust multi-tier cloud environments. Strong communicator within Agile teams.",
+"skills": [
+  "Docker",
+  "AWS",
+  "Kubernetes",
+  "CI/CD",
+  "Jenkins",
+  "Packer",
+  "Linux Admin",
+  "CloudFormation"
+],
+"experience": [
+  {
+    "role": "Cloud Engineering Intern",
+    "company": "CodeShip India, Mumbai",
+    "duration": "Feb 2023 - Aug 2023",
+    "description": "Dockerized a legacy monolithic PHP application, breaking it down into manageable containers. Built declarative Jenkins CI/CD pipelines to build, test, and push Docker images to AWS ECR. Improved developer onboarding time by 80% via standardized docker-compose environments and achieved 99.9% application uptime."
+  }
+],
+"projects": [
+  {
+    "name": "Immutable Infrastructure Bakery",
+    "techStack": [
+      "AWS EC2",
+      "Packer",
+      "Ansible",
+      "CI/CD"
+    ],
+    "description": "Automated the creation of pre-configured Golden Amazon Machine Images (AMIs) using Packer and Ansible. Sped up auto-scaling launch times by 40% as instances booted with software pre-installed."
+  },
+  {
+    "name": "Kubernetes Local Dev Setup",
+    "techStack": [
+      "Kubernetes",
+      "Minikube",
+      "Docker",
+      "Bash"
+    ],
+    "description": "Created a lightweight, automated local Kubernetes development environment script using Minikube, enabling software engineers to test microservices locally against production-like configurations."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Information Technology",
+    "institution": "Veermata Jijabai Technological Institute (VJTI), Mumbai",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.8/10."
+  }
+],
+"certifications": [
+  {
+    "name": "AWS Certified SysOps Administrator – Associate",
+    "issuer": "Amazon Web Services",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Successfully migrated 15 production databases from EC2 instances to AWS RDS with minimal downtime.",
+  "Winner of the VJTI Appathon 2022 (Infrastructure category)."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Vice Chairperson",
+    "organization": "VJTI Computer Group",
+    "description": "Hosted intra-college seminars on Cloud Computing basics and the future of serverless technologies."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "Mumbai Hacks 2022",
+    "achievement": "1st Runner Up",
+    "description": "Deployed a highly resilient backend for an emergency response app utilizing AWS Auto Scaling and Elastic Load Balancing."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "DevOps / Cloud Engineer",
+"experienceLevel": "Entry",
+"summary": "Analytical Cloud DevOps Engineer specializing in log management, system monitoring, and site reliability. Proficient in managing Kubernetes clusters and orchestrating multi-stage CI/CD pipelines. Driven by a proactive approach to identifying system constraints before they impact end users.",
+"skills": [
+  "AWS",
+  "Docker",
+  "Kubernetes",
+  "CI/CD",
+  "ELK Stack",
+  "GitLab",
+  "Terraform",
+  "Networking"
+],
+"experience": [
+  {
+    "role": "Site Reliability Engineer 1",
+    "company": "DataStream DevOps, Gurgaon",
+    "duration": "Jul 2023 - Present",
+    "description": "Deployed and maintained a centralized ELK (Elasticsearch, Logstash, Kibana) stack on AWS, processing 50GB of application logs daily. Optimized Kubernetes resource limits and requests, eliminating CPU throttling and boosting application latency performance by 25%. Maintained an SLA of 99.99% for core microservices."
+  },
+  {
+    "role": "DevOps Trainee",
+    "company": "DataStream DevOps",
+    "duration": "Jan 2023 - Jun 2023",
+    "description": "Assisted in writing Terraform modules to standardize VPC, Subnet, and Security Group creation across dev, staging, and production environments."
+  }
+],
+"projects": [
+  {
+    "name": "CI/CD Pipeline with Rollback",
+    "techStack": [
+      "GitLab CI",
+      "Docker",
+      "Kubernetes",
+      "AWS"
+    ],
+    "description": "Architected an end-to-end GitLab CI/CD pipeline. Included integration testing stages and automated Helm chart deployments with strict pre-flight checks, reducing failed deployments by 60%."
+  },
+  {
+    "name": "Network Traffic Analyzer",
+    "techStack": [
+      "AWS VPC Flow Logs",
+      "Python",
+      "Elasticsearch"
+    ],
+    "description": "Developed a custom python ingestion script that parses AWS VPC flow logs into Elasticsearch. Created visual dashboards to identify anomalous spikes in internal network traffic."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science and Engineering",
+    "institution": "National Institute of Technology (NIT), Kurukshetra",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.5/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Elastic Certified Engineer",
+    "issuer": "Elastic",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Identified and mitigated a persistent memory leak in a staging environment using Kibana visualizations.",
+  "Top 100 in the HackerEarth DevOps Challenge 2022."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Logistics Head",
+    "organization": "Techspardha (National Tech Fest)",
+    "description": "Managed technical logistics, ensuring stable internet infrastructure and server hosting for all competitive events."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "DevOps / Cloud Engineer",
+"experienceLevel": "Entry",
+"summary": "Agile DevOps Engineer with a knack for Multi-Cloud deployments and edge computing architectures. Experienced in building robust CI/CD frameworks, container orchestration, and automating infrastructure provisioning to accelerate software delivery while maintaining strict SLA commitments.",
+"skills": [
+  "Docker",
+  "Kubernetes",
+  "AWS",
+  "GCP",
+  "CI/CD",
+  "Helm",
+  "ArgoCD",
+  "Bash"
+],
+"experience": [
+  {
+    "role": "Cloud DevOps Intern",
+    "company": "NextGen Infra, Chennai",
+    "duration": "Jan 2023 - Aug 2023",
+    "description": "Contributed to a multi-cloud strategy, deploying Kubernetes clusters across both AWS EKS and GCP GKE using Terraform. Built unified deployment pipelines using ArgoCD to sync Helm charts across all clusters. Achieved 99.99% system availability and decreased deployment times from hours to 5 minutes."
+  }
+],
+"projects": [
+  {
+    "name": "Canary Deployment Automation",
+    "techStack": [
+      "Kubernetes",
+      "Istio",
+      "Docker",
+      "CI/CD"
+    ],
+    "description": "Implemented Canary release pipelines utilizing Istio service mesh on Kubernetes. Automated the progressive routing of traffic to new microservice versions, isolating production risk and ensuring zero-downtime rollouts."
+  },
+  {
+    "name": "Multi-Cloud Backup Utility",
+    "techStack": [
+      "AWS S3",
+      "GCP Cloud Storage",
+      "Bash",
+      "Cron"
+    ],
+    "description": "Wrote a resilient bash script to run as a Kubernetes CronJob. Extracted daily database dumps and securely synced the encrypted archives across both AWS S3 and GCP storage buckets for high disaster resilience."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Science and Engineering",
+    "institution": "Anna University (CEG Campus), Chennai",
+    "year": "2019 - 2023",
+    "details": "CGPA: 9.0/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Google Cloud Associate Cloud Engineer",
+    "issuer": "Google Cloud",
+    "year": "2023"
+  }
+],
+"publications": [
+  {
+    "title": "A Comparative Study of Ingress Controllers in Kubernetes",
+    "description": "Presented a paper at the college symposium comparing Nginx Ingress, Traefik, and Istio.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Awarded 'Best Infrastructure Design' during the NextGen Infra end-of-internship presentation.",
+  "Successfully passed the GCP certification exam in the top percentile."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Mentor",
+    "organization": "Anna Univ Open Source Club",
+    "description": "Guided 30+ students through the process of writing their first Dockerfile and building container images."
+  }
+],
+"openSource": [
+  {
+    "project": "Helm",
+    "contribution": "Submitted a documentation fix clarifying the usage of local chart dependencies."
+  }
+],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "DevOps / Cloud Engineer",
+"experienceLevel": "Entry",
+"summary": "Performance-oriented DevOps Engineer combining a deep understanding of Linux internals with modern cloud architecture. 1 year of experience accelerating software development lifecycles via robust CI/CD, managing high-throughput edge deployments, and optimizing AWS infrastructure costs.",
+"skills": [
+  "AWS",
+  "Docker",
+  "Kubernetes",
+  "CI/CD",
+  "Linux System Administration",
+  "Ansible",
+  "Python",
+  "Jenkins"
+],
+"experience": [
+  {
+    "role": "Junior DevOps Engineer",
+    "company": "EdgeTech Solutions, Ahmedabad",
+    "duration": "Jul 2023 - Present",
+    "description": "Maintained Edge server deployments using Docker Swarm and migrated workloads to managed Kubernetes clusters. Integrated Jenkins CI/CD pipelines to automate testing and image packaging. Scaled the infrastructure seamlessly to handle 10,000+ Requests Per Second (RPS) during peak hours while holding a 99.98% uptime SLA."
+  },
+  {
+    "role": "Linux Systems Intern",
+    "company": "TechTonic IT Services",
+    "duration": "Feb 2023 - Jun 2023",
+    "description": "Diagnosed and resolved critical OS-level performance bottlenecks. Hardened Linux server security profiles, successfully reducing vulnerability scanner findings by 80%."
+  }
+],
+"projects": [
+  {
+    "name": "Automated SSL Certificate Manager",
+    "techStack": [
+      "Let's Encrypt",
+      "Certbot",
+      "AWS Route53",
+      "Docker"
+    ],
+    "description": "Built a Dockerized cron job that automatically negotiates, renews, and deploys Let's Encrypt SSL certificates for 50+ domains utilizing DNS-01 challenges via AWS Route53 API."
+  },
+  {
+    "name": "High Availability Load Balancer Setup",
+    "techStack": [
+      "HAProxy",
+      "Keepalived",
+      "AWS EC2",
+      "Linux"
+    ],
+    "description": "Configured an active-passive HAProxy load balancer setup using Keepalived and Virtual IPs. Ensured continuous service availability during simulated EC2 instance failures."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Engineering",
+    "institution": "Nirma University, Ahmedabad",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.4/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Linux Foundation Certified System Administrator (LFCS)",
+    "issuer": "The Linux Foundation",
+    "year": "2022"
+  }
+],
+"publications": [],
+"achievements": [
+  "Optimized Dockerfiles for internal microservices, resulting in a 50% decrease in CI build times.",
+  "Runner-up in the Gujarat State level 'HackTheServer' competition."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Web Services Manager",
+    "organization": "Nirma Student Council",
+    "description": "Deployed and maintained the college event portal using Docker and an automated CI/CD pipeline, handling 5000+ daily visitors."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "Smart City Hackathon",
+    "achievement": "Top 10",
+    "description": "Deployed the infrastructure for a real-time smart traffic management application using containerized services."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "DevOps / Cloud Engineer",
+"experienceLevel": "Entry",
+"summary": "Passionate Cloud Operations Engineer with expertise in FinOps and automated deployment strategies. Adept at designing resilient CI/CD pipelines, containerizing applications with Docker and Kubernetes, and bridging the gap between development and operations to foster a culture of continuous delivery.",
+"skills": [
+  "Docker",
+  "Kubernetes",
+  "AWS",
+  "CI/CD",
+  "GitLab Pipelines",
+  "Datadog",
+  "Python",
+  "Terraform"
+],
+"experience": [
+  {
+    "role": "DevOps Analyst",
+    "company": "PayInfra Solutions, Bangalore",
+    "duration": "Aug 2023 - Present",
+    "description": "Engineered comprehensive GitLab CI/CD pipelines for a suite of fintech applications, reducing manual deployment errors to zero. Managed Kubernetes clusters on AWS EKS, optimizing node autoscaling rules which slashed monthly cloud compute costs by 20%. Sustained an infrastructure uptime metric of 99.99%."
+  },
+  {
+    "role": "Cloud Engineering Trainee",
+    "company": "PayInfra Solutions",
+    "duration": "Feb 2023 - Jul 2023",
+    "description": "Assisted the core infrastructure team in migrating legacy VM-based applications to Docker containers. Set up foundational Datadog monitoring for the new containerized workloads."
+  }
+],
+"projects": [
+  {
+    "name": "Self-Healing Infrastructure Scripting",
+    "techStack": [
+      "Python",
+      "AWS API",
+      "AWS CloudWatch",
+      "CI/CD"
+    ],
+    "description": "Developed a suite of Python scripts integrated with CloudWatch alarms to automatically restart deadlocked services and rotate access keys before expiration, drastically reducing pager fatigue."
+  },
+  {
+    "name": "Ephemeral Dev Environments",
+    "techStack": [
+      "Terraform",
+      "Docker",
+      "Kubernetes",
+      "AWS"
+    ],
+    "description": "Built a Terraform-driven self-service portal allowing developers to spin up isolated, production-like Kubernetes namespaces for feature branch testing, which self-destructed after 12 hours."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Science",
+    "institution": "R.V. College of Engineering (RVCE), Bangalore",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.7/10."
+  }
+],
+"certifications": [
+  {
+    "name": "HashiCorp Certified: Terraform Associate",
+    "issuer": "HashiCorp",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Awarded 'Best Process Improvement' at PayInfra for implementing the ephemeral environment strategy.",
+  "Secured 1st position in the RVCE Coding Hackathon (Sysadmin Track)."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Operations Lead",
+    "organization": "8th Mile (Cultural Fest RVCE)",
+    "description": "Led a team of 4 to design the ticketing system architecture on AWS, incorporating caching layers to survive traffic bursts."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": [
+  {
+    "organization": "Sankalp NGO",
+    "role": "Technology Advisor",
+    "description": "Migrated the NGO's legacy on-premise database to AWS RDS, ensuring reliable backups and data security."
+  }
+]
+}
+]

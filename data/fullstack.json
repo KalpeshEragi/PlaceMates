@@ -1,0 +1,873 @@
+[
+{
+"domain": "Full Stack Developer",
+"experienceLevel": "Entry",
+"summary": "Detail-oriented Full Stack Developer with 1 year of experience building scalable web applications. Proficient in designing robust REST APIs and responsive user interfaces. Adept at optimizing database queries and deploying cloud-native solutions to enhance system performance.",
+"skills": [
+  "React",
+  "Node.js",
+  "PostgreSQL",
+  "TypeScript",
+  "Express.js",
+  "Docker",
+  "AWS",
+  "Tailwind CSS"
+],
+"experience": [
+  {
+    "role": "Software Development Intern",
+    "company": "Kite SaaS, Bangalore",
+    "duration": "Jan 2023 - Jul 2023",
+    "description": "Developed a real-time analytics dashboard using React and Recharts, improving data visibility for 500+ daily users. Engineered backend microservices in Node.js, integrating PostgreSQL with Prisma ORM to reduce data retrieval latency by 35%."
+  }
+],
+"projects": [
+  {
+    "name": "SyncSpace Collaborative Board",
+    "techStack": [
+      "React",
+      "Node.js",
+      "Socket.io",
+      "PostgreSQL",
+      "Redis"
+    ],
+    "description": "Built a real-time whiteboard application supporting 50+ concurrent users per room. Implemented WebSocket event broadcasting and persistent state storage in PostgreSQL, reducing synchronization delays to under 50ms."
+  },
+  {
+    "name": "FinTrack Personal Finance",
+    "techStack": [
+      "React",
+      "Express",
+      "PostgreSQL",
+      "Chart.js"
+    ],
+    "description": "Created a full-stack budgeting tool that securely processes and categorizes thousands of mock transactions. Designed complex SQL aggregations to generate monthly expenditure reports instantly."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science and Engineering",
+    "institution": "National Institute of Technology (NIT), Surathkal",
+    "year": "2019 - 2023",
+    "details": "Graduated with 8.9 CGPA. Core coursework included Data Structures, Distributed Systems, and Advanced Databases."
+  }
+],
+"certifications": [
+  {
+    "name": "AWS Certified Developer - Associate",
+    "issuer": "Amazon Web Services",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Secured Global Rank 412 in Google HashCode 2022.",
+  "Awarded Star Intern at Kite SaaS for delivering the analytics module 2 weeks ahead of schedule."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Core Committee Member",
+    "organization": "Web Enthusiasts Club, NIT Surathkal",
+    "description": "Conducted workshops on React and Node.js for 150+ junior students and organized the annual college hackathon."
+  }
+],
+"openSource": [
+  {
+    "project": "Material-UI",
+    "contribution": "Fixed a rendering bug in the DataGrid component affecting responsive layouts."
+  }
+],
+"hackathons": [
+  {
+    "name": "HackOut 2022",
+    "achievement": "1st Runner Up",
+    "description": "Prototyped a decentralized voting system using React and blockchain concepts within 48 hours."
+  }
+],
+"volunteerExperience": [
+  {
+    "organization": "Teach For India",
+    "role": "Volunteer Educator",
+    "description": "Taught basic computer science and programming fundamentals to underprivileged high school students."
+  }
+]
+},
+{
+"domain": "Full Stack Developer",
+"experienceLevel": "Entry",
+"summary": "Product-focused Full Stack Engineer with 1.5 years of industry experience. Specialized in building end-to-end e-commerce solutions and logistics integrations. Passionate about writing clean, maintainable code and building seamless user experiences.",
+"skills": [
+  "React",
+  "Node.js",
+  "PostgreSQL",
+  "Next.js",
+  "GraphQL",
+  "Redis",
+  "Jest",
+  "Git"
+],
+"experience": [
+  {
+    "role": "Junior Full Stack Developer",
+    "company": "Zephyr E-Retail, Pune",
+    "duration": "Aug 2022 - Present",
+    "description": "Architected the vendor onboarding portal using Next.js and Node.js, reducing manual verification time by 40%. Optimized PostgreSQL indexing strategies, which accelerated search queries across a 100K+ product catalog by 60%."
+  },
+  {
+    "role": "Web Developer Intern",
+    "company": "Pune Tech Solutions",
+    "duration": "Jan 2022 - Jun 2022",
+    "description": "Assisted in migrating legacy PHP monoliths to a React/Node.js stack. Implemented automated unit testing with Jest, increasing test coverage from 20% to 75%."
+  }
+],
+"projects": [
+  {
+    "name": "LogiRoute Optimizer",
+    "techStack": [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Google Maps API"
+    ],
+    "description": "Developed a dynamic route optimization engine for local delivery fleets. Leveraged Graph algorithms on the backend to sequence deliveries, saving an estimated 15% in daily fuel costs."
+  },
+  {
+    "name": "CartSync E-commerce",
+    "techStack": [
+      "React",
+      "Express.js",
+      "PostgreSQL",
+      "Stripe"
+    ],
+    "description": "Built a headless e-commerce storefront with integrated Stripe payments. Designed the relational database schema to handle complex inventory variants and order tracking."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Information Technology",
+    "institution": "Pune Institute of Computer Technology (PICT)",
+    "year": "2018 - 2022",
+    "details": "CGPA: 9.1. Top 5% of the graduating class."
+  }
+],
+"certifications": [
+  {
+    "name": "Meta Back-End Developer Professional Certificate",
+    "issuer": "Coursera",
+    "year": "2022"
+  }
+],
+"publications": [],
+"achievements": [
+  "Winner of the Smart India Hackathon (SIH) 2021 Hardware/Software edition.",
+  "Recognized as 'Rookie of the Year' at Zephyr E-Retail for 2023."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Placement Coordinator",
+    "organization": "PICT Training and Placement Cell",
+    "description": "Liaised with 50+ tech companies to organize campus recruitment drives for a batch of 800+ students."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "Full Stack Developer",
+"experienceLevel": "Entry",
+"summary": "Results-oriented Software Engineer eager to solve complex scalable challenges. Strong foundation in JavaScript/TypeScript ecosystems and relational database design. Experienced in developing secure fintech modules and optimizing API response times for enterprise platforms.",
+"skills": [
+  "React",
+  "Node.js",
+  "PostgreSQL",
+  "NestJS",
+  "Redux",
+  "RabbitMQ",
+  "Sequelize",
+  "Linux"
+],
+"experience": [
+  {
+    "role": "Software Engineer 1",
+    "company": "PayFin Technologies, Hyderabad",
+    "duration": "Jul 2023 - Present",
+    "description": "Designed and deployed a reconciliation microservice using Node.js and PostgreSQL that processes 50,000+ daily transactions with 99.99% accuracy. Upgraded front-end legacy dashboards to React 18, enhancing rendering performance by 25%."
+  },
+  {
+    "role": "Backend Engineering Intern",
+    "company": "PayFin Technologies, Hyderabad",
+    "duration": "Jan 2023 - Jun 2023",
+    "description": "Integrated third-party KYC APIs into the onboarding flow. Wrote efficient SQL scripts to migrate 10,000+ user records securely without downtime."
+  }
+],
+"projects": [
+  {
+    "name": "InvoiceGen Pro",
+    "techStack": [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Puppeteer"
+    ],
+    "description": "Engineered a B2B SaaS tool for automated invoice generation and email dispatch. Implemented background job processing using RabbitMQ, successfully handling bursts of up to 1,000 concurrent PDF rendering requests."
+  },
+  {
+    "name": "CryptoPortfolio Tracker",
+    "techStack": [
+      "React",
+      "Express.js",
+      "PostgreSQL",
+      "CoinGecko API"
+    ],
+    "description": "Created a real-time portfolio dashboard. Stored historical price data in PostgreSQL and utilized materialized views to quickly serve analytical graphs to the client."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Mathematics and Computing",
+    "institution": "Indian Institute of Technology (IIT), Hyderabad",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.5/10."
+  }
+],
+"certifications": [
+  {
+    "name": "PostgreSQL Fundamentals",
+    "issuer": "DataCamp",
+    "year": "2023"
+  }
+],
+"publications": [
+  {
+    "title": "Optimizing Relational Queries for High-Frequency Transaction Logs",
+    "description": "A comparative study on indexing strategies published in the university tech journal.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Secured 1st Place at the IIT Hyderabad Annual Tech Fest Codeathon.",
+  "ICPC Asia Regional Finalist 2022."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Technical Lead",
+    "organization": "Elan & Nvision (College Fest)",
+    "description": "Managed a team of 15 developers to build and maintain the festival's official website, handling 100K+ hits over 3 days."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "FinHack 2022",
+    "achievement": "Best Use of API",
+    "description": "Developed a micro-lending concept platform integrating multiple banking APIs."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Full Stack Developer",
+"experienceLevel": "Entry",
+"summary": "Innovative Developer with 2 years of freelance and startup experience. Highly skilled in architecting modern web apps utilizing React for dynamic UIs and Node.js for robust APIs. Proven ability to translate business requirements into scalable, performant, and secure technical solutions.",
+"skills": [
+  "React",
+  "Node.js",
+  "PostgreSQL",
+  "MongoDB",
+  "Webpack",
+  "Figma",
+  "Tailwind CSS",
+  "GCP"
+],
+"experience": [
+  {
+    "role": "Full Stack Intern",
+    "company": "HealthBridge Solutions, Remote",
+    "duration": "Feb 2023 - Aug 2023",
+    "description": "Spearheaded the development of a patient portal using React and Node.js. Designed the PostgreSQL schema for managing sensitive health records, implementing row-level security and reducing data access violations to zero. Improved API load times by 40% through query optimization."
+  }
+],
+"projects": [
+  {
+    "name": "MediConnect Telehealth",
+    "techStack": [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "WebRTC"
+    ],
+    "description": "Built a telehealth platform allowing doctors to schedule and conduct video consultations. Integrated a secure booking system backed by PostgreSQL and achieved real-time peer-to-peer video streaming with WebRTC."
+  },
+  {
+    "name": "SaaS Boilerplate Codebase",
+    "techStack": [
+      "React",
+      "Express.js",
+      "PostgreSQL",
+      "Passport.js"
+    ],
+    "description": "Developed an open-source SaaS starter kit featuring JWT authentication, role-based access control, and a pre-configured PostgreSQL integration. Garnered 120+ stars on GitHub."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science",
+    "institution": "Vellore Institute of Technology (VIT), Vellore",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.8/10. Minor in Software Engineering."
+  }
+],
+"certifications": [
+  {
+    "name": "Google Cloud Professional Developer",
+    "issuer": "Google Cloud",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Achieved LeetCode Knight badge with a max rating of 1950.",
+  "Top 10% performer in the Google Cloud Ready Facilitator Program."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Mentor",
+    "organization": "CodeChef VIT Chapter",
+    "description": "Guided over 50 freshmen in mastering algorithms and web development through weekly study jams."
+  }
+],
+"openSource": [
+  {
+    "project": "React-Router",
+    "contribution": "Contributed to documentation improvements regarding nested routing setups."
+  }
+],
+"hackathons": [
+  {
+    "name": "Devsnest Hackathon",
+    "achievement": "Top 20",
+    "description": "Built an AI-powered resume analyzer."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Full Stack Developer",
+"experienceLevel": "Entry",
+"summary": "Enthusiastic web developer specializing in the MERN/PERN stacks. Adept at creating pixel-perfect, responsive interfaces with React and engineering highly available backends using Node.js and PostgreSQL. Strong communicator who excels in Agile, cross-functional team environments.",
+"skills": [
+  "React",
+  "Node.js",
+  "PostgreSQL",
+  "JavaScript",
+  "HTML5/CSS3",
+  "SASS",
+  "RESTful APIs",
+  "Nginx"
+],
+"experience": [
+  {
+    "role": "Software Engineer Trainee",
+    "company": "Cognixia Tech, Chennai",
+    "duration": "Jul 2023 - Present",
+    "description": "Migrated legacy frontend components to React hooks, reducing code bloat by 25%. Collaborated with the backend team to transition NoSQL databases to PostgreSQL, resulting in improved ACID compliance for user transaction data."
+  },
+  {
+    "role": "Frontend Developer Intern",
+    "company": "Digital Natives Agency, Chennai",
+    "duration": "Jan 2023 - Jun 2023",
+    "description": "Developed interactive landing pages using React and Framer Motion. Boosted Lighthouse performance scores from 65 to 92 by implementing lazy loading and optimizing asset delivery."
+  }
+],
+"projects": [
+  {
+    "name": "TaskSphere Project Manager",
+    "techStack": [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Kanban"
+    ],
+    "description": "Engineered a project management tool featuring drag-and-drop Kanban boards. Designed relational tables for users, tasks, and workspaces, ensuring complex joins executed in under 20ms."
+  },
+  {
+    "name": "RecipeRadar",
+    "techStack": [
+      "React",
+      "Express.js",
+      "PostgreSQL",
+      "Edamam API"
+    ],
+    "description": "Built a dietary-specific recipe search engine. Users can save favorites and generate grocery lists, with user data safely encrypted and stored in a managed PostgreSQL instance."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Science and Engineering",
+    "institution": "Anna University (CEG Campus), Chennai",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.6/10. Active participant in the programming club."
+  }
+],
+"certifications": [
+  {
+    "name": "Full-Stack Web Development with React",
+    "issuer": "The Hong Kong University of Science and Technology (Coursera)",
+    "year": "2022"
+  }
+],
+"publications": [],
+"achievements": [
+  "Awarded 1st place at the university's annual coding contest, 'CodeKraken'.",
+  "Received 'Best Innovative Design' award for the TaskSphere project in the final year showcase."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Event Coordinator",
+    "organization": "Kurukshetra (Tech Fest)",
+    "description": "Spearheaded the web and design committee, overseeing the launch of the event portal that handled over 20,000 registrations."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": [
+  {
+    "organization": "Blue Cross of India",
+    "role": "IT Volunteer",
+    "description": "Maintained and updated the organization's pet adoption website."
+  }
+]
+},
+{
+"domain": "Full Stack Developer",
+"experienceLevel": "Entry",
+"summary": "Proactive Software Engineer passionate about integrating AI tools into robust web applications. Leveraging 1 year of experience utilizing React, Node.js, and PostgreSQL to deliver high-quality code. Thrives in fast-paced startup environments and adapts quickly to new technologies.",
+"skills": [
+  "React",
+  "Node.js",
+  "PostgreSQL",
+  "Python",
+  "FastAPI",
+  "Redux Toolkit",
+  "Docker",
+  "GitHub Actions"
+],
+"experience": [
+  {
+    "role": "Full Stack Developer",
+    "company": "NeuroTech AI, Delhi NCR",
+    "duration": "Sep 2023 - Present",
+    "description": "Built an internal data labeling tool using React and Node.js that accelerated machine learning workflows by 3x. Designed a scalable PostgreSQL database to store and serve millions of image metadata records efficiently."
+  },
+  {
+    "role": "Software Engineering Intern",
+    "company": "TechVision Labs, Noida",
+    "duration": "May 2023 - Aug 2023",
+    "description": "Developed REST APIs for a biometric attendance system. Improved the SQL query execution plans, effectively resolving system timeouts during peak morning check-in hours."
+  }
+],
+"projects": [
+  {
+    "name": "AI Prompt Hub",
+    "techStack": [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "OpenAI API"
+    ],
+    "description": "Created a community platform for sharing and executing AI prompts. Handled prompt caching in PostgreSQL, reducing third-party API costs by 20% while maintaining low response times."
+  },
+  {
+    "name": "DevDocs Search Engine",
+    "techStack": [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Elasticsearch"
+    ],
+    "description": "Developed a unified search portal for developer documentation. Synced PostgreSQL records with Elasticsearch to provide sub-second full-text search capabilities across multiple libraries."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Software Engineering",
+    "institution": "Delhi Technological University (DTU), New Delhi",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.4/10. Focus on intelligent systems and web architecture."
+  }
+],
+"certifications": [
+  {
+    "name": "Node.js Application Development (LFW211)",
+    "issuer": "The Linux Foundation",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Ranked among the Top 500 out of 50,000+ participants in the TCS CodeVita Season 10.",
+  "Successfully completed 100 Days of Code challenge, focusing on advanced full-stack concepts."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Head of Web Development",
+    "organization": "DTU Innovation Cell",
+    "description": "Architected the incubator's startup tracking platform and managed a team of 6 associate developers."
+  }
+],
+"openSource": [
+  {
+    "project": "Supabase",
+    "contribution": "Submitted PRs to improve the auto-generated documentation for complex PostgreSQL joins."
+  }
+],
+"hackathons": [
+  {
+    "name": "Smart City Hackathon Delhi",
+    "achievement": "Finalist",
+    "description": "Proposed and developed a web-based automated parking allocation prototype."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Full Stack Developer",
+"experienceLevel": "Entry",
+"summary": "Versatile Developer with hands-on experience in the travel and hospitality tech sector. Proficient in crafting responsive React frontends and scalable Node.js/PostgreSQL backends. Dedicated to writing DRY code and implementing rigorous testing to ensure product reliability.",
+"skills": [
+  "React",
+  "Node.js",
+  "PostgreSQL",
+  "Material-UI",
+  "GraphQL",
+  "Prisma",
+  "Stripe API",
+  "Jest"
+],
+"experience": [
+  {
+    "role": "Software Developer Intern",
+    "company": "Wanderlust Tech, Mumbai",
+    "duration": "Jan 2023 - Jul 2023",
+    "description": "Engineered a custom booking widget in React that increased direct hotel reservations by 15%. Overhauled the backend booking engine using Node.js and PostgreSQL to handle complex overlapping reservation logic securely."
+  }
+],
+"projects": [
+  {
+    "name": "TripPlanner Pro",
+    "techStack": [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Google Places API"
+    ],
+    "description": "Built an interactive itinerary planner. Users can collaboratively edit travel plans in real-time. Data is persistently synced to a structured PostgreSQL database."
+  },
+  {
+    "name": "HostelMate Management System",
+    "techStack": [
+      "React",
+      "Express",
+      "PostgreSQL"
+    ],
+    "description": "Developed an internal dashboard for hostel owners to track occupancy, billing, and maintenance requests. Replaced manual spreadsheets, saving administrators 10+ hours weekly."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Engineering",
+    "institution": "Veermata Jijabai Technological Institute (VJTI), Mumbai",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.7/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Advanced React Patterns",
+    "issuer": "Frontend Masters",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Top 3 in the VJTI coding league, outperforming 300+ peers.",
+  "Received an 'Outstanding Contributor' award during the Wanderlust Tech internship."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Vice Chairperson",
+    "organization": "Computer Society of India (CSI), VJTI Chapter",
+    "description": "Hosted tech talks from industry professionals and coordinated a state-level hackathon."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "Mumbai Hacks 2022",
+    "achievement": "Winner - Travel Track",
+    "description": "Developed an augmented reality tourist guide web app within 24 hours."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Full Stack Developer",
+"experienceLevel": "Entry",
+"summary": "Diligent Full Stack Developer with an analytical mindset, experienced in building internal enterprise tools and ERP modules. Skilled at translating complex business logic into efficient Node.js services, backed by solid React architectures and highly normalized PostgreSQL databases.",
+"skills": [
+  "React",
+  "Node.js",
+  "PostgreSQL",
+  "Bootstrap",
+  "Sequelize",
+  "Jenkins",
+  "Agile Methodologies",
+  "Postman"
+],
+"experience": [
+  {
+    "role": "Systems Engineering Intern",
+    "company": "Infosys, Bangalore",
+    "duration": "Feb 2023 - Jul 2023",
+    "description": "Developed an internal resource allocation tracking system using React and Node.js. Designed the PostgreSQL schema to handle 10,000+ employee records, improving reporting generation speed by 50% compared to the legacy system."
+  }
+],
+"projects": [
+  {
+    "name": "Warehouse Inventory Manager",
+    "techStack": [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Chart.js"
+    ],
+    "description": "Created a dashboard to track stock levels, incoming shipments, and historical trends. Utilized PostgreSQL triggers to automate low-stock alerts, significantly reducing manual inventory checks."
+  },
+  {
+    "name": "HR Leave Portal",
+    "techStack": [
+      "React",
+      "Express.js",
+      "PostgreSQL"
+    ],
+    "description": "Built a self-service portal for employees to request and track time off. Implemented a multi-level approval workflow on the Node.js backend to ensure compliance with company policies."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science and Engineering",
+    "institution": "SRM Institute of Science and Technology, Chennai",
+    "year": "2019 - 2023",
+    "details": "CGPA: 9.0/10. Distinction."
+  }
+],
+"certifications": [
+  {
+    "name": "IBM Full Stack Software Developer Professional Certificate",
+    "issuer": "Coursera",
+    "year": "2022"
+  }
+],
+"publications": [
+  {
+    "title": "Modernizing Legacy ERP Systems using Javascript Microservices",
+    "description": "Published in the university's annual technical symposium proceedings.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Awarded 'Best Capstone Project' for the Warehouse Inventory Manager among 200+ submissions.",
+  "Consistently ranked in the top 2% of the graduating cohort."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Technical Content Lead",
+    "organization": "SRM Aaruush Fest",
+    "description": "Reviewed and curated technical problem statements for the national level hackathon."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "Full Stack Developer",
+"experienceLevel": "Entry",
+"summary": "Creative Web Developer with a knack for developing intuitive property tech and real estate applications. Combines robust React frontends with scalable Node.js and PostgreSQL backends to deliver comprehensive user experiences. Strong eye for UI/UX design and accessibility standards.",
+"skills": [
+  "React",
+  "Node.js",
+  "PostgreSQL",
+  "Next.js",
+  "Tailwind CSS",
+  "Firebase",
+  "AWS S3",
+  "Git"
+],
+"experience": [
+  {
+    "role": "Junior Web Developer",
+    "company": "PropTech Innovations, Pune",
+    "duration": "Aug 2023 - Present",
+    "description": "Revamped the main property listing portal using Next.js and React, driving a 30% increase in organic SEO traffic. Transitioned image storage to AWS S3 and saved metadata in PostgreSQL, reducing page load times by 2 seconds."
+  },
+  {
+    "role": "Frontend Intern",
+    "company": "Creative Web Studio",
+    "duration": "Feb 2023 - Jul 2023",
+    "description": "Translated Figma mockups into fully functional React components. Collaborated with UI/UX designers to ensure ADA compliance across all client projects."
+  }
+],
+"projects": [
+  {
+    "name": "EstateScout Platform",
+    "techStack": [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Mapbox GL"
+    ],
+    "description": "Developed a map-centric real estate finder. Integrated Mapbox to display properties and used PostGIS within PostgreSQL to perform efficient spatial queries for nearby amenities."
+  },
+  {
+    "name": "RentPay Gateway",
+    "techStack": [
+      "React",
+      "Express",
+      "PostgreSQL",
+      "Razorpay"
+    ],
+    "description": "Built a tenant portal facilitating online rent payments via Razorpay. Generated automated digital receipts and maintained a secure ledger of all transactions in a normalized database."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Engineering",
+    "institution": "R.V. College of Engineering (RVCE), Bangalore",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.5/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Front-End Web Development with React",
+    "issuer": "Coursera",
+    "year": "2021"
+  }
+],
+"publications": [],
+"achievements": [
+  "Winner of the RVCE 'Code to Create' hackathon 2022.",
+  "Successfully completed the Hacktoberfest 2022 challenge by submitting 4 valid pull requests."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Design Head",
+    "organization": "RVCE Coding Club",
+    "description": "Created marketing materials and designed the club's official website, boosting student engagement by 40%."
+  }
+],
+"openSource": [
+  {
+    "project": "TailwindCSS",
+    "contribution": "Added accessibility attributes to a set of community-driven UI components."
+  }
+],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "Full Stack Developer",
+"experienceLevel": "Entry",
+"summary": "Impact-driven Software Engineer with 1.5 years of experience in high-growth startup environments. Proven track record of building and scaling food-tech platforms. Deep expertise in React state management, Node.js API optimization, and robust PostgreSQL database modeling.",
+"skills": [
+  "React",
+  "Node.js",
+  "PostgreSQL",
+  "TypeScript",
+  "Zustand",
+  "WebSockets",
+  "PM2",
+  "Nginx"
+],
+"experience": [
+  {
+    "role": "Software Development Engineer 1",
+    "company": "CraveIt FoodTech, Gurgaon",
+    "duration": "Jun 2022 - Present",
+    "description": "Architected the live order tracking feature using React and WebSockets, handling 5,000+ simultaneous connections. Optimized complex PostgreSQL queries for restaurant discovery, improving search latency from 800ms to under 150ms."
+  },
+  {
+    "role": "Backend Intern",
+    "company": "CraveIt FoodTech",
+    "duration": "Jan 2022 - May 2022",
+    "description": "Developed a comprehensive promotional code engine. Designed relational tables to support dynamic discount rules and user eligibility limits."
+  }
+],
+"projects": [
+  {
+    "name": "BiteAdmin Dashboard",
+    "techStack": [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Ant Design"
+    ],
+    "description": "Created an internal portal for onboarding restaurant partners. Automated menu parsing and image uploads, cutting the onboarding pipeline duration by half."
+  },
+  {
+    "name": "DineReserve",
+    "techStack": [
+      "React",
+      "Express.js",
+      "PostgreSQL",
+      "Twilio API"
+    ],
+    "description": "Built a table reservation system with SMS confirmations via Twilio. Handled concurrent booking conflicts using transaction isolation levels in PostgreSQL."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Science",
+    "institution": "Birla Institute of Technology and Science (BITS), Pilani",
+    "year": "2018 - 2022",
+    "details": "CGPA: 8.2/10. Recipient of Merit Scholarship."
+  }
+],
+"certifications": [
+  {
+    "name": "PostgreSQL: Advanced SQL Queries",
+    "issuer": "Udemy",
+    "year": "2022"
+  }
+],
+"publications": [],
+"achievements": [
+  "Received the 'Spot Award' at CraveIt for independently resolving a critical production database deadlock.",
+  "Secured 3rd rank in the BITS Pilani intra-college competitive programming league."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Project Manager",
+    "organization": "Coding Club BITS Pilani",
+    "description": "Led a 5-member team to build an open-source alumni networking platform deployed on AWS."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "Apogee Hackathon",
+    "achievement": "Top 5 Finalist",
+    "description": "Developed a blockchain-based supply chain tracker for organic foods."
+  }
+],
+"volunteerExperience": [
+  {
+    "organization": "NSS BITS Pilani",
+    "role": "Volunteer",
+    "description": "Organized blood donation camps and managed the donor database."
+  }
+]
+}
+]
