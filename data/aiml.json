@@ -1,0 +1,898 @@
+[
+{
+"domain": "AI/ML Engineer",
+"experienceLevel": "Entry",
+"summary": "Data-driven AI/ML Engineer with 1.5 years of experience specializing in Natural Language Processing and deep learning frameworks. Proficient in transforming raw textual data into actionable insights. Strong theoretical foundation backed by published research in transformer model optimization.",
+"skills": [
+  "Python",
+  "Scikit-learn",
+  "Pandas",
+  "PyTorch",
+  "NLTK",
+  "Hugging Face",
+  "NumPy",
+  "FastAPI"
+],
+"experience": [
+  {
+    "role": "Machine Learning Intern",
+    "company": "Swiggy Tech, Bangalore",
+    "duration": "Jan 2023 - Jul 2023",
+    "description": "Problem: High volume of misrouted customer support tickets. Model: Fine-tuned a DistilBERT text classification model using PyTorch and Scikit-learn. Result: Achieved 94% accuracy and a macro F1-score of 0.91, reducing manual routing efforts by 40%."
+  }
+],
+"projects": [
+  {
+    "name": "Semantic Document Search Engine",
+    "techStack": [
+      "Python",
+      "Pandas",
+      "Scikit-learn",
+      "Pinecone"
+    ],
+    "description": "Problem: Inefficient internal document retrieval. Model: Implemented TF-IDF and dense vector embeddings to calculate cosine similarities. Result: Delivered top-5 relevant documents with 88% precision, cutting search time by 3x."
+  },
+  {
+    "name": "Toxic Comment Classifier",
+    "techStack": [
+      "Python",
+      "Scikit-learn",
+      "Pandas"
+    ],
+    "description": "Problem: Online forum moderation scaling. Model: Built an ensemble classifier (Random Forest + Logistic Regression) on preprocessed text. Result: Attained a 0.93 ROC-AUC score and 89% recall on the minority toxicity class."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science and Engineering",
+    "institution": "Indian Institute of Technology (IIT), Delhi",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.8/10. Specialization in Artificial Intelligence."
+  }
+],
+"certifications": [
+  {
+    "name": "Deep Learning Specialization",
+    "issuer": "Coursera (DeepLearning.AI)",
+    "year": "2022"
+  }
+],
+"publications": [
+  {
+    "title": "Optimizing BERT Ensembles for Low-Resource Sentiment Analysis",
+    "description": "Published in IEEE International Conference on Advanced ML (ICAML 2023). Explored hyperparameter tuning for limited dataset scenarios.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Ranked 112th globally in the Kaggle 'Jigsaw Toxic Comment Classification' challenge.",
+  "Awarded Best B.Tech Project for the Semantic Document Search Engine."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Head of AI Track",
+    "organization": "DevClub IIT Delhi",
+    "description": "Organized workshops on Pandas and Scikit-learn for over 150 first-year students."
+  }
+],
+"openSource": [
+  {
+    "project": "Hugging Face Transformers",
+    "contribution": "Added documentation for custom dataset handling in text classification pipelines."
+  }
+],
+"hackathons": [
+  {
+    "name": "Delhi AI Hack 2022",
+    "achievement": "1st Runner Up",
+    "description": "Built a fake news detection model achieving 92% accuracy within 24 hours."
+  }
+],
+"volunteerExperience": [
+  {
+    "organization": "AI for Bharat",
+    "role": "Data Contributor",
+    "description": "Helped validate and clean 10,000+ Hindi-English parallel corpus sentences for translation models."
+  }
+]
+},
+{
+"domain": "AI/ML Engineer",
+"experienceLevel": "Entry",
+"summary": "Analytical Machine Learning Engineer with hands-on expertise in recommendation systems and predictive modeling. Skilled at building end-to-end ML pipelines from data ingestion to model deployment. Passionate about leveraging tabular data to drive personalized user experiences.",
+"skills": [
+  "Python",
+  "Scikit-learn",
+  "Pandas",
+  "XGBoost",
+  "SQL",
+  "TensorFlow",
+  "Matplotlib",
+  "AWS SageMaker"
+],
+"experience": [
+  {
+    "role": "Data Science Intern",
+    "company": "Myntra Designs, Bangalore",
+    "duration": "Feb 2023 - Aug 2023",
+    "description": "Problem: Stagnant user conversion rates on the product page. Model: Engineered a collaborative filtering recommendation engine using matrix factorization and XGBoost. Result: Boosted click-through rate by 14% and achieved a Precision@5 metric of 0.84."
+  }
+],
+"projects": [
+  {
+    "name": "Customer Churn Predictor",
+    "techStack": [
+      "Python",
+      "Pandas",
+      "Scikit-learn",
+      "SMOTE"
+    ],
+    "description": "Problem: High attrition in subscription services. Model: Applied Random Forest and Gradient Boosting on heavily imbalanced tabular data using SMOTE. Result: Reached an F1-score of 0.81 and 87% recall, enabling targeted retention campaigns."
+  },
+  {
+    "name": "Dynamic Pricing Estimator",
+    "techStack": [
+      "Python",
+      "Scikit-learn",
+      "Pandas"
+    ],
+    "description": "Problem: Static pricing losing revenue during peak hours. Model: Developed a Ridge Regression model to forecast demand-based pricing. Result: Minimized Root Mean Square Error (RMSE) to 4.2 and improved simulated revenue yields by 9%."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Mathematics and Computing",
+    "institution": "National Institute of Technology (NIT), Trichy",
+    "year": "2019 - 2023",
+    "details": "CGPA: 9.1/10."
+  }
+],
+"certifications": [
+  {
+    "name": "AWS Certified Machine Learning - Specialty",
+    "issuer": "Amazon Web Services",
+    "year": "2023"
+  }
+],
+"publications": [
+  {
+    "title": "Handling Sparsity in E-commerce Recommendation Engines",
+    "description": "Published in the NIT Trichy Journal of Data Science. Compared SVD and deep learning approaches for sparse matrix completion.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Secured Top 5% in the Analytics Vidhya Job-A-Thon predictive modeling hackathon.",
+  "Awarded Star Intern at Myntra for successfully deploying the recommendation model into shadow production."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Analytics Coordinator",
+    "organization": "Pragyan Tech Fest",
+    "description": "Analyzed past registration data to forecast event attendance, allocating budgets efficiently."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "Flipkart GRiD 4.0",
+    "achievement": "National Finalist",
+    "description": "Developed an ML-based fashion trend forecasting tool using temporal sales data."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "AI/ML Engineer",
+"experienceLevel": "Entry",
+"summary": "Computer Vision enthusiast and Junior ML Engineer with 1 year of experience in healthcare technology. Proficient in designing robust image classification and object detection pipelines. Strongly focused on model explainability and maintaining high precision in life-critical applications.",
+"skills": [
+  "Python",
+  "Scikit-learn",
+  "Pandas",
+  "OpenCV",
+  "Keras",
+  "TensorFlow",
+  "Seaborn",
+  "Docker"
+],
+"experience": [
+  {
+    "role": "Junior AI Engineer",
+    "company": "Qure.ai, Mumbai",
+    "duration": "Jul 2023 - Present",
+    "description": "Problem: Slow manual screening of chest X-rays. Model: Trained a custom ResNet50 Convolutional Neural Network for multi-class pneumonia detection. Result: Delivered 96% accuracy and 0.94 F1-score, reducing preliminary screening time by 60%."
+  },
+  {
+    "role": "Computer Vision Intern",
+    "company": "Qure.ai",
+    "duration": "Jan 2023 - Jun 2023",
+    "description": "Problem: Poor model generalization on diverse hospital scans. Model: Implemented extensive data augmentation and normalization via OpenCV. Result: Increased validation accuracy by 8% and stabilized model variance."
+  }
+],
+"projects": [
+  {
+    "name": "Melanoma Skin Cancer Classifier",
+    "techStack": [
+      "Python",
+      "TensorFlow",
+      "Scikit-learn",
+      "Pandas"
+    ],
+    "description": "Problem: Identifying malignant skin lesions from dermoscopic images. Model: Extracted features using transfer learning and classified via Support Vector Machines (SVM). Result: Attained 91% precision and 88% recall, optimizing for false negatives."
+  },
+  {
+    "name": "Real-time Face Mask Detector",
+    "techStack": [
+      "Python",
+      "OpenCV",
+      "Scikit-learn"
+    ],
+    "description": "Problem: Monitoring public safety compliance. Model: Deployed a Haar Cascade classifier coupled with a lightweight decision tree. Result: Processed live webcam feeds at 30 FPS with a 95% accuracy rate."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Science",
+    "institution": "Birla Institute of Technology and Science (BITS), Pilani",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.6/10. Electives in Digital Image Processing."
+  }
+],
+"certifications": [
+  {
+    "name": "TensorFlow Developer Certificate",
+    "issuer": "Google",
+    "year": "2023"
+  }
+],
+"publications": [
+  {
+    "title": "Interpretability of CNNs in Radiological Imaging using Grad-CAM",
+    "description": "Presented at the International Conference on AI in Healthcare 2023. Explored visualization techniques to build trust in medical ML.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Winner of the Kaggle SIIM-ISIC Melanoma Classification kernel award.",
+  "Received an exceptionally high performance rating during the Qure.ai internship."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Project Manager",
+    "organization": "BITS Pilani Vision Group",
+    "description": "Led a team of 4 students to build an autonomous drone navigation model using reinforcement learning."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "MedHack 2022",
+    "achievement": "Winner",
+    "description": "Developed a lightweight blood cell counting algorithm using edge computing devices."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "AI/ML Engineer",
+"experienceLevel": "Entry",
+"summary": "Detail-oriented Machine Learning Engineer with a deep understanding of financial analytics and anomaly detection. 2 years of experience combining statistical methods with modern machine learning algorithms to identify fraud patterns and forecast market trends effectively.",
+"skills": [
+  "Python",
+  "Scikit-learn",
+  "Pandas",
+  "LightGBM",
+  "Prophet",
+  "SQL",
+  "Statsmodels",
+  "Git"
+],
+"experience": [
+  {
+    "role": "ML Analyst 1",
+    "company": "Razorpay, Bangalore",
+    "duration": "Aug 2023 - Present",
+    "description": "Problem: Escalating transaction fraud. Model: Built an Isolation Forest and LightGBM ensemble pipeline for real-time anomaly detection. Result: Cut the False Positive Rate (FPR) from 4% to 1.2% while maintaining a 92% anomaly recall, saving approximately 15M INR monthly."
+  },
+  {
+    "role": "Data Analyst Intern",
+    "company": "Razorpay",
+    "duration": "Jan 2023 - Jul 2023",
+    "description": "Problem: Inaccurate revenue forecasting. Model: Employed Facebook Prophet and ARIMA models on daily transaction volumes. Result: Dropped the Mean Absolute Percentage Error (MAPE) to 6% on 30-day forward predictions."
+  }
+],
+"projects": [
+  {
+    "name": "Credit Risk Scoring Engine",
+    "techStack": [
+      "Python",
+      "Pandas",
+      "Scikit-learn"
+    ],
+    "description": "Problem: Approving high-risk loans. Model: Engineered 40+ financial features and trained a Logistic Regression classifier with L1 penalty. Result: Attained a ROC-AUC score of 0.88, effectively isolating the top 10% of default-prone applicants."
+  },
+  {
+    "name": "Stock Price Volatility Predictor",
+    "techStack": [
+      "Python",
+      "Scikit-learn",
+      "Pandas"
+    ],
+    "description": "Problem: Estimating short-term market variance. Model: Utilized Support Vector Regression (SVR) on historical OHLCV data. Result: Achieved an R-squared value of 0.76, outperforming traditional moving average baselines."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Engineering",
+    "institution": "Indian Institute of Technology (IIT), Bombay",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.5/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Applied Machine Learning in Python",
+    "issuer": "University of Michigan (Coursera)",
+    "year": "2022"
+  }
+],
+"publications": [
+  {
+    "title": "Ensemble Methods for Class-Imbalanced Fraud Detection in FinTech",
+    "description": "Published in IEEE Transactions on Financial Technology. Evaluated cost-sensitive learning vs. synthetic oversampling.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Secured Rank 45 globally out of 3,000+ teams in the IEEE CIS Fraud Detection Kaggle Competition.",
+  "Promoted from Intern to ML Analyst 1 three months ahead of schedule based on performance."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Finance Secretary",
+    "organization": "IIT Bombay Student Council",
+    "description": "Managed an annual budget of 50 Lakh INR, optimizing fund allocation using data-driven forecasting."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "AI/ML Engineer",
+"experienceLevel": "Entry",
+"summary": "Innovative AI Engineer focused on Generative AI, MLOps, and scalable vector search pipelines. Proficient in integrating Large Language Models (LLMs) with custom enterprise data using Retrieval-Augmented Generation (RAG). Driven to bridge the gap between academic research and production-ready AI tools.",
+"skills": [
+  "Python",
+  "Scikit-learn",
+  "Pandas",
+  "LangChain",
+  "ChromaDB",
+  "MLflow",
+  "Flask",
+  "PyTorch"
+],
+"experience": [
+  {
+    "role": "Machine Learning Engineer",
+    "company": "Yellow.ai, Hyderabad",
+    "duration": "Jul 2023 - Present",
+    "description": "Problem: Outdated chatbot responses hallucinating facts. Model: Designed a RAG pipeline utilizing LangChain, semantic embeddings, and a LLaMA-2 base model. Result: Boosted factual accuracy by 45%, achieving a BLEU score of 0.82 and lowering user escalation rates by 30%."
+  },
+  {
+    "role": "AI Research Assistant",
+    "company": "IIIT Hyderabad NLP Lab",
+    "duration": "Aug 2022 - May 2023",
+    "description": "Problem: Poor translation accuracy for low-resource Indian languages. Model: Fine-tuned seq2seq transformer architectures using curated bilingual datasets. Result: Improved translation BLEU scores by 3.5 points over baseline models."
+  }
+],
+"projects": [
+  {
+    "name": "Customer Review Sentiment Analyzer",
+    "techStack": [
+      "Python",
+      "Scikit-learn",
+      "Pandas",
+      "NLTK"
+    ],
+    "description": "Problem: Manual tagging of app store reviews. Model: Developed a Naive Bayes and TF-IDF classification pipeline. Result: Categorized 50,000+ reviews automatically with 88% precision, identifying core product flaws."
+  },
+  {
+    "name": "End-to-End MLOps Pipeline",
+    "techStack": [
+      "Python",
+      "Scikit-learn",
+      "MLflow",
+      "Docker"
+    ],
+    "description": "Problem: Untracked model experimentation. Model: Built an automated training script for a Random Forest classifier wrapped with MLflow tracking. Result: Standardized hyperparameter logging, enabling reproducible F1-scores of 0.85 across environments."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science and Engineering",
+    "institution": "International Institute of Information Technology (IIIT), Hyderabad",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.9/10. Research focus on Natural Language Processing."
+  }
+],
+"certifications": [
+  {
+    "name": "Generative AI with Large Language Models",
+    "issuer": "DeepLearning.AI",
+    "year": "2023"
+  }
+],
+"publications": [
+  {
+    "title": "Mitigating Hallucinations in LLMs via Vector Database Grounding",
+    "description": "Published in the ACL Student Research Workshop 2023. Investigated optimal chunking strategies for RAG systems.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Earned a research grant from the Ministry of Electronics and Information Technology (MeitY) for local language translation.",
+  "Top 3 Project at the IIIT Hyderabad annual R&D showcase."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Core Organizer",
+    "organization": "Hack-A-Bot IIIT",
+    "description": "Mentored 20+ teams on prompt engineering and Scikit-learn basics during the 48-hour chatbot hackathon."
+  }
+],
+"openSource": [
+  {
+    "project": "LangChain",
+    "contribution": "Submitted a PR to optimize token counting latency for specific OpenAI models."
+  }
+],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "AI/ML Engineer",
+"experienceLevel": "Entry",
+"summary": "Results-oriented Data Scientist and ML Engineer with a strong background in telecommunications data and customer behavior modeling. Adept at transforming high-dimensional tabular datasets into interpretable machine learning models. Excels at feature engineering and extracting actionable business intelligence.",
+"skills": [
+  "Python",
+  "Scikit-learn",
+  "Pandas",
+  "CatBoost",
+  "Apache Spark",
+  "Tableau",
+  "SciPy",
+  "SQL"
+],
+"experience": [
+  {
+    "role": "Associate Data Scientist",
+    "company": "Jio Platforms, Navi Mumbai",
+    "duration": "Jun 2023 - Present",
+    "description": "Problem: Unpredictable prepaid user churn. Model: Engineered 60+ behavioral features using Pandas and built an ensemble Gradient Boosting classifier. Result: Reached an 86% F1-score and 0.91 ROC-AUC, empowering the marketing team to reduce month-over-month churn by 8%."
+  },
+  {
+    "role": "Machine Learning Trainee",
+    "company": "Jio Platforms",
+    "duration": "Jan 2023 - May 2023",
+    "description": "Problem: Slow ad-hoc data extraction. Model: Wrote optimized PySpark scripts to aggregate 10M+ daily call detail records (CDRs) for downstream modeling, cutting ETL time by 50%."
+  }
+],
+"projects": [
+  {
+    "name": "Network Outage Classifier",
+    "techStack": [
+      "Python",
+      "Scikit-learn",
+      "Pandas"
+    ],
+    "description": "Problem: Delayed identification of cell tower hardware failures. Model: Trained a Decision Tree classifier on log telemetry data. Result: Achieved 93% accuracy and 0.89 precision, facilitating proactive maintenance dispatch."
+  },
+  {
+    "name": "Customer Segmentation Engine",
+    "techStack": [
+      "Python",
+      "Scikit-learn",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "description": "Problem: Generic marketing campaigns. Model: Applied K-Means clustering with PCA dimensionality reduction to group users by data usage habits. Result: Silhouette score of 0.68 indicated distinct clusters, leading to a 20% bump in campaign engagement."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Electronics and Communication",
+    "institution": "Vellore Institute of Technology (VIT), Vellore",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.4/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Machine Learning Engineer Professional Certificate",
+    "issuer": "IBM",
+    "year": "2022"
+  }
+],
+"publications": [
+  {
+    "title": "Feature Selection Strategies for High-Dimensional Telecommunication Data",
+    "description": "Published in the Journal of Big Data Analytics. Compared Recursive Feature Elimination (RFE) against tree-based feature importance.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Awarded the 'Data Pioneer' award at Jio Platforms for the Churn Prediction project.",
+  "Scored 99th percentile in the GATE 2023 ECE paper."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Event Manager",
+    "organization": "VIT GraVITas (Tech Fest)",
+    "description": "Supervised the execution of 5 major technical coding events involving over 1,000 participants."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "Telecom Analytics Hack",
+    "achievement": "Top 10 Finalist",
+    "description": "Built a predictive model for network bandwidth consumption using historical usage trends."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "AI/ML Engineer",
+"experienceLevel": "Entry",
+"summary": "Versatile AI/ML Engineer with a knack for spatial data and logistics optimization. 1.5 years of experience applying machine learning algorithms to solve real-world routing, pricing, and resource allocation problems. Proficient in transforming messy geodata into highly accurate predictive models.",
+"skills": [
+  "Python",
+  "Scikit-learn",
+  "Pandas",
+  "Geopandas",
+  "XGBoost",
+  "Statsmodels",
+  "PostgreSQL",
+  "Airflow"
+],
+"experience": [
+  {
+    "role": "Data Science Intern",
+    "company": "Ola Cabs, Bangalore",
+    "duration": "Feb 2023 - Aug 2023",
+    "description": "Problem: Driver shortage during localized high-demand spikes. Model: Developed an XGBoost regression model using spatial Geopandas data to forecast hourly demand across hexagonal city grids. Result: Achieved an R-squared of 0.83 and lowered Mean Absolute Error (MAE) by 15%, improving driver allocation efficiency."
+  }
+],
+"projects": [
+  {
+    "name": "ETA Prediction Optimizer",
+    "techStack": [
+      "Python",
+      "Scikit-learn",
+      "Pandas",
+      "XGBoost"
+    ],
+    "description": "Problem: Inaccurate Estimated Time of Arrival (ETA) due to traffic anomalies. Model: Built an ensemble regression pipeline incorporating weather, time, and historical traffic patterns. Result: Reduced average ETA error by 2 minutes globally, enhancing customer trust."
+  },
+  {
+    "name": "Vehicle Routing Clustering",
+    "techStack": [
+      "Python",
+      "Scikit-learn",
+      "Pandas",
+      "Folium"
+    ],
+    "description": "Problem: Suboptimal shared-ride matching. Model: Implemented DBSCAN spatial clustering to group real-time ride requests based on proximity and trajectory. Result: Increased successful shared ride matches by 18%."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Software Engineering",
+    "institution": "Delhi Technological University (DTU), New Delhi",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.7/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Spatial Data Science",
+    "issuer": "ESRI",
+    "year": "2023"
+  }
+],
+"publications": [
+  {
+    "title": "Gradient Boosting on Hexagonal Grids for Spatial Demand Forecasting",
+    "description": "Published in the International Journal of Applied ML. Analyzed the impact of spatial resolution on prediction accuracy.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Won 1st prize in the Ola internal hackathon for prototyping a dynamic toll-pricing estimator.",
+  "Consistently ranked in the top 3 of the DTU Data Science competitive league."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Technical Content Writer",
+    "organization": "DTU Tech Magazine",
+    "description": "Authored a widely-read beginner's guide to using Scikit-learn and Pandas for exploratory data analysis."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "Smart City Hackathon Delhi",
+    "achievement": "Winner - Mobility Track",
+    "description": "Prototyped a machine learning tool to optimize public bus routes based on smart card tap data."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "AI/ML Engineer",
+"experienceLevel": "Entry",
+"summary": "Cybersecurity-focused ML Engineer with a strong grasp of behavioral analytics and threat detection. Experienced in applying traditional machine learning algorithms and deep neural networks to unstructured data streams. Dedicated to creating robust models with minimal false-positive rates to reduce alert fatigue.",
+"skills": [
+  "Python",
+  "Scikit-learn",
+  "Pandas",
+  "NumPy",
+  "TensorFlow",
+  "NetworkX",
+  "Splunk",
+  "Git"
+],
+"experience": [
+  {
+    "role": "Junior Machine Learning Engineer",
+    "company": "QuickHeal Technologies, Pune",
+    "duration": "Jul 2023 - Present",
+    "description": "Problem: High volume of zero-day malware bypassing static signatures. Model: Trained a Random Forest classifier using Scikit-learn on extracted PE header features and API call sequences. Result: Achieved 95% classification accuracy and maintained a stringent False Positive Rate (FPR) of 0.8%."
+  },
+  {
+    "role": "Security Analytics Intern",
+    "company": "QuickHeal Technologies",
+    "duration": "Jan 2023 - Jun 2023",
+    "description": "Problem: Identifying botnet traffic in massive network logs. Model: Utilized unsupervised learning (K-Means) via Scikit-learn to detect anomalous flow patterns. Result: Flagged 3 new previously unidentified malicious IP clusters."
+  }
+],
+"projects": [
+  {
+    "name": "Phishing URL Detector",
+    "techStack": [
+      "Python",
+      "Scikit-learn",
+      "Pandas",
+      "Flask"
+    ],
+    "description": "Problem: Users clicking on deceptive links. Model: Engineered lexical and NLP features from URLs to train a Support Vector Machine (SVM). Result: Scored a 0.92 F1-score; deployed as a lightweight REST API via Flask."
+  },
+  {
+    "name": "Spam Email Filter",
+    "techStack": [
+      "Python",
+      "Scikit-learn",
+      "Pandas"
+    ],
+    "description": "Problem: Inbox clutter with complex spam text. Model: Built a Multinomial Naive Bayes classifier utilizing TF-IDF vectorization. Result: Filtered out 98% of spam emails with a precision of 99%."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Information Technology",
+    "institution": "Pune Institute of Computer Technology (PICT)",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.3/10. Specialization in Information Security."
+  }
+],
+"certifications": [
+  {
+    "name": "IBM Cybersecurity Analyst Professional Certificate",
+    "issuer": "Coursera",
+    "year": "2022"
+  }
+],
+"publications": [
+  {
+    "title": "Comparing Tree-Based Models against Deep Neural Networks for Malware Classification",
+    "description": "Published in the National Conference on Cyber Security (NCCS 2023). Focused on feature explainability trade-offs.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Discovered and responsibly disclosed a severe data parsing vulnerability in a popular open-source ML library.",
+  "Top 100 in the National Cyber Security Hackathon."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Vice Chair",
+    "organization": "PICT IEEE Computer Society",
+    "description": "Hosted a series of seminars on the intersection of Artificial Intelligence and Network Security."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "AI/ML Engineer",
+"experienceLevel": "Entry",
+"summary": "Audio ML and NLP Engineer with a passion for building accessible educational tools. Highly skilled in processing audio signals, extracting acoustic features, and training deep learning models. Combining 1 year of experience in the EdTech sector to translate spoken language into structured, actionable data.",
+"skills": [
+  "Python",
+  "Scikit-learn",
+  "Pandas",
+  "Librosa",
+  "PyTorch",
+  "Transformers",
+  "Gradio",
+  "SQL"
+],
+"experience": [
+  {
+    "role": "Machine Learning Intern",
+    "company": "Unacademy, Bangalore",
+    "duration": "Jan 2023 - Jul 2023",
+    "description": "Problem: Poor automated transcription for Indian accents. Model: Fine-tuned a Whisper-based ASR model and implemented audio preprocessing using Librosa. Result: Reduced Word Error Rate (WER) by 18% and improved named-entity recognition F1-score from transcripts to 0.85."
+  }
+],
+"projects": [
+  {
+    "name": "Audio Emotion Classifier",
+    "techStack": [
+      "Python",
+      "Librosa",
+      "Scikit-learn",
+      "Pandas"
+    ],
+    "description": "Problem: Lack of feedback on teacher vocal engagement. Model: Extracted MFCC features and trained an SVM classifier using Scikit-learn. Result: Attained an 82% multi-class accuracy for detecting enthusiasm, monotone, and stress in speech."
+  },
+  {
+    "name": "Lecture Summarizer",
+    "techStack": [
+      "Python",
+      "Scikit-learn",
+      "Hugging Face",
+      "Pandas"
+    ],
+    "description": "Problem: Students needing quick review notes. Model: Pipelined transcription data into a zero-shot summarization transformer model. Result: Generated concise summaries with a ROUGE-L score of 0.44."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Science and Engineering",
+    "institution": "Anna University, Chennai",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.9/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Natural Language Processing Specialization",
+    "issuer": "DeepLearning.AI",
+    "year": "2023"
+  }
+],
+"publications": [
+  {
+    "title": "Acoustic Modeling for Regional Indian Accents using Deep Neural Networks",
+    "description": "Presented at the International Speech Communication Association Student Workshop. Investigated Librosa feature tuning.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Awarded the 'Innovation Intern' title at Unacademy for developing the prototype Audio Emotion Classifier.",
+  "Successfully completed the 100 Days of ML Code challenge with a focus on audio and text data."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Workshop Lead",
+    "organization": "Anna Univ Tech Society",
+    "description": "Conducted a hands-on session for 50+ students on building simple ML models using Pandas and Scikit-learn."
+  }
+],
+"openSource": [
+  {
+    "project": "Librosa",
+    "contribution": "Reported a bug and submitted a patch related to edge-case resampling artifacts."
+  }
+],
+"hackathons": [
+  {
+    "name": "EdTech Hack 2022",
+    "achievement": "1st Runner Up",
+    "description": "Built an automated pronunciation grading tool for primary school students."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "AI/ML Engineer",
+"experienceLevel": "Entry",
+"summary": "Production-focused ML Engineer with a robust background in MLOps and scalable API deployment. Possesses 2 years of experience bridging the gap between Jupyter notebooks and high-availability cloud environments. Dedicated to rigorous model evaluation, tracking data drift, and ensuring model reproducibility.",
+"skills": [
+  "Python",
+  "Scikit-learn",
+  "Pandas",
+  "MLflow",
+  "Docker",
+  "FastAPI",
+  "Kubernetes",
+  "AWS"
+],
+"experience": [
+  {
+    "role": "Software Development Engineer - ML",
+    "company": "Freshworks, Chennai",
+    "duration": "Jul 2022 - Present",
+    "description": "Problem: High inference latency in customer support classification models. Model: Optimized a pre-trained Scikit-learn SVM model via ONNX runtime and deployed it behind a FastAPI endpoint. Result: Decreased p99 inference latency from 120ms to 15ms while maintaining a 0.88 macro F1-score."
+  },
+  {
+    "role": "MLOps Intern",
+    "company": "Freshworks",
+    "duration": "Jan 2022 - Jun 2022",
+    "description": "Problem: Undetected model degradation over time. Model: Built an automated monitoring dashboard using Evidently AI and Pandas to track input data drift. Result: Successfully alerted the data science team to retrain models 2 weeks before severe metric drops."
+  }
+],
+"projects": [
+  {
+    "name": "Lead Scoring Pipeline",
+    "techStack": [
+      "Python",
+      "Scikit-learn",
+      "Pandas",
+      "Docker"
+    ],
+    "description": "Problem: Sales team wasting time on low-quality leads. Model: Trained a Logistic Regression model with elastic net penalty on CRM data. Result: Achieved 85% precision on the top decile of leads; containerized and deployed using Docker."
+  },
+  {
+    "name": "Automated Hyperparameter Tuning Engine",
+    "techStack": [
+      "Python",
+      "Scikit-learn",
+      "Optuna",
+      "MLflow"
+    ],
+    "description": "Problem: Manual, time-consuming model tuning. Model: Integrated Optuna with Scikit-learn estimators to automate the search space via Bayesian optimization. Result: Improved baseline model accuracy by an average of 4% across 3 internal datasets."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science",
+    "institution": "SRM Institute of Science and Technology, Chennai",
+    "year": "2018 - 2022",
+    "details": "CGPA: 8.5/10. Minor in Data Science."
+  }
+],
+"certifications": [
+  {
+    "name": "Machine Learning Engineering for Production (MLOps)",
+    "issuer": "Coursera",
+    "year": "2022"
+  }
+],
+"publications": [
+  {
+    "title": "Strategies for Mitigating Concept Drift in Production Machine Learning Systems",
+    "description": "Published in the SRM Tech Journal. A comprehensive review of statistical tests for monitoring feature distributions.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Reduced cloud infrastructure costs by 20% by right-sizing EC2 instances for model inference APIs.",
+  "Recognized with the 'Freshworks Execution Excellence' award."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Deployment Mentor",
+    "organization": "SRM AI Club",
+    "description": "Guided senior students on how to package their machine learning models into Docker containers for final year project submissions."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": []
+}
+]

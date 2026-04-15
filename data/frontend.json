@@ -1,0 +1,864 @@
+[
+{
+"domain": "Frontend Developer",
+"experienceLevel": "Entry",
+"summary": "Detail-oriented Frontend Developer with 1.5 years of experience crafting highly responsive, accessible web interfaces. Passionate about web performance optimization, modern UI architecture, and translating complex Figma designs into pixel-perfect React components to drive user engagement.",
+"skills": [
+  "React",
+  "JavaScript",
+  "CSS",
+  "REST APIs",
+  "TypeScript",
+  "Tailwind CSS",
+  "Redux Toolkit",
+  "Vite"
+],
+"experience": [
+  {
+    "role": "Frontend Engineering Intern",
+    "company": "ZetaCloud SaaS, Bangalore",
+    "duration": "Jan 2023 - Jul 2023",
+    "description": "Spearheaded the UI overhaul of the core analytics dashboard using React and Tailwind CSS. Implemented lazy loading and code splitting, which reduced the initial bundle size by 45% and improved the Lighthouse performance score from 68 to 96. Consumed various REST APIs to display real-time data visualisations seamlessly."
+  }
+],
+"projects": [
+  {
+    "name": "CloudMetrics SaaS UI",
+    "techStack": [
+      "React",
+      "JavaScript",
+      "CSS",
+      "Chart.js",
+      "REST APIs"
+    ],
+    "description": "Developed a comprehensive metrics dashboard interface featuring interactive line and bar charts. Optimized component rendering with useMemo and useCallback, eliminating unnecessary re-renders and achieving a stable 60fps scroll performance even with dense data grids."
+  },
+  {
+    "name": "DevFolio Interactive Portfolio",
+    "techStack": [
+      "React",
+      "CSS",
+      "Framer Motion"
+    ],
+    "description": "Designed and built a highly interactive portfolio template for developers. Integrated complex scroll-based animations using Framer Motion, resulting in a 30% increase in average time-on-page during user testing."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Information Technology",
+    "institution": "National Institute of Technology (NIT), Trichy",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.8/10. Core coursework focused on Human-Computer Interaction and Web Technologies."
+  }
+],
+"certifications": [
+  {
+    "name": "Meta Front-End Developer Professional Certificate",
+    "issuer": "Coursera",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Awarded 'Best UI/UX' at the internal company hackathon at ZetaCloud for designing a frictionless user onboarding flow.",
+  "Achieved a perfect 100/100 across Performance, Accessibility, and SEO categories on Google Lighthouse for my personal portfolio."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Design Lead",
+    "organization": "Web Enthusiasts Club, NIT Trichy",
+    "description": "Conducted interactive workshops on modern CSS layouts (Flexbox/Grid) and React fundamentals for over 200 junior students."
+  }
+],
+"openSource": [
+  {
+    "project": "Chakra UI",
+    "contribution": "Fixed a responsive layout bug in the Modal component when viewed on mobile viewports."
+  }
+],
+"hackathons": [
+  {
+    "name": "Designathon 2022",
+    "achievement": "Winner",
+    "description": "Prototyped and coded a fully accessible e-learning interface with a focus on screen-reader compatibility in 24 hours."
+  }
+],
+"volunteerExperience": [
+  {
+    "organization": "NGO Smile India",
+    "role": "Volunteer Web Maintainer",
+    "description": "Redesigned the donation page UI to make it mobile-friendly, increasing successful online donations by 15%."
+  }
+]
+},
+{
+"domain": "Frontend Developer",
+"experienceLevel": "Entry",
+"summary": "Creative UI Developer with a strong focus on bridging the gap between design and engineering. Adept at building fluid micro-interactions and ensuring cross-browser compatibility. Proven track record of enhancing e-commerce user journeys and reducing cart abandonment through intuitive frontend solutions.",
+"skills": [
+  "React",
+  "JavaScript",
+  "CSS",
+  "REST APIs",
+  "SCSS",
+  "Next.js",
+  "Context API",
+  "Figma"
+],
+"experience": [
+  {
+    "role": "Junior UI Developer",
+    "company": "Kartify E-commerce, Pune",
+    "duration": "Aug 2023 - Present",
+    "description": "Redesigned the multi-step checkout flow using Next.js and SCSS modules. Integrated REST APIs for dynamic shipping rate calculations without page reloads, reducing user friction and decreasing cart abandonment rates by 18%. Improved First Contentful Paint (FCP) by 1.2 seconds through optimized image delivery."
+  },
+  {
+    "role": "Frontend Web Intern",
+    "company": "PixelCraft Agency",
+    "duration": "Feb 2023 - Jul 2023",
+    "description": "Translated high-fidelity Figma mockups into modular React components for client landing pages. Ensured 100% responsiveness across desktop, tablet, and mobile breakpoints."
+  }
+],
+"projects": [
+  {
+    "name": "TrendWear Storefront",
+    "techStack": [
+      "React",
+      "JavaScript",
+      "CSS",
+      "REST APIs"
+    ],
+    "description": "Built a headless e-commerce frontend. Implemented an advanced product filtering UI that instantly updates product grids by fetching data asynchronously, resulting in a seamless browsing experience."
+  },
+  {
+    "name": "Crypto Ticker Dashboard",
+    "techStack": [
+      "React",
+      "CSS",
+      "JavaScript"
+    ],
+    "description": "Created a lightweight real-time cryptocurrency dashboard. Styled entirely with custom CSS variables to support dynamic light and dark modes with zero JavaScript overhead."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Engineering",
+    "institution": "Pune Institute of Computer Technology (PICT)",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.5/10. Active member of the PICT Design Group."
+  }
+],
+"certifications": [
+  {
+    "name": "Advanced CSS and Sass",
+    "issuer": "Udemy",
+    "year": "2022"
+  }
+],
+"publications": [],
+"achievements": [
+  "Recognized as 'Star Performer' at Kartify for identifying and fixing a critical CSS rendering issue affecting iOS Safari users.",
+  "Top 10% in the Frontend Master challenge out of 5000+ national participants."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Frontend Track Head",
+    "organization": "PICT TechFest",
+    "description": "Managed the development of the event's registration portal, ensuring a smooth UX for over 5,000 registrants."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "Smart India Hackathon (Software)",
+    "achievement": "Finalist",
+    "description": "Developed the frontend for a local artisan marketplace platform, focusing on high visual appeal and accessibility."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Frontend Developer",
+"experienceLevel": "Entry",
+"summary": "Passionate Frontend Engineer specializing in data-heavy web applications and interactive visualizations. Strong command over modern JavaScript and styling architectures to create maintainable UI codebases. Focused on delivering high-performance tools that enhance user retention and simplify complex data consumption.",
+"skills": [
+  "React",
+  "JavaScript",
+  "CSS",
+  "REST APIs",
+  "D3.js",
+  "React Query",
+  "Material-UI",
+  "Webpack"
+],
+"experience": [
+  {
+    "role": "Software Developer Intern (Frontend)",
+    "company": "FinDash Solutions, Hyderabad",
+    "duration": "Jan 2023 - Jun 2023",
+    "description": "Developed reusable UI components for a financial portfolio tracker using React and Material-UI. Integrated React Query for efficient REST API fetching and caching, completely eliminating redundant network requests. This optimization reduced the dashboard's perceived load time by 60% and boosted user retention by 12%."
+  }
+],
+"projects": [
+  {
+    "name": "ExpenseViz Analytics",
+    "techStack": [
+      "React",
+      "JavaScript",
+      "CSS",
+      "D3.js",
+      "REST APIs"
+    ],
+    "description": "Engineered an interactive budget visualization tool. Consumed external mock banking REST APIs to plot monthly expenditures into interactive D3.js pie and bar charts, complete with custom CSS tooltips for better data readability."
+  },
+  {
+    "name": "TaskBoard UI Clone",
+    "techStack": [
+      "React",
+      "CSS",
+      "JavaScript",
+      "React Beautiful DnD"
+    ],
+    "description": "Built a Trello-like Kanban board frontend. Focused heavily on DOM optimization to ensure drag-and-drop interactions remained smooth and jank-free even with hundreds of rendered cards."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science and Engineering",
+    "institution": "Indian Institute of Technology (IIT), Hyderabad",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.9/10. Electives included Data Visualization and Human Factors in Computing."
+  }
+],
+"certifications": [
+  {
+    "name": "Google UX Design Professional Certificate",
+    "issuer": "Coursera",
+    "year": "2022"
+  }
+],
+"publications": [
+  {
+    "title": "Evaluating Perceived Load Times in Single Page Applications",
+    "description": "Published a case study on skeleton loaders vs spinners in the college technical magazine.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Won the 'Best Data Visualization UI' award at the FinDash internal demo day.",
+  "Secured 1st Place in the UI design challenge at IIT Hyderabad Tech Fest."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "UI/UX Mentor",
+    "organization": "E-Cell IIT Hyderabad",
+    "description": "Guided 5 student startups in designing their minimum viable product (MVP) interfaces and improving user flows."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "Frontend Developer",
+"experienceLevel": "Entry",
+"summary": "User-centric Frontend Web Developer with a strong emphasis on accessibility (a11y) and progressive web apps (PWAs). 1 year of experience building healthcare and ed-tech platforms. Driven to create inclusive, fast, and reliable digital experiences that meet strict WCAG guidelines while maintaining beautiful aesthetics.",
+"skills": [
+  "React",
+  "JavaScript",
+  "CSS",
+  "REST APIs",
+  "HTML5/ARIA",
+  "Styled Components",
+  "Service Workers",
+  "Jest"
+],
+"experience": [
+  {
+    "role": "Frontend Developer",
+    "company": "MediPortal India, Noida",
+    "duration": "Jul 2023 - Present",
+    "description": "Led the frontend migration of a patient booking portal to React. Audited and revamped the entire UI to meet WCAG 2.1 AA standards by implementing proper ARIA roles and keyboard navigation. Consumed backend REST APIs to display available doctor slots. Improved the overall Lighthouse Accessibility score from 72 to 100."
+  },
+  {
+    "role": "Web UI Intern",
+    "company": "EdVantage Learning",
+    "duration": "Feb 2023 - Jun 2023",
+    "description": "Developed interactive video player UI overlays for an e-learning platform using raw JavaScript and CSS. Ensured all interactive elements had proper contrast ratios and focus states."
+  }
+],
+"projects": [
+  {
+    "name": "LearnSpace PWA",
+    "techStack": [
+      "React",
+      "JavaScript",
+      "CSS",
+      "Service Workers",
+      "REST APIs"
+    ],
+    "description": "Built a progressive web application for offline study materials. Implemented service workers for caching REST API responses, allowing users to browse previously accessed course content during network outages."
+  },
+  {
+    "name": "A11y Form Builder UI",
+    "techStack": [
+      "React",
+      "CSS",
+      "JavaScript"
+    ],
+    "description": "Created a tool that generates accessible, semantic HTML/CSS forms. Integrated live preview features utilizing React state to update the UI instantaneously."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Software Engineering",
+    "institution": "Delhi Technological University (DTU), New Delhi",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.6/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Web Accessibility Initiative (WAI) Fundamentals",
+    "issuer": "W3C",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Nominated for 'Accessibility Champion' at MediPortal India.",
+  "Scored a perfect 100% on the FreeCodeCamp Responsive Web Design certification projects."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Core Team Member",
+    "organization": "DTU Open Source Initiative",
+    "description": "Organized a campus-wide 'Accessibility Audit Hackathon' teaching students how to use screen readers for testing."
+  }
+],
+"openSource": [
+  {
+    "project": "React-Select",
+    "contribution": "Contributed a PR improving the screen reader announcements during multi-select dropdown interactions."
+  }
+],
+"hackathons": [
+  {
+    "name": "HealthTech Innovators Hack",
+    "achievement": "Top 10 Finalist",
+    "description": "Built a frontend prototype for a mental health self-assessment tool utilizing high-contrast themes."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Frontend Developer",
+"experienceLevel": "Entry",
+"summary": "Dynamic Frontend Developer with 2 years of freelance and startup experience. Specializes in building modular UI component libraries and establishing scalable frontend architectures. Obsessed with clean CSS, reusable JavaScript logic, and delivering smooth, intuitive interfaces that delight end-users.",
+"skills": [
+  "React",
+  "JavaScript",
+  "CSS",
+  "REST APIs",
+  "Storybook",
+  "SASS",
+  "React Router",
+  "Figma"
+],
+"experience": [
+  {
+    "role": "UI Engineer Intern",
+    "company": "ScaleHR Systems, Chennai",
+    "duration": "Mar 2023 - Aug 2023",
+    "description": "Spearheaded the development of a centralized UI component library using React and Storybook. Standardized typography, color palettes, and spacing across the application via SASS variables. This initiative reduced UI development time for new features by 30% and ensured visual consistency across the entire HR SaaS platform."
+  }
+],
+"projects": [
+  {
+    "name": "Employee Onboarding Dashboard UI",
+    "techStack": [
+      "React",
+      "JavaScript",
+      "CSS",
+      "REST APIs"
+    ],
+    "description": "Developed the frontend for a 5-step interactive onboarding workflow. Consumed REST APIs to save progress at each step. Utilized React Router for seamless client-side navigation, eliminating full page reloads and enhancing perceived performance."
+  },
+  {
+    "name": "CSS Art & Animation Gallery",
+    "techStack": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "description": "Curated a personal gallery of complex CSS-only illustrations and keyframe animations to demonstrate advanced styling capabilities and deep understanding of the browser rendering engine."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Science and Engineering",
+    "institution": "Anna University, Chennai",
+    "year": "2019 - 2023",
+    "details": "CGPA: 9.1/10. University Rank Holder."
+  }
+],
+"certifications": [
+  {
+    "name": "React Developer Certification",
+    "issuer": "HackerRank",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Created an open-source React component template that gained over 300 stars on GitHub.",
+  "Winner of the Anna University Web Design Symposium 2022."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Webmaster",
+    "organization": "Symposium Technical Committee",
+    "description": "Architected and maintained the front-facing website for the annual tech fest, handling peaks of 10k concurrent visitors without UI degradation."
+  }
+],
+"openSource": [
+  {
+    "project": "Ant Design",
+    "contribution": "Improved the English translation and code examples in the internationalization documentation."
+  }
+],
+"hackathons": [],
+"volunteerExperience": [
+  {
+    "organization": "Chennai Code Mentors",
+    "role": "Volunteer Instructor",
+    "description": "Taught basic HTML, CSS, and vanilla JavaScript concepts to local high school students on weekends."
+  }
+]
+},
+{
+"domain": "Frontend Developer",
+"experienceLevel": "Entry",
+"summary": "Mobile-first Frontend Developer adept at building fast, responsive, and SEO-friendly web applications. Leverages modern rendering strategies and efficient JavaScript to create top-tier user experiences. Strong collaborator who works closely with product and backend teams to integrate REST APIs seamlessly into the UI.",
+"skills": [
+  "React",
+  "JavaScript",
+  "CSS",
+  "REST APIs",
+  "Next.js",
+  "Tailwind CSS",
+  "Zustand",
+  "Lighthouse"
+],
+"experience": [
+  {
+    "role": "Frontend Developer",
+    "company": "TravelBug Media, Mumbai",
+    "duration": "Jun 2023 - Present",
+    "description": "Rebuilt the core travel blog frontend using Next.js and Tailwind CSS. Implemented Server-Side Rendering (SSR) to improve SEO, resulting in a 40% increase in organic traffic. Optimized image loading via the Next/Image component, achieving a Largest Contentful Paint (LCP) time of under 1.5 seconds on mobile 3G networks."
+  },
+  {
+    "role": "Web Developer Intern",
+    "company": "Startup Hub Mumbai",
+    "duration": "Jan 2023 - May 2023",
+    "description": "Built responsive landing pages for various startup cohorts. Extensively used CSS Grid and Flexbox to ensure layout fidelity across all device breakpoints."
+  }
+],
+"projects": [
+  {
+    "name": "WanderList Travel Planner UI",
+    "techStack": [
+      "React",
+      "JavaScript",
+      "CSS",
+      "REST APIs"
+    ],
+    "description": "Designed an itinerary building interface with interactive maps and dynamic list generation. Handled complex client-side state management using Zustand to keep the UI perfectly synchronized with asynchronous REST API responses."
+  },
+  {
+    "name": "Responsive Image Gallery Viewer",
+    "techStack": [
+      "React",
+      "CSS",
+      "JavaScript"
+    ],
+    "description": "Created a lightweight masonry layout image gallery. Utilized Intersection Observer API for infinite scrolling and lazy loading, significantly reducing the initial page payload."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Information Technology",
+    "institution": "Veermata Jijabai Technological Institute (VJTI), Mumbai",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.4/10."
+  }
+],
+"certifications": [
+  {
+    "name": "SEO for Web Developers",
+    "issuer": "LinkedIn Learning",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Reduced the bundle size of the TravelBug main application by 2MB through rigorous tree-shaking and dependency auditing.",
+  "Won 'Best Mobile Experience' at the VJTI Appathon 2022."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Event Coordinator",
+    "organization": "Technovanza (Tech Fest)",
+    "description": "Managed the digital marketing front, designing promotional web banners and animated landing pages."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "Mumbai Web Hacks",
+    "achievement": "1st Runner Up",
+    "description": "Prototyped a highly responsive local restaurant discovery interface within a 24-hour time limit."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Frontend Developer",
+"experienceLevel": "Entry",
+"summary": "Enthusiastic Frontend Engineer with a knack for gamified UI and interactive storytelling on the web. Combines strong fundamentals in JavaScript and CSS with React to build engaging, immersive applications. Dedicated to pushing the boundaries of what is visually possible in modern browsers without compromising on load speeds.",
+"skills": [
+  "React",
+  "JavaScript",
+  "CSS",
+  "REST APIs",
+  "GSAP",
+  "Three.js",
+  "Styled Components",
+  "HTML5 Canvas"
+],
+"experience": [
+  {
+    "role": "UI Engineering Intern",
+    "company": "QuestEd Tech, Bangalore",
+    "duration": "Feb 2023 - Aug 2023",
+    "description": "Developed the frontend for a gamified student quiz interface using React and CSS animations. Integrated GSAP to choreograph complex sequence animations upon correct answers, boosting student daily active user (DAU) engagement by 25%. Consumed REST APIs securely to update leaderboards and user scores in real-time."
+  }
+],
+"projects": [
+  {
+    "name": "LearnQuest Interactive Dashboard",
+    "techStack": [
+      "React",
+      "JavaScript",
+      "CSS",
+      "REST APIs"
+    ],
+    "description": "Built a rich analytics dashboard for teachers to monitor student progress. Utilized custom CSS variables for theme switching (light/dark mode) and designed an intuitive card-based layout for easy metric digestion."
+  },
+  {
+    "name": "3D Product Viewer Interface",
+    "techStack": [
+      "JavaScript",
+      "CSS",
+      "Three.js",
+      "React"
+    ],
+    "description": "Experimented with integrating WebGL into a React environment. Created a smooth, draggable 3D viewer for e-commerce products, maintaining 60fps across standard devices."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Science",
+    "institution": "R.V. College of Engineering (RVCE), Bangalore",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.7/10. Focused on Computer Graphics and Web Engineering."
+  }
+],
+"certifications": [
+  {
+    "name": "Creative Coding & Animation in JavaScript",
+    "issuer": "Domestika",
+    "year": "2022"
+  }
+],
+"publications": [
+  {
+    "title": "Enhancing E-learning Engagement Through Micro-animations",
+    "description": "A short paper presented at the college's internal tech symposium.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Received the 'Creative Coder' award at QuestEd Tech for redesigning the end-of-course celebration screens.",
+  "Top 50 out of 2000+ in the CSSBattle online styling competition."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Vice President",
+    "organization": "RVCE Animation and Coding Club",
+    "description": "Organized weekly sessions teaching students how to bridge code and design using CSS keyframes and SVG manipulation."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "Frontend Developer",
+"experienceLevel": "Entry",
+"summary": "Results-driven Frontend Developer focused on creating robust enterprise applications and administrative dashboards. Excels in managing complex global state, handling asynchronous data flows, and implementing clean, maintainable UI patterns. Passionate about improving developer experience and code quality.",
+"skills": [
+  "React",
+  "JavaScript",
+  "CSS",
+  "REST APIs",
+  "Redux",
+  "Axios",
+  "Bootstrap",
+  "Cypress"
+],
+"experience": [
+  {
+    "role": "SDE 1 - Frontend",
+    "company": "LogisticsHub ERP, Gurgaon",
+    "duration": "Jul 2023 - Present",
+    "description": "Developed the frontend architecture for an enterprise fleet management dashboard using React and Redux. Streamlined the ingestion of data from various REST APIs, utilizing Axios interceptors for centralized error handling and authentication token refresh. Improved the UI response time for data-heavy data tables by implementing virtualized lists."
+  },
+  {
+    "role": "Web UI Intern",
+    "company": "LogisticsHub ERP",
+    "duration": "Jan 2023 - Jun 2023",
+    "description": "Converted legacy jQuery internal tools into modern React components. Wrote end-to-end tests using Cypress, increasing UI test coverage to 80% and preventing major visual regressions."
+  }
+],
+"projects": [
+  {
+    "name": "Admin Control Center UI",
+    "techStack": [
+      "React",
+      "JavaScript",
+      "CSS",
+      "REST APIs",
+      "Redux"
+    ],
+    "description": "Built a comprehensive admin panel for user role management. Implemented complex form validations on the client side using regular expressions and custom hooks, significantly reducing invalid REST API requests."
+  },
+  {
+    "name": "Live Order Tracking Interface",
+    "techStack": [
+      "React",
+      "CSS",
+      "JavaScript"
+    ],
+    "description": "Created a front-end view simulating live delivery tracking. Engineered custom CSS progress bars and status indicators that animated fluidly based on mock state changes."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science and Engineering",
+    "institution": "National Institute of Technology (NIT), Kurukshetra",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.2/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Front-End Testing with Cypress",
+    "issuer": "Test Automation University",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Successfully migrated a 50+ page legacy portal to React with zero downtime.",
+  "Recognized for having the highest code-review approval rate among junior developers at LogisticsHub."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Project Mentor",
+    "organization": "NIT Kurukshetra Tech Society",
+    "description": "Mentored a group of sophomores in building their first fully functional React web application."
+  }
+],
+"openSource": [
+  {
+    "project": "React-Table",
+    "contribution": "Added examples in the official docs for integrating the table component with remote API pagination."
+  }
+],
+"hackathons": [
+  {
+    "name": "HackDelhi 2022",
+    "achievement": "Best Enterprise Hack",
+    "description": "Built the frontend for a decentralized document verification system for HR professionals."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Frontend Developer",
+"experienceLevel": "Entry",
+"summary": "Product-minded Frontend Engineer with experience in fast-paced tech startups. Strong advocate for component-driven development and modern CSS capabilities. Proficient at turning ambiguous product requirements into sleek, highly usable web interfaces that drive measurable business metrics.",
+"skills": [
+  "React",
+  "JavaScript",
+  "CSS",
+  "REST APIs",
+  "Tailwind CSS",
+  "React Router",
+  "PostCSS",
+  "Framer Motion"
+],
+"experience": [
+  {
+    "role": "Frontend Developer Intern",
+    "company": "CreatorSync Tech, Remote",
+    "duration": "Feb 2023 - Aug 2023",
+    "description": "Engineered the user interface for a SaaS platform connecting creators with brands. Used React and Tailwind CSS to rapidly prototype and iterate on the UI based on user feedback loops. Integrated frontend analytics and consumed REST APIs to power a dynamic campaign discovery feed, contributing to a 20% increase in weekly active users."
+  }
+],
+"projects": [
+  {
+    "name": "Creator Portfolio Generator UI",
+    "techStack": [
+      "React",
+      "JavaScript",
+      "CSS",
+      "REST APIs"
+    ],
+    "description": "Developed a WYSIWYG editor interface allowing users to customize their profile pages. Managed complex UI states including drag-and-drop file uploads and live CSS theme previews."
+  },
+  {
+    "name": "Brand Analytics View",
+    "techStack": [
+      "React",
+      "CSS",
+      "Recharts"
+    ],
+    "description": "Constructed a dashboard interface displaying social media metrics. Optimized the rendering cycle to ensure the UI remained highly responsive even when parsing thousands of data points locally."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Science",
+    "institution": "Birla Institute of Technology and Science (BITS), Pilani",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.3/10. Minor in Entrepreneurship."
+  }
+],
+"certifications": [
+  {
+    "name": "Advanced React Patterns",
+    "issuer": "Frontend Masters",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Won the 'Fastest Prototype' award during the CreatorSync internal hack week.",
+  "Achieved 99th percentile in the HackerEarth Frontend challenge."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Head of Design and Web",
+    "organization": "BITS Pilani Entrepreneurship Cell",
+    "description": "Directed the design and development of the E-Summit website, optimizing assets to ensure load times under 2 seconds globally."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "Postman API Hackathon",
+    "achievement": "Top 20",
+    "description": "Developed a completely client-side application that consumed 5 different public APIs to generate travel itineraries."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Frontend Developer",
+"experienceLevel": "Entry",
+"summary": "Agile Frontend Developer with a deep understanding of browser mechanics and modern web standards. Dedicated to writing semantic HTML, modular CSS, and clean JavaScript. Experienced in building high-conversion landing pages and interactive tools that prioritize user experience and performance above all.",
+"skills": [
+  "React",
+  "JavaScript",
+  "CSS",
+  "REST APIs",
+  "CSS Modules",
+  "SWR",
+  "HTML5",
+  "Jest"
+],
+"experience": [
+  {
+    "role": "Junior Frontend Engineer",
+    "company": "FinGrow Technologies, Ahmedabad",
+    "duration": "Jul 2023 - Present",
+    "description": "Re-engineered the customer onboarding funnel UI, utilizing React and CSS Modules for scoped styling. Replaced heavy polling logic with SWR for fetching data from REST APIs, drastically reducing network payload and preventing UI stale states. These frontend optimizations directly contributed to a 15% increase in completed sign-ups."
+  },
+  {
+    "role": "Web Associate Trainee",
+    "company": "TechSpark Labs",
+    "duration": "Jan 2023 - Jun 2023",
+    "description": "Assisted in auditing client websites for Core Web Vitals. Implemented critical CSS extraction and font-display optimizations that improved Cumulative Layout Shift (CLS) scores by 40%."
+  }
+],
+"projects": [
+  {
+    "name": "SIP Calculator Interface",
+    "techStack": [
+      "React",
+      "JavaScript",
+      "CSS"
+    ],
+    "description": "Developed an interactive financial calculator. Implemented complex real-time mathematical formatting on the client side with custom CSS range sliders for a highly tactile user experience."
+  },
+  {
+    "name": "Market News Aggregator UI",
+    "techStack": [
+      "React",
+      "JavaScript",
+      "CSS",
+      "REST APIs"
+    ],
+    "description": "Built a clean, distraction-free reading interface. Consumed external financial news REST APIs and implemented a custom client-side search and filtering mechanism using robust JavaScript array methods."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Engineering",
+    "institution": "Nirma University, Ahmedabad",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.8/10. Dean's List for Academic Excellence."
+  }
+],
+"certifications": [
+  {
+    "name": "Responsive Web Design Certification",
+    "issuer": "FreeCodeCamp",
+    "year": "2021"
+  }
+],
+"publications": [],
+"achievements": [
+  "Spearheaded a frontend performance initiative at FinGrow that improved overall application speed index by 22%.",
+  "Runner-up in the Nirma University Webathon coding competition."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Technical Content Writer",
+    "organization": "Nirma Tech Magazine",
+    "description": "Authored multiple articles on modern CSS layout techniques (Subgrid, Container Queries) for the college publication."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": [
+  {
+    "organization": "Digital India Campaign Local Chapter",
+    "role": "Web Developer",
+    "description": "Created simple, highly accessible static webpages for local businesses to help them establish an online presence."
+  }
+]
+}
+]

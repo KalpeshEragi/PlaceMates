@@ -1,0 +1,839 @@
+[
+{
+"domain": "Backend Developer",
+"experienceLevel": "Entry",
+"summary": "Backend Developer with 1.5 years of experience building scalable REST APIs and microservices. Adept at database schema design, query optimization, and performance tuning. Passionate about creating high-throughput systems and ensuring data integrity across complex distributed architectures.",
+"skills": [
+  "Node.js",
+  "Express",
+  "PostgreSQL",
+  "Redis",
+  "Cheerio",
+  "Docker",
+  "AWS EC2",
+  "Git"
+],
+"experience": [
+  {
+    "role": "Backend Engineering Intern",
+    "company": "ShopKart E-Commerce, Bangalore",
+    "duration": "Jan 2023 - Jul 2023",
+    "description": "Engineered REST APIs for the inventory management module using Node.js and Express. Optimized PostgreSQL queries with composite indexing, reducing average read latency from 450ms to 120ms. Implemented Redis caching, increasing system throughput by 40% during flash sales."
+  }
+],
+"projects": [
+  {
+    "name": "OAuth 2.0 Authentication Service",
+    "techStack": [
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "JWT"
+    ],
+    "description": "Designed a centralized authentication microservice with secure token generation and refresh mechanisms. Implemented rate limiting and securely hashed passwords with bcrypt, supporting 500+ concurrent login requests with sub-50ms response times."
+  },
+  {
+    "name": "Competitor Price Scraper",
+    "techStack": [
+      "Node.js",
+      "Puppeteer",
+      "PostgreSQL",
+      "Cron"
+    ],
+    "description": "Built an automated web scraping tool to extract pricing data from 5 rival e-commerce sites daily. Handled anti-bot mechanisms and bulk-inserted 10,000+ records into a normalized PostgreSQL database efficiently."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science and Engineering",
+    "institution": "National Institute of Technology (NIT), Warangal",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.9/10. Core coursework in Distributed Systems and Advanced Databases."
+  }
+],
+"certifications": [
+  {
+    "name": "AWS Certified Solutions Architect - Associate",
+    "issuer": "Amazon Web Services",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Reduced database CPU utilization by 25% by rewriting inefficient subqueries at ShopKart.",
+  "Secured 1st place in the HackWarangal 2022 backend optimization challenge."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Technical Lead",
+    "organization": "CSI Student Chapter NITW",
+    "description": "Mentored 40+ students on backend development fundamentals and database normalization."
+  }
+],
+"openSource": [
+  {
+    "project": "Express.js",
+    "contribution": "Improved documentation regarding middleware error handling patterns."
+  }
+],
+"hackathons": [
+  {
+    "name": "Flipkart Grid 4.0",
+    "achievement": "Top 50 National Finalist",
+    "description": "Developed a high-concurrency API for a mock blockchain-based supply chain system."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Backend Developer",
+"experienceLevel": "Entry",
+"summary": "Detail-oriented Backend Engineer specializing in fintech applications. Proven track record of developing secure, high-performance REST APIs and managing relational databases. Focused on reducing technical debt, optimizing application latency, and building robust microservices architectures.",
+"skills": [
+  "Node.js",
+  "Express",
+  "PostgreSQL",
+  "RabbitMQ",
+  "Sequelize ORM",
+  "TypeScript",
+  "Jest",
+  "Nginx"
+],
+"experience": [
+  {
+    "role": "Junior Backend Developer",
+    "company": "PaySwift Financial Technologies, Pune",
+    "duration": "Aug 2023 - Present",
+    "description": "Developed and maintained core transaction processing APIs using Node.js and Express. Migrated legacy data pipelines to a RabbitMQ message broker system, reducing transaction processing latency by 35%. Optimized heavy aggregation queries in PostgreSQL, improving dashboard load times for business users by 2 seconds."
+  },
+  {
+    "role": "Backend Developer Intern",
+    "company": "PaySwift Financial Technologies",
+    "duration": "Feb 2023 - Jul 2023",
+    "description": "Wrote unit and integration tests using Jest, achieving 85% code coverage for the core ledger microservice. Assisted in setting up CI/CD pipelines via GitHub Actions."
+  }
+],
+"projects": [
+  {
+    "name": "Secure Auth & RBAC API",
+    "techStack": [
+      "Node.js",
+      "Express",
+      "PostgreSQL"
+    ],
+    "description": "Engineered a Role-Based Access Control (RBAC) authentication system. Utilized PostgreSQL for mapping complex user-role permissions, ensuring strict endpoint authorization and preventing privilege escalation."
+  },
+  {
+    "name": "Financial News Data Scraper",
+    "techStack": [
+      "Node.js",
+      "Cheerio",
+      "Express",
+      "Axios"
+    ],
+    "description": "Created a high-speed scraping API that extracts real-time stock market headlines from various financial portals. Implemented exponential backoff for error handling during network timeouts."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Mathematics and Computing",
+    "institution": "Indian Institute of Technology (IIT), Bombay",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.6/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Backend Development Certificate",
+    "issuer": "HackerRank",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Optimized database indexing strategies at PaySwift, reducing IOPS by 40% on the main RDS instance.",
+  "Achieved a top 1% rank in the LeetCode Global Weekly Contest."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Infrastructure Manager",
+    "organization": "TechFest IIT Bombay",
+    "description": "Managed the backend servers for the event website, handling over 1 million API requests over a 3-day period without downtime."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "Backend Developer",
+"experienceLevel": "Entry",
+"summary": "Results-driven Software Engineer with a strong foundation in server-side logic and database architecture. Experienced in leveraging Node.js and PostgreSQL to build robust APIs for ed-tech platforms. Adept at system monitoring, caching strategies, and scaling applications to handle high concurrency.",
+"skills": [
+  "Node.js",
+  "Express",
+  "PostgreSQL",
+  "Prisma ORM",
+  "Redis",
+  "GraphQL",
+  "Linux",
+  "Postman"
+],
+"experience": [
+  {
+    "role": "Software Development Engineer (Backend)",
+    "company": "Learnify EdTech, Hyderabad",
+    "duration": "Jul 2023 - Present",
+    "description": "Architected the course catalog REST API, integrating Redis caching to decrease endpoint response time from 300ms to 45ms. Designed the multi-tenant PostgreSQL database schema to support 50+ partner schools. Improved API throughput to 2000 requests/second by refactoring blocking synchronous code into asynchronous event-driven flows."
+  }
+],
+"projects": [
+  {
+    "name": "Single Sign-On (SSO) Auth Service",
+    "techStack": [
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "Passport.js"
+    ],
+    "description": "Developed a standalone authentication microservice allowing users to log in once and access multiple internal applications. Implemented secure session management and JWT signing."
+  },
+  {
+    "name": "Academic Resource Scraper API",
+    "techStack": [
+      "Node.js",
+      "Puppeteer",
+      "PostgreSQL"
+    ],
+    "description": "Built an automated scraping utility to fetch open-source PDF journals. Parsed metadata and stored document links in PostgreSQL, creating a highly searchable repository API for students."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Science",
+    "institution": "Birla Institute of Technology and Science (BITS), Pilani",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.5/10."
+  }
+],
+"certifications": [
+  {
+    "name": "PostgreSQL Fundamentals",
+    "issuer": "DataCamp",
+    "year": "2022"
+  }
+],
+"publications": [
+  {
+    "title": "Evaluating Caching Strategies in High-Read EdTech Platforms",
+    "description": "Published a case study on Redis vs Memcached performance in the university technical journal.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Identified and resolved an N+1 query issue, dropping API latency by 60% on the main dashboard endpoint.",
+  "Winner of the BITS Pilani Intra-College Hackathon 2022."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Core Team Member",
+    "organization": "Coding Club BITS Pilani",
+    "description": "Organized API development workshops utilizing Express and Postman for 150+ students."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "EduHack 2022",
+    "achievement": "1st Runner Up",
+    "description": "Built the backend for an AI-driven personalized learning path generator using Express and PostgreSQL."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Backend Developer",
+"experienceLevel": "Entry",
+"summary": "Proactive Backend Developer with 2 years of hands-on experience in building scalable B2B SaaS platforms. Proficient in crafting robust RESTful APIs, optimizing heavy database transactions, and developing asynchronous background workers. Strong advocate for clean code principles and API documentation.",
+"skills": [
+  "Node.js",
+  "Express",
+  "PostgreSQL",
+  "TypeScript",
+  "BullMQ",
+  "Swagger",
+  "GCP",
+  "TypeORM"
+],
+"experience": [
+  {
+    "role": "Backend Engineer Intern",
+    "company": "CloudSync SaaS, New Delhi",
+    "duration": "Feb 2022 - Aug 2022",
+    "description": "Developed robust REST APIs for a cloud storage management dashboard. Implemented database connection pooling in PostgreSQL, resolving timeout errors during peak traffic and increasing overall throughput by 25%. Offloaded heavy file-processing tasks to background queues using BullMQ."
+  },
+  {
+    "role": "Freelance Backend Developer",
+    "company": "Upwork",
+    "duration": "Sep 2022 - Present",
+    "description": "Designed custom REST API integrations for international clients. Specialized in writing complex SQL joins and views to aggregate business intelligence data efficiently."
+  }
+],
+"projects": [
+  {
+    "name": "Multi-Tenant JWT Auth API",
+    "techStack": [
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "TypeScript"
+    ],
+    "description": "Architected a secure authentication gateway for a SaaS application. Handled tenant isolation at the database level and implemented strict API rate-limiting to prevent brute-force attacks."
+  },
+  {
+    "name": "Lead Generation Web Scraper",
+    "techStack": [
+      "Node.js",
+      "Express",
+      "Cheerio",
+      "PostgreSQL"
+    ],
+    "description": "Created a cron-based scraping service that extracts business contact information from public directories. Sanitized and deduplicated records via PostgreSQL triggers before making them available via a REST API."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Software Engineering",
+    "institution": "Delhi Technological University (DTU)",
+    "year": "2018 - 2022",
+    "details": "CGPA: 8.4/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Google Cloud Associate Cloud Engineer",
+    "issuer": "Google Cloud",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Decreased report generation time from 5 minutes to 30 seconds by implementing materialized views in PostgreSQL.",
+  "Rated 'Top Rated' freelancer on Upwork with 100% Job Success Score."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Event Coordinator",
+    "organization": "Invictus (DTU TechFest)",
+    "description": "Managed the cloud infrastructure and backend deployment for the automated coding assessment platform."
+  }
+],
+"openSource": [
+  {
+    "project": "TypeORM",
+    "contribution": "Submitted a patch to fix a specific edge case in query builder when using deeply nested relations."
+  }
+],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "Backend Developer",
+"experienceLevel": "Entry",
+"summary": "Dynamic Backend Software Developer specializing in geospatial data and logistics systems. Highly skilled in building low-latency APIs using Node.js and Express. Expert in leveraging PostgreSQL's PostGIS extension to handle complex location-based queries and mapping routing algorithms.",
+"skills": [
+  "Node.js",
+  "Express",
+  "PostgreSQL",
+  "PostGIS",
+  "Socket.io",
+  "AWS S3",
+  "Knex.js",
+  "Mocha"
+],
+"experience": [
+  {
+    "role": "Software Developer Intern",
+    "company": "LogiTrack Solutions, Chennai",
+    "duration": "Jan 2023 - Jun 2023",
+    "description": "Engineered a real-time fleet tracking API using WebSockets and Node.js. Utilized PostGIS functions within PostgreSQL to calculate optimal delivery routes, reducing server-side processing time by 40%. Scaled the service horizontally to handle telemetry data from 1,000+ active vehicles concurrently."
+  }
+],
+"projects": [
+  {
+    "name": "Driver Onboarding & Auth System",
+    "techStack": [
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "AWS S3"
+    ],
+    "description": "Built a comprehensive REST API for driver registration. Included secure document upload directly to S3 via pre-signed URLs and an OTP-based authentication flow verified against PostgreSQL records."
+  },
+  {
+    "name": "Traffic Anomaly Scraper",
+    "techStack": [
+      "Node.js",
+      "Axios",
+      "Cheerio",
+      "PostgreSQL"
+    ],
+    "description": "Developed a background scraper that periodically fetches local traffic alerts from municipal websites. Stored incident coordinates in PostgreSQL to automatically alert drivers traversing affected zones."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science and Engineering",
+    "institution": "Vellore Institute of Technology (VIT), Vellore",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.8/10."
+  }
+],
+"certifications": [
+  {
+    "name": "REST API (Intermediate) Certificate",
+    "issuer": "HackerRank",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Successfully migrated a 10GB legacy MySQL database to PostgreSQL with zero data loss and minimal downtime.",
+  "Secured Global Rank 650 in Google HashCode 2022."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Backend Lead",
+    "organization": "VIT Websters",
+    "description": "Led a team of 6 developers to architect the backend for the university's club management portal."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "HackOut 2022",
+    "achievement": "Winner - Logistics Track",
+    "description": "Prototyped an automated dispatch API that grouped deliveries based on geofencing."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Backend Developer",
+"experienceLevel": "Entry",
+"summary": "Process-oriented Backend Engineer with 1 year of experience developing secure healthcare technology solutions. Proficient in architecting REST APIs with Express and Node.js. Deep understanding of database normalization, ACID compliance in PostgreSQL, and maintaining strict data privacy standards.",
+"skills": [
+  "Node.js",
+  "Express",
+  "PostgreSQL",
+  "Objection.js",
+  "Docker",
+  "PM2",
+  "CI/CD",
+  "REST APIs"
+],
+"experience": [
+  {
+    "role": "Backend Developer",
+    "company": "MediCore Tech, Ahmedabad",
+    "duration": "Jul 2023 - Present",
+    "description": "Developed HIPAA-compliant REST APIs for a telemedicine portal. Refactored the core appointment scheduling algorithm, optimizing PostgreSQL queries which reduced API response times from 800ms to 150ms. Implemented strict input validation and parameterized queries to prevent SQL injection vulnerabilities."
+  },
+  {
+    "role": "Systems Engineering Intern",
+    "company": "HealthFirst IT",
+    "duration": "Feb 2023 - Jun 2023",
+    "description": "Assisted in containerizing Node.js microservices using Docker. Wrote comprehensive API documentation using Swagger UI for third-party medical billing integrations."
+  }
+],
+"projects": [
+  {
+    "name": "Patient Gateway Auth API",
+    "techStack": [
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "JWT"
+    ],
+    "description": "Designed a secure authentication service featuring two-factor authentication (2FA). Managed encrypted patient credentials and audit logs in a heavily constrained PostgreSQL schema."
+  },
+  {
+    "name": "Clinical Trial Data Scraper",
+    "techStack": [
+      "Node.js",
+      "Puppeteer",
+      "Express",
+      "PostgreSQL"
+    ],
+    "description": "Built an internal API backed by a headless browser scraper to aggregate ongoing clinical trial data from public health registries. Engineered efficient batch inserts into PostgreSQL to handle high-volume text data."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Engineering",
+    "institution": "Nirma University, Ahmedabad",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.7/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Microservices Architecture",
+    "issuer": "Coursera",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Improved overall application uptime to 99.99% by implementing PM2 clustering and proper error handling.",
+  "Top 3 in the Nirma University Codeathon out of 400 participants."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Vice Chairperson",
+    "organization": "Computer Society of India (Nirma Chapter)",
+    "description": "Organized an inter-college technical symposium focused on healthcare informatics and secure API design."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": [
+  {
+    "organization": "Red Cross Society",
+    "role": "IT Volunteer",
+    "description": "Maintained the backend database for a local blood donation registry."
+  }
+]
+},
+{
+"domain": "Backend Developer",
+"experienceLevel": "Entry",
+"summary": "Passionate Backend Developer specializing in high-traffic social media applications and distributed systems. Expert in writing performant APIs using Node.js and Express, backed by highly optimized PostgreSQL architectures. Focused on reducing latency, managing database loads, and improving overall system throughput.",
+"skills": [
+  "Node.js",
+  "Express",
+  "PostgreSQL",
+  "Redis",
+  "Kafka",
+  "Sequelize",
+  "AWS Lambda",
+  "Linux"
+],
+"experience": [
+  {
+    "role": "Software Development Engineer 1",
+    "company": "SocialConnect Networks, Bangalore",
+    "duration": "Aug 2023 - Present",
+    "description": "Designed and deployed a scalable notification REST API utilizing Node.js and Apache Kafka. Optimized PostgreSQL indexing on the 'user_follows' table, dropping query execution time from 200ms to 20ms. Implemented a Redis caching layer for the newsfeed, which increased system throughput to 3000 req/sec during peak hours."
+  }
+],
+"projects": [
+  {
+    "name": "Device-Aware Auth Microservice",
+    "techStack": [
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "Redis"
+    ],
+    "description": "Created a robust authentication API supporting multiple active sessions per user. Tracked device fingerprints and refresh tokens in PostgreSQL, enabling users to view and revoke sessions remotely."
+  },
+  {
+    "name": "Trending Topics Scraper API",
+    "techStack": [
+      "Node.js",
+      "Cheerio",
+      "PostgreSQL"
+    ],
+    "description": "Developed a tool to scrape microblogging sites for trending hashtags every 5 minutes. Used PostgreSQL's native text search features to analyze frequency and serve real-time analytics to a dashboard."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Science",
+    "institution": "R.V. College of Engineering (RVCE), Bangalore",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.5/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Redis Certified Developer",
+    "issuer": "Redis Labs",
+    "year": "2023"
+  }
+],
+"publications": [
+  {
+    "title": "Scaling Relational Databases for Social Graphs",
+    "description": "Authored an article on Medium detailing the transition from simple joins to materialized views.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Rewarded with an 'Engineering Excellence' bonus at SocialConnect for resolving a critical database deadlock issue.",
+  "Completed the 100 Days of Code challenge, focusing entirely on backend architecture and API design."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Open Source Maintainer",
+    "organization": "RVCE Coding Club",
+    "description": "Managed pull requests and code reviews for the club's backend repositories."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "Global Hack Week",
+    "achievement": "Top 10 Finalist",
+    "description": "Built a backend service capable of streaming and filtering live tweets based on sentiment analysis."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Backend Developer",
+"experienceLevel": "Entry",
+"summary": "Analytical Backend Developer with experience in Web3 and financial exchange platforms. Highly proficient in Node.js and Express for crafting low-latency REST APIs. Deep expertise in managing heavy read/write operations in PostgreSQL and scheduling automated scraping/ingestion pipelines.",
+"skills": [
+  "Node.js",
+  "Express",
+  "PostgreSQL",
+  "WebSockets",
+  "Axios",
+  "Cron",
+  "Docker",
+  "Git"
+],
+"experience": [
+  {
+    "role": "Backend Developer",
+    "company": "CoinTrade Analytics, Mumbai",
+    "duration": "Jun 2023 - Present",
+    "description": "Engineered a high-frequency trading data API capable of handling 500+ writes per second. Tuned PostgreSQL configuration to optimize WAL (Write-Ahead Logging), decreasing disk I/O bottlenecks by 30%. Created robust Express middleware for request validation and API key verification, dropping unauthorized access attempts to zero."
+  },
+  {
+    "role": "Software Intern",
+    "company": "FinTech Startup Labs",
+    "duration": "Jan 2023 - May 2023",
+    "description": "Assisted in migrating legacy PHP endpoints to a modern Express/Node.js architecture. Wrote extensive unit tests using Mocha and Chai."
+  }
+],
+"projects": [
+  {
+    "name": "Crypto Exchange Auth API",
+    "techStack": [
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "Speakeasy"
+    ],
+    "description": "Built a highly secure authentication system featuring Time-based One-Time Passwords (TOTP) for 2FA. Engineered strict IP-whitelisting controls stored and queried rapidly via PostgreSQL."
+  },
+  {
+    "name": "Arbitrage Price Scraper",
+    "techStack": [
+      "Node.js",
+      "Puppeteer",
+      "PostgreSQL"
+    ],
+    "description": "Designed a concurrent scraping engine that monitors coin prices across 10 different exchanges. Normalized and inserted data into PostgreSQL, exposing a REST API that highlighted real-time arbitrage opportunities."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Information Technology",
+    "institution": "Veermata Jijabai Technological Institute (VJTI), Mumbai",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.8/10. Specialization in Network Security."
+  }
+],
+"certifications": [
+  {
+    "name": "API Security Architect",
+    "issuer": "API Academy",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Halved the response time of the main historical data endpoint by implementing cursor-based pagination.",
+  "Winner of the VJTI Blockchain and FinTech Hackathon."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Technical Coordinator",
+    "organization": "VJTI Technovanza",
+    "description": "Oversaw the registration backend system architecture, mitigating potential DDoS attacks through strict rate limiting."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "Backend Developer",
+"experienceLevel": "Entry",
+"summary": "Innovative Backend Engineer focused on the travel and booking industry. Skilled at resolving concurrency issues and ensuring transactional integrity using PostgreSQL. Experienced in developing scalable Node.js and Express REST APIs to power complex booking engines and aggregator platforms.",
+"skills": [
+  "Node.js",
+  "Express",
+  "PostgreSQL",
+  "Knex.js",
+  "Elasticsearch",
+  "Nginx",
+  "Redis",
+  "REST APIs"
+],
+"experience": [
+  {
+    "role": "Backend Intern",
+    "company": "TripBooking Gateway, Chennai",
+    "duration": "Jan 2023 - Jul 2023",
+    "description": "Developed core REST API endpoints for a hotel reservation system. Leveraged PostgreSQL transaction isolation levels (Serializable) to handle high-concurrency booking scenarios, successfully eliminating double-booking errors. Implemented Elasticsearch syncing via Node.js, reducing complex search query response times by 70%."
+  }
+],
+"projects": [
+  {
+    "name": "B2B Partner Auth Service",
+    "techStack": [
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "OAuth2"
+    ],
+    "description": "Architected an OAuth2 provider API allowing third-party travel agencies to securely access inventory data. Handled client secret generation, token scopes, and database schema design for partner management."
+  },
+  {
+    "name": "Flight Aggregator Scraper API",
+    "techStack": [
+      "Node.js",
+      "Cheerio",
+      "PostgreSQL"
+    ],
+    "description": "Created an automated scraping pipeline to extract flight schedules and pricing from multiple airline websites. Served the aggregated, normalized data through a highly cached REST API."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science",
+    "institution": "SRM Institute of Science and Technology, Chennai",
+    "year": "2019 - 2023",
+    "details": "CGPA: 9.0/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Backend Engineering Masterclass",
+    "issuer": "Udemy",
+    "year": "2022"
+  }
+],
+"publications": [],
+"achievements": [
+  "Reduced server cost by 20% by identifying and fixing memory leaks in the Node.js scraping workers.",
+  "Top 5% in the TCS CodeVita competitive programming contest."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Mentorship Lead",
+    "organization": "SRM ACM Student Chapter",
+    "description": "Conducted advanced database design and SQL query optimization seminars for 200+ students."
+  }
+],
+"openSource": [
+  {
+    "project": "Knex.js",
+    "contribution": "Submitted pull requests to improve typescript definitions for complex query builders."
+  }
+],
+"hackathons": [
+  {
+    "name": "TravelHack 2022",
+    "achievement": "Best Use of API",
+    "description": "Built a unified travel API that aggregates carbon footprint data for various flight paths."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Backend Developer",
+"experienceLevel": "Entry",
+"summary": "Driven Backend Developer with a passion for the gaming and esports industry. Excels in building high-throughput, low-latency REST APIs utilizing Node.js, Express, and PostgreSQL. Focused on crafting resilient backend systems, optimizing complex aggregations, and scaling architectures to handle massive traffic spikes.",
+"skills": [
+  "Node.js",
+  "Express",
+  "PostgreSQL",
+  "TypeScript",
+  "Redis",
+  "GCP",
+  "Prisma",
+  "WebSockets"
+],
+"experience": [
+  {
+    "role": "Backend Engineer Intern",
+    "company": "PlayStats Analytics, Pune",
+    "duration": "Feb 2023 - Aug 2023",
+    "description": "Engineered a high-performance telemetry ingestion API using Node.js, capable of capturing 10,000+ match events per minute. Optimized PostgreSQL views and materialized tables for the leaderboard generation, slashing query execution latency from 1.5 seconds to under 100ms. Deployed services on Google Cloud Platform using Docker."
+  }
+],
+"projects": [
+  {
+    "name": "Gamer Profile & Auth API",
+    "techStack": [
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "Passport.js"
+    ],
+    "description": "Developed a centralized authentication system with integration for Discord and Steam OAuth. Designed a relational PostgreSQL schema to link user identities across multiple gaming platforms securely."
+  },
+  {
+    "name": "Esports Tournament Scraper",
+    "techStack": [
+      "Node.js",
+      "Puppeteer",
+      "PostgreSQL"
+    ],
+    "description": "Built a robust scraping microservice to extract live bracket updates and player statistics from various tournament websites. Exposed the data through a RESTful API to power a mobile companion app."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Information Technology",
+    "institution": "Pune Institute of Computer Technology (PICT)",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.6/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Node.js Application Development",
+    "issuer": "The Linux Foundation",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Drastically improved API response times by 50% by implementing a multi-tier caching strategy with Redis and Express middleware.",
+  "Runner up at the PICT InC (Impetus and Concepts) project exhibition for the PlayStats backend architecture."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Head of Web Infrastructure",
+    "organization": "PICT Gaming Club",
+    "description": "Designed and maintained the backend servers for intra-college esports tournaments, ensuring zero downtime during live matches."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": [
+  {
+    "organization": "Teach Code India",
+    "role": "Volunteer",
+    "description": "Taught basic JavaScript and logic building to high school students over weekend bootcamps."
+  }
+]
+}
+]

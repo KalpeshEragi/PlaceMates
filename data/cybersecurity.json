@@ -1,0 +1,842 @@
+[
+{
+"domain": "Cybersecurity Analyst",
+"experienceLevel": "Entry",
+"summary": "Detail-oriented Cybersecurity Analyst with 1.5 years of experience in SOC environments and vulnerability management. Proven expertise in identifying critical threats and implementing mitigation strategies that fortify network perimeters and elevate overall organizational security posture.",
+"skills": [
+  "Linux",
+  "Networking",
+  "OWASP",
+  "Splunk",
+  "Nmap",
+  "Wireshark",
+  "Metasploit",
+  "Python"
+],
+"experience": [
+  {
+    "role": "SOC Analyst Intern",
+    "company": "CyberDefend India, Bangalore",
+    "duration": "Jan 2023 - Jul 2023",
+    "description": "Monitored SIEM alerts for unauthorized network access, successfully triaging over 500 security incidents. Tuned alert thresholds to reduce false positives by 40% and improved the company's external security rating from a B to an A grade."
+  }
+],
+"projects": [
+  {
+    "name": "Automated Network Vulnerability Scanner",
+    "techStack": [
+      "Python",
+      "Nmap API",
+      "Linux",
+      "Bash"
+    ],
+    "description": "Developed a custom Python script integrating Nmap and CVE databases to automatically scan local subnets for outdated services. Identified and patched 15 high-severity vulnerabilities across the university lab network."
+  },
+  {
+    "name": "Web Application Security Audit",
+    "techStack": [
+      "Burp Suite",
+      "OWASP ZAP",
+      "Linux"
+    ],
+    "description": "Conducted a comprehensive penetration test on a mock e-commerce portal following the OWASP Top 10 framework. Discovered critical SQL injection and Cross-Site Scripting (XSS) flaws, providing a mitigation report that reduced exploitability by 100%."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science and Engineering",
+    "institution": "National Institute of Technology (NIT), Surathkal",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.5/10. Core coursework in Network Security and Cryptography."
+  }
+],
+"certifications": [
+  {
+    "name": "CompTIA Security+",
+    "issuer": "CompTIA",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Ranked in the top 5% on TryHackMe globally.",
+  "Discovered and reported a reflected XSS vulnerability in a public university portal, earning a letter of appreciation."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Security Lead",
+    "organization": "NIT Surathkal Web Club",
+    "description": "Conducted secure coding workshops emphasizing OWASP guidelines for 100+ junior developers."
+  }
+],
+"openSource": [
+  {
+    "project": "Nuclei",
+    "contribution": "Contributed two custom YAML templates for detecting exposed Git directories on misconfigured Apache servers."
+  }
+],
+"hackathons": [
+  {
+    "name": "CyberThon 2022",
+    "achievement": "1st Runner Up",
+    "description": "Built a real-time honeypot monitoring dashboard that visualized attack vectors and attacker IP geolocations."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Cybersecurity Analyst",
+"experienceLevel": "Entry",
+"summary": "Proactive Security Analyst focusing on application security and DevSecOps. 1 year of experience integrating automated security controls into CI/CD pipelines and performing rigorous code audits. Dedicated to shifting security left and reducing technical debt through proactive vulnerability management.",
+"skills": [
+  "Linux",
+  "Networking",
+  "OWASP",
+  "SonarQube",
+  "Trivy",
+  "Docker Security",
+  "Git",
+  "Bash"
+],
+"experience": [
+  {
+    "role": "Information Security Trainee",
+    "company": "SecureCode Tech, Pune",
+    "duration": "Aug 2023 - Present",
+    "description": "Integrated SAST and DAST tools into the GitLab CI/CD pipeline, catching OWASP Top 10 vulnerabilities pre-production. Collaborated with developers to remediate insecure deserialization and broken access controls, reducing production vulnerabilities by 60%."
+  },
+  {
+    "role": "AppSec Intern",
+    "company": "SecureCode Tech",
+    "duration": "Feb 2023 - Jul 2023",
+    "description": "Performed manual security code reviews for a financial technology application, isolating and patching hardcoded API keys and weak encryption algorithms."
+  }
+],
+"projects": [
+  {
+    "name": "CI/CD Secret Scanner",
+    "techStack": [
+      "Python",
+      "Linux",
+      "Git Hooks"
+    ],
+    "description": "Engineered a pre-commit hook that scans repositories for high-entropy strings and known API key formats. Successfully blocked 50+ accidental secret commits across the engineering team."
+  },
+  {
+    "name": "Hospital Management System Audit",
+    "techStack": [
+      "OWASP ZAP",
+      "Networking",
+      "Postman"
+    ],
+    "description": "Executed a black-box security audit on a healthcare API. Identified Insecure Direct Object References (IDOR) allowing unauthorized patient record access. Mitigation improved the API security score to 95/100."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Information Technology",
+    "institution": "Pune Institute of Computer Technology (PICT)",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.8/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Certified Ethical Hacker (CEH)",
+    "issuer": "EC-Council",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Secured 3rd place in the Nullcon Goa Student Capture The Flag (CTF) competition.",
+  "Recognized as 'Security Champion' for standardizing Docker image security baselines."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Event Coordinator",
+    "organization": "PICT Cyber Cell",
+    "description": "Organized a campus-wide bug bounty program, triaging and verifying over 40 student-submitted vulnerability reports."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "Cybersecurity Analyst",
+"experienceLevel": "Entry",
+"summary": "Analytical Blue Team defender with strong fundamentals in network forensics and incident response. Experienced in deploying Open-Source IDS/IPS solutions and configuring enterprise firewalls. Passionate about analyzing packet-level data to hunt emerging threats and secure corporate infrastructure.",
+"skills": [
+  "Linux",
+  "Networking",
+  "OWASP",
+  "Suricata",
+  "Zeek",
+  "pfSense",
+  "QRadar",
+  "TCP/IP"
+],
+"experience": [
+  {
+    "role": "Cybersecurity Analyst",
+    "company": "NetProtect Solutions, Chennai",
+    "duration": "Jul 2023 - Present",
+    "description": "Managed firewall rules and IDS signatures to block malicious traffic patterns. Conducted deep packet inspection using Zeek, identifying and containing a lateral movement attempt. These proactive measures reduced overall network risk exposure by 35% and improved compliance scores."
+  }
+],
+"projects": [
+  {
+    "name": "Distributed Network IDS & Scanner",
+    "techStack": [
+      "Linux",
+      "Suricata",
+      "Networking",
+      "ELK Stack"
+    ],
+    "description": "Deployed a network intrusion detection system across 3 cloud subnets. Created custom Suricata rules to flag anomalous SSH brute-force attempts and visualized the threat data in Kibana."
+  },
+  {
+    "name": "Corporate Infrastructure Security Audit",
+    "techStack": [
+      "Nessus",
+      "Linux",
+      "Active Directory"
+    ],
+    "description": "Performed an internal network audit on a mock corporate environment of 50 VMs. Discovered misconfigured SMB shares and weak domain policies. Remediation raised the internal security health score from 65% to 92%."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Science and Engineering",
+    "institution": "Anna University, Chennai",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.6/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Cisco Certified CyberOps Associate",
+    "issuer": "Cisco",
+    "year": "2023"
+  }
+],
+"publications": [
+  {
+    "title": "Optimizing IDS Rule Sets for High-Throughput Academic Networks",
+    "description": "Published in the Anna University Tech Journal, detailing methods to reduce packet drop rates in Suricata.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Successfully resolved a simulated ransomware outbreak in record time during the CyberOps training capstone.",
+  "Winner of the regional Network Defense Hackathon 2022."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Network Administrator",
+    "organization": "Kurukshetra TechFest",
+    "description": "Designed and secured the Wi-Fi network for 5,000+ attendees, implementing VLAN segregation and MAC filtering."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": [
+  {
+    "organization": "Digital Literacy NGO",
+    "role": "Cyber Awareness Speaker",
+    "description": "Conducted seminars for elderly citizens on recognizing phishing emails and securing home Wi-Fi networks."
+  }
+]
+},
+{
+"domain": "Cybersecurity Analyst",
+"experienceLevel": "Entry",
+"summary": "Results-driven Penetration Tester and Security Analyst with 2 years of hands-on experience in red teaming exercises and vulnerability assessments. Highly proficient in exploiting web application flaws and escalating privileges in Linux and Windows environments to demonstrate real-world impact.",
+"skills": [
+  "Linux",
+  "Networking",
+  "OWASP",
+  "Kali Linux",
+  "Burp Suite Pro",
+  "Active Directory",
+  "BloodHound",
+  "PowerShell"
+],
+"experience": [
+  {
+    "role": "Penetration Tester Intern",
+    "company": "RedSec Labs, Gurgaon",
+    "duration": "Feb 2022 - Aug 2022",
+    "description": "Executed black-box and grey-box penetration tests for 5 major clients in the fintech sector. Successfully chained a Server-Side Request Forgery (SSRF) vulnerability to gain initial access, subsequently pivoting to the internal network. Detailed reporting led to the remediation of 25+ critical vulnerabilities."
+  },
+  {
+    "role": "Security Consultant Trainee",
+    "company": "RedSec Labs",
+    "duration": "Sep 2022 - Present",
+    "description": "Automated repetitive vulnerability scanning tasks using Bash and Python, reducing manual assessment time per client by 4 hours."
+  }
+],
+"projects": [
+  {
+    "name": "Active Directory Audit Toolkit",
+    "techStack": [
+      "Python",
+      "PowerShell",
+      "Networking"
+    ],
+    "description": "Developed a suite of scripts to query LDAP and identify kerberoastable users, misconfigured ACLs, and stale administrator accounts. Improved the AD security score of a test domain by 45% post-remediation."
+  },
+  {
+    "name": "Headless Web Fuzzer & Scanner",
+    "techStack": [
+      "Go",
+      "Linux",
+      "OWASP ZAP API"
+    ],
+    "description": "Built a high-concurrency directory and parameter fuzzer. Integrated heuristics to detect blind SQL injection and command injection payloads, discovering 3 unknown vulnerabilities in open-source CMS platforms."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Engineering",
+    "institution": "Delhi Technological University (DTU), New Delhi",
+    "year": "2018 - 2022",
+    "details": "CGPA: 8.4/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Offensive Security Certified Professional (OSCP)",
+    "issuer": "Offensive Security",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Earned the highly respected OSCP certification within 90 days of lab access.",
+  "Acknowledged in the Hall of Fame of 3 different organizations for responsible vulnerability disclosure."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "CTF Team Captain",
+    "organization": "DTU InfoSec Society",
+    "description": "Led the university team to the finals of the DEFCON India CTF qualifiers."
+  }
+],
+"openSource": [
+  {
+    "project": "Impacket",
+    "contribution": "Submitted minor bug fixes related to SMB relay error handling."
+  }
+],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "Cybersecurity Analyst",
+"experienceLevel": "Entry",
+"summary": "Threat Intelligence and Malware Analysis enthusiast. Dedicated Cybersecurity Analyst with experience in reverse-engineering malicious payloads and developing Indicators of Compromise (IOCs). Skilled at utilizing OSINT tools and leveraging the OWASP framework to defend against sophisticated cyber-attacks.",
+"skills": [
+  "Linux",
+  "Networking",
+  "OWASP",
+  "Maltego",
+  "YARA",
+  "Radare2",
+  "Cuckoo Sandbox",
+  "Python"
+],
+"experience": [
+  {
+    "role": "Threat Intelligence Analyst",
+    "company": "VigilantEye Security, Pune",
+    "duration": "Jun 2023 - Present",
+    "description": "Analyzed over 100 suspected malware samples using static and dynamic analysis techniques. Authored custom YARA rules to detect polymorphic ransomware strains, integrating them into the corporate endpoint protection platform. Decreased endpoint infection rates by 22% over six months."
+  }
+],
+"projects": [
+  {
+    "name": "Automated OSINT Profiler & Scanner",
+    "techStack": [
+      "Python",
+      "Linux",
+      "Networking",
+      "Shodan API"
+    ],
+    "description": "Created a reconnaissance tool that aggregates domain information, exposed subdomains, and open ports from various intelligence APIs. Automatically maps findings against the CVE database to highlight potential attack vectors."
+  },
+  {
+    "name": "EdTech Platform Security Audit",
+    "techStack": [
+      "OWASP",
+      "Linux",
+      "Burp Suite"
+    ],
+    "description": "Conducted a pro-bono security audit for an open-source educational platform. Identified severe Broken Access Control flaws allowing privilege escalation to administrator roles. Working with maintainers, reduced the system's critical vulnerability count to zero."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Science",
+    "institution": "Birla Institute of Technology and Science (BITS), Pilani",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.7/10."
+  }
+],
+"certifications": [
+  {
+    "name": "eLearnSecurity Junior Penetration Tester (eJPT)",
+    "issuer": "INE",
+    "year": "2022"
+  }
+],
+"publications": [
+  {
+    "title": "Behavioral Analysis of Modern Ransomware Families in Sandboxed Environments",
+    "description": "Presented at the BITS Pilani Technical Symposium.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Identified and neutralized a live malware infection (globalsnn2-new.cc) on internal research systems, preventing lateral data exfiltration.",
+  "Top 100 on HackTheBox India regional leaderboard."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Malware Lab Manager",
+    "organization": "BITS Pilani Cyber Security Club",
+    "description": "Maintained the isolated hypervisor environment used by students for safe malware detonation and research."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "DefCamp Hackathon",
+    "achievement": "Top 10 Finalist",
+    "description": "Developed a lightweight YARA rule generator utilizing machine learning to parse file headers."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Cybersecurity Analyst",
+"experienceLevel": "Entry",
+"summary": "Cloud Security Analyst with a strong focus on securing AWS infrastructure and auditing Identity and Access Management (IAM) configurations. 1 year of experience ensuring compliance with industry standards and reducing cloud attack surfaces through rigorous automated scanning and manual review.",
+"skills": [
+  "Linux",
+  "Networking",
+  "OWASP",
+  "AWS Security",
+  "IAM",
+  "Prowler",
+  "Terraform",
+  "CloudTrail"
+],
+"experience": [
+  {
+    "role": "Cloud Security Intern",
+    "company": "FinSecure Tech, Hyderabad",
+    "duration": "Jan 2023 - Jul 2023",
+    "description": "Performed weekly security assessments on AWS environments using Prowler. Identified and remediated overly permissive S3 bucket policies and unrestricted security groups. Enforced the principle of least privilege, improving the CIS AWS Foundations Benchmark compliance score from 62% to 94%."
+  }
+],
+"projects": [
+  {
+    "name": "Cloud Infrastructure Auditor & Scanner",
+    "techStack": [
+      "Python",
+      "AWS Boto3",
+      "Linux",
+      "Networking"
+    ],
+    "description": "Developed an internal script to continuously scan AWS accounts for unencrypted RDS instances and missing MFA on root accounts. Triggered automated Slack alerts, reducing time-to-remediation for cloud misconfigurations by 80%."
+  },
+  {
+    "name": "Serverless App Security Audit",
+    "techStack": [
+      "OWASP Serverless Top 10",
+      "Linux"
+    ],
+    "description": "Audited a serverless Node.js architecture deployed on AWS Lambda. Discovered event-data injection vulnerabilities and insecure direct object references. Implemented API Gateway validation models to neutralize the threat."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science and Engineering",
+    "institution": "Indian Institute of Technology (IIT), Hyderabad",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.9/10."
+  }
+],
+"certifications": [
+  {
+    "name": "AWS Certified Security - Specialty",
+    "issuer": "Amazon Web Services",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Awarded 'Best Automation Initiative' at FinSecure Tech for the custom Cloud Infrastructure Auditor tool.",
+  "Scored 100% on the final assessment of the SANS SEC488: Cloud Security Essentials course."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Cloud Architecture Mentor",
+    "organization": "IIT Hyderabad Tech Society",
+    "description": "Guided multiple student startups on securely deploying their minimum viable products on AWS."
+  }
+],
+"openSource": [
+  {
+    "project": "CloudSploit",
+    "contribution": "Added a custom plugin to detect the absence of KMS encryption on specific AWS resources."
+  }
+],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "Cybersecurity Analyst",
+"experienceLevel": "Entry",
+"summary": "Compliance and Risk Management focused Cybersecurity Analyst. Adept at conducting vulnerability assessments, managing patching lifecycles, and aligning organizational IT controls with ISO 27001 and NIST frameworks. Experienced in translating complex security flaws into actionable business risk reports.",
+"skills": [
+  "Linux",
+  "Networking",
+  "OWASP",
+  "OpenVAS",
+  "Qualys",
+  "Risk Assessment",
+  "Bash",
+  "Excel"
+],
+"experience": [
+  {
+    "role": "Cyber Risk Analyst Trainee",
+    "company": "TrustAudit Consulting, Ahmedabad",
+    "duration": "Jul 2023 - Present",
+    "description": "Executed monthly vulnerability scans across 500+ endpoints using Qualys and OpenVAS. Correlated scan data with asset criticality to prioritize patching schedules. Reduced the backlog of critical vulnerabilities older than 30 days by 70%, significantly lowering enterprise risk exposure."
+  },
+  {
+    "role": "IT Security Audit Intern",
+    "company": "TrustAudit Consulting",
+    "duration": "Feb 2023 - Jun 2023",
+    "description": "Assisted senior auditors in evidence collection for ISO 27001 certification. Reviewed firewall ACLs and user access matrices against company policies."
+  }
+],
+"projects": [
+  {
+    "name": "Vulnerability Management Dashboard",
+    "techStack": [
+      "Python",
+      "Linux",
+      "Qualys API",
+      "Networking"
+    ],
+    "description": "Built a custom dashboard aggregating scanner data to track CVE remediation SLAs. Provided clear visualization of risk reduction metrics, improving patch compliance reporting to executive management."
+  },
+  {
+    "name": "Third-Party Vendor Security Audit",
+    "techStack": [
+      "OWASP ASVS",
+      "Linux"
+    ],
+    "description": "Evaluated a vendor-supplied SaaS application using the OWASP Application Security Verification Standard. Identified weak password policies and lack of rate-limiting, mandating security fixes before organizational procurement."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Engineering",
+    "institution": "Nirma University, Ahmedabad",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.5/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Certified Information Systems Auditor (CISA) - Passed Exam",
+    "issuer": "ISACA",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Successfully managed the end-to-end vulnerability assessment for a mid-sized banking client.",
+  "Recognized for meticulous reporting and high attention to detail during external audits."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Audit Coordinator",
+    "organization": "Nirma TechFest",
+    "description": "Ensured compliance and safe handling of participant data in accordance with internal privacy policies."
+  }
+],
+"openSource": [],
+"hackathons": [],
+"volunteerExperience": [
+  {
+    "organization": "Local Panchayat IT Cell",
+    "role": "Pro-Bono IT Auditor",
+    "description": "Audited local government computers, removing malware and setting up basic firewall rules."
+  }
+]
+},
+{
+"domain": "Cybersecurity Analyst",
+"experienceLevel": "Entry",
+"summary": "Dynamic Cybersecurity Analyst with a passion for offensive security and exploit development. Combining 1.5 years of experience in vulnerability research and penetration testing to identify zero-day flaws and secure corporate assets. Highly skilled in manipulating memory and analyzing network protocols.",
+"skills": [
+  "Linux",
+  "Networking",
+  "OWASP",
+  "C/C++",
+  "Assembly",
+  "GDB",
+  "Metasploit",
+  "Python"
+],
+"experience": [
+  {
+    "role": "Vulnerability Research Intern",
+    "company": "ZeroDay Labs, Mumbai",
+    "duration": "Jan 2023 - Jul 2023",
+    "description": "Conducted deep-dive security research on proprietary IoT firmware. Utilized GDB and static analysis to uncover a remote buffer overflow vulnerability. Developed a Proof of Concept (PoC) exploit, allowing the engineering team to patch the flaw, reducing critical device vulnerabilities to zero."
+  }
+],
+"projects": [
+  {
+    "name": "Custom Port Scanner & Exploit Framework",
+    "techStack": [
+      "Python",
+      "C",
+      "Linux",
+      "Networking"
+    ],
+    "description": "Developed a multithreaded network scanner capable of fingerprinting OS versions and identifying vulnerable service banners. Integrated custom exploit modules for legacy FTP and SMB vulnerabilities, improving penetration testing efficiency by 20%."
+  },
+  {
+    "name": "Financial App Security Audit",
+    "techStack": [
+      "OWASP",
+      "Burp Suite",
+      "Linux"
+    ],
+    "description": "Performed a grey-box audit on a peer-to-peer lending application. Demonstrated how logical flaws in the transaction API could be manipulated to bypass fund verification. Remediation improved the application's overall security score to 98%."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Information Technology",
+    "institution": "Veermata Jijabai Technological Institute (VJTI), Mumbai",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.8/10. Focus on Systems Security."
+  }
+],
+"certifications": [
+  {
+    "name": "CompTIA PenTest+",
+    "issuer": "CompTIA",
+    "year": "2023"
+  }
+],
+"publications": [
+  {
+    "title": "Bypassing Modern Exploit Mitigations (ASLR/DEP) in Embedded Systems",
+    "description": "Published in the VJTI Annual Security Magazine. Discussed Return Oriented Programming (ROP) chain generation.",
+    "year": "2023"
+  }
+],
+"achievements": [
+  "Assigned CVE-2023-XXXX for a buffer overflow vulnerability discovered in a widely used open-source router firmware.",
+  "Winner of the VJTI Capture The Flag (CTF) competition."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Binary Exploitation Lead",
+    "organization": "VJTI Cyber Security Group",
+    "description": "Taught advanced memory corruption concepts to 40+ engineering students."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "HackTheBox University CTF",
+    "achievement": "Top 50 Globally",
+    "description": "Solved complex reverse engineering and pwn challenges under severe time constraints."
+  }
+],
+"volunteerExperience": []
+},
+{
+"domain": "Cybersecurity Analyst",
+"experienceLevel": "Entry",
+"summary": "Resourceful Security Analyst with hands-on expertise in securing modern containerized infrastructure and Kubernetes environments. Adept at navigating complex cloud networks, performing cluster security audits, and implementing robust Identity and Access policies based on OWASP security standards.",
+"skills": [
+  "Linux",
+  "Networking",
+  "OWASP",
+  "Kubernetes",
+  "Docker",
+  "Kube-bench",
+  "Falco",
+  "Bash"
+],
+"experience": [
+  {
+    "role": "Cloud Native Security Engineer 1",
+    "company": "KubeProtect India, Bangalore",
+    "duration": "Jul 2023 - Present",
+    "description": "Audited production Kubernetes clusters using Kube-bench against CIS benchmarks. Enforced strict Network Policies to restrict pod-to-pod communication, mitigating lateral movement risks. Improved the overall cluster security compliance score from 55% to 92% and reduced critical container vulnerabilities by 80%."
+  },
+  {
+    "role": "Security Engineering Intern",
+    "company": "KubeProtect India",
+    "duration": "Jan 2023 - Jun 2023",
+    "description": "Deployed Falco for runtime security monitoring. Wrote custom rules to detect unauthorized shell execution inside production containers, successfully catching 3 simulated Red Team attacks."
+  }
+],
+"projects": [
+  {
+    "name": "Container Image Vulnerability Scanner",
+    "techStack": [
+      "Linux",
+      "Clair",
+      "Networking",
+      "CI/CD"
+    ],
+    "description": "Integrated Clair scanner into the container registry pipeline. Automatically blocked the deployment of images containing High/Critical CVEs, reducing the attack surface of the production environment by 45%."
+  },
+  {
+    "name": "Microservices Security Audit",
+    "techStack": [
+      "OWASP API Security Top 10",
+      "Linux",
+      "Postman"
+    ],
+    "description": "Conducted a thorough security audit of 15 internal REST APIs. Discovered unauthenticated endpoints and Mass Assignment vulnerabilities. Post-audit refactoring reduced exploitable API flaws to zero."
+  }
+],
+"education": [
+  {
+    "degree": "B.E. in Computer Science",
+    "institution": "R.V. College of Engineering (RVCE), Bangalore",
+    "year": "2019 - 2023",
+    "details": "CGPA: 8.6/10."
+  }
+],
+"certifications": [
+  {
+    "name": "Certified Kubernetes Security Specialist (CKS)",
+    "issuer": "CNCF",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Achieved the demanding CKS certification, demonstrating deep understanding of cluster hardening.",
+  "Reduced container image footprint by 60% by establishing standard distroless base images."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "DevOps Security Coordinator",
+    "organization": "RVCE Coding Club",
+    "description": "Managed the club's AWS credits and ensured the security of all student-deployed web applications."
+  }
+],
+"openSource": [
+  {
+    "project": "Falco Security",
+    "contribution": "Contributed a default macro for detecting common crypto-mining binary execution signatures."
+  }
+],
+"hackathons": [],
+"volunteerExperience": []
+},
+{
+"domain": "Cybersecurity Analyst",
+"experienceLevel": "Entry",
+"summary": "Versatile Cybersecurity Analyst with 2 years of experience in managed security services (MSSP). Highly proficient in endpoint security, web application firewalls (WAF), and routine compliance auditing. Driven to protect organizational data integrity through continuous monitoring and rapid incident remediation.",
+"skills": [
+  "Linux",
+  "Networking",
+  "OWASP",
+  "CrowdStrike",
+  "Cloudflare WAF",
+  "Nessus",
+  "Incident Response",
+  "Python"
+],
+"experience": [
+  {
+    "role": "Cyber Defense Analyst",
+    "company": "ShieldOps Managed Security, Delhi",
+    "duration": "Jun 2022 - Present",
+    "description": "Managed Endpoint Detection and Response (EDR) alerts for 10+ SME clients. Conducted quarterly external vulnerability scans using Nessus. Assisted clients in patch prioritization, which resulted in a 50% reduction in exploitable network vulnerabilities and elevated their average security posture score from B to A."
+  },
+  {
+    "role": "IT Security Trainee",
+    "company": "ShieldOps Managed Security",
+    "duration": "Jan 2022 - May 2022",
+    "description": "Configured custom Cloudflare WAF rules to mitigate a layer 7 DDoS attack against a client's e-commerce platform, restoring 100% service availability within 30 minutes."
+  }
+],
+"projects": [
+  {
+    "name": "Automated Web Vulnerability Scanner",
+    "techStack": [
+      "Python",
+      "Linux",
+      "OWASP ZAP",
+      "Networking"
+    ],
+    "description": "Built a Python orchestration tool that automates DAST scanning across multiple client staging environments. Generated consolidated PDF reports detailing risk levels, decreasing manual scanning workloads by 15 hours per week."
+  },
+  {
+    "name": "Corporate Perimeter Security Audit",
+    "techStack": [
+      "Nmap",
+      "Linux",
+      "Networking"
+    ],
+    "description": "Performed a comprehensive black-box audit of a client's external IP ranges. Discovered an exposed RDP port bypassing the VPN requirement. The immediate closure of this port neutralized a critical ransomware entry vector."
+  }
+],
+"education": [
+  {
+    "degree": "B.Tech in Computer Science and Engineering",
+    "institution": "Netaji Subhas University of Technology (NSUT), Delhi",
+    "year": "2018 - 2022",
+    "details": "CGPA: 8.3/10."
+  }
+],
+"certifications": [
+  {
+    "name": "CompTIA CySA+",
+    "issuer": "CompTIA",
+    "year": "2023"
+  }
+],
+"publications": [],
+"achievements": [
+  "Received the 'Excellence in Incident Response' award at ShieldOps for flawlessly handling a multi-client phishing campaign.",
+  "Top 10% in the National Cyber League (NCL) individual brackets."
+],
+"positionsOfResponsibility": [
+  {
+    "role": "Tech Support Volunteer",
+    "organization": "NSUT Moksha Fest",
+    "description": "Monitored the festival's registration server for suspicious activities and maintained 100% uptime."
+  }
+],
+"openSource": [],
+"hackathons": [
+  {
+    "name": "Security Hacks Delhi",
+    "achievement": "Winner",
+    "description": "Developed a rapid log parser using Python to quickly extract IOCs from Apache access logs."
+  }
+],
+"volunteerExperience": []
+}
+]
