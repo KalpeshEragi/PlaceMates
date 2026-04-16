@@ -18,6 +18,7 @@ import jobPreferencesRouter from "./routes/jobPreferences.js";
 import workflowRouter from "./routes/workflow.js";
 import internalRouter from "./routes/internal.js";
 import jobsRouter from "./routes/jobs.js";
+import evaluationRouter from "./routes/evaluation.js";
 import { startScheduler } from "./services/scheduler.js";
 
 const app = express();
@@ -43,6 +44,7 @@ app.use("/api/job-preferences", jobPreferencesRouter);
 app.use("/api/workflow", workflowRouter);
 app.use("/api/internal", internalRouter);
 app.use("/api/jobs", jobsRouter);
+app.use("/api/evaluation", evaluationRouter);
 
 // ── Error handler (must be last) ──────────────────────────
 app.use(errorHandler);

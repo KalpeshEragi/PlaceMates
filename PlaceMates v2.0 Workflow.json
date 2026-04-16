@@ -1,0 +1,260 @@
+{
+  "name": "PlaceMates v2.0 — Semantic Job Matching",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "id": "trigger-manual",
+      "name": "Manual Trigger"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "triggerAtHour": 7 }]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [0, 200],
+      "id": "trigger-cron",
+      "name": "Daily 7 AM",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $vars.BACKEND_URL }}/api/internal/eligible-users",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [250, 100],
+      "id": "fetch-eligible-users",
+      "name": "① Fetch Eligible Users",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "PlaceMates Internal API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract users array from API response\nconst users = $json.users || [];\nreturn users.map(u => ({\n  json: {\n    userId: u.id,\n    email: u.email,\n    primaryRole: u.jobPreferences?.primaryRole || 'Software Developer',\n    experienceLevel: u.jobPreferences?.experienceLevel || 'Entry',\n    locations: u.jobPreferences?.locations || ['India'],\n    workType: u.jobPreferences?.workType || 'any'\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [500, 100],
+      "id": "parse-users",
+      "name": "② Parse Users"
+    },
+    {
+      "parameters": { "options": {} },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [750, 100],
+      "id": "split-users",
+      "name": "③ Loop Per User"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Build LinkedIn search URL from user preferences\nconst role = encodeURIComponent($json.primaryRole);\nconst location = ($json.locations || ['India']).join(',');\nconst linkedinUrl = `https://www.linkedin.com/jobs/search/?f_TPR=r86400&f_E=1%2C2%2C3&keywords=${role}&location=${encodeURIComponent(location)}&geoId=102713980`;\n\nreturn [{\n  json: {\n    ...$json,\n    linkedinUrl,\n    jobQuery: $json.primaryRole\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1000, 100],
+      "id": "build-linkedin-url",
+      "name": "④ Build LinkedIn URL"
+    },
+    {
+      "parameters": {
+        "operation": "Run actor and get dataset",
+        "actorSource": "store",
+        "actorId": {
+          "__rl": true,
+          "value": "2rJKkhh7vjpX7pvjg",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Jobs Scraper"
+        },
+        "customBody": "={\n  \"startUrls\": [{ \"url\": \"{{ $json.linkedinUrl }}\" }],\n  \"keyword\": [\"{{ $json.jobQuery }}\"],\n  \"location\": \"India\",\n  \"maxItems\": 100,\n  \"saveOnlyUniqueItems\": true,\n  \"jobType\": [\"full-time\", \"internship\", \"part-time\", \"contract\"],\n  \"experienceLevel\": [\"internship\", \"entry-level\", \"associate\"],\n  \"workType\": [\"on-site\", \"remote\", \"hybrid\"],\n  \"proxy\": { \"useApifyProxy\": true }\n}",
+        "timeout": 120
+      },
+      "type": "@apify/n8n-nodes-apify.apify",
+      "typeVersion": 1,
+      "position": [1250, 100],
+      "id": "apify-scraper",
+      "name": "⑤ LinkedIn Scraper (Apify)",
+      "credentials": {
+        "apifyApi": {
+          "id": "Mjv6Dhp7kQpHQQdb",
+          "name": "Apify account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse Apify results into our Job format\n// and call backend bulk-upsert\nconst userId = $('④ Build LinkedIn URL').first().json.userId;\nconst jobQuery = $('④ Build LinkedIn URL').first().json.jobQuery;\n\nconst jobs = items.map(item => ({\n  title:       item.json.jobTitle || item.json.title || 'Unknown',\n  company:     item.json.companyName || item.json.company || 'Unknown',\n  location:    item.json.location || 'India',\n  description: item.json.jobDescription || item.json.description || '',\n  link:        item.json.applyUrl || item.json.jobUrl || item.json.link || `no-link-${Date.now()}`,\n  postedAt:    item.json.postedAt || new Date().toISOString()\n}));\n\n// Filter out items with no useful data\nconst validJobs = jobs.filter(j => j.title !== 'Unknown' && j.description.length > 20);\n\nreturn [{\n  json: {\n    userId,\n    jobQuery,\n    jobs: validJobs,\n    totalScraped: items.length,\n    totalValid: validJobs.length\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1500, 100],
+      "id": "parse-scraped-jobs",
+      "name": "⑥ Parse Scraped Jobs"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $vars.BACKEND_URL }}/api/internal/jobs/bulk-upsert",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ jobs: $json.jobs }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1750, 100],
+      "id": "bulk-upsert-jobs",
+      "name": "⑦ Bulk Upsert Jobs → Backend",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "PlaceMates Internal API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $vars.BACKEND_URL }}/api/internal/semantic-match",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ userId: $('⑥ Parse Scraped Jobs').first().json.userId, requestId: 'n8n-' + Date.now() }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2000, 100],
+      "id": "semantic-match",
+      "name": "⑧ Semantic Match → Backend",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "PlaceMates Internal API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Take top 5 matches and call generate-resume for each\nconst matches = $json.matches || [];\nconst userId = $('⑥ Parse Scraped Jobs').first().json.userId;\nconst topMatches = matches.slice(0, 5);\n\nif (topMatches.length === 0) {\n  return [{ json: { userId, message: 'No matches found', skipped: true } }];\n}\n\nreturn topMatches.map(m => ({\n  json: {\n    userId,\n    jobId: m.jobId,\n    matchScore: m.score\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2250, 100],
+      "id": "pick-top-matches",
+      "name": "⑨ Pick Top 5 Matches"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $vars.BACKEND_URL }}/api/internal/generate-resume",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"userId\": \"{{ $json.userId }}\",\n  \"jobId\": \"{{ $json.jobId }}\",\n  \"jobDescription\": \"auto\"\n}",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2500, 100],
+      "id": "generate-resume",
+      "name": "⑩ Generate Resume (RAG) → Backend",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "PlaceMates Internal API"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "jsCode": "// Summary log at the end of each user loop\nconst userId = $('⑥ Parse Scraped Jobs').first().json.userId;\nconst totalScraped = $('⑥ Parse Scraped Jobs').first().json.totalScraped || 0;\nconst totalValid = $('⑥ Parse Scraped Jobs').first().json.totalValid || 0;\nconst matchMethod = $('⑧ Semantic Match → Backend').first().json.method || 'unknown';\nconst matchCount = ($('⑧ Semantic Match → Backend').first().json.matches || []).length;\n\nconsole.log(`[PlaceMates v2] User ${userId}: scraped=${totalScraped}, valid=${totalValid}, matches=${matchCount}, method=${matchMethod}`);\n\n// Return to the split-users loop\nreturn [{\n  json: {\n    userId,\n    totalScraped,\n    totalValid,\n    matchCount,\n    matchMethod,\n    completed: true\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2750, 100],
+      "id": "log-summary",
+      "name": "⑪ Log & Loop Back"
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [[{ "node": "① Fetch Eligible Users", "type": "main", "index": 0 }]]
+    },
+    "Daily 7 AM": {
+      "main": [[{ "node": "① Fetch Eligible Users", "type": "main", "index": 0 }]]
+    },
+    "① Fetch Eligible Users": {
+      "main": [[{ "node": "② Parse Users", "type": "main", "index": 0 }]]
+    },
+    "② Parse Users": {
+      "main": [[{ "node": "③ Loop Per User", "type": "main", "index": 0 }]]
+    },
+    "③ Loop Per User": {
+      "main": [
+        [{ "node": "④ Build LinkedIn URL", "type": "main", "index": 0 }],
+        []
+      ]
+    },
+    "④ Build LinkedIn URL": {
+      "main": [[{ "node": "⑤ LinkedIn Scraper (Apify)", "type": "main", "index": 0 }]]
+    },
+    "⑤ LinkedIn Scraper (Apify)": {
+      "main": [[{ "node": "⑥ Parse Scraped Jobs", "type": "main", "index": 0 }]]
+    },
+    "⑥ Parse Scraped Jobs": {
+      "main": [[{ "node": "⑦ Bulk Upsert Jobs → Backend", "type": "main", "index": 0 }]]
+    },
+    "⑦ Bulk Upsert Jobs → Backend": {
+      "main": [[{ "node": "⑧ Semantic Match → Backend", "type": "main", "index": 0 }]]
+    },
+    "⑧ Semantic Match → Backend": {
+      "main": [[{ "node": "⑨ Pick Top 5 Matches", "type": "main", "index": 0 }]]
+    },
+    "⑨ Pick Top 5 Matches": {
+      "main": [[{ "node": "⑩ Generate Resume (RAG) → Backend", "type": "main", "index": 0 }]]
+    },
+    "⑩ Generate Resume (RAG) → Backend": {
+      "main": [[{ "node": "⑪ Log & Loop Back", "type": "main", "index": 0 }]]
+    },
+    "⑪ Log & Loop Back": {
+      "main": [[{ "node": "③ Loop Per User", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "placemates-v2"
+  },
+  "tags": [
+    { "name": "PlaceMates v2.0" },
+    { "name": "Semantic Matching" },
+    { "name": "RAG" }
+  ]
+}

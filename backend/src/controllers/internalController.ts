@@ -4,6 +4,7 @@ import { prisma } from "../lib/prisma";
 import { env } from "../config/env";
 import { generateResumePDF } from "../services/pdfService";
 import { uploadRawToCloudinary } from "../services/cloudinaryService";
+import * as semanticMatchingService from "../services/semantic/semanticMatchingService";
 
 // ─────────────────────────────────────────────────────────────
 // GET /api/internal/user-full-profile/:userId
@@ -95,31 +96,211 @@ export const getUserFullProfile = async (req: Request, res: Response) => {
 
 // ─────────────────────────────────────────────────────────────
 // POST /api/internal/generate-resume
-// Receives tailored resume data from n8n, generates a real PDF,
-// uploads to Cloudinary, stores URL in DB, and returns it.
+// Two modes:
+//   1. Legacy: n8n sends { resumeData } → direct PDF generation
+//   2. RAG:    n8n sends { jobDescription } → RAG pipeline → PDF generation
 // ─────────────────────────────────────────────────────────────
 export const generateResume = async (req: Request, res: Response) => {
   try {
-    const { userId, jobId, resumeData, templateId } = req.body;
+    const { userId, jobId, resumeData, jobDescription: rawJobDescription, jobTitle: rawJobTitle, jobCompany: rawJobCompany, templateId } = req.body;
 
-    if (!userId || !resumeData) {
-      return res.status(400).json({ error: "userId and resumeData are required" });
+    if (!userId) {
+      return res.status(400).json({ error: "userId is required" });
     }
 
-    console.log(`[generateResume] Generating PDF for user=${userId}, job=${jobId || "general"}`);
+    // Support "auto" mode: look up job details from DB using jobId
+    let jobDescription = rawJobDescription;
+    let jobTitle = rawJobTitle;
+    let jobCompany = rawJobCompany;
 
-    // 1. Generate PDF buffer from tailored data
-    const pdfBuffer = await generateResumePDF({
-      professionalSummary: resumeData.professionalSummary || "",
-      projects: resumeData.projects || [],
-      experience: resumeData.experience || [],
-      skills: resumeData.skills || [],
-      education: resumeData.education || [],
-      profile: resumeData.profile || { name: "", email: "" },
-      awards: resumeData.awards || [],
-      certifications: resumeData.certifications || [],
-    });
+    if (jobDescription === "auto" && jobId) {
+      const job = await prisma.job.findUnique({ where: { id: jobId } });
+      if (job) {
+        jobDescription = job.description;
+        jobTitle = jobTitle || job.title;
+        jobCompany = jobCompany || job.company;
+        console.log(`[generateResume] Auto-resolved job: "${job.title}" at "${job.company}"`);
+      } else {
+        console.warn(`[generateResume] Job ${jobId} not found — falling back to legacy mode`);
+        jobDescription = undefined;
+      }
+    }
 
+    // Determine which mode to use
+    const useRAG = !!jobDescription && jobDescription !== "auto" && !resumeData;
+
+    console.log(`[generateResume] Mode=${useRAG ? "RAG" : "legacy"} user=${userId}, job=${jobId || "general"}`);
+
+    let finalResumeData: any;
+    let atsScore: number | null = null;
+    let iterations = 1;
+    let ragSources: string[] = [];
+    let agentLog: any = null;
+
+    if (useRAG) {
+      // ── RAG Mode: Run retriever→drafter→critic ─────────
+
+      // 1. Fetch user profile from NeonDB
+      const userProfile = await prisma.userAuth.findUnique({
+        where: { id: userId },
+        include: {
+          profile: true,
+          skills: true,
+          projects: { orderBy: { rankingScore: "desc" }, take: 6 },
+          experiences: true,
+          educations: true,
+          awards: true,
+          certifications: true,
+          summary: true,
+          jobPreferences: true,
+          portfolio: true,
+        },
+      });
+
+      if (!userProfile) {
+        return res.status(404).json({ error: "User profile not found" });
+      }
+
+      // 2. Build profile text for RAG context
+      const { encodeProfileToText, buildProfileDataFromPrisma } = await import("../services/semantic/profileTextEncoder");
+      const profileData = buildProfileDataFromPrisma(userProfile);
+      const profileText = encodeProfileToText(profileData);
+
+      // 3. Run RAG pipeline
+      try {
+        const ragResumeService = await import("../services/agents/ragResumeService");
+        const ragResult = await ragResumeService.generate({
+          userProfile: profileText,
+          jobDescription,
+          jobTitle: jobTitle || "Software Developer",
+          jobCompany: jobCompany || "Company",
+          domain: userProfile.summary?.primaryDomain || "Full Stack Developer",
+          experienceLevel: userProfile.jobPreferences?.experienceLevel || "Entry",
+        });
+
+        if (ragResult) {
+          atsScore = ragResult.atsScore;
+          iterations = ragResult.iterations;
+          ragSources = ragResult.ragSources;
+          agentLog = ragResult.agentLog;
+
+          // Convert RAG output to ResumeData format
+          finalResumeData = {
+            professionalSummary: ragResult.resumeData.professionalSummary,
+            projects: ragResult.resumeData.projects.map((p) => ({
+              name: p.name,
+              techStack: p.techStack,
+              bullets: p.bullets,
+            })),
+            experience: ragResult.resumeData.experience.map((e) => ({
+              role: e.role,
+              company: e.company,
+              startDate: e.duration?.split(" - ")[0] || e.duration || "",
+              endDate: e.duration?.split(" - ")[1] || null,
+              bullets: e.bullets,
+            })),
+            skills: ragResult.resumeData.skills,
+            education: ragResult.resumeData.education.map((e) => ({
+              institution: e.institution,
+              degree: e.degree,
+              field: null,
+              startDate: e.year,
+              endDate: e.year,
+              gpa: e.details || null,
+            })),
+            profile: {
+              name: userProfile.profile?.name || "",
+              email: userProfile.email,
+              github: userProfile.portfolio?.githubUrl || undefined,
+              linkedin: userProfile.portfolio?.linkedinUrl || undefined,
+            },
+            awards: ragResult.resumeData.awards?.map((a) => ({
+              title: typeof a === "string" ? a : a,
+            })) || [],
+            certifications: ragResult.resumeData.certifications?.map((c) => ({
+              name: c.name,
+              issuer: c.issuer,
+            })) || [],
+          };
+
+          console.log(`[generateResume] RAG pipeline succeeded: ATS=${atsScore}, iterations=${iterations}`);
+        }
+      } catch (ragErr: any) {
+        console.error("[generateResume] RAG pipeline failed:", ragErr.message);
+      }
+
+      // Fallback: if RAG failed, generate a basic resume from profile data
+      if (!finalResumeData) {
+        console.log("[generateResume] RAG fallback — building resume from profile data");
+        const userProfileData = await prisma.userAuth.findUnique({
+          where: { id: userId },
+          include: {
+            profile: true,
+            skills: true,
+            projects: { orderBy: { rankingScore: "desc" }, take: 5 },
+            experiences: true,
+            educations: true,
+            awards: true,
+            certifications: true,
+            summary: true,
+            portfolio: true,
+          },
+        });
+
+        finalResumeData = {
+          professionalSummary: userProfileData?.summary?.summaryText || "",
+          projects: (userProfileData?.projects || []).map((p) => ({
+            name: p.name,
+            techStack: p.techStack,
+            bullets: p.finalBullets.length > 0 ? p.finalBullets : p.baseBullets,
+          })),
+          experience: (userProfileData?.experiences || []).map((e) => ({
+            role: e.role,
+            company: e.company,
+            startDate: e.startDate || "",
+            endDate: e.endDate || null,
+            bullets: e.description ? [e.description] : [],
+          })),
+          skills: (userProfileData?.skills || []).map((s) => s.name),
+          education: (userProfileData?.educations || []).map((e) => ({
+            institution: e.institution,
+            degree: e.degree || "",
+            field: e.field,
+            startDate: e.startDate || "",
+            endDate: e.endDate || "",
+            gpa: e.gpa,
+          })),
+          profile: {
+            name: userProfileData?.profile?.name || "",
+            email: userProfileData?.email || "",
+            github: userProfileData?.portfolio?.githubUrl || undefined,
+            linkedin: userProfileData?.portfolio?.linkedinUrl || undefined,
+          },
+          awards: (userProfileData?.awards || []).map((a) => ({ title: a.title })),
+          certifications: (userProfileData?.certifications || []).map((c) => ({
+            name: c.name,
+            issuer: c.issuer || "",
+          })),
+        };
+      }
+    } else if (resumeData) {
+      // ── Legacy Mode: Use pre-built resumeData from n8n ──
+      finalResumeData = {
+        professionalSummary: resumeData.professionalSummary || "",
+        projects: resumeData.projects || [],
+        experience: resumeData.experience || [],
+        skills: resumeData.skills || [],
+        education: resumeData.education || [],
+        profile: resumeData.profile || { name: "", email: "" },
+        awards: resumeData.awards || [],
+        certifications: resumeData.certifications || [],
+      };
+    } else {
+      return res.status(400).json({ error: "Either resumeData or jobDescription is required" });
+    }
+
+    // 1. Generate PDF buffer
+    const pdfBuffer = await generateResumePDF(finalResumeData);
     console.log(`[generateResume] PDF generated (${pdfBuffer.length} bytes)`);
 
     // 2. Upload PDF to Cloudinary
@@ -129,87 +310,59 @@ export const generateResume = async (req: Request, res: Response) => {
       "placemates/resumes",
       publicId,
     );
-
     console.log(`[generateResume] Uploaded to Cloudinary: ${resumeUrl}`);
 
     // 3. Store tailored resume record if jobId is provided
     if (jobId) {
       let realJobId = jobId;
-
-      // Check if job exists in DB
       let job = await prisma.job.findUnique({ where: { id: jobId } });
 
       if (!job) {
-        // jobId might be a temp ID from n8n (tmp-*) — try to find by link if provided
-        const jobLink = resumeData.jobLink || resumeData.job?.link;
+        const jobLink = resumeData?.jobLink || resumeData?.job?.link;
         if (jobLink) {
           job = await prisma.job.findUnique({ where: { link: jobLink } });
-          if (job) {
-            realJobId = job.id;
-            console.log(`[generateResume] Found job by link: ${realJobId}`);
-          }
+          if (job) realJobId = job.id;
         }
 
-        // If still no job found, try finding by title + company
-        if (!job && (resumeData.jobTitle || resumeData.job?.title)) {
-          const title = resumeData.jobTitle || resumeData.job?.title;
-          const company = resumeData.jobCompany || resumeData.job?.company;
+        if (!job && (jobTitle || resumeData?.jobTitle)) {
+          const title = jobTitle || resumeData?.jobTitle;
+          const company = jobCompany || resumeData?.jobCompany;
           job = await prisma.job.findFirst({
-            where: {
-              title: title,
-              ...(company ? { company } : {}),
-            },
+            where: { title, ...(company ? { company } : {}) },
             orderBy: { createdAt: "desc" },
           });
-          if (job) {
-            realJobId = job.id;
-            console.log(`[generateResume] Found job by title/company: ${realJobId}`);
-          }
+          if (job) realJobId = job.id;
         }
 
-        // Last resort: create a temp job record so we can store the resume
         if (!job) {
-          console.log(`[generateResume] Job ${jobId} not found, creating temp record`);
           job = await prisma.job.create({
             data: {
-              title: resumeData.jobTitle || resumeData.job?.title || "Unknown Job",
-              company: resumeData.jobCompany || resumeData.job?.company || "Unknown Company",
-              location: resumeData.jobLocation || resumeData.job?.location || "Unknown",
-              description: resumeData.jobDescription || resumeData.job?.description || "",
+              title: jobTitle || resumeData?.jobTitle || "Unknown Job",
+              company: jobCompany || resumeData?.jobCompany || "Unknown Company",
+              location: resumeData?.jobLocation || "Unknown",
+              description: jobDescription || resumeData?.jobDescription || "",
               link: `temp-${jobId}-${Date.now()}`,
               postedAt: new Date(),
             },
           });
           realJobId = job.id;
-          console.log(`[generateResume] Created temp job: ${realJobId}`);
         }
       }
 
-      // Upsert the TailoredResume with the REAL Cloudinary URL
       await prisma.tailoredResume.upsert({
         where: { userId_jobId: { userId, jobId: realJobId } },
-        update: { resumeUrl },
-        create: { userId, jobId: realJobId, resumeUrl },
+        update: { resumeUrl, atsScore, iterations, ragSources, agentLog },
+        create: { userId, jobId: realJobId, resumeUrl, atsScore, iterations, ragSources, agentLog },
       });
-      console.log(`[generateResume] TailoredResume record saved for job=${realJobId} with URL=${resumeUrl}`);
+      console.log(`[generateResume] TailoredResume saved for job=${realJobId}`);
     }
 
-    // 4. Also update any existing TailoredResume records that have placeholder URLs
-    try {
-      const placeholderResumes = await prisma.tailoredResume.findMany({
-        where: {
-          userId,
-          resumeUrl: { startsWith: "https://placeholder" },
-        },
-      });
-      if (placeholderResumes.length > 0) {
-        console.log(`[generateResume] Found ${placeholderResumes.length} resumes with placeholder URLs`);
-      }
-    } catch {
-      // non-critical
-    }
-
-    return res.status(200).json({ success: true, resumeUrl });
+    return res.status(200).json({
+      success: true,
+      resumeUrl,
+      atsScore,
+      iterations,
+    });
   } catch (error) {
     console.error("[generateResume] Error:", error);
     return res.status(500).json({ success: false, message: "Internal server error" });
@@ -379,9 +532,89 @@ export const bulkUpsertJobs = async (req: Request, res: Response) => {
 
     const validJobs = upsertedJobs.filter(Boolean);
 
+    // NEW (Phase 4): Best-effort embed new jobs (non-blocking, fire-and-forget)
+    const newJobIds = validJobs.map((j: any) => j.id);
+    semanticMatchingService.embedNewJobs(newJobIds).catch((err) => {
+      console.warn("[bulkUpsertJobs] Background embedding failed (non-critical):", err.message);
+    });
+
     return res.status(200).json({ success: true, count: validJobs.length, jobs: validJobs });
   } catch (error) {
     console.error("[bulkUpsertJobs] Error:", error);
     return res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+// ─────────────────────────────────────────────────────────────
+// GET /api/internal/eligible-users
+// Returns users who completed onboarding — n8n's daily scheduler uses this
+// ─────────────────────────────────────────────────────────────
+export const getEligibleUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await prisma.userAuth.findMany({
+      where: { onboardingOutputFinalizedAt: { not: null } },
+      select: {
+        id: true,
+        email: true,
+        jobPreferences: true,
+      },
+    });
+    return res.json({ success: true, users });
+  } catch (error) {
+    console.error("[getEligibleUsers] Error:", error);
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+// ─────────────────────────────────────────────────────────────
+// POST /api/internal/semantic-match
+// Called by n8n INSTEAD of its old AI scoring nodes
+// ─────────────────────────────────────────────────────────────
+export const semanticMatchForN8n = async (req: Request, res: Response) => {
+  try {
+    const { requestId, userId } = req.body;
+    if (!userId || !requestId) {
+      return res.status(400).json({ error: "userId and requestId required" });
+    }
+
+    // Update workflow status
+    await prisma.workflowRun.updateMany({
+      where: { requestId },
+      data: { status: "processing" },
+    });
+
+    // Run semantic matching pipeline
+    const matches = await semanticMatchingService.matchJobsForUser(userId);
+
+    if (matches?.length) {
+      for (const m of matches) {
+        await prisma.jobMatch.upsert({
+          where: { userId_jobId: { userId, jobId: m.jobId } },
+          create: {
+            userId,
+            jobId: m.jobId,
+            matchScore: Math.round(m.score * 100),
+            semanticScore: m.score,
+            matchMethod: "semantic",
+          },
+          update: {
+            matchScore: Math.round(m.score * 100),
+            semanticScore: m.score,
+            matchMethod: "semantic",
+          },
+        });
+      }
+    }
+
+    // Always return HTTP 200 so n8n continues to resume generation
+    return res.status(200).json({
+      success: true,
+      matches: matches ?? [],
+      method: matches ? "semantic" : "keyword",
+      topK: 20,
+    });
+  } catch (err) {
+    console.error("[semanticMatchForN8n] Error:", err);
+    return res.status(200).json({ success: false, matches: [], method: "keyword" });
   }
 };

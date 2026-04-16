@@ -44,6 +44,8 @@ export interface WorkflowTriggerResponse {
 export interface JobMatchResult {
   id: string;
   matchScore: number;
+  semanticScore?: number | null;
+  matchMethod?: "keyword" | "semantic" | string;
   createdAt?: string;
   job: {
     id: string;
@@ -59,6 +61,8 @@ export interface JobMatchResult {
 export interface TailoredResumeResult {
   id: string;
   resumeUrl: string;
+  atsScore?: number | null;
+  iterations?: number;
   createdAt?: string;
   job: {
     id: string;

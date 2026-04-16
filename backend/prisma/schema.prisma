@@ -50,6 +50,7 @@ model UserAuth {
   jobPreferences JobPreferences?
   jobMatches      JobMatch[]
   tailoredResumes TailoredResume[]
+  embedding       UserEmbedding?
   workflowRuns    WorkflowRun[]
 }
 
@@ -265,6 +266,10 @@ model Job {
   link        String   @unique
   rawData     Json?    @map("raw_data")
   
+  // Semantic embedding (Phase 2)
+  embedding   Float[]   @default([])
+  embeddedAt  DateTime? @map("embedded_at")
+  
   createdAt   DateTime @default(now())
   
   matches     JobMatch[]
@@ -279,6 +284,10 @@ model JobMatch {
   userId      String   @map("user_id")
   jobId       String   @map("job_id")
   matchScore  Int      @map("match_score") // 0-100
+  
+  // Semantic matching fields (Phase 2)
+  semanticScore Float?  @map("semantic_score")
+  matchMethod   String  @default("keyword") @map("match_method")
   
   user        UserAuth @relation(fields: [userId], references: [id])
   job         Job      @relation(fields: [jobId], references: [id])
@@ -295,6 +304,12 @@ model TailoredResume {
   userId      String   @map("user_id")
   jobId       String   @map("job_id")
   resumeUrl   String   @map("resume_url")
+  
+  // RAG pipeline fields (Phase 2)
+  atsScore    Int?      @map("ats_score")
+  iterations  Int       @default(1)
+  ragSources  String[]  @default([])
+  agentLog    Json?     @map("agent_log")
   
   user        UserAuth @relation(fields: [userId], references: [id])
   job         Job      @relation(fields: [jobId], references: [id])
@@ -327,4 +342,39 @@ model WorkflowRun {
   @@index([userId, status])
   @@index([requestId])
   @@map("WorkflowRun")
+}
+
+// ─────────────────────────────────────────────────────────────
+// USER EMBEDDING → Cached profile embedding for semantic matching
+// ─────────────────────────────────────────────────────────────
+
+model UserEmbedding {
+  id           String   @id @default(uuid())
+  userId       String   @unique @map("user_id")
+  embedding    Float[]  @default([])
+  profileHash  String?  @map("profile_hash")  // MD5 hash for cache invalidation
+  embeddedAt   DateTime @default(now()) @map("embedded_at")
+
+  user         UserAuth @relation(fields: [userId], references: [id])
+
+  @@map("UserEmbedding")
+}
+
+// ─────────────────────────────────────────────────────────────
+// RESUME EXAMPLES → Reference corpus for RAG pipeline
+// ─────────────────────────────────────────────────────────────
+
+model ResumeExample {
+  id              String   @id @default(uuid())
+  domain          String                        // "Frontend Developer", "Backend Developer", etc.
+  experienceLevel String   @map("experience_level") // "Entry", "Mid", "Senior"
+  summary         String   @db.Text
+  skills          String[] @default([])
+  fullData        Json     @map("full_data")    // Complete resume example as JSON
+  sourceFile      String?  @map("source_file")  // e.g. "frontend.json"
+
+  createdAt       DateTime @default(now())
+
+  @@index([domain, experienceLevel])
+  @@map("ResumeExample")
 }
