@@ -24,4 +24,9 @@ export const env = {
     LLM_API_KEY: process.env.LLM_API_KEY || "",
     LLM_MODEL: process.env.LLM_MODEL || "llama-3.3-70b-versatile",
     OLLAMA_BASE_URL: process.env.OLLAMA_BASE_URL || "http://localhost:11434",
+    // Semantic matching (Phase 3)
+    EMBEDDING_SERVICE_URL: process.env.EMBEDDING_SERVICE_URL || "http://localhost:8100",
+    SEMANTIC_MATCH_THRESHOLD: parseFloat(process.env.SEMANTIC_MATCH_THRESHOLD || "0.35"),
+    RAG_MAX_ITERATIONS: parseInt(process.env.RAG_MAX_ITERATIONS || "3", 10),
+    RAG_ATS_THRESHOLD: parseInt(process.env.RAG_ATS_THRESHOLD || "75", 10),
 } as const;
