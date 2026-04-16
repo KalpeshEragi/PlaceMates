@@ -205,6 +205,35 @@ export default function JobMatchesPage() {
                   </div>
                 </>
               )}
+              {/* Semantic match count */}
+              {matches.some((m) => m.matchMethod === "semantic") && (
+                <>
+                  <div className="h-8 w-px bg-border hidden sm:block" />
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl font-bold text-violet-600">
+                      {matches.filter((m) => m.matchMethod === "semantic").length}
+                    </span>
+                    <span className="text-muted-foreground">AI Matches</span>
+                  </div>
+                </>
+              )}
+              {/* Average ATS score */}
+              {resumes.some((r) => r.atsScore != null) && (
+                <>
+                  <div className="h-8 w-px bg-border hidden sm:block" />
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl font-bold text-blue-600">
+                      {Math.round(
+                        resumes
+                          .filter((r) => r.atsScore != null)
+                          .reduce((acc, r) => acc + (r.atsScore || 0), 0) /
+                          resumes.filter((r) => r.atsScore != null).length
+                      )}
+                    </span>
+                    <span className="text-muted-foreground">Avg ATS Score</span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
 
@@ -377,19 +406,38 @@ function JobMatchCard({
 
       {/* Job details */}
       <div className="flex-1 min-w-0 space-y-1">
-        <h4 className="font-semibold text-base truncate">{title}</h4>
+        <div className="flex items-center gap-2">
+          <h4 className="font-semibold text-base truncate">{title}</h4>
+          {/* Match method badge */}
+          {match.matchMethod === "semantic" ? (
+            <span className="inline-flex items-center gap-1 rounded-full bg-violet-500/10 text-violet-600 border border-violet-500/20 px-2 py-0.5 text-[10px] font-semibold flex-shrink-0">
+              🤖 AI
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1 rounded-full bg-slate-500/10 text-slate-600 border border-slate-500/20 px-2 py-0.5 text-[10px] font-semibold flex-shrink-0">
+              🔑 KW
+            </span>
+          )}
+        </div>
         <p className="text-sm text-muted-foreground">
           {company}
           {match.job.location && match.job.location !== "Unknown" && ` · ${match.job.location}`}
         </p>
-        {match.job.postedAt && (
-          <p className="text-xs text-muted-foreground/60">
-            Posted{" "}
-            {new Date(match.job.postedAt).toLocaleDateString("en-IN", {
-              dateStyle: "medium",
-            })}
-          </p>
-        )}
+        <div className="flex items-center gap-3">
+          {match.job.postedAt && (
+            <p className="text-xs text-muted-foreground/60">
+              Posted{" "}
+              {new Date(match.job.postedAt).toLocaleDateString("en-IN", {
+                dateStyle: "medium",
+              })}
+            </p>
+          )}
+          {match.semanticScore != null && (
+            <span className="text-xs text-violet-500 font-medium">
+              Cosine: {(match.semanticScore * 100).toFixed(0)}%
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Actions */}
@@ -438,7 +486,25 @@ function ResumeCard({ resume }: { resume: TailoredResumeResult }) {
             {company}
           </p>
         </div>
+        {/* ATS Score Badge */}
+        {resume.atsScore != null && (
+          <div className={`flex-shrink-0 text-center ${
+            resume.atsScore >= 75
+              ? "text-green-600"
+              : resume.atsScore >= 50
+                ? "text-yellow-600"
+                : "text-orange-600"
+          }`}>
+            <div className="text-lg font-bold leading-none">{resume.atsScore}</div>
+            <div className="text-[9px] font-medium opacity-75">ATS</div>
+          </div>
+        )}
       </div>
+      {resume.iterations && resume.iterations > 1 && (
+        <p className="text-[10px] text-muted-foreground">
+          🔄 {resume.iterations} RAG iterations
+        </p>
+      )}
       <a
         href={ensurePdfUrl(resume.resumeUrl, `Resume_${company}_${title}`)}
         target="_blank"

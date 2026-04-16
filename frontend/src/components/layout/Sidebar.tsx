@@ -11,7 +11,8 @@ import {
   User, 
   BarChart3, 
   Settings,
-  Sparkles
+  Sparkles,
+  FlaskConical
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -28,6 +29,7 @@ const navigation = [
   { name: "Portfolio Studio", href: "/portfolio", icon: Globe },
   { name: "Profile", href: "/profile", icon: User },
   { name: "Insights", href: "/insights", icon: BarChart3 },
+  { name: "Evaluation", href: "/evaluation", icon: FlaskConical },
   { name: "Settings", href: "/settings", icon: Settings },
 ];
 
