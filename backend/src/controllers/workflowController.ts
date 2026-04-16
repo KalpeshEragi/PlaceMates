@@ -448,6 +448,8 @@ export const getMyMatches = async (req: AuthRequest, res: Response) => {
       matches: matches.map((m) => ({
         id: m.id,
         matchScore: m.matchScore,
+        semanticScore: m.semanticScore ?? null,
+        matchMethod: m.matchMethod ?? "keyword",
         createdAt: m.createdAt,
         job: {
           id: m.job.id,
@@ -462,6 +464,8 @@ export const getMyMatches = async (req: AuthRequest, res: Response) => {
       tailoredResumes: resumes.map((r) => ({
         id: r.id,
         resumeUrl: r.resumeUrl,
+        atsScore: r.atsScore ?? null,
+        iterations: r.iterations ?? 1,
         createdAt: r.createdAt,
         job: {
           id: r.job.id,
