@@ -9,7 +9,7 @@ import authRouter from "./routes/auth.js";
 import linkedinRouter from "./routes/linkedin.js";
 import integrationsRouter from "./routes/integrations.js";
 import githubRouter from "./routes/github.js";
-import projectsRouter from "./routes/projects.js";
+import projectRouter from "./routes/projects.js";
 import userRouter from "./routes/user.js";
 import portfolioPublicRouter from "./routes/portfolioPublic.js";
 import profileRouter from "./routes/profile.js";
@@ -19,14 +19,15 @@ import workflowRouter from "./routes/workflow.js";
 import internalRouter from "./routes/internal.js";
 import jobsRouter from "./routes/jobs.js";
 import evaluationRouter from "./routes/evaluation.js";
+import adminRouter from "./routes/admin.js";
 import { startScheduler } from "./services/scheduler.js";
 
 const app = express();
 
 // ── Middleware ─────────────────────────────────────────────
 app.use(cors({ origin: env.FRONTEND_URL, credentials: true }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(passport.initialize());
 
 // ── Routes ────────────────────────────────────────────────
@@ -35,7 +36,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/linkedin", linkedinRouter);
 app.use("/api/integrations", integrationsRouter);
 app.use("/api/github", githubRouter);
-app.use("/api/projects", projectsRouter);
+app.use("/api/projects", projectRouter);
 app.use("/api/user", userRouter);
 app.use("/api/portfolio", portfolioPublicRouter);
 app.use("/api/profile", profileRouter);
@@ -45,6 +46,7 @@ app.use("/api/workflow", workflowRouter);
 app.use("/api/internal", internalRouter);
 app.use("/api/jobs", jobsRouter);
 app.use("/api/evaluation", evaluationRouter);
+app.use("/api/admin", adminRouter);
 
 // ── Error handler (must be last) ──────────────────────────
 app.use(errorHandler);
