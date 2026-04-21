@@ -9,15 +9,26 @@ import {
   type MyMatchesResponse,
 } from "@/lib/api/workflow-api";
 
-// Ensure Cloudinary raw PDF URLs end with .pdf for proper browser handling
-function ensurePdfUrl(url: string, filename?: string): string {
-  if (!url) return url;
-  // For Cloudinary raw URLs, insert fl_attachment after /upload/ to force download as PDF
-  if (url.includes("/raw/upload/")) {
-    const attachName = filename ? `:${filename.replace(/[^a-zA-Z0-9_-]/g, "_")}` : ":resume";
-    return url.replace("/raw/upload/", `/raw/upload/fl_attachment${attachName}/`);
+// Forcefully download the URL as a Blob to enforce the exact .pdf extension on the client
+async function forcePdfDownload(e: React.MouseEvent<HTMLAnchorElement>, url: string, requestedName: string) {
+  e.preventDefault();
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Network error during file download");
+    const blob = await response.blob();
+    const objectUrl = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = objectUrl;
+    const cleanName = requestedName.replace(/[^a-zA-Z0-9_-]/g, "_");
+    a.download = `${cleanName}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(objectUrl);
+  } catch (error) {
+    console.error("Failed to intercept and rename download, falling back to new tab", error);
+    window.open(url, "_blank");
   }
-  return url;
 }
 
 // Hardcoded mock data for unknown jobs
@@ -453,10 +464,9 @@ function JobMatchCard({
         </a>
         {resume && (
           <a
-            href={ensurePdfUrl(resume.resumeUrl, `Resume_${company}_${title}`)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            href={resume.resumeUrl}
+            onClick={(e) => forcePdfDownload(e, resume.resumeUrl, `Resume_${company}_${title}`)}
+            className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90 cursor-pointer"
           >
             <DownloadIcon />
             Resume
@@ -506,10 +516,9 @@ function ResumeCard({ resume }: { resume: TailoredResumeResult }) {
         </p>
       )}
       <a
-        href={ensurePdfUrl(resume.resumeUrl, `Resume_${company}_${title}`)}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-1.5 w-full justify-center rounded-lg border px-3 py-2 text-xs font-medium transition-colors hover:bg-muted"
+        href={resume.resumeUrl}
+        onClick={(e) => forcePdfDownload(e, resume.resumeUrl, `Resume_${company}_${title}`)}
+        className="inline-flex items-center gap-1.5 w-full justify-center rounded-lg border px-3 py-2 text-xs font-medium transition-colors hover:bg-muted cursor-pointer"
       >
         <DownloadIcon />
         Download Resume

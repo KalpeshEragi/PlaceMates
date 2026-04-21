@@ -287,6 +287,7 @@ model JobMatch {
   
   // Semantic matching fields (Phase 2)
   semanticScore Float?  @map("semantic_score")
+  keywordScore  Float?  @map("keyword_score")
   matchMethod   String  @default("keyword") @map("match_method")
   
   user        UserAuth @relation(fields: [userId], references: [id])
@@ -377,4 +378,44 @@ model ResumeExample {
 
   @@index([domain, experienceLevel])
   @@map("ResumeExample")
+}
+
+// ─────────────────────────────────────────────────────────────
+// GENERATED RESUMES → Self-improving dataset (high-quality outputs)
+// ─────────────────────────────────────────────────────────────
+
+model GeneratedResume {
+  id           String   @id @default(uuid())
+  content      Json                           // Full resume JSON (DraftedResume shape)
+  embedding    Float[]  @default([])          // 384-dim embedding from SentenceTransformer
+  score        Int                            // Critic ATS score (0-100)
+  sourceJobId  String?  @map("source_job_id") // Job that triggered this generation
+  domain       String   @default("Unknown")   // For filtered retrieval
+  expLevel     String   @default("Entry") @map("exp_level")
+  createdAt    DateTime @default(now())
+
+  @@index([score])
+  @@index([domain, expLevel])
+  @@map("GeneratedResume")
+}
+
+// ─────────────────────────────────────────────────────────────
+// RESUME EVALUATIONS → Research pipeline score tracking
+// ─────────────────────────────────────────────────────────────
+
+model ResumeEvaluation {
+  id              String   @id @default(uuid())
+  userId          String   @map("user_id")
+  jobId           String   @map("job_id")
+  baseScore       Int      @map("base_score")
+  draftScore      Int      @map("draft_score")
+  finalScore      Int      @map("final_score")
+  iterationScores Int[]    @default([])
+  iterationsUsed  Int      @default(1) @map("iterations_used")
+  ablationMode    String   @default("full") @map("ablation_mode")
+  createdAt       DateTime @default(now())
+
+  @@index([userId])
+  @@index([ablationMode])
+  @@map("ResumeEvaluation")
 }

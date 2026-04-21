@@ -101,6 +101,18 @@ class ResumeRetrieveResponse(BaseModel):
     total: int
 
 
+# ── Similarity Check ───────────────────────────────────────
+
+class CheckSimilarityRequest(BaseModel):
+    """Request to check max cosine similarity against all stored resumes."""
+    embedding: List[float]
+
+
+class CheckSimilarityResponse(BaseModel):
+    """Response with the maximum similarity score found."""
+    maxSimilarity: float
+
+
 # ── Health ──────────────────────────────────────────────────
 
 class HealthResponse(BaseModel):

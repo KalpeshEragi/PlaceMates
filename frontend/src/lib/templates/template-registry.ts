@@ -4,11 +4,12 @@ import PortfolioTemplate2 from "@/components/templates/portfolio/Template2";
 import PortfolioTemplate3 from "@/components/templates/portfolio/Template3";
 import ResumeTemplate1 from "@/components/templates/resume/Template1";
 import ResumeTemplate2 from "@/components/templates/resume/Template2";
+import ArjunMehtaTemplate from "@/components/templates/resume/ArjunMehta";
 import type { PortfolioData } from "@/components/templates/portfolio/Template1";
 import type { ResumeData } from "@/components/templates/resume/Template1";
 
 export type PortfolioTemplateId = "p1" | "p2" | "p3";
-export type ResumeTemplateId = "r1" | "r2";
+export type ResumeTemplateId = "r1" | "r2" | "arjun_mehta";
 
 export const PORTFOLIO_TEMPLATES: Array<{
   id: PortfolioTemplateId;
@@ -25,6 +26,7 @@ export const RESUME_TEMPLATES: Array<{
   label: string;
   component: ComponentType<{ data: ResumeData }>;
 }> = [
+  { id: "arjun_mehta", label: "Default", component: ArjunMehtaTemplate },
   { id: "r1", label: "ATS Clean", component: ResumeTemplate1 },
   { id: "r2", label: "Compact Pro", component: ResumeTemplate2 },
 ];

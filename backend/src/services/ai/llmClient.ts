@@ -1,166 +1,106 @@
 /**
  * ai/llmClient.ts
  *
- * Thin LLM abstraction supporting Groq (cloud) and Ollama (local).
- * Returns null on any failure — callers must handle fallback.
+ * Thin LLM abstraction — now powered by the Model Router.
  *
- * Rate limiting: Groq free tier = 30 req/min, 6K tokens/min.
- * For batch project enrichment (~3K tokens/call, 1 call/user) this is plenty.
+ * This module is the single entry point for all LLM calls in the
+ * application. It delegates to modelRouter.ts which handles:
+ *   - Multi-provider fallback (Groq → Cerebras → Together → Ollama)
+ *   - Token budget management (no more 429 errors)
+ *   - Per-provider rate limiting and cooldowns
+ *   - Response tagging with provider/model for research tracking
+ *
+ * Backward compatibility:
+ *   - callLLM(prompt, options) still works exactly as before
+ *   - Returns string | null (same contract)
+ *   - callLLMWithMetadata() returns full result with provider info
+ *
+ * Legacy single-provider mode:
+ *   - If LLM_PROVIDER is set to "groq" or "ollama" (not "multi"),
+ *     the system still works through the router with just that one provider.
+ *   - If LLM_PROVIDER is "none", returns null immediately.
  */
 
 import { env } from "../../config/env";
+import { initializeRouter, routeCall, getRouterStatus } from "./modelRouter";
+import type { LLMCallResult } from "./providers/types";
 
-interface LLMResponse {
-  content: string;
+// Initialize the router on first import
+let routerReady = false;
+
+function ensureRouter(): void {
+  if (routerReady) return;
+  if (env.LLM_PROVIDER === "none" || !env.LLM_PROVIDER) return;
+  initializeRouter();
+  routerReady = true;
 }
-
-const TIMEOUT_MS = 30_000; // 30s for batch of 6 projects
-const MAX_RETRIES = 2;
 
 /**
  * Call LLM with a prompt and return the raw text response.
- * Returns null on any failure (timeout, rate limit, parse error, provider=none).
+ * Returns null on any failure (timeout, rate limit, all providers exhausted).
+ *
+ * This is the backward-compatible API — existing callers don't need changes.
+ *
+ * @param prompt   - The prompt to send
+ * @param options  - Temperature, maxTokens, role (for routing)
  */
 export async function callLLM(
   prompt: string,
-  options: { temperature?: number; maxTokens?: number } = {},
+  options: {
+    temperature?: number;
+    maxTokens?: number;
+    role?: string;
+  } = {},
 ): Promise<string | null> {
+  const result = await callLLMWithMetadata(prompt, options);
+  return result?.content ?? null;
+}
+
+/**
+ * Call LLM and return the full result including provider metadata.
+ * Used when callers need to know which model was used (for research tracking).
+ *
+ * @param prompt   - The prompt to send
+ * @param options  - Temperature, maxTokens, role (for routing)
+ * @returns Full LLMCallResult with provider/model info, or null
+ */
+export async function callLLMWithMetadata(
+  prompt: string,
+  options: {
+    temperature?: number;
+    maxTokens?: number;
+    role?: string;
+  } = {},
+): Promise<LLMCallResult | null> {
   const provider = env.LLM_PROVIDER;
 
   if (provider === "none" || !provider) {
     return null;
   }
 
-  const { temperature = 0.3, maxTokens = 2048 } = options;
+  ensureRouter();
 
-  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
-    try {
-      if (provider === "groq") {
-        return await callGroq(prompt, temperature, maxTokens);
-      }
-      if (provider === "ollama") {
-        return await callOllama(prompt, temperature, maxTokens);
-      }
-      console.warn(`[LLM] Unknown provider "${provider}", skipping.`);
-      return null;
-    } catch (err: any) {
-      const status = err?.status ?? err?.response?.status;
-
-      // Rate limited — wait and retry
-      if (status === 429 && attempt < MAX_RETRIES) {
-        const backoff = Math.pow(2, attempt + 1) * 1000; // 2s, 4s
-        console.warn(`[LLM] Rate limited, retrying in ${backoff}ms (attempt ${attempt + 1})`);
-        await sleep(backoff);
-        continue;
-      }
-
-      // Server error — retry once
-      if (status >= 500 && attempt < MAX_RETRIES) {
-        await sleep(1000);
-        continue;
-      }
-
-      console.error(`[LLM] Failed after ${attempt + 1} attempts:`, err?.message ?? err);
-      return null;
-    }
-  }
-
-  return null;
-}
-
-// ─── Groq Client ───────────────────────────────────────────
-
-async function callGroq(
-  prompt: string,
-  temperature: number,
-  maxTokens: number,
-): Promise<string> {
-  const apiKey = env.LLM_API_KEY;
-  if (!apiKey) throw new Error("LLM_API_KEY is not set for Groq provider");
-
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  const { temperature = 0.3, maxTokens = 2048, role = "default" } = options;
 
   try {
-    const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: env.LLM_MODEL,
-        messages: [
-          {
-            role: "system",
-            content: "You are a senior technical recruiter and resume expert. Always respond with valid JSON only, no markdown fences.",
-          },
-          { role: "user", content: prompt },
-        ],
-        temperature,
-        max_tokens: maxTokens,
-        response_format: { type: "json_object" },
-      }),
-      signal: controller.signal,
+    const result = await routeCall(prompt, role, {
+      temperature,
+      maxTokens,
+      jsonMode: true,
     });
 
-    if (!res.ok) {
-      const body = await res.text().catch(() => "");
-      const err = new Error(`Groq API ${res.status}: ${body.slice(0, 200)}`);
-      (err as any).status = res.status;
-      throw err;
-    }
-
-    const data = await res.json();
-    return data.choices?.[0]?.message?.content ?? null;
-  } finally {
-    clearTimeout(timer);
+    return result;
+  } catch (err: any) {
+    console.error(`[LLM] Unexpected error in routeCall:`, err.message);
+    return null;
   }
 }
 
-// ─── Ollama Client ─────────────────────────────────────────
-
-async function callOllama(
-  prompt: string,
-  temperature: number,
-  maxTokens: number,
-): Promise<string> {
-  const baseUrl = env.OLLAMA_BASE_URL;
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
-
-  try {
-    const res = await fetch(`${baseUrl}/api/generate`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: env.LLM_MODEL,
-        prompt: `You are a senior technical recruiter and resume expert. Always respond with valid JSON only.\n\n${prompt}`,
-        stream: false,
-        options: {
-          temperature,
-          num_predict: maxTokens,
-        },
-      }),
-      signal: controller.signal,
-    });
-
-    if (!res.ok) {
-      const body = await res.text().catch(() => "");
-      const err = new Error(`Ollama ${res.status}: ${body.slice(0, 200)}`);
-      (err as any).status = res.status;
-      throw err;
-    }
-
-    const data = await res.json();
-    return data.response ?? null;
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-// ─── Helpers ───────────────────────────────────────────────
-
-function sleep(ms: number): Promise<void> {
-  return new Promise((r) => setTimeout(r, ms));
+/**
+ * Get the current status of all LLM providers.
+ * Useful for health check endpoints and debugging.
+ */
+export function getLLMStatus() {
+  ensureRouter();
+  return getRouterStatus();
 }
