@@ -39,3 +39,12 @@ coverage/
 
 # Misc
 *.pem
+
+# Python local files and caches
+embedding-service/app/__pycache__/
+embedding-service/data/chroma_db/
+embedding-service/data/faiss_*
+
+# Backend uploads and evaluation output
+backend/uploads/linkedin/
+backend/evaluation-output/
