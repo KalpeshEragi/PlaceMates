@@ -10,7 +10,7 @@
  * Uses the existing callLLM() from services/ai/llmClient.ts.
  */
 
-import { callLLM } from "../ai/llmClient";
+import { callLLMWithMetadata } from "../ai/llmClient";
 import type { RetrievedExample } from "./retrieverAgent";
 
 export interface DraftedResume {
@@ -44,6 +44,8 @@ export interface DrafterResult {
   resume: DraftedResume | null;
   rawResponse: string | null;
   success: boolean;
+  modelUsed?: string;     // e.g. "groq/llama-3.3-70b-versatile"
+  providerUsed?: string;  // e.g. "groq"
 }
 
 /**
@@ -76,10 +78,15 @@ export async function draft(params: {
       criticFeedback,
     );
 
-    const rawResponse = await callLLM(prompt, {
+    const result = await callLLMWithMetadata(prompt, {
       temperature: 0.4,
       maxTokens: 3000,
+      role: "drafter",
     });
+
+    const rawResponse = result?.content ?? null;
+    const modelUsed = result ? `${result.provider}/${result.model}` : undefined;
+    const providerUsed = result?.provider;
 
     if (!rawResponse) {
       console.error("[Drafter] LLM returned null");
@@ -93,8 +100,8 @@ export async function draft(params: {
       return { resume: null, rawResponse, success: false };
     }
 
-    console.log(`[Drafter] Successfully generated resume for "${jobTitle}" at "${jobCompany}"`);
-    return { resume: parsed, rawResponse, success: true };
+    console.log(`[Drafter] ✅ Resume generated for "${jobTitle}" at "${jobCompany}" via ${modelUsed}`);
+    return { resume: parsed, rawResponse, success: true, modelUsed, providerUsed };
   } catch (err: any) {
     console.error("[Drafter] Error:", err.message);
     return { resume: null, rawResponse: null, success: false };

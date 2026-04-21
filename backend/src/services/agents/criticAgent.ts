@@ -12,7 +12,7 @@
  *  - Relevance (is the content targeted to this specific job?)
  */
 
-import { callLLM } from "../ai/llmClient";
+import { callLLMWithMetadata } from "../ai/llmClient";
 import type { DraftedResume } from "./drafterAgent";
 
 export interface CriticResult {
@@ -27,6 +27,8 @@ export interface CriticResult {
   };
   approved: boolean;
   success: boolean;
+  modelUsed?: string;
+  providerUsed?: string;
 }
 
 /**
@@ -48,10 +50,15 @@ export async function critique(params: {
   try {
     const prompt = buildCriticPrompt(resume, jobDescription, jobTitle);
 
-    const rawResponse = await callLLM(prompt, {
+    const result = await callLLMWithMetadata(prompt, {
       temperature: 0.2,
       maxTokens: 1500,
+      role: "critic",
     });
+
+    const rawResponse = result?.content ?? null;
+    const modelUsed = result ? `${result.provider}/${result.model}` : undefined;
+    const providerUsed = result?.provider;
 
     if (!rawResponse) {
       console.error("[Critic] LLM returned null — falling back to heuristic scoring");
@@ -66,13 +73,15 @@ export async function critique(params: {
 
     const approved = parsed.atsScore >= atsThreshold;
     console.log(
-      `[Critic] ATS Score: ${parsed.atsScore}/100 | Approved: ${approved} | Threshold: ${atsThreshold}`
+      `[Critic] ATS Score: ${parsed.atsScore}/100 | Approved: ${approved} | Threshold: ${atsThreshold} | via ${modelUsed}`
     );
 
     return {
       ...parsed,
       approved,
       success: true,
+      modelUsed,
+      providerUsed,
     };
   } catch (err: any) {
     console.error("[Critic] Error:", err.message);
