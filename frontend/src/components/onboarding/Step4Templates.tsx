@@ -41,7 +41,7 @@ export default function Step4Templates({ onNextAction }: { onNextAction: () => v
         if (cancelled) return;
         setPayload(data);
         setSelectedPortfolio(data.portfolioTemplateId ?? "p1");
-        setSelectedResume(data.resumeTemplateId ?? "r1");
+        setSelectedResume(data.resumeTemplateId ?? "arjun_mehta");
       } catch (e) {
         if (!cancelled) setLoadError((e as Error).message || "Failed to load your data.");
       }
@@ -124,8 +124,11 @@ export default function Step4Templates({ onNextAction }: { onNextAction: () => v
                       Selected
                     </div>
                   )}
-                  <div className="scale-[0.55] origin-top-left pointer-events-none h-[380px] overflow-hidden">
-                    <R data={payload.resumeData} />
+                  {/* Container set to height of unscaled version scaled down. 1000px * 0.45 = 450px roughly. */}
+                  <div className="relative h-[380px] overflow-hidden bg-gray-50 flex items-start justify-center">
+                    <div className="w-[800px] h-[1000px] scale-[0.45] origin-top pointer-events-none mt-2 shadow-sm rounded-sm overflow-hidden">
+                      <R data={payload.resumeData} />
+                    </div>
                   </div>
                   <div className="p-3 text-center text-sm font-medium border-t bg-muted/30">
                     {temp.label}
@@ -158,10 +161,12 @@ export default function Step4Templates({ onNextAction }: { onNextAction: () => v
                       Selected
                     </div>
                   )}
-                  <div className="scale-[0.45] origin-top-left pointer-events-none h-[420px] overflow-hidden bg-[#282c33]">
-                    <P data={portfolioData} />
+                  <div className="relative h-[320px] sm:h-[400px] overflow-hidden bg-[#282c33] flex items-start justify-center">
+                    <div className="w-[1000px] h-[1200px] scale-[0.35] sm:scale-[0.4] origin-top pointer-events-none overflow-hidden">
+                      <P data={portfolioData} />
+                    </div>
                   </div>
-                  <div className="p-3 text-center text-sm font-medium bg-muted/30">
+                  <div className="p-3 text-center text-sm font-medium border-t bg-muted/30">
                     {temp.label}
                   </div>
                 </div>

@@ -275,16 +275,16 @@ export default function StepPreviewEdit({ onNextAction }: { onNextAction: () => 
           <div className="space-y-6 lg:sticky lg:top-6 self-start max-h-[calc(100vh-4rem)] overflow-y-auto">
             <div>
               <p className="text-sm font-semibold mb-2">Resume preview</p>
-              <div className="rounded-lg border bg-white overflow-hidden shadow-sm">
-                <div className="scale-[0.5] origin-top-left w-[200%] min-h-[560px] pointer-events-none">
+              <div className="rounded-lg border bg-gray-50 flex items-start justify-center overflow-hidden shadow-sm h-[560px]">
+                <div className="scale-[0.5] origin-top w-[800px] h-[1000px] pointer-events-none mt-2 shadow-sm rounded-sm overflow-hidden">
                   <ResumeComponent data={resumeData} />
                 </div>
               </div>
             </div>
             <div>
               <p className="text-sm font-semibold mb-2">Portfolio preview</p>
-              <div className="rounded-lg border overflow-hidden shadow-sm bg-[#282c33]">
-                <div className="scale-[0.42] origin-top-left w-[238%] min-h-[520px] pointer-events-none">
+              <div className="rounded-lg border overflow-hidden shadow-sm bg-[#282c33] flex items-start justify-center h-[520px]">
+                <div className="scale-[0.4] origin-top w-[1000px] h-[1200px] pointer-events-none overflow-hidden">
                   <PortfolioComponent data={portfolioData} />
                 </div>
               </div>
