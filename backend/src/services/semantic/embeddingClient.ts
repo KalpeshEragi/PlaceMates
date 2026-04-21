@@ -198,3 +198,12 @@ export async function retrieveResumeExamples(
     top_k: topK,
   });
 }
+
+/** Check max cosine similarity of an embedding against all stored resumes. */
+export async function checkSimilarity(
+  embedding: number[],
+): Promise<{ maxSimilarity: number } | null> {
+  return request<{ maxSimilarity: number }>("/check-similarity", "POST", {
+    embedding,
+  });
+}

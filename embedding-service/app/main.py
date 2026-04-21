@@ -6,12 +6,14 @@ Endpoints:
   POST /embed/batch-jobs       — Embed a batch of job descriptions
   POST /search/semantic-match  — Cosine similarity search over job index
   POST /resume/retrieve        — Retrieve resume examples from ChromaDB
+  POST /check-similarity       — Check max cosine similarity against stored resumes
   GET  /health                 — Health check
 """
 
 import logging
 from contextlib import asynccontextmanager
 
+import numpy as np
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -27,6 +29,8 @@ from .models import (
     ResumeRetrieveRequest,
     ResumeRetrieveResponse,
     ResumeExample,
+    CheckSimilarityRequest,
+    CheckSimilarityResponse,
     HealthResponse,
 )
 from .embedder import embed_text, embed_batch, get_model, is_model_loaded
@@ -201,6 +205,78 @@ async def resume_retrieve(req: ResumeRetrieveRequest):
         )
     except Exception as e:
         logger.error(f"[resume/retrieve] Error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ── POST /check-similarity ─────────────────────────────────
+
+@app.post("/check-similarity", response_model=CheckSimilarityResponse)
+async def check_similarity(req: CheckSimilarityRequest):
+    """Check max cosine similarity of an embedding against all stored resumes.
+
+    Loads embeddings from:
+      1. ChromaDB (base_resumes / resume_examples collection)
+      2. PostgreSQL (GeneratedResume table)
+
+    Returns the maximum cosine similarity found.
+    """
+    try:
+        query = np.array(req.embedding, dtype=np.float32)
+        # Normalize query (should already be, but be safe)
+        query_norm = np.linalg.norm(query)
+        if query_norm > 0:
+            query = query / query_norm
+
+        all_embeddings: list[np.ndarray] = []
+
+        # 1. Load embeddings from ChromaDB (base resumes)
+        try:
+            store = get_resume_store()
+            if store.count() > 0:
+                collection = store._collection
+                chroma_data = collection.get(include=["embeddings"])
+                if chroma_data and chroma_data["embeddings"]:
+                    for emb in chroma_data["embeddings"]:
+                        all_embeddings.append(np.array(emb, dtype=np.float32))
+        except Exception as e:
+            logger.warning(f"[check-similarity] ChromaDB read failed: {e}")
+
+        # 2. Load embeddings from PostgreSQL (generated resumes)
+        if settings.DATABASE_URL:
+            try:
+                import psycopg2
+                conn = psycopg2.connect(settings.DATABASE_URL)
+                cur = conn.cursor()
+                cur.execute('SELECT embedding FROM "GeneratedResume" WHERE array_length(embedding, 1) > 0')
+                rows = cur.fetchall()
+                for row in rows:
+                    emb = row[0]
+                    if emb and len(emb) > 0:
+                        all_embeddings.append(np.array(emb, dtype=np.float32))
+                cur.close()
+                conn.close()
+            except Exception as e:
+                logger.warning(f"[check-similarity] PostgreSQL read failed: {e}")
+
+        # 3. Compute max cosine similarity
+        if not all_embeddings:
+            logger.info("[check-similarity] No existing embeddings found — returning 0.0")
+            return CheckSimilarityResponse(maxSimilarity=0.0)
+
+        matrix = np.vstack(all_embeddings)  # Shape: (N, 384)
+        # Normalize rows
+        norms = np.linalg.norm(matrix, axis=1, keepdims=True)
+        norms = np.where(norms == 0, 1, norms)  # Avoid division by zero
+        matrix = matrix / norms
+
+        similarities = matrix @ query  # Dot product = cosine sim (both normalized)
+        max_sim = float(np.max(similarities))
+
+        logger.info(f"[check-similarity] Checked {len(all_embeddings)} embeddings, max similarity = {max_sim:.4f}")
+        return CheckSimilarityResponse(maxSimilarity=round(max_sim, 4))
+
+    except Exception as e:
+        logger.error(f"[check-similarity] Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 

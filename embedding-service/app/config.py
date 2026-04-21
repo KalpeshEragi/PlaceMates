@@ -25,6 +25,9 @@ class Settings:
     CHROMA_PERSIST_DIR: str = os.getenv("CHROMA_PERSIST_DIR", "./data/chroma_db")
     CHROMA_COLLECTION_NAME: str = os.getenv("CHROMA_COLLECTION", "resume_examples")
 
+    # ── PostgreSQL (for GeneratedResume table) ────────────────
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "")
+
     # ── Search defaults ─────────────────────────────────────
     DEFAULT_TOP_K: int = int(os.getenv("DEFAULT_TOP_K", "20"))
     SIMILARITY_THRESHOLD: float = float(os.getenv("SIMILARITY_THRESHOLD", "0.35"))
