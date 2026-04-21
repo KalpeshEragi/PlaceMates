@@ -113,6 +113,12 @@ export const generateResume = async (req: Request, res: Response) => {
     let jobTitle = rawJobTitle;
     let jobCompany = rawJobCompany;
 
+    // Fast-exit: If node 5 returned [skipped: true], jobId is missing, so we must NOT generate a resume
+    if (jobDescription === "auto" && !jobId) {
+      console.log(`[generateResume] user=${userId} skipped (No jobId provided)`);
+      return res.status(200).json({ success: true, skipped: true, message: "No jobId provided — skipping resume generation." });
+    }
+
     if (jobDescription === "auto" && jobId) {
       const job = await prisma.job.findUnique({ where: { id: jobId } });
       if (job) {
@@ -176,6 +182,8 @@ export const generateResume = async (req: Request, res: Response) => {
           jobCompany: jobCompany || "Company",
           domain: userProfile.summary?.primaryDomain || "Full Stack Developer",
           experienceLevel: userProfile.jobPreferences?.experienceLevel || "Entry",
+          jobId: jobId || undefined,
+          userId: userProfile.id,
         });
 
         if (ragResult) {
@@ -303,7 +311,7 @@ export const generateResume = async (req: Request, res: Response) => {
     const pdfBuffer = await generateResumePDF(finalResumeData);
     console.log(`[generateResume] PDF generated (${pdfBuffer.length} bytes)`);
 
-    // 2. Upload PDF to Cloudinary
+    // 2. Upload PDF to Cloudinary (using Image endpoint bypasses the Free Tier PDF raw restrictions)
     const publicId = `${userId}_${jobId || "general"}_${Date.now()}`;
     const resumeUrl = await uploadRawToCloudinary(
       pdfBuffer,
@@ -491,56 +499,95 @@ export const triggerPlacemate = async (req: Request, res: Response) => {
 // ─────────────────────────────────────────────────────────────
 export const bulkUpsertJobs = async (req: Request, res: Response) => {
   try {
-    const { jobs } = req.body;
-    if (!Array.isArray(jobs)) {
-      return res.status(400).json({ error: "jobs array is required" });
+    // 1. Defensively parse jobs if it arrived as a string
+    let parsedJobs = req.body.jobs;
+    if (typeof parsedJobs === "string") {
+      try {
+        parsedJobs = JSON.parse(parsedJobs);
+      } catch (parseError) {
+        return res.status(400).json({ error: "Invalid JSON format for jobs" });
+      }
     }
 
-    const upsertedJobs = await Promise.all(
-      jobs.map(async (job: any) => {
-        // Validate / Parse date
-        const postedAtStr = job.postedAt || new Date().toISOString();
-        let postedAtDate = new Date(postedAtStr);
-        if (isNaN(postedAtDate.getTime())) {
-           postedAtDate = new Date();
+    if (!Array.isArray(parsedJobs)) {
+      return res.status(400).json({ error: "req.body.jobs must be an array" });
+    }
+
+    // 2. Deduplicate jobs by link to prevent Prisma Unique Constraint errors (P2002) in a single batch
+    const uniqueJobsMap = new Map();
+    for (const job of parsedJobs) {
+      if (job && typeof job.link === "string" && job.link.trim() !== "") {
+        uniqueJobsMap.set(job.link, job);
+      }
+    }
+    const uniqueJobs = Array.from(uniqueJobsMap.values());
+
+    const upsertedJobs: any[] = [];
+    const errors: any[] = [];
+
+    // 3. Process sequentially (for...of) to prevent connection pool exhaustion and parallel upsert race conditions
+    for (const job of uniqueJobs) {
+      try {
+        // 4. Strict Validation & Type Casting
+        // Objects passing truthiness checks into Prisma String fields cause "Expected String, provided Object"
+        const safeTitle = typeof job.title === "string" ? job.title : String(job.title || "Unknown Title");
+        const safeCompany = typeof job.company === "string" ? job.company : String(job.company || "Unknown Company");
+        const safeLocation = typeof job.location === "string" ? job.location : String(job.location || "Unknown Location");
+        const safeDescription = typeof job.description === "string" ? job.description : String(job.description || "");
+
+        let postedAtDate = new Date();
+        if (typeof job.postedAt === "string" || typeof job.postedAt === "number") {
+          const parsed = new Date(job.postedAt);
+          if (!isNaN(parsed.getTime())) {
+            postedAtDate = parsed;
+          }
         }
 
-        if (!job.link) return null; // safety check
-        
-        return prisma.job.upsert({
+        const upserted = await prisma.job.upsert({
           where: { link: job.link },
           create: {
-            title: job.title || "Unknown Title",
-            company: job.company || "Unknown Company",
-            location: job.location || "Unknown Location",
-            description: job.description || "",
+            title: safeTitle,
+            company: safeCompany,
+            location: safeLocation,
+            description: safeDescription,
             link: job.link,
             postedAt: postedAtDate,
-            rawData: job.rawData || {},
+            rawData: typeof job.rawData === "object" && job.rawData !== null ? job.rawData : {},
           },
           update: {
-            title: job.title || "Unknown Title",
-            company: job.company || "Unknown Company",
-            location: job.location || "Unknown Location",
-            description: job.description || "",
+            title: safeTitle,
+            company: safeCompany,
+            location: safeLocation,
+            description: safeDescription,
             postedAt: postedAtDate,
-            rawData: job.rawData || {},
+            rawData: typeof job.rawData === "object" && job.rawData !== null ? job.rawData : {},
           },
         });
-      })
-    );
+        upsertedJobs.push(upserted);
 
-    const validJobs = upsertedJobs.filter(Boolean);
+      } catch (err: any) {
+        console.error(`[bulkUpsertJobs] Failed to upsert job link ${job.link}:`, err.message);
+        errors.push({ link: job.link, error: err.message });
+      }
+    }
 
     // NEW (Phase 4): Best-effort embed new jobs (non-blocking, fire-and-forget)
-    const newJobIds = validJobs.map((j: any) => j.id);
-    semanticMatchingService.embedNewJobs(newJobIds).catch((err) => {
-      console.warn("[bulkUpsertJobs] Background embedding failed (non-critical):", err.message);
-    });
+    if (upsertedJobs.length > 0) {
+      const newJobIds = upsertedJobs.map((j) => j.id);
+      semanticMatchingService.embedNewJobs(newJobIds).catch((err) => {
+        console.warn("[bulkUpsertJobs] Background embedding failed (non-critical):", err.message);
+      });
+    }
 
-    return res.status(200).json({ success: true, count: validJobs.length, jobs: validJobs });
+    return res.status(200).json({ 
+      success: true, 
+      count: upsertedJobs.length, 
+      errorsCount: errors.length,
+      jobs: upsertedJobs.map(j => ({ id: j.id, link: j.link })),
+      errors: errors.slice(0, 10), // Return sample of errors for debugging
+    });
   } catch (error) {
-    console.error("[bulkUpsertJobs] Error:", error);
+    console.error("[bulkUpsertJobs] Fatal Error:", error);
     return res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
@@ -583,7 +630,7 @@ export const semanticMatchForN8n = async (req: Request, res: Response) => {
       data: { status: "processing" },
     });
 
-    // Run semantic matching pipeline
+    // Run semantic matching pipeline (now includes post-filtering by recency + preferences)
     const matches = await semanticMatchingService.matchJobsForUser(userId);
 
     if (matches?.length) {
@@ -595,26 +642,32 @@ export const semanticMatchForN8n = async (req: Request, res: Response) => {
             jobId: m.jobId,
             matchScore: Math.round(m.score * 100),
             semanticScore: m.score,
+            keywordScore: m.keywordScore,
             matchMethod: "semantic",
           },
           update: {
             matchScore: Math.round(m.score * 100),
             semanticScore: m.score,
+            keywordScore: m.keywordScore,
             matchMethod: "semantic",
           },
         });
       }
+      console.log(`[semanticMatchForN8n] Saved ${matches.length} filtered matches for user=${userId}`);
+    } else {
+      console.log(`[semanticMatchForN8n] No matches survived post-filtering for user=${userId}`);
     }
 
-    // Always return HTTP 200 so n8n continues to resume generation
+    // Always return HTTP 200 so n8n continues to the next node
     return res.status(200).json({
       success: true,
       matches: matches ?? [],
       method: matches ? "semantic" : "keyword",
-      topK: 20,
+      topK: matches?.length ?? 0,
+      filtered: true,   // Signal to n8n that these are already post-filtered
     });
   } catch (err) {
     console.error("[semanticMatchForN8n] Error:", err);
-    return res.status(200).json({ success: false, matches: [], method: "keyword" });
+    return res.status(200).json({ success: false, matches: [], method: "keyword", topK: 0, filtered: true });
   }
 };
