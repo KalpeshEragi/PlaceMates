@@ -6,12 +6,16 @@
 
 import puppeteer from "puppeteer";
 import { buildResumeHTML, ResumeData } from "./resumeTemplate";
+import { validateResumeData } from "./resumeDataValidator";
 
 /**
- * Takes structured resume data, builds HTML, and renders it to a PDF buffer.
+ * Takes structured resume data, validates/sanitizes it, builds HTML,
+ * and renders it to a PDF buffer.
  */
 export async function generateResumePDF(resumeData: ResumeData): Promise<Buffer> {
-  const html = buildResumeHTML(resumeData);
+  // ── Validate & sanitize all data before rendering ──────
+  const sanitizedData = validateResumeData(resumeData);
+  const html = buildResumeHTML(sanitizedData);
 
   const browser = await puppeteer.launch({
     headless: true,
