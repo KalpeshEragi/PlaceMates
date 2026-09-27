@@ -46,25 +46,35 @@ function OnboardingFlow() {
           return;
         }
 
-        if (!user.githubConnected || status.onboardingStage === "new") {
+        if (!user.resumeUploaded && (!user.githubConnected || status.onboardingStage === "new")) {
           setStep(1);
-        } else if (!user.linkedinImported || status.onboardingStage === "github_connected") {
+        } else if (!user.resumeUploaded && (!user.linkedinImported || status.onboardingStage === "github_connected")) {
           setStep(2);
         } else if (status.onboardingStage === "linkedin_imported") {
           setStep(3);
         } else if (status.onboardingStage === "ready") {
-          if (!status.portfolioQuizCompleted) {
-            if (status.selectedProjectCount >= 5) {
-              setStep(5);
+          if (status.resumeUploaded) {
+            if (status.onboardingOutputFinalized === true) {
+              setStep(8);
+            } else if (!status.portfolioTemplateId || !status.resumeTemplateId) {
+              setStep(6);
             } else {
-              setStep(4);
+              setStep(7);
             }
-          } else if (status.onboardingOutputFinalized === true) {
-            setStep(8);
-          } else if (!status.portfolioTemplateId || !status.resumeTemplateId) {
-            setStep(6);
           } else {
-            setStep(7);
+            if (!status.portfolioQuizCompleted) {
+              if (status.selectedProjectCount > 0) {
+                setStep(5);
+              } else {
+                setStep(4);
+              }
+            } else if (status.onboardingOutputFinalized === true) {
+              setStep(8);
+            } else if (!status.portfolioTemplateId || !status.resumeTemplateId) {
+              setStep(6);
+            } else {
+              setStep(7);
+            }
           }
         } else {
           setStep(8);
@@ -97,7 +107,22 @@ function OnboardingFlow() {
     case 2:
       return <Step2LinkedinUpload onNext={() => setStep(3)} />;
     case 3:
-      return <Step2Processing onNextAction={() => setStep(4)} />;
+      return (
+        <Step2Processing
+          onNextAction={async () => {
+            try {
+              const status = await onboardingApi.getStatus();
+              if (status.resumeUploaded) {
+                setStep(6);
+              } else {
+                setStep(4);
+              }
+            } catch {
+              setStep(4);
+            }
+          }}
+        />
+      );
     case 4:
       return <Step3SelectProjects onNextAction={() => setStep(5)} />;
     case 5:
