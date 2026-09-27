@@ -27,6 +27,8 @@ import { GroqProvider } from "./providers/groqProvider";
 import { TogetherProvider } from "./providers/togetherProvider";
 import { CerebrasProvider } from "./providers/cerebrasProvider";
 import { OllamaProvider } from "./providers/ollamaProvider";
+import { OpenAIProvider } from "./providers/openaiProvider";
+import { GeminiProvider } from "./providers/geminiProvider";
 
 // ─── Provider State Tracking ───────────────────────────────
 
@@ -62,6 +64,28 @@ export function initializeRouter(): void {
   if (initialized) return;
 
   console.log("[ModelRouter] Initializing multi-provider router...");
+
+  // ── Register OpenAI (GPT-4o-mini) ──────────────────────
+  if (env.OPENAI_API_KEY) {
+    const openai = new OpenAIProvider({
+      apiKey: env.OPENAI_API_KEY,
+      model: env.OPENAI_MODEL,
+      tpmLimit: env.OPENAI_TPM_LIMIT,
+      rpmLimit: env.OPENAI_RPM_LIMIT,
+    });
+    registerProvider("openai", openai);
+  }
+
+  // ── Register Google Gemini ─────────────────────────────
+  if (env.GEMINI_API_KEY) {
+    const gemini = new GeminiProvider({
+      apiKey: env.GEMINI_API_KEY,
+      model: env.GEMINI_MODEL,
+      tpmLimit: env.GEMINI_TPM_LIMIT,
+      rpmLimit: env.GEMINI_RPM_LIMIT,
+    });
+    registerProvider("gemini", gemini);
+  }
 
   // ── Register Groq ──────────────────────────────────────
   if (env.GROQ_API_KEY) {
@@ -112,25 +136,24 @@ export function initializeRouter(): void {
   routeConfigs = {
     drafter: {
       role: "drafter",
-      // Drafter needs quality: prefer 70B models, fallback to local
+      // Drafter needs best quality: premium models first, then free fallbacks
       providerNames: buildFallbackChain(
-        ["groq", "cerebras", "together", "ollama"],
+        ["gemini", "openai", "groq", "together", "cerebras", "ollama"],
         allProviderNames
       ),
     },
     critic: {
       role: "critic",
-      // Critic is scoring/evaluation: can use smaller models
-      // Prioritize together (if available, uses 7B) → groq → cerebras → ollama
+      // Critic evaluates — use a DIFFERENT model family for unbiased scoring
       providerNames: buildFallbackChain(
-        ["together", "groq", "cerebras", "ollama"],
+        ["openai", "gemini", "together", "groq", "cerebras", "ollama"],
         allProviderNames
       ),
     },
     default: {
       role: "default",
       providerNames: buildFallbackChain(
-        ["groq", "cerebras", "together", "ollama"],
+        ["gemini", "openai", "groq", "together", "cerebras", "ollama"],
         allProviderNames
       ),
     },
