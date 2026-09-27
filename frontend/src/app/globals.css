@@ -54,6 +54,31 @@
   --mint-soft: hsl(160 45% 96%);
 }
 
+.dark {
+  --background: hsl(230 25% 9%);
+  --foreground: hsl(230 10% 92%);
+  --card: hsl(230 20% 12%);
+  --card-foreground: hsl(230 10% 92%);
+  --popover: hsl(230 20% 12%);
+  --popover-foreground: hsl(230 10% 92%);
+  --primary: hsl(230 75% 62%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(230 20% 18%);
+  --secondary-foreground: hsl(230 10% 85%);
+  --muted: hsl(230 15% 16%);
+  --muted-foreground: hsl(230 10% 55%);
+  --accent: hsl(160 55% 45%);
+  --accent-foreground: hsl(0 0% 100%);
+  --destructive: hsl(0 62% 55%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(230 15% 20%);
+  --input: hsl(230 15% 20%);
+  --ring: hsl(230 75% 62%);
+
+  --indigo-soft: hsl(230 30% 14%);
+  --mint-soft: hsl(160 20% 13%);
+}
+
 @layer base {
   * {
     border-color: var(--border);
