@@ -34,6 +34,7 @@ export interface MeResponse {
   githubConnected: boolean;
   githubLogin: string | null;
   linkedinImported: boolean;
+  resumeUploaded: boolean;
   createdAt: string;
   profile: {
     name: string | null;

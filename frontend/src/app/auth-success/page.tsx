@@ -25,10 +25,14 @@ function AuthSuccessHandler() {
                 login(token);
 
                 // 2. Verify token by fetching profile
-                await authApi.getMe();
+                const user = await authApi.getMe();
 
-                // 3. Always enter deterministic onboarding flow
-                router.replace("/onboarding");
+                // 3. Conditional redirect based on user state
+                if (user.githubConnected || user.resumeUploaded) {
+                    router.replace("/dashboard");
+                } else {
+                    router.replace("/onboarding");
+                }
 
             } catch (err) {
                 console.error(err);

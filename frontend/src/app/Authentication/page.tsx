@@ -24,7 +24,13 @@ export default function AuthenticationPage() {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
-        if (!loading && user) router.replace("/dashboard");
+        if (!loading && user) {
+            if (user.githubConnected || user.resumeUploaded) {
+                router.replace("/dashboard");
+            } else {
+                router.replace("/onboarding");
+            }
+        }
     }, [user, loading, router]);
 
     useEffect(() => {
