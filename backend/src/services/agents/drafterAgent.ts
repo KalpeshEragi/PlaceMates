@@ -118,87 +118,120 @@ function buildDrafterPrompt(
   examples: RetrievedExample[],
   criticFeedback?: string,
 ): string {
-  let prompt = `You are a senior resume writer specializing in ATS-optimized resumes for tech jobs.
+  let prompt = `You are a STRICT, high-accuracy resume generation system.
 
 ## YOUR TASK
-Generate a tailored resume for the following job posting. The resume must be optimized for ATS (Applicant Tracking Systems) while remaining natural and compelling.
+Generate a COMPLETE, CLEAN, FACTUALLY CORRECT, and JOB-SPECIFIC resume using ONLY the provided candidate data and job description.
 
 ## TARGET JOB
 - Title: ${jobTitle}
 - Company: ${jobCompany}
 - Description: ${jobDescription}
 
-## CANDIDATE PROFILE
+## CANDIDATE PROFILE (THIS IS THE ONLY SOURCE OF TRUTH)
 ${userProfile}
+
 `;
 
   // Add RAG examples if available
   if (examples.length > 0) {
-    prompt += `\n## REFERENCE RESUME EXAMPLES (use these as quality benchmarks — do NOT copy them)\n`;
-    for (const ex of examples.slice(0, 3)) {
-      prompt += `\n### Example (${ex.domain}, ${ex.experienceLevel})
-- Summary: ${ex.summary}
-- Skills: ${ex.skills.join(", ")}
+    prompt += `\n## REFERENCE EXAMPLES (use ONLY as quality/style benchmarks — do NOT copy content)\n`;
+    for (const ex of examples.slice(0, 2)) {
+      prompt += `\n### Style Example (${ex.domain}, ${ex.experienceLevel})
+- Summary style: ${ex.summary.slice(0, 150)}...
+- Bullet style: ${ex.experience[0]?.description?.slice(0, 120) || "N/A"}
 `;
-      if (ex.experience.length > 0) {
-        const exp = ex.experience[0];
-        prompt += `- Experience: ${exp.role} at ${exp.company}: ${exp.description}\n`;
-      }
-      if (ex.projects.length > 0) {
-        const proj = ex.projects[0];
-        prompt += `- Project: ${proj.name}: ${proj.description}\n`;
-      }
     }
   }
 
   // Add critic feedback for iterative refinement
   if (criticFeedback) {
-    prompt += `\n## CRITIC FEEDBACK (from previous draft — address these issues)
+    prompt += `\n## CRITIC FEEDBACK (address these issues in this draft)
 ${criticFeedback}
 `;
   }
 
   prompt += `
+## 🚨 NON-NEGOTIABLE RULES
+
+### RULE 1: NO FAKE DATA
+- Do NOT invent companies, roles, or experience
+- Do NOT assume "5+ years experience" or any duration not in the data
+- Do NOT add skills, tools, or technologies the candidate does not have
+- If the job requires "Docker" but the candidate has no Docker experience → DO NOT add Docker
+
+### RULE 2: NO POISON VALUES
+- Never output "null", "undefined", "N/A", "Not Provided", "None", or "TBD"
+- If a field is missing from candidate data → omit it entirely or leave it as empty string ""
+- Dates: use ONLY exact dates from candidate data. If missing, use ""
+
+### RULE 3: USE REAL PROJECT NAMES
+- Use the candidate's ACTUAL project names as given
+- If a project name has hyphens or is very long, use a SHORT readable version
+  Example: "nlp-based-computational-analysis-of-patent-novelty" → "Patent Novelty Analysis Tool"
+- Keep project names SHORT (max 5-6 words)
+
+### RULE 4: UNIQUE BULLETS — NO REPETITION
+- Each bullet point MUST be unique and describe a DIFFERENT aspect of the project
+- NEVER repeat the same sentence structure across bullets
+- BAD: "Engineered X for Y using Z, enabling secure and scalable operations" (repeated 4 times)
+- GOOD: Each bullet covers a different feature, challenge, or achievement
+- Write 2-3 bullets per project, each about a DIFFERENT thing the candidate did
+
+### RULE 5: JOB ALIGNMENT (WITHOUT FABRICATION)
+- Rephrase and highlight relevant skills from candidate data that match the job
+- Prioritize projects and experience most relevant to this job
+- Mirror job keywords NATURALLY — do not force-fit them
+- If the candidate is a student with limited experience, focus on Projects and Skills
+
+### RULE 6: SKILLS SELECTION
+- Include ONLY skills the candidate actually has
+- Limit to 12-18 most relevant skills for THIS job
+- Do NOT list every skill — prioritize job-relevant ones first
+
+### RULE 7: COMPLETENESS
+- Include ALL sections the candidate has data for: Summary, Skills, Experience, Projects, Education, Certifications, Awards
+- Do NOT skip any section that has real data
+
 ## OUTPUT FORMAT
-Return ONLY valid JSON with this exact structure:
+Return ONLY valid JSON (no markdown fences, no explanation):
 {
-  "professionalSummary": "2-3 sentence tailored summary",
-  "skills": ["Skill1", "Skill2", ...],
+  "professionalSummary": "2-3 sentence summary tailored to this job. Do NOT repeat this text anywhere else in the resume.",
+  "skills": ["Skill1", "Skill2"],
   "projects": [
     {
-      "name": "Project Name",
+      "name": "Short Readable Project Name",
       "techStack": ["Tech1", "Tech2"],
-      "bullets": ["Action-oriented bullet point with quantified impact", ...]
+      "bullets": ["Unique bullet about feature A", "Unique bullet about feature B"]
     }
   ],
   "experience": [
     {
-      "role": "Job Title",
-      "company": "Company Name",
-      "duration": "Start - End",
-      "bullets": ["Action-oriented bullet point with quantified impact", ...]
+      "role": "Exact Role from candidate data",
+      "company": "Exact Company from candidate data",
+      "duration": "Exact dates from candidate data or empty string",
+      "bullets": ["What they actually did — no fabrication"]
     }
   ],
   "education": [
     {
-      "degree": "Degree Name",
-      "institution": "University",
-      "year": "Year",
-      "details": "GPA/Honors if relevant"
+      "degree": "Exact degree",
+      "institution": "Exact institution",
+      "year": "Graduation year or date range",
+      "details": "GPA or honors if provided, otherwise omit"
     }
   ],
-  "certifications": [{"name": "Cert Name", "issuer": "Issuer"}],
-  "awards": ["Award description"]
+  "certifications": [{"name": "Exact cert name", "issuer": "Exact issuer"}],
+  "awards": ["Exact award as provided"]
 }
 
-## CRITICAL RULES
-1. Start every bullet with a strong action verb (Built, Engineered, Optimized, Reduced, etc.)
-2. Include quantifiable metrics where possible (%, numbers, time saved)
-3. Mirror keywords from the job description naturally
-4. Keep the summary concise and tailored to THIS specific job
-5. Only include skills the candidate actually has
-6. Limit to top 3-5 most relevant projects
-7. Use the candidate's REAL data — do not fabricate experience or skills`;
+## SELF-CHECK BEFORE OUTPUT
+1. Did I add anything NOT in the candidate profile? → REMOVE IT
+2. Did I include all candidate data? → ADD if missing
+3. Are all bullets UNIQUE (no repetition)? → REWRITE if duplicated
+4. Are project names short and readable? → SHORTEN if too long
+5. Is "null", "undefined", "N/A" anywhere? → REMOVE IT
+6. Is the summary written only ONCE? → Check`;
 
   return prompt;
 }

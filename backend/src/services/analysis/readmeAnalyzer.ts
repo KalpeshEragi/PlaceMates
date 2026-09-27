@@ -40,9 +40,10 @@ const STOP_WORDS = new Set([
 const DOMAIN_SIGNALS: Record<Domain, RegExp> = {
   Frontend: /\b(react|vue|angular|svelte|html|css|scss|tailwind|webpack|vite|ui|interface|component|browser|frontend|client.?side|spa|pwa|next\.?js|nuxt|gatsby|styled.?components|material.?ui|chakra)\b/i,
   Backend:  /\b(node|express|fastapi|django|flask|spring|rails|api|rest|graphql|grpc|server|endpoint|middleware|microservice|backend|server.?side|postgresql|mysql|mongodb|redis|prisma|orm|sql)\b/i,
-  ML:       /\b(machine.?learning|deep.?learning|neural.?network|tensorflow|pytorch|keras|scikit|pandas|numpy|model|train|predict|inference|dataset|accuracy|nlp|computer.?vision|reinforcement|transformer|llm|bert|gpt)\b/i,
+  "ML / AI": /\b(machine.?learning|deep.?learning|neural.?network|tensorflow|pytorch|keras|scikit|pandas|numpy|model|train|predict|inference|dataset|accuracy|nlp|computer.?vision|reinforcement|transformer|llm|bert|gpt)\b/i,
   DevOps:   /\b(docker|kubernetes|k8s|terraform|ansible|jenkins|github.?actions|ci.?cd|pipeline|deploy|infrastructure|cloud|aws|gcp|azure|devops|helm|nginx|traefik|monitoring|prometheus|grafana)\b/i,
   Mobile:   /\b(android|ios|swift|kotlin|flutter|react.?native|mobile|app.?store|play.?store|xcode|gradle|expo)\b/i,
+  "Full Stack": /$/, // usually inferred by domainDetector, not matched as a primary signal here
   Other:    /$/,  // never matches as a primary signal
 };
 

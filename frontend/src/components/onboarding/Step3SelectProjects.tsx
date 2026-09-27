@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { onboardingApi, type ProjectDto } from "@/lib/api/onboarding-api";
 
-const MIN = 5;
+const MIN = 1;
 const MAX = 6;
 
 export default function Step3SelectProjects({
@@ -114,7 +114,7 @@ export default function Step3SelectProjects({
           <p className="text-sm uppercase tracking-wide text-muted-foreground">Step 4 of 6</p>
           <h2 className="text-2xl font-semibold mt-1">Choose portfolio projects</h2>
           <p className="text-muted-foreground mt-2">
-            Pick {MIN}–{MAX} repositories from your top {projects.length}. These power your
+            Pick up to {MAX} repositories from your top {projects.length}. These power your
             portfolio bullets.
           </p>
         </div>

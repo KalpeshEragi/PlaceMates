@@ -17,6 +17,7 @@ export interface User {
     email: string;
     githubConnected: boolean;
     linkedinImported: boolean;
+    resumeUploaded: boolean;
     onboardingStage: string;
     profile?: {
         name?: string | null;

@@ -20,6 +20,8 @@ import internalRouter from "./routes/internal.js";
 import jobsRouter from "./routes/jobs.js";
 import evaluationRouter from "./routes/evaluation.js";
 import adminRouter from "./routes/admin.js";
+import resumeRouter from "./routes/resume.js";
+import insightsRouter from "./routes/insights.js";
 import { startScheduler } from "./services/scheduler.js";
 
 const app = express();
@@ -47,6 +49,8 @@ app.use("/api/internal", internalRouter);
 app.use("/api/jobs", jobsRouter);
 app.use("/api/evaluation", evaluationRouter);
 app.use("/api/admin", adminRouter);
+app.use("/api/resume", resumeRouter);
+app.use("/api/insights", insightsRouter);
 
 // ── Error handler (must be last) ──────────────────────────
 app.use(errorHandler);

@@ -17,6 +17,7 @@ export const env = {
     CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY || "",
     CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET || "",
     N8N_WEBHOOK_URL: process.env.N8N_WEBHOOK_URL || "https://placeholder-n8n/webhook/n8n/match-jobs",
+    N8N_SINGLE_USER_WEBHOOK_URL: process.env.N8N_SINGLE_USER_WEBHOOK_URL || "",
     N8N_WEBHOOK_SECRET: process.env.N8N_WEBHOOK_SECRET || "",
     INTERNAL_API_KEY: process.env.INTERNAL_API_KEY || "",
     // ── LLM Provider Configuration ───────────────────────────
@@ -27,6 +28,18 @@ export const env = {
     LLM_PROVIDER: process.env.LLM_PROVIDER || "none",
     LLM_API_KEY: process.env.LLM_API_KEY || "",               // Legacy — used as GROQ_API_KEY fallback
     LLM_MODEL: process.env.LLM_MODEL || "llama-3.3-70b-versatile", // Legacy — used as GROQ_MODEL fallback
+
+    // ── OpenAI (GPT-4o-mini — $0.15/1M input tokens) ────────
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY || process.env.GPT_API_KEY || "",
+    OPENAI_MODEL: process.env.OPENAI_MODEL || "gpt-4o-mini",
+    OPENAI_TPM_LIMIT: parseInt(process.env.OPENAI_TPM_LIMIT || "200000", 10),
+    OPENAI_RPM_LIMIT: parseInt(process.env.OPENAI_RPM_LIMIT || "500", 10),
+
+    // ── Google Gemini (free 15 RPM) ─────────────────────────
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY || "",
+    GEMINI_MODEL: process.env.GEMINI_MODEL || "gemini-2.5-flash-preview-05-20",
+    GEMINI_TPM_LIMIT: parseInt(process.env.GEMINI_TPM_LIMIT || "1000000", 10),
+    GEMINI_RPM_LIMIT: parseInt(process.env.GEMINI_RPM_LIMIT || "15", 10),
 
     // ── Groq (free tier: ~6K TPM, 30 RPM) ───────────────────
     GROQ_API_KEY: process.env.GROQ_API_KEY || process.env.LLM_API_KEY || "",

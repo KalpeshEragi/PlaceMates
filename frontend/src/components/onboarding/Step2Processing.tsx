@@ -49,7 +49,7 @@ export default function Step2Processing({
 
         if (status.analysisStatus === "success" && status.onboardingStage === "ready") {
           setCurrentStep(4);
-          setStatusMessage("Ready. Continue to project selection...");
+          setStatusMessage(status.resumeUploaded ? "Ready. Continue to templates..." : "Ready. Continue to project selection...");
           setTimeout(() => onNextAction(), 700);
           return;
         }
@@ -92,11 +92,19 @@ export default function Step2Processing({
     try {
       setError(null);
       setCurrentStep(0);
-      setStatusMessage("Starting backend processing pipeline...");
+      setStatusMessage("Checking processing pipeline status...");
 
-      await onboardingApi.triggerGithubAnalysis();
-      setCurrentStep(2);
-      await onboardingApi.triggerLinkedinAnalysis();
+      const status = await onboardingApi.getStatus();
+      if (status.analysisStatus !== "running") {
+        setStatusMessage("Starting backend processing pipeline...");
+        if (status.onboardingStage !== "new" && !status.resumeUploaded) {
+          // Only trigger GH/LI if resume wasn't uploaded
+          await onboardingApi.triggerGithubAnalysis();
+          setCurrentStep(2);
+          await onboardingApi.triggerLinkedinAnalysis();
+        }
+      }
+
       setCurrentStep(3);
       setStatusMessage("Processing started. Waiting for completion...");
 

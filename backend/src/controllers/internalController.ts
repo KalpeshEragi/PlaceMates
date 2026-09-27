@@ -194,41 +194,51 @@ export const generateResume = async (req: Request, res: Response) => {
 
           // Convert RAG output to ResumeData format
           finalResumeData = {
-            professionalSummary: ragResult.resumeData.professionalSummary,
-            projects: ragResult.resumeData.projects.map((p) => ({
-              name: p.name,
-              techStack: p.techStack,
-              bullets: p.bullets,
+            professionalSummary: ragResult.resumeData.professionalSummary || "",
+            projects: (ragResult.resumeData.projects || []).map((p: any) => ({
+              name: typeof p.name === "string" ? p.name : String(p.name || ""),
+              techStack: Array.isArray(p.techStack) ? p.techStack.map(String) : [],
+              bullets: Array.isArray(p.bullets) ? p.bullets.map(String) : [],
             })),
-            experience: ragResult.resumeData.experience.map((e) => ({
-              role: e.role,
-              company: e.company,
-              startDate: e.duration?.split(" - ")[0] || e.duration || "",
-              endDate: e.duration?.split(" - ")[1] || null,
-              bullets: e.bullets,
-            })),
-            skills: ragResult.resumeData.skills,
-            education: ragResult.resumeData.education.map((e) => ({
-              institution: e.institution,
-              degree: e.degree,
-              field: null,
-              startDate: e.year,
-              endDate: e.year,
-              gpa: e.details || null,
-            })),
+            experience: (ragResult.resumeData.experience || []).map((e: any) => {
+              // Duration could be "Jan 2024 - Present" or separate start/end
+              const duration = typeof e.duration === "string" ? e.duration : "";
+              const parts = duration.split(/\s*[-–—]\s*/);
+              return {
+                role: typeof e.role === "string" ? e.role : String(e.role || ""),
+                company: typeof e.company === "string" ? e.company : String(e.company || ""),
+                startDate: e.startDate || parts[0] || "",
+                endDate: e.endDate || parts[1] || null,
+                bullets: Array.isArray(e.bullets) ? e.bullets.map(String) : (typeof e.bullets === "string" ? [e.bullets] : []),
+              };
+            }),
+            skills: Array.isArray(ragResult.resumeData.skills)
+              ? ragResult.resumeData.skills.map((s: any) => typeof s === "string" ? s : String(s?.name || s || ""))
+              : [],
+            education: (ragResult.resumeData.education || []).map((e: any) => {
+              const year = typeof e.year === "string" ? e.year : String(e.year || "");
+              return {
+                institution: typeof e.institution === "string" ? e.institution : String(e.institution || ""),
+                degree: typeof e.degree === "string" ? e.degree : String(e.degree || ""),
+                field: typeof e.field === "string" ? e.field : null,
+                startDate: e.startDate || "",
+                endDate: e.endDate || year || "",
+                gpa: typeof e.details === "string" ? e.details : (typeof e.gpa === "string" ? e.gpa : null),
+              };
+            }),
             profile: {
               name: userProfile.profile?.name || "",
               email: userProfile.email,
               github: userProfile.portfolio?.githubUrl || undefined,
               linkedin: userProfile.portfolio?.linkedinUrl || undefined,
             },
-            awards: ragResult.resumeData.awards?.map((a) => ({
-              title: typeof a === "string" ? a : a,
-            })) || [],
-            certifications: ragResult.resumeData.certifications?.map((c) => ({
-              name: c.name,
-              issuer: c.issuer,
-            })) || [],
+            awards: (ragResult.resumeData.awards || []).map((a: any) => ({
+              title: typeof a === "string" ? a : (typeof a?.title === "string" ? a.title : String(a?.title || a?.name || "")),
+            })).filter((a: any) => a.title),
+            certifications: (ragResult.resumeData.certifications || []).map((c: any) => ({
+              name: typeof c === "string" ? c : (typeof c?.name === "string" ? c.name : String(c?.name || "")),
+              issuer: typeof c?.issuer === "string" ? c.issuer : "",
+            })).filter((c: any) => c.name),
           };
 
           console.log(`[generateResume] RAG pipeline succeeded: ATS=${atsScore}, iterations=${iterations}`);

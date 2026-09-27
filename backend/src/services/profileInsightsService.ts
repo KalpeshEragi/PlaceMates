@@ -280,22 +280,23 @@ function estimateExperienceLevel(
   // Score-based estimation
   let score = 0;
 
-  // Projects
-  if (projectCount >= 8) score += 3;
-  else if (projectCount >= 4) score += 2;
-  else if (projectCount >= 1) score += 1;
+  // Work experience is the ONLY way to get high scores
+  if (experienceCount >= 4) score += 8;
+  else if (experienceCount >= 2) score += 4;
+  else if (experienceCount >= 1) score += 1;
+
+  // Projects (diminished returns for sheer volume)
+  if (projectCount >= 10) score += 2;
+  else if (projectCount >= 3) score += 1;
 
   // Tech variety
-  if (techVariety >= 8) score += 3;
-  else if (techVariety >= 5) score += 2;
-  else if (techVariety >= 2) score += 1;
+  if (techVariety >= 10) score += 1;
 
-  // Work experience
-  if (experienceCount >= 3) score += 3;
-  else if (experienceCount >= 1) score += 2;
-
-  if (score >= 7) return "Advanced";
-  if (score >= 4) return "Intermediate";
+  // Advanced requires 10 points (e.g. 4+ exp and 10+ projects)
+  if (score >= 10) return "Advanced";
+  // Intermediate requires 5 points (e.g. 2+ exp and 3+ projects)
+  if (score >= 5) return "Intermediate";
+  
   return "Beginner";
 }
 
@@ -305,25 +306,53 @@ function estimateExperienceLevel(
 
 function computeProfileStrength(data: {
   hasSummary: boolean;
+  summaryLength: number;
   projectCount: number;
   skillCount: number;
-  hasExperience: boolean;
+  experienceCount: number;
   hasEducation: boolean;
+  educationCount: number;
   techDiversity: number;
+  hasPortfolio: boolean;
+  hasAvatar: boolean;
+  uniqueTechCount: number;
 }): number {
   let score = 0;
 
-  if (data.hasSummary) score += 10;
-  if (data.projectCount > 3) score += 20;
-  if (data.skillCount > 5) score += 20;
-  if (data.hasExperience) score += 20;
-  if (data.hasEducation) score += 10;
+  // ── Work experience (max 40) ──────────────────
+  // The absolute strongest indicator of profile maturity
+  if (data.experienceCount >= 4) score += 40;
+  else if (data.experienceCount >= 2) score += 20;
+  else if (data.experienceCount >= 1) score += 10;
 
-  // Tech diversity (unique domains used)
-  if (data.techDiversity >= 4) score += 20;
-  else if (data.techDiversity >= 3) score += 15;
-  else if (data.techDiversity >= 2) score += 10;
-  else if (data.techDiversity >= 1) score += 5;
+  // ── Projects (max 15) ─────────────────────────
+  if (data.projectCount >= 5) score += 15;
+  else if (data.projectCount >= 2) score += 8;
+  else if (data.projectCount >= 1) score += 4;
+
+  // ── Skills (max 10) ───────────────────────────
+  if (data.skillCount >= 10 && data.skillCount <= 25) score += 10;
+  else if (data.skillCount >= 5) score += 5;
+  else if (data.skillCount >= 1) score += 2;
+
+  // ── Education (max 10) ────────────────────────
+  if (data.educationCount >= 2) score += 10;
+  else if (data.educationCount >= 1) score += 5;
+
+  // ── Tech diversity — distinct domain coverage (max 10) ──
+  if (data.techDiversity >= 3) score += 10;
+  else if (data.techDiversity >= 2) score += 5;
+  else if (data.techDiversity >= 1) score += 2;
+
+  // ── Summary quality (max 10) ──────────────────
+  if (data.hasSummary) {
+    if (data.summaryLength >= 100) score += 10;
+    else if (data.summaryLength >= 50) score += 5;
+    else score += 2;
+  }
+
+  // ── Portfolio / socials (max 5) ───────────────
+  if (data.hasPortfolio) score += 5;
 
   return Math.min(score, 100);
 }
@@ -335,7 +364,7 @@ function computeProfileStrength(data: {
 export async function computeProfileInsights(
   userId: string,
 ): Promise<ProfileInsights> {
-  const [projects, skills, experiences, educations, summary] =
+  const [projects, skills, experiences, educations, summary, portfolio] =
     await Promise.all([
       prisma.project.findMany({
         where: { userId },
@@ -360,6 +389,10 @@ export async function computeProfileInsights(
         where: { userId },
         select: { summaryText: true },
       }),
+      prisma.userPortfolio.findUnique({
+        where: { userId },
+        select: { githubUrl: true, linkedinUrl: true, websiteUrl: true },
+      }),
     ]);
 
   // 1. Domain detection
@@ -383,12 +416,7 @@ export async function computeProfileInsights(
     for (const t of p.techStack) uniqueTechs.add(t.toLowerCase());
   }
 
-  // Unique domains
-  const uniqueDomains = new Set<string>();
-  for (const [, count] of Object.entries(skillDistribution)) {
-    if (count > 0) uniqueDomains.add("counted");
-  }
-  // Better: count actual distinct domains
+  // Count actual distinct domains
   const domainSet = new Set<string>();
   for (const p of projects) {
     for (const t of p.techStack) {
@@ -396,22 +424,37 @@ export async function computeProfileInsights(
       if (d) domainSet.add(d);
     }
   }
+  // Also count domains from skills
+  for (const s of skills) {
+    const d = s.domain ?? inferSkillDomain(s.name);
+    if (d && d !== "Other") domainSet.add(d);
+  }
 
-  // 6. Experience level
+  // 7. Experience level
   const experienceLevel = estimateExperienceLevel(
     projects.length,
     uniqueTechs.size,
     experiences.length,
   );
 
-  // 7. Profile strength
+  // 8. Profile strength — granular, weighted scoring
+  const summaryText = summary?.summaryText ?? "";
+  const hasPortfolio = Boolean(
+    portfolio?.githubUrl || portfolio?.linkedinUrl || portfolio?.websiteUrl,
+  );
+
   const profileStrength = computeProfileStrength({
-    hasSummary: Boolean(summary?.summaryText && summary.summaryText.length > 10),
+    hasSummary: summaryText.length > 10,
+    summaryLength: summaryText.length,
     projectCount: projects.length,
     skillCount: skills.length,
-    hasExperience: experiences.length > 0,
+    experienceCount: experiences.length,
     hasEducation: educations.length > 0,
+    educationCount: educations.length,
     techDiversity: domainSet.size,
+    hasPortfolio,
+    hasAvatar: false, // Not tracked yet
+    uniqueTechCount: uniqueTechs.size,
   });
 
   return {

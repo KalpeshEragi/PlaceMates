@@ -41,16 +41,36 @@ function getBarColor(domain: string): string {
 }
 
 function getStrengthColor(score: number): string {
-  if (score >= 80) return "hsl(160, 55%, 42%)";
+  if (score >= 85) return "hsl(160, 55%, 42%)";
+  if (score >= 70) return "hsl(100, 50%, 42%)";
   if (score >= 50) return "hsl(45, 80%, 45%)";
+  if (score >= 30) return "hsl(25, 75%, 50%)";
   return "hsl(0, 55%, 50%)";
 }
 
 function getStrengthLabel(score: number): string {
-  if (score >= 80) return "Excellent";
-  if (score >= 60) return "Strong";
+  if (score >= 85) return "Excellent";
+  if (score >= 70) return "Strong";
+  if (score >= 55) return "Good";
   if (score >= 40) return "Growing";
-  return "Getting Started";
+  if (score >= 25) return "Getting Started";
+  return "Needs Work";
+}
+
+function getStrengthHint(insights: ProfileInsights): string | null {
+  const hints: string[] = [];
+
+  if (insights.projectStats.totalProjects < 3)
+    hints.push("add more projects (3+ recommended)");
+  if (Object.keys(insights.skillDistribution).length < 2)
+    hints.push("diversify your skills across domains");
+  if (insights.topTechnologies.length < 3)
+    hints.push("use more technologies in your projects");
+  if (insights.experienceLevel === "Beginner")
+    hints.push("add work experience or internships");
+
+  if (hints.length === 0) return null;
+  return `To improve: ${hints.slice(0, 2).join(" and ")}.`;
 }
 
 function getContributionLabel(summary: string): {
@@ -193,11 +213,12 @@ export function ProfileInsightsPanel({ insights, loading }: Props) {
               style={{ width: mounted ? `${insights.profileStrength}%` : "0%" }}
             />
           </div>
-          {insights.profileStrength < 80 && (
-            <p className={styles.strengthHint}>
-              Add more projects, skills, or experience to boost your score.
-            </p>
-          )}
+          {(() => {
+            const hint = getStrengthHint(insights);
+            return hint ? (
+              <p className={styles.strengthHint}>{hint}</p>
+            ) : null;
+          })()}
         </div>
       </div>
 

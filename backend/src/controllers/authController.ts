@@ -37,6 +37,7 @@ export async function getMe(req: AuthRequest, res: Response) {
       githubConnected: true,
       githubLogin: true,
       linkedinImported: true,
+      resumeUploaded: true,
       createdAt: true,
       profile: {
         select: { name: true, avatarUrl: true },

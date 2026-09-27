@@ -85,6 +85,7 @@ export interface IntegrationStatus {
   githubConnected: boolean;
   githubLogin: string | null;
   linkedinImported: boolean;
+  resumeUploaded: boolean;
   onboardingStage: "new" | "github_connected" | "linkedin_imported" | "ready";
   analysisStatus: "idle" | "running" | "success" | "failed";
   analysisError: string | null;

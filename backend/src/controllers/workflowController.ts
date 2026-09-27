@@ -44,18 +44,11 @@ export const triggerWorkflow = async (req: AuthRequest, res: Response) => {
       });
     }
 
-    // 2. Check if there's already a pending/processing run
-    const activeRun = await prisma.workflowRun.findFirst({
+    // 2. Abandon any existing pending/processing runs for this user
+    await prisma.workflowRun.updateMany({
       where: { userId, status: { in: ["pending", "processing"] } },
+      data: { status: "failed", error: "Abandoned by new manual trigger" },
     });
-
-    if (activeRun) {
-      return res.status(409).json({
-        success: false,
-        message: "A workflow is already in progress",
-        requestId: activeRun.requestId,
-      });
-    }
 
     // 3. Create WorkflowRun record
     const requestId = randomUUID();
@@ -68,20 +61,28 @@ export const triggerWorkflow = async (req: AuthRequest, res: Response) => {
       },
     });
 
-    // 4. Build payload for n8n
-    const n8nPayload = buildN8nPayload(requestId, user);
+    // 4. Build payload for n8n (single-user path)
+    const singleUserPayload = {
+      requestId,
+      userId: user.id,
+      email: user.email,
+      callbackUrl: `${env.BACKEND_URL}/api/workflow/n8n-result`,
+    };
 
-    // 5. Trigger n8n webhook (fire-and-forget — don't block the response)
+    // 5. Trigger n8n single-user webhook (fire-and-forget — don't block the response)
+    // Use the single-user webhook URL so n8n skips "Fetch All Users" and runs
+    // the matching pipeline directly for this user only.
+    const webhookUrl = env.N8N_SINGLE_USER_WEBHOOK_URL || env.N8N_WEBHOOK_URL;
     axios
-      .post(env.N8N_WEBHOOK_URL, n8nPayload, {
+      .post(webhookUrl, singleUserPayload, {
         headers: {
           "Content-Type": "application/json",
-          "x-n8n-secret": env.N8N_WEBHOOK_SECRET,
+          "X-API-Key": env.N8N_WEBHOOK_SECRET,
         },
         timeout: 10000,
       })
       .then(() => {
-        console.log(`[Workflow] n8n triggered for requestId=${requestId}`);
+        console.log(`[Workflow] n8n single-user triggered for user=${user.id}, requestId=${requestId}`);
       })
       .catch(async (err) => {
         console.error(
