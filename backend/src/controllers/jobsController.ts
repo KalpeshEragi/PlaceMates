@@ -13,18 +13,11 @@ export const triggerMatching = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.userId!;
 
-    // 1. Check for already active workflow run
-    const activeRun = await prisma.workflowRun.findFirst({
+    // 1. Abandon any existing pending/processing runs for this user
+    await prisma.workflowRun.updateMany({
       where: { userId, status: { in: ["pending", "processing"] } },
+      data: { status: "failed", error: "Abandoned by new manual trigger" },
     });
-
-    if (activeRun) {
-      return res.status(409).json({
-        success: false,
-        message: "A workflow is already in progress",
-        requestId: activeRun.requestId,
-      });
-    }
 
     // 2. Create WorkflowRun record
     const requestId = randomUUID();
@@ -37,8 +30,8 @@ export const triggerMatching = async (req: AuthRequest, res: Response) => {
       },
     });
 
-    // 3. Trigger n8n webhook
-    const n8nWebhookUrl = `${env.N8N_WEBHOOK_URL}`;
+    // 3. Trigger n8n single-user webhook
+    const n8nWebhookUrl = env.N8N_SINGLE_USER_WEBHOOK_URL || env.N8N_WEBHOOK_URL;
     axios
       .post(
         n8nWebhookUrl,
@@ -56,7 +49,7 @@ export const triggerMatching = async (req: AuthRequest, res: Response) => {
         }
       )
       .then(() => {
-        console.log(`[triggerMatching] n8n triggered for requestId=${requestId}`);
+        console.log(`[triggerMatching] n8n single-user triggered for userId=${userId}, requestId=${requestId}`);
       })
       .catch(async (err) => {
         console.error(

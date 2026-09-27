@@ -70,9 +70,79 @@ function escapeHtml(text: string): string {
     .replace(/"/g, "&quot;");
 }
 
-function buildBulletList(bullets: string[]): string {
+/**
+ * Safely convert any value to a clean, displayable string.
+ * Handles: null, undefined, "null", "undefined", objects, arrays.
+ */
+function safeStr(value: unknown): string {
+  if (value === null || value === undefined) return "";
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    // Filter out literal "null" / "undefined" strings
+    if (trimmed.toLowerCase() === "null" || trimmed.toLowerCase() === "undefined") return "";
+    return trimmed;
+  }
+  if (typeof value === "number" || typeof value === "boolean") return String(value);
+  if (Array.isArray(value)) return value.map(safeStr).filter(Boolean).join(", ");
+  if (typeof value === "object") {
+    // Prevent [object Object] — try to extract common fields
+    const obj = value as Record<string, unknown>;
+    return safeStr(obj.name || obj.title || obj.text || obj.value || "");
+  }
+  return String(value);
+}
+
+function buildBulletList(bullets: unknown[]): string {
   if (!bullets || bullets.length === 0) return "";
-  return `<ul>${bullets.map((b) => `<li>${escapeHtml(b)}</li>`).join("")}</ul>`;
+  const safeBullets = bullets
+    .map((b) => safeStr(b))
+    .filter((b) => b.length > 0);
+  if (safeBullets.length === 0) return "";
+  return `<ul>${safeBullets.map((b) => `<li>${escapeHtml(b)}</li>`).join("")}</ul>`;
+}
+
+/**
+ * Formats a date range, handling null/empty/duplicate values.
+ * Returns "" if no valid dates.
+ */
+function formatDateRange(start: unknown, end: unknown): string {
+  const s = safeStr(start);
+  const e = safeStr(end);
+
+  if (!s && !e) return "";
+  if (!s && e) return e;
+  if (s && !e) return `${s} – Present`;
+  // Avoid "2018 – 2018" duplicates
+  if (s === e) return s;
+  return `${s} – ${e}`;
+}
+
+/**
+ * Formats GPA string, removing redundant "GPA:" prefix if already present.
+ */
+function formatGpa(gpa: unknown): string {
+  const g = safeStr(gpa);
+  if (!g) return "";
+  // If data already says "GPA: 3.5" or "GPA: 9.41", don't add another "GPA:" prefix
+  if (g.toLowerCase().startsWith("gpa")) return g;
+  return `GPA: ${g}`;
+}
+
+/**
+ * Safely coerce a skills array — handles string[], object[], or mixed.
+ */
+function normalizeSkills(skills: unknown[]): string[] {
+  if (!skills || !Array.isArray(skills)) return [];
+  return skills
+    .map((s) => {
+      if (typeof s === "string") return s.trim();
+      if (typeof s === "object" && s !== null) {
+        const obj = s as Record<string, unknown>;
+        return safeStr(obj.name || obj.skill || obj.value || obj.label || "");
+      }
+      return "";
+    })
+    .filter((s) => s.length > 0 && s.toLowerCase() !== "null");
 }
 
 // ── Main Builder ─────────────────────────────────────────────
@@ -89,56 +159,69 @@ export function buildResumeHTML(data: ResumeData): string {
     certifications,
   } = data;
 
+  const safeSummary = safeStr(professionalSummary);
+  const normalizedSkills = normalizeSkills(skills);
+
   // ── Left Column ────────────────────────────────────────────
 
-  // Professional Summary
-  const summarySection = professionalSummary
+  // Professional Summary — rendered ONCE (in the section, NOT in the header)
+  const summarySection = safeSummary
     ? `
     <div class="section">
       <h2>Professional Summary</h2>
-      <p class="summary-text">${escapeHtml(professionalSummary)}</p>
+      <p class="summary-text">${escapeHtml(safeSummary)}</p>
     </div>`
     : "";
 
   // Work Experience
+  const validExperience = (experience || []).filter(
+    (exp) => safeStr(exp.role) || safeStr(exp.company),
+  );
   const experienceSection =
-    experience && experience.length > 0
+    validExperience.length > 0
       ? `
     <div class="section">
       <h2>Work Experience</h2>
-      ${experience
-        .map(
-          (exp) => `
+      ${validExperience
+        .map((exp) => {
+          const company = safeStr(exp.company);
+          const role = safeStr(exp.role);
+          const dateRange = formatDateRange(exp.startDate, exp.endDate);
+          return `
         <div class="entry">
           <div class="entry-header">
-            <span class="entry-org">${escapeHtml(exp.company)}</span>
-            <span class="entry-date">${escapeHtml(exp.startDate || "")} – ${escapeHtml(exp.endDate || "Present")}</span>
+            <span class="entry-org">${escapeHtml(company || "Company")}</span>
+            ${dateRange ? `<span class="entry-date">${escapeHtml(dateRange)}</span>` : ""}
           </div>
-          <div class="entry-role">${escapeHtml(exp.role)}</div>
+          ${role ? `<div class="entry-role">${escapeHtml(role)}</div>` : ""}
           ${buildBulletList(exp.bullets)}
-        </div>`
-        )
+        </div>`;
+        })
         .join("")}
     </div>`
       : "";
 
   // Projects
+  const validProjects = (projects || []).filter(
+    (proj) => safeStr(proj.name) && (proj.bullets?.length > 0 || (proj.techStack && proj.techStack.length > 0)),
+  );
   const projectsSection =
-    projects && projects.length > 0
+    validProjects.length > 0
       ? `
     <div class="section">
       <h2>Projects</h2>
-      ${projects
-        .map(
-          (proj) => `
+      ${validProjects
+        .map((proj) => {
+          const techStack = (proj.techStack || []).map(safeStr).filter(Boolean);
+          return `
         <div class="entry">
           <div class="entry-header">
-            <span class="entry-org">${escapeHtml(proj.name)}</span>
-            ${proj.techStack && proj.techStack.length > 0 ? `<span class="entry-date">${proj.techStack.map(escapeHtml).join(", ")}</span>` : ""}
+            <span class="entry-org">${escapeHtml(safeStr(proj.name))}</span>
+            ${techStack.length > 0 ? `<span class="entry-date">${techStack.map(escapeHtml).join(", ")}</span>` : ""}
           </div>
           ${buildBulletList(proj.bullets)}
-        </div>`
-        )
+        </div>`;
+        })
         .join("")}
     </div>`
       : "";
@@ -147,11 +230,11 @@ export function buildResumeHTML(data: ResumeData): string {
 
   // Contact
   const contactLines: string[] = [];
-  if (profile.location) contactLines.push(`📍 ${escapeHtml(profile.location)}`);
-  if (profile.phone) contactLines.push(`📞 ${escapeHtml(profile.phone)}`);
-  if (profile.email) contactLines.push(`✉️ ${escapeHtml(profile.email)}`);
-  if (profile.linkedin) contactLines.push(`🔗 ${escapeHtml(profile.linkedin)}`);
-  if (profile.github) contactLines.push(`💻 ${escapeHtml(profile.github)}`);
+  if (safeStr(profile.location)) contactLines.push(`📍 ${escapeHtml(safeStr(profile.location))}`);
+  if (safeStr(profile.phone)) contactLines.push(`📞 ${escapeHtml(safeStr(profile.phone))}`);
+  if (safeStr(profile.email)) contactLines.push(`✉️ ${escapeHtml(safeStr(profile.email))}`);
+  if (safeStr(profile.linkedin)) contactLines.push(`🔗 ${escapeHtml(safeStr(profile.linkedin))}`);
+  if (safeStr(profile.github)) contactLines.push(`💻 ${escapeHtml(safeStr(profile.github))}`);
 
   const contactSection =
     contactLines.length > 0
@@ -164,53 +247,80 @@ export function buildResumeHTML(data: ResumeData): string {
 
   // Skills
   const skillsSection =
-    skills && skills.length > 0
+    normalizedSkills.length > 0
       ? `
     <div class="sidebar-section">
       <h3>Skills</h3>
       <div class="skills-container">
-        ${skills.map((s) => `<span class="skill-pill">${escapeHtml(s)}</span>`).join("")}
+        ${normalizedSkills.map((s) => `<span class="skill-pill">${escapeHtml(s)}</span>`).join("")}
       </div>
     </div>`
       : "";
 
   // Education
+  const validEducation = (education || []).filter(
+    (edu) => safeStr(edu.institution) || safeStr(edu.degree),
+  );
   const educationSection =
-    education && education.length > 0
+    validEducation.length > 0
       ? `
     <div class="sidebar-section">
       <h3>Education</h3>
-      ${education
-        .map(
-          (edu) => `
+      ${validEducation
+        .map((edu) => {
+          const institution = safeStr(edu.institution);
+          const degree = safeStr(edu.degree);
+          const field = safeStr(edu.field);
+          const dateRange = formatDateRange(edu.startDate, edu.endDate);
+          const gpa = formatGpa(edu.gpa);
+
+          // Build degree line — avoid "null in null" patterns
+          let degreeLine = degree;
+          if (field && field !== degree) degreeLine += ` – ${field}`;
+
+          return `
         <div class="edu-entry">
-          <p class="edu-institution">${escapeHtml(edu.institution)}</p>
-          <p class="edu-degree">${escapeHtml(edu.degree)}${edu.field ? ` – ${escapeHtml(edu.field)}` : ""}</p>
-          ${edu.startDate || edu.endDate ? `<p class="edu-date">${escapeHtml(edu.startDate || "")} – ${escapeHtml(edu.endDate || "Present")}</p>` : ""}
-          ${edu.gpa ? `<p class="edu-gpa">GPA: ${escapeHtml(edu.gpa)}</p>` : ""}
-        </div>`
-        )
+          ${institution ? `<p class="edu-institution">${escapeHtml(institution)}</p>` : ""}
+          ${degreeLine ? `<p class="edu-degree">${escapeHtml(degreeLine)}</p>` : ""}
+          ${dateRange ? `<p class="edu-date">${escapeHtml(dateRange)}</p>` : ""}
+          ${gpa ? `<p class="edu-gpa">${escapeHtml(gpa)}</p>` : ""}
+        </div>`;
+        })
         .join("")}
     </div>`
       : "";
 
   // Awards
+  const validAwards = (awards || []).filter((a) => safeStr(a.title));
   const awardsSection =
-    awards && awards.length > 0
+    validAwards.length > 0
       ? `
     <div class="sidebar-section">
       <h3>Awards</h3>
-      ${awards.map((a) => `<p class="award-item">${escapeHtml(a.title)}${a.issuedAt ? ` (${escapeHtml(a.issuedAt)})` : ""}</p>`).join("")}
+      ${validAwards
+        .map((a) => {
+          const title = safeStr(a.title);
+          const issuedAt = safeStr(a.issuedAt);
+          return `<p class="award-item">${escapeHtml(title)}${issuedAt ? ` (${escapeHtml(issuedAt)})` : ""}</p>`;
+        })
+        .join("")}
     </div>`
       : "";
 
   // Certifications
+  const validCerts = (certifications || []).filter((c) => safeStr(c.name));
   const certificationsSection =
-    certifications && certifications.length > 0
+    validCerts.length > 0
       ? `
     <div class="sidebar-section">
       <h3>Certifications</h3>
-      ${certifications.map((c) => `<p class="cert-item">${escapeHtml(c.name)}${c.issuer ? ` — ${escapeHtml(c.issuer)}` : ""}</p>`).join("")}
+      ${validCerts
+        .map((c) => {
+          const name = safeStr(c.name);
+          const issuer = safeStr(c.issuer);
+          return `<p class="cert-item">${escapeHtml(name)}${issuer ? ` — ${escapeHtml(issuer)}` : ""}</p>`;
+        })
+        .join("")}
     </div>`
       : "";
 
@@ -221,7 +331,7 @@ export function buildResumeHTML(data: ResumeData): string {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${escapeHtml(profile.name || "Resume")}</title>
+  <title>${escapeHtml(safeStr(profile.name) || "Resume")}</title>
   <style>
     /* ── Reset & Base ─────────────────────────────────── */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -259,15 +369,8 @@ export function buildResumeHTML(data: ResumeData): string {
       font-size: 22pt;
       font-weight: 700;
       color: #0f172a;
-      margin-bottom: 2px;
-      letter-spacing: -0.5px;
-    }
-
-    .header-title {
-      font-size: 10pt;
-      color: #475569;
       margin-bottom: 16px;
-      font-weight: 400;
+      letter-spacing: -0.5px;
     }
 
     /* ── Sections (Left) ──────────────────────────────── */
@@ -300,18 +403,26 @@ export function buildResumeHTML(data: ResumeData): string {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
+      flex-wrap: wrap;
+      gap: 4px;
     }
 
     .entry-org {
       font-weight: 600;
       font-size: 10pt;
       color: #1e293b;
+      flex: 1 1 auto;
+      min-width: 0;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
 
     .entry-date {
       font-size: 8.5pt;
       color: #64748b;
       white-space: nowrap;
+      flex-shrink: 0;
+      text-align: right;
     }
 
     .entry-role {
@@ -418,8 +529,7 @@ export function buildResumeHTML(data: ResumeData): string {
   <div class="resume-page">
     <!-- ── Main Column ──────────────────────────────── -->
     <div class="main-column">
-      <h1 class="header-name">${escapeHtml(profile.name || "Your Name")}</h1>
-      <p class="header-title">${professionalSummary ? escapeHtml(professionalSummary.split(".")[0] + ".") : ""}</p>
+      <h1 class="header-name">${escapeHtml(safeStr(profile.name) || "Your Name")}</h1>
 
       ${summarySection}
       ${experienceSection}

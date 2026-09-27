@@ -23,6 +23,8 @@ model UserAuth {
   githubLogin       String? // resolved on first GitHub sync
   linkedinImported  Boolean @default(false)
   linkedinZipPath   String? // path to uploaded ZIP for processing
+  resumeUploaded    Boolean @default(false)
+  resumeFilePath    String? // path to the uploaded PDF file
   onboardingStage   String  @default("new")
   analysisStatus    String  @default("idle") // idle | running | success | failed
   analysisError     String? // error message if analysis failed
