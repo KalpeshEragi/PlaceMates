@@ -96,7 +96,7 @@ def dedupe_key(company: str, title: str, location: str) -> str:
 
 # ── Genuineness: fewer, real jobs beat many questionable ones ────────
 AGENCY = re.compile(r"\b(staffing|recruit\w*|placements?|manpower|talent\w*|hiring|hr solutions|hr services|"
-                    r"outsourcing|jobs|careers|headhunt\w*)\b|flexiple|scoutit|joblet", re.I)
+                    r"outsourcing|jobs|careers|headhunt\w*)\b|flexiple|scoutit|joblet|hyre\b", re.I)
 SCAM = re.compile(r"registration fee|training fee|security deposit|processing fee|pay (?:rs\.?|₹|inr)\s*\d|"
                   r"earn (?:up ?to|upto)|whats ?app (?:us|me|on)|no interview|100% job guarantee|"
                   r"guaranteed (?:job|placement)", re.I)
