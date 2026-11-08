@@ -46,6 +46,8 @@ of ONE profile entity. Decide whether ONE more question is genuinely worth askin
   something clearly different, or set done=true.
 - Never ask about anything already in the facts or answered in the conversation, and don't
   ask about other dimensions that are COMPLETE.
+- Only ask what a recruiter would value. Skip trivia (cloud region, instance type, library
+  versions, port numbers). If what's known is already enough to describe the topic, done=true.
 - Choose the format that fits: single/multi for quick facts (2-5 specific options), number for a
   single quantity, long_text for explanations (architecture, decisions, challenges, methodology),
   short_text for a name or phrase.

@@ -122,6 +122,9 @@ def topics(state: AgentState) -> dict:
         es = progress.entity_state(db, profile.id, eid, _meta(profile, eid)["section"])
         rows = progress.topics(db, profile.id, eid)
         page, more = progress.suggestions(rows, state.get("offset", 0), include_explored=bool(state.get("focus")))
+        # Any open suggestion can be chosen, including ones from an earlier page of ideas.
+        allowed = {t.key for t in progress.suggestions(rows, 0, include_explored=bool(state.get("focus")),
+                                                       limit=100)[0]}
         for t in page:
             progress.set_convo(db, profile.id, eid, t.key, "SUGGESTED")
         db.commit()
@@ -136,7 +139,7 @@ def topics(state: AgentState) -> dict:
 
     kind = action.get("type")
     if kind == "select":
-        keys = [k for k in action.get("keys", []) if k in {t["key"] for t in screen["topics"]}]
+        keys = [k for k in dict.fromkeys(action.get("keys", [])) if k in allowed]
         if keys:
             with SessionLocal() as db:
                 for k in keys:
@@ -164,7 +167,10 @@ def prepare_question(state: AgentState) -> dict:
         while topic_i < len(state.get("selected", [])):
             key = state["selected"][topic_i]
             row = progress.topic(db, pid, eid, key)
-            finished = row is None or row.convo_state == "SKIPPED" or (turns > 0 and row.info_state == "COMPLETE")
+            # COMPLETE at turn 0 means an earlier answer already covered it: don't ask.
+            finished = row is None or row.convo_state == "SKIPPED" or row.info_state == "COMPLETE"
+            if row is not None and turns == 0 and row.info_state == "COMPLETE" and row.convo_state != "SKIPPED":
+                log["discussed"] = list(dict.fromkeys([*log["discussed"], key]))
             question = None
             if not finished:
                 progress.set_convo(db, pid, eid, key, "IN_PROGRESS")

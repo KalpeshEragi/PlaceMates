@@ -37,8 +37,8 @@ def topic(db: Session, profile_id: uuid.UUID, entity_id: str, key: str) -> Topic
                                               TopicState.entity_id == entity_id, TopicState.key == key))
 
 
-def suggestions(rows: list[TopicState], offset: int = 0,
-                include_explored: bool = False) -> tuple[list[TopicState], bool]:
+def suggestions(rows: list[TopicState], offset: int = 0, include_explored: bool = False,
+                limit: int = SUGGEST_LIMIT) -> tuple[list[TopicState], bool]:
     """Best open opportunities, a few at a time. Returns (page, more_available).
     include_explored: when the student revisits an entity, offer topics discussed before
     that still have room, plus ones they skipped earlier."""
@@ -47,8 +47,8 @@ def suggestions(rows: list[TopicState], offset: int = 0,
     open_rows = [t for t in rows if t.info_state in info and t.priority >= 3 and t.convo_state not in closed]
     # Highest priority first; MISSING before PARTIAL on ties.
     open_rows.sort(key=lambda t: (-t.priority, t.info_state != "MISSING"))
-    page = open_rows[offset:offset + SUGGEST_LIMIT]
-    return page, len(open_rows) > offset + SUGGEST_LIMIT
+    page = open_rows[offset:offset + limit]
+    return page, len(open_rows) > offset + limit
 
 
 def set_convo(db: Session, profile_id: uuid.UUID, entity_id: str, key: str, state: str) -> None:
