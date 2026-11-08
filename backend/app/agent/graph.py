@@ -67,6 +67,11 @@ def _log(state) -> dict:
     return state.get("entity_log") or {"discussed": [], "skipped": [], "answers": []}
 
 
+def _answered(history: list[dict]) -> bool:
+    """True if the student actually answered something on this topic (not just skipped)."""
+    return any(h.get("a") != "(skipped)" for h in history)
+
+
 # ── Nodes ────────────────────────────────────────────────────────────
 
 
@@ -182,9 +187,13 @@ def prepare_question(state: AgentState) -> dict:
                         "entity_log": log, "next": "ask"}
             # Topic done (covered, or nothing more worth asking).
             if row is not None and row.convo_state != "SKIPPED":
-                progress.set_convo(db, pid, eid, key, "EXPLORED")
-                if turns > 0 and key not in log["discussed"]:
-                    log["discussed"].append(key)
+                if _answered(history) or turns == 0:
+                    progress.set_convo(db, pid, eid, key, "EXPLORED")
+                    if _answered(history) and key not in log["discussed"]:
+                        log["discussed"].append(key)
+                else:  # only skipped questions: treat the topic as skipped
+                    progress.set_convo(db, pid, eid, key, "SKIPPED")
+                    log["skipped"] = list(dict.fromkeys([*log["skipped"], key]))
             topic_i, turns, history = topic_i + 1, 0, []
         db.commit()
     return {"question": None, "topic_i": topic_i, "turns": 0, "history": [], "entity_log": log, "next": "summary"}
@@ -215,10 +224,11 @@ def ask(state: AgentState) -> dict:
         history = [*state.get("history", []), {"q": q["text"], "a": "(skipped)"}]
         return {"turns": state.get("turns", 0) + 1, "history": history, "notices": [], "next": "prepare_question"}
     with SessionLocal() as db:
-        if kind == "skip_topic":
+        if kind == "skip_topic" or not _answered(state.get("history", [])):
+            # Skipped, or "finished" without answering anything: record it as skipped.
             progress.set_convo(db, pid, eid, key, "SKIPPED")
             log["skipped"] = list(dict.fromkeys([*log["skipped"], key]))
-        elif state.get("turns", 0) > 0:  # finishing a topic that was actually discussed
+        else:  # finishing a topic that was actually discussed
             progress.set_convo(db, pid, eid, key, "EXPLORED")
             log["discussed"] = list(dict.fromkeys([*log["discussed"], key]))
         db.commit()

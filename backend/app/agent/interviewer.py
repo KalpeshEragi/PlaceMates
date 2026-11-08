@@ -16,6 +16,9 @@ from app.config import settings
 from app.services.llm import complete_json
 
 MAX_TURNS_PER_TOPIC = 3
+EXPLAIN_TOPICS = {"architecture", "architecture_decisions", "design_decisions", "challenges", "methodology",
+                  "experimental_setup", "limitations", "problem_statement", "systems_built", "responsibilities",
+                  "individual_contribution", "evaluation", "agent_communication"}
 
 # Options like "Reduced bugs by 10-20%" put made-up results in front of students.
 INVENTED_GAIN = re.compile(
@@ -39,6 +42,8 @@ You are a knowledgeable, friendly technical interviewer helping a student descri
 of ONE profile entity. Decide whether ONE more question is genuinely worth asking.
 - done=true if the topic is already covered by the facts or the conversation, if the student
   signalled they don't know or don't want to go deeper, or if more would be marginal.
+- If the student skipped a question, never ask the same thing again in another form; ask
+  something clearly different, or set done=true.
 - Never ask about anything already in the facts or answered in the conversation, and don't
   ask about other dimensions that are COMPLETE.
 - Choose the format that fits: single/multi for quick facts (2-5 specific options), number for a
@@ -69,6 +74,8 @@ def next_question(entity: dict, understanding: str | None, topic: dict, dimensio
         return None
 
     kind = q.kind
+    if kind == "short_text" and topic["key"] in EXPLAIN_TOPICS:
+        kind = "long_text"  # explanations need room
     labels = [o for o in q.options if not INVENTED_GAIN.search(o)][:5] if kind in ("single", "multi") else []
     if kind in ("single", "multi") and len(labels) < 2:
         kind = "short_text"  # options were unusable: ask openly instead
