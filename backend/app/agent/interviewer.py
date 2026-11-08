@@ -53,7 +53,16 @@ of ONE profile entity. Decide whether ONE more question is genuinely worth askin
   results or percentages. Don't include "Other", "Not sure" or "Skip" (added automatically).
 - lead_in: e.g. "I understand the overall architecture. It would help to know how the agents
   coordinate." Never "Question 3 of 10", never "you must".
-- text: one clear question, under 25 words."""
+- text: one clear question, under 25 words. For number/short_text/long_text it must stand on
+  its own: never say "the following" or "below" unless you give options."""
+
+REFERS_TO_OPTIONS = re.compile(r"\b(following|below|these options|options above)\b", re.I)
+
+
+def _mismatch(q: NextQuestion) -> bool:
+    usable = [o for o in q.options if not INVENTED_GAIN.search(o)]
+    has_options = q.kind in ("single", "multi") and len(usable) >= 2
+    return not has_options and bool(REFERS_TO_OPTIONS.search(q.text))
 
 
 def next_question(entity: dict, understanding: str | None, topic: dict, dimensions: list[dict],
@@ -72,6 +81,15 @@ def next_question(entity: dict, understanding: str | None, topic: dict, dimensio
                       NextQuestion, reasoning_effort="low")
     if q.done or not q.text.strip():
         return None
+    if _mismatch(q):  # text points at options that aren't there: one retry with feedback
+        q = complete_json(settings.model_interviewer, INTERVIEWER_PROMPT, json.dumps(
+            {**payload, "problem": f"Your question '{q.text}' refers to options but has none usable. "
+                                   "Either give 2-5 options with kind single/multi, or rewrite it to stand alone."},
+            default=str), NextQuestion, reasoning_effort="low")
+        if q.done or not q.text.strip():
+            return None
+        if _mismatch(q):
+            q.kind, q.options, q.text = "long_text", [], f"Could you tell me about the {topic['label'].lower()}?"
 
     kind = q.kind
     if kind == "short_text" and topic["key"] in EXPLAIN_TOPICS:
