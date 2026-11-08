@@ -95,6 +95,8 @@ class ItemFact(Base):
     value: Mapped[object] = mapped_column(JSONB)
     source: Mapped[str] = mapped_column(String)  # resume | mcq | note | manual
     confidence: Mapped[float] = mapped_column(Float, default=1.0)
+    # Which agent prompt version recorded it (None for resume/manual facts).
+    prompt_version: Mapped[str | None] = mapped_column(String)
     created_at: Mapped[datetime] = _created()
 
     item: Mapped[ProfileItem] = relationship(back_populates="facts")
