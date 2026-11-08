@@ -1,9 +1,11 @@
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 
 from app.db import get_db
+from app.services import resume_import
+from app.services.llm import LLMError
 from app.models import ItemFact, Profile, ProfileItem, Skill, User
 from app.schemas import BasicsIn, FactIn, FactOut, ItemIn, ItemOut, ProfileOut
 from app.security import current_user
@@ -27,6 +29,26 @@ def _own_item(db: Session, profile: Profile, item_id: uuid.UUID) -> ProfileItem:
 @router.get("", response_model=ProfileOut)
 def get_profile(user: User = Depends(current_user)):
     return _profile(user)
+
+
+@router.post("/resume", response_model=ProfileOut)
+async def upload_resume(
+    file: UploadFile, user: User = Depends(current_user), db: Session = Depends(get_db)
+):
+    profile = _profile(user)
+    data = await file.read()
+    if len(data) > 5 * 1024 * 1024:
+        raise HTTPException(413, "PDF must be under 5 MB")
+    try:
+        text, links = resume_import.extract_pdf(data)
+        parsed = resume_import.parse_resume(text, links)
+    except resume_import.ResumeReadError as err:
+        raise HTTPException(422, str(err))
+    except LLMError as err:
+        raise HTTPException(502, f"Could not read the resume right now: {err}")
+    resume_import.merge_into_profile(db, profile, parsed)
+    db.refresh(profile)
+    return profile
 
 
 @router.put("/basics", response_model=ProfileOut)

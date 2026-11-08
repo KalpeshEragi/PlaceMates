@@ -20,8 +20,8 @@ class Settings(BaseSettings):
     groq_base_url: str = "https://api.groq.com/openai/v1"
 
     # Which model each cheap task uses. Change here, not in code.
-    model_extract: str = "llama-3.3-70b-versatile"
-    model_questions: str = "llama-3.1-8b-instant"
+    model_extract: str = "openai/gpt-oss-120b"
+    model_questions: str = "openai/gpt-oss-20b"
 
 
 settings = Settings()
