@@ -109,11 +109,19 @@ async def jsearch(client: httpx.AsyncClient, query: str) -> list[Posting]:
 
 APIFY_LINKEDIN = "valig~linkedin-jobs-scraper"
 APIFY_NAUKRI = "valig~naukri-jobs-scraper"
-LINKEDIN_QUERIES = ["software engineer", "software developer", "frontend developer", "backend developer",
-                    "full stack developer", "data analyst", "machine learning engineer", "devops engineer"]
-NAUKRI_QUERIES = ["software developer", "software engineer fresher", "data analyst", "web developer"]
-LINKEDIN_PER_QUERY = 30
-NAUKRI_PER_QUERY = 25
+APIFY_INDEED = "valig~indeed-jobs-scraper"
+APIFY_INTERNSHALA = "blackfalcondata~internshala-scraper"
+# Daily volume is tuned for ~50-80 GENUINE jobs, not a big number: quality over quantity.
+LINKEDIN_QUERIES = ["software engineer", "software developer", "full stack developer",
+                    "data analyst", "machine learning engineer", "devops engineer"]
+NAUKRI_QUERIES = ["software developer fresher", "software engineer"]
+INDEED_QUERIES = ["software developer", "software engineer", "data analyst", "web developer"]
+INTERNSHALA_SEARCHES = [("job", "software developer"), ("job", "data analyst"),
+                        ("internship", "software development"), ("internship", "data science")]
+LINKEDIN_PER_QUERY = 25
+NAUKRI_PER_QUERY = 20
+INDEED_PER_QUERY = 25
+INTERNSHALA_PER_SEARCH = 20
 # Skipped by the scraper itself, so we never pay for roles PlaceMates' users can't apply to.
 SENIOR_TITLES = ["senior", "sr", "lead", "staff", "principal", "manager", "director", "head", "architect", "iii"]
 APIFY_USAGE: list[float] = []  # USD per run in the current fetch (reset by the fetcher)
@@ -196,5 +204,68 @@ async def apify_naukri(client: httpx.AsyncClient, query: str) -> list[Posting]:
             posted_at=datetime.fromtimestamp(j["createdDate"] / 1000, tz=timezone.utc),
             employment_type=j.get("employmentType"), seniority_hint=_naukri_level(j.get("experience"), j["title"]),
             raw={k: j.get(k) for k in ("id", "url", "experience", "createdDateText", "roleCategory")},
+        ))
+    return out
+
+
+def _indeed_text(desc) -> str:
+    """Indeed gives {text, html}; older runs gave a plain string."""
+    if isinstance(desc, dict):
+        return (desc.get("text") or html_to_text(desc.get("html"))).strip()
+    return html_to_text(desc) if "<" in (desc or "") else (desc or "")
+
+
+async def apify_indeed(client: httpx.AsyncClient, query: str) -> list[Posting]:
+    items = await _run_actor(client, APIFY_INDEED, {
+        "country": "in", "title": query, "location": "India", "datePosted": "1", "limit": INDEED_PER_QUERY})
+    out = []
+    for j in items:
+        if not (j.get("title") and (j.get("datePublished") or j.get("dateOnIndeed"))):
+            continue
+        loc = j.get("location") or {}
+        city = loc.get("city") or ""
+        reason = ("staffing or recruitment agency" if j.get("isPlacement") else
+                  "expired" if j.get("expired") else None)
+        out.append(Posting(
+            source="indeed", source_id=j["key"], company=(j.get("employer") or {}).get("name") or "",
+            title=j["title"], location=", ".join(filter(None, [city, loc.get("countryName") or "India"])),
+            description=_indeed_text(j.get("description")),
+            apply_url=j.get("jobUrl") or j["url"],  # jobUrl is the employer's own page when available
+            posted_at=_iso(j.get("datePublished") or j["dateOnIndeed"]),
+            employment_type=", ".join((j.get("jobTypes") or {}).values()) or None, drop_reason=reason,
+            raw={k: j.get(k) for k in ("key", "url", "isRepost", "isPlacement", "datePublished")},
+        ))
+    return out
+
+
+async def apify_internshala(client: httpx.AsyncClient, search: tuple[str, str]) -> list[Posting]:
+    listing_type, query = search
+    items = await _run_actor(client, APIFY_INTERNSHALA, {
+        "listingType": listing_type, "query": query, "maxResults": INTERNSHALA_PER_SEARCH, "maxPages": 1,
+        "includeDetails": True, "descriptionFormat": "text", "skipReposts": True})
+    out = []
+    for j in items:
+        if not (j.get("title") and j.get("postedAt")):
+            continue
+        intern = j.get("listingType") == "internship"
+        stipend = (j.get("stipendText") or "").lower()
+        reason = ("unpaid" if "unpaid" in stipend else
+                  "not actively hiring" if j.get("activelyHiring") is False else None)
+        location = "Remote" if j.get("isWorkFromHome") else (j.get("location") or "India")
+        skills = j.get("skills") or []
+        description = j.get("description") or ""
+        if skills:
+            description += "\n\nSkills: " + ", ".join(map(str, skills))
+        if j.get("stipendText"):
+            description += f"\nStipend/salary: {j['stipendText']}"
+        out.append(Posting(
+            source="internshala", source_id=str(j.get("jobId") or j.get("jobKey") or j["canonicalUrl"]),
+            company=j.get("company") or "", title=j["title"],
+            location=location if "india" in location.lower() or location == "Remote" else f"{location}, India",
+            description=description, apply_url=j.get("applyUrl") or j["canonicalUrl"],
+            posted_at=datetime.fromisoformat(j["postedAt"]).replace(tzinfo=timezone.utc),
+            employment_type="Internship" if intern else j.get("employmentType"),
+            seniority_hint="intern" if intern else "entry", drop_reason=reason,
+            raw={k: j.get(k) for k in ("jobId", "canonicalUrl", "listingType", "postedAt", "stipendText", "applyBy")},
         ))
     return out

@@ -16,12 +16,14 @@ from app.config import settings
 from app.models import Job, JobFetchRun
 from app.services.jobs import sources
 from app.services.jobs.companies import BOARDS
-from app.services.jobs.normalize import Posting, dedupe_key, is_tech, seniority, where
+from app.services.jobs.normalize import Posting, dedupe_key, is_tech, not_genuine, seniority, where
 
 log = logging.getLogger(__name__)
 JSEARCH_QUERIES_PER_DAY = 3  # free tier is small
-APIFY_PRICE_PER_RESULT = 0.0004  # valig actors, free plan (checked 2026-11-09)
+APIFY_PRICE_PER_RESULT = 0.0004  # highest per-result price of the actors used (checked 2026-11-09)
 APIFY_PRICE_PER_RUN = 0.001
+# Internships stay listed for weeks on Internshala; elsewhere only recent postings count as fresh.
+MAX_AGE_DAYS = {"internshala": 21}
 
 
 def apify_plan(errors: list[dict]) -> list[tuple[str, str, object]]:
@@ -37,11 +39,15 @@ def apify_plan(errors: list[dict]) -> list[tuple[str, str, object]]:
         errors.append({"source": "apify", "board": "budget", "error": f"Could not read usage: {err}"[:300]})
         return []
     plan = [("linkedin", q, sources.apify_linkedin, sources.LINKEDIN_PER_QUERY) for q in sources.LINKEDIN_QUERIES]
+    plan += [("indeed", q, sources.apify_indeed, sources.INDEED_PER_QUERY) for q in sources.INDEED_QUERIES]
+    plan += [("internshala", q, sources.apify_internshala, sources.INTERNSHALA_PER_SEARCH)
+             for q in sources.INTERNSHALA_SEARCHES]
     plan += [("naukri", q, sources.apify_naukri, sources.NAUKRI_PER_QUERY) for q in sources.NAUKRI_QUERIES]
     left = settings.apify_monthly_budget_usd - used
     while plan and sum(n * APIFY_PRICE_PER_RESULT + APIFY_PRICE_PER_RUN for *_, n in plan) > left:
         plan.pop()  # drop the least important searches first
-    if len(plan) < len(sources.LINKEDIN_QUERIES) + len(sources.NAUKRI_QUERIES):
+    full = len(sources.LINKEDIN_QUERIES) + len(sources.INDEED_QUERIES) + len(sources.INTERNSHALA_SEARCHES)         + len(sources.NAUKRI_QUERIES)
+    if len(plan) < full:
         errors.append({"source": "apify", "board": "budget",
                        "error": f"Ran {len(plan)} searches: ${used:.2f} of ${settings.apify_monthly_budget_usd} used this month"})
     return [(kind, q, fn) for kind, q, fn, _ in plan]
@@ -80,20 +86,24 @@ def run_fetch(db: Session) -> JobFetchRun:
     db.commit()
 
     batches, errors = asyncio.run(_collect())
-    cutoff = datetime.now(timezone.utc) - timedelta(days=settings.jobs_fresh_days)
     now = datetime.now(timezone.utc)
     stats: dict[str, dict] = {}
+    dropped: dict[str, int] = {}
     seen_keys: set[str] = set()
 
     for kind, postings in batches:
         s = stats.setdefault(kind, {"fetched": 0, "fresh": 0, "kept": 0, "new": 0})
         s["fetched"] += len(postings)
+        cutoff = now - timedelta(days=MAX_AGE_DAYS.get(kind, settings.jobs_fresh_days))
         for p in postings:
             if p.posted_at < cutoff:
                 continue
             s["fresh"] += 1
             keep, remote = where(p)
-            if not keep or not is_tech(p.title) or not p.apply_url or not p.description:
+            if not keep or not is_tech(p.title) or not p.apply_url:
+                continue
+            if reason := not_genuine(p):
+                dropped[reason] = dropped.get(reason, 0) + 1
                 continue
             key = dedupe_key(p.company, p.title, p.location)
             if key in seen_keys:
@@ -113,6 +123,7 @@ def run_fetch(db: Session) -> JobFetchRun:
 
     if sources.APIFY_USAGE:
         stats["apify_cost_usd"] = round(sum(sources.APIFY_USAGE), 4)
+    stats["dropped_not_genuine"] = dropped
     run.stats, run.errors, run.finished_at = stats, errors, datetime.now(timezone.utc)
     db.commit()
     log.info("Job fetch done: %s | %d board errors", stats, len(errors))
