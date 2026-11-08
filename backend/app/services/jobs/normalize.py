@@ -17,7 +17,7 @@ REMOTE_ELSEWHERE = re.compile(r"\b(us|usa|united states|americas|north america|c
 # Software and IT roles only (PlaceMates' audience).
 TECH_TITLE = re.compile(
     r"\b(engineer|engineering|developer|sde|swe|programmer|software|data|machine learning|ml|ai|"
-    r"devops|sre|site reliability|cloud|platform|infrastructure|security|qa|test|quality|"
+    r"devops|sre|site reliability|cloud|platform|infrastructure|security|qa|test|quality (?:assurance|engineer)|"
     r"analyst|scientist|architect|frontend|front-end|backend|back-end|full[- ]?stack|mobile|"
     r"android|ios|database|dba|network|it support|technical support|support engineer|intern)\b", re.I)
 NON_TECH = re.compile(r"\b(sales|account executive|recruiter|legal|counsel|marketing manager|"
@@ -41,6 +41,7 @@ class Posting:
     employment_type: str | None = None
     remote_flag: bool = False
     seniority_hint: str | None = None  # from the source's own experience field, when it has one
+    drop_reason: str | None = None     # source-specific red flag (agency, expired, unpaid...)
     raw: dict = field(default_factory=dict)
 
 
@@ -91,3 +92,28 @@ def dedupe_key(company: str, title: str, location: str) -> str:
         return re.sub(r"[^a-z0-9]+", " ", (s or "").lower()).strip()
     city = INDIA.search(location or "")
     return f"{norm(company)}|{norm(title)}|{city.group().lower() if city else 'remote'}"
+
+
+# ── Genuineness: fewer, real jobs beat many questionable ones ────────
+AGENCY = re.compile(r"\b(staffing|recruit\w*|placements?|manpower|talent\w*|hiring|hr solutions|hr services|"
+                    r"outsourcing|jobs|careers|headhunt\w*)\b|flexiple|scoutit|joblet", re.I)
+SCAM = re.compile(r"registration fee|training fee|security deposit|processing fee|pay (?:rs\.?|₹|inr)\s*\d|"
+                  r"earn (?:up ?to|upto)|whats ?app (?:us|me|on)|no interview|100% job guarantee|"
+                  r"guaranteed (?:job|placement)", re.I)
+MIN_DESCRIPTION = 200
+
+
+def not_genuine(p: Posting) -> str | None:
+    """Why this posting shouldn't reach a student, or None if it looks genuine."""
+    if p.drop_reason:
+        return p.drop_reason
+    company = (p.company or "").strip()
+    if not company or company.lower() in {"unknown", "confidential", "company"}:
+        return "unknown company"
+    if AGENCY.search(company):
+        return "staffing or recruitment agency"
+    if len(p.description or "") < MIN_DESCRIPTION:
+        return "description too short"
+    if SCAM.search(p.description):
+        return "payment or spam signals"
+    return None
