@@ -8,7 +8,8 @@ from starlette.middleware.sessions import SessionMiddleware
 from app import models  # noqa: F401  (registers tables)
 from app.config import settings
 from app.db import Base, engine
-from app.routers import auth, enrich, profile
+from app.routers import auth, enrich, jobs, profile
+from app.services.jobs.schedule import start_daily_fetch
 
 
 # Show our own logs (model calls, token use, rate-limit waits) next to uvicorn's.
@@ -21,6 +22,8 @@ for noisy in ("httpx", "httpcore"):
 async def lifespan(_: FastAPI):
     # Creates missing tables. Replace with Alembic migrations once the schema settles.
     Base.metadata.create_all(engine)
+    if settings.jobs_daily_fetch:
+        start_daily_fetch()
     yield
 
 
@@ -39,6 +42,7 @@ app.add_middleware(SessionMiddleware, secret_key=settings.session_secret)
 app.include_router(auth.router)
 app.include_router(profile.router)
 app.include_router(enrich.router)
+app.include_router(jobs.router)
 
 
 @app.get("/health")
