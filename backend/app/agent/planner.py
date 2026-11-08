@@ -48,8 +48,9 @@ SYNONYMS = {"technologies": "tech", "technology": "tech", "tools": "tech", "fram
 
 
 def _topic_words(text: str) -> set[str]:
+    """Meaningful words, crudely stemmed so 'errors'/'error' and 'handle'/'handling' match."""
     words = re.findall(r"[a-z]+", text.lower().replace("_", " "))
-    return {SYNONYMS.get(w, w) for w in words} - GENERIC
+    return {SYNONYMS.get(w, w)[:5] for w in words if w not in GENERIC}
 
 
 def _already_known(topic: str, item: dict) -> bool:
