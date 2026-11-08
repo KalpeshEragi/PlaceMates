@@ -1,53 +1,51 @@
-"""User replies: taps, shorthand ("1c 2a 3abd + note") or free text. Plain code, no AI."""
+"""Normalize a student's response and save it BEFORE any AI interpretation. Plain code."""
 
 import re
+import uuid
 
 from pydantic import BaseModel
+from sqlalchemy.orm import Session
+
+from app.agent.domain import PROMPT_VERSION
+from app.models import AgentAnswer
 
 
-class Answer(BaseModel):
-    n: int
-    keys: list[str] = []
-    note: str | None = None
+class AnswerIn(BaseModel):
+    keys: list[str] = []          # tapped option keys
+    text: str | None = None       # free text, "Other" text, or shorthand like "abd + note"
+    number: float | None = None
 
 
-class Reply(BaseModel):
-    answers: list[Answer] = []
-    free_text: str | None = None
+SHORTHAND = re.compile(r"^\s*(?:\d{1,2}\s*)?([a-h]{1,8})\s*(?:\+\s*(.*))?$", re.I | re.S)
 
 
-TOKEN = re.compile(r"(?<![\w])(\d{1,2})\s*([a-f]+)(?![\w])", re.I)
+def normalize(question: dict, body: AnswerIn) -> dict:
+    """-> {keys, labels, text, number, unit}. Shorthand in the text box works for option questions."""
+    by_key = {o["key"]: o["label"] for o in question.get("options", [])}
+    keys, text = list(body.keys), (body.text or "").strip()
+    if by_key and not keys and text and (m := SHORTHAND.match(text)) and set(m.group(1).lower()) <= set(by_key):
+        keys, text = list(dict.fromkeys(m.group(1).lower())), (m.group(2) or "").strip()
+    keys = [k for k in keys if k in by_key]
+    if question.get("kind") == "single":
+        keys = keys[:1]
+    number = body.number
+    if question.get("kind") == "number" and number is None and text:
+        if (m := re.search(r"-?\d[\d,]*\.?\d*", text)):
+            number = float(m.group().replace(",", ""))
+    return {"keys": keys, "labels": [by_key[k] for k in keys], "text": text or None,
+            "number": number, "unit": question.get("unit")}
 
 
-def parse_shorthand(reply: str, count: int) -> list[Answer]:
-    """Text after a "+" becomes a note on the question just before it (or question 1)."""
-    tokens = [m for m in TOKEN.finditer(reply) if 1 <= int(m.group(1)) <= count]
-    answers: dict[int, Answer] = {}
-
-    def add_note(n: int, text: str) -> None:
-        if "+" in text and (note := text.split("+", 1)[1].strip()):
-            ans = answers.setdefault(n, Answer(n=n))
-            ans.note = f"{ans.note} {note}" if ans.note else note
-
-    add_note(1, reply[: tokens[0].start()] if tokens else reply)
-    for i, m in enumerate(tokens):
-        n = int(m.group(1))
-        answers.setdefault(n, Answer(n=n)).keys = list(dict.fromkeys(m.group(2).lower()))
-        end = tokens[i + 1].start() if i + 1 < len(tokens) else len(reply)
-        add_note(n, reply[m.end():end])
-    return sorted(answers.values(), key=lambda a: a.n)
+def is_empty(raw: dict) -> bool:
+    return not raw["keys"] and not raw["text"] and raw["number"] is None
 
 
-def resolve(questions: list[dict], reply: Reply) -> list[dict]:
-    """Per question: the option labels picked (skip removed) and the note."""
-    by_n = {a.n: a for a in reply.answers}
-    out = []
-    for q in questions:
-        ans = by_n.get(q["n"])
-        labels = {o["key"]: o["label"] for o in q["options"]}
-        picked = [labels[k] for k in (ans.keys if ans else []) if k in labels and k != q["skip_key"]]
-        if not q["multi"]:
-            picked = picked[:1]
-        out.append({**q, "picked": picked, "skipped": bool(ans and q["skip_key"] in ans.keys),
-                    "note": ans.note if ans else None})
-    return out
+def save_answer(db: Session, profile_id: uuid.UUID, session_id: uuid.UUID, entity_id: str,
+                question: dict, raw: dict) -> AgentAnswer:
+    """Persist the raw response first. Interpretation happens afterwards and may fail safely."""
+    answer = AgentAnswer(profile_id=profile_id, session_id=session_id, entity_id=entity_id,
+                         topic_key=question["topic_key"], question=question, raw=raw,
+                         status="pending", prompt_version=PROMPT_VERSION)
+    db.add(answer)
+    db.commit()
+    return answer

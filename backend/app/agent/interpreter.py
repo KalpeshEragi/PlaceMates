@@ -1,180 +1,185 @@
-"""Interpreter: turns the user's answers into facts through validated tools.
+"""Interpreter: turns ONE saved answer into profile facts through validated tools.
 
-The model returns ALL its tool calls in one structured response (one model
-call per round instead of a slow call-per-tool loop). Each call is then run
-through the same tool functions, which decide WHETHER it's allowed: the item
-must be in this round, and the value must come from what the user actually
-picked, typed or confirmed. Rejections go back to the model once for repair.
-Anything the model misses (taps, notes, free-text sentences) is still saved.
+The raw answer is already in agent_answers before this runs. The model returns all
+its tool calls in one structured response; each call goes through a tool function
+that decides whether it's allowed (right entity, known dimension, value grounded in
+what the student actually picked or wrote). Rejected calls get one repair round.
+
+Idempotent: facts carry answer_id, and re-interpreting an answer replaces exactly
+the facts that came from it, so retries never duplicate anything.
 """
 
 import json
 import logging
 import re
 import uuid
+from datetime import datetime, timezone
 from typing import Literal
 
 from pydantic import BaseModel, Field
+from sqlalchemy import delete
 from sqlalchemy.orm import Session
 
+from app.agent import progress
 from app.agent.domain import PROMPT_VERSION
 from app.config import settings
-from app.models import ItemFact
+from app.models import AgentAnswer, ItemFact, Profile, Skill
 from app.services.llm import LLMError, complete_json
 
 log = logging.getLogger(__name__)
 WORD = re.compile(r"[a-z0-9]+")
+BASIC_FIELDS = {"location", "headline", "link"}
 
 
 class ToolCall(BaseModel):
-    tool: Literal["record_fact", "flag_conflict", "ask_followup"]
-    item_id: str
-    field: str | None = Field(default=None, description="record_fact: short field name")
-    value: str | list[str] | None = Field(default=None, description="record_fact: the fact")
+    tool: Literal["record_fact", "update_dimension", "add_skill", "set_basic"]
+    dimension: str | None = Field(default=None, description="record_fact/update_dimension: dimension key")
+    name: str | None = Field(default=None, description="record_fact: specific fact name, e.g. 'metric', 'daily_users'")
+    value: str | list[str] | None = None
     from_option: bool = Field(default=False, description="record_fact: value is exactly picked option label(s)")
-    note: str | None = Field(default=None, description="flag_conflict: what contradicts what")
-    topic: str | None = Field(default=None, description="ask_followup: what to ask next")
-    reason: str | None = Field(default=None, description="ask_followup: why it's worth asking")
+    state: Literal["COMPLETE", "PARTIAL"] | None = Field(default=None, description="update_dimension")
+    field: str | None = Field(default=None, description="set_basic: location | headline | link")
 
 
 class ToolPlan(BaseModel):
     calls: list[ToolCall]
 
 
-INTERPRETER_PROMPT = """You record what a student said about their resume items as facts.
+INTERPRETER_PROMPT = """You record what a student said about one profile entity as structured facts.
 Never add, assume or round up anything they did not say.
 
 Return every tool call you need in "calls":
-- record_fact: once per distinct piece of information. Short field name
-  (e.g. scale, tech, database, role, outcome, dataset, metric, deployment, users, team_size, detail).
-  from_option=true only when value is exactly one or more picked option labels;
-  false when it comes from a note or free text (use their words).
-- A "Yes" to a confirm question means the statement in the question is true:
-  record it in plain words (from_option=false).
-- Split free text into separate facts, each on the item it is about
-  ("Shop API is on Render and the canteen uses it" -> deployment + users on Shop API).
-- flag_conflict: an answer contradicts an existing fact.
-- ask_followup: only if an answer opens something clearly worth one more question.
-- Nothing for skipped or "Not sure" answers."""
+- record_fact(dimension, name, value, from_option): one per distinct piece of information.
+  dimension = the entity's dimension key it belongs to (not always the question's topic).
+  name = short snake_case fact name. Keep distinct concepts distinct
+  (e.g. active_backlog_count vs cleared_backlog_count).
+  from_option=true only when value is exactly picked option label(s); otherwise use their words.
+- update_dimension(dimension, state): for EVERY dimension this answer now covers
+  (COMPLETE = enough detail, PARTIAL = some). One answer can cover several dimensions.
+- add_skill(value): only for the skills entity.
+- set_basic(field, value): only for the personal entity; field is location, headline or link.
+- "Not sure" / "Prefer not to answer" / empty answers: no calls."""
 
 
 def _words(text: str) -> set[str]:
     return set(WORD.findall(text.lower()))
 
 
-def _field(name: str) -> str:
-    return re.sub(r"_+", "_", re.sub(r"[^a-z_]", "", name.lower().replace(" ", "_"))).strip("_")[:30] or "detail"
+def _key(text: str) -> str:
+    return re.sub(r"_+", "_", re.sub(r"[^a-z_]", "", text.lower().replace(" ", "_"))).strip("_")[:40]
 
 
-def interpret(db: Session, resolved: list[dict], free_text: str | None,
-              facts_by_item: dict[str, list], all_items: dict[str, str]) -> dict:
-    """all_items: item_id -> title for the whole profile (free text may mention any item)."""
-    round_items = {q["item_id"] for q in resolved}
-    picked_by_item: dict[str, set[str]] = {}
-    said = " ".join(filter(None, [free_text, *(q["note"] or "" for q in resolved)]))
-    for q in resolved:
-        picked_by_item.setdefault(q["item_id"], set()).update(q["picked"])
-        if q["kind"] == "confirm" and q["picked"] == ["Yes"]:
-            said += " " + q["text"]
+def interpret(db: Session, profile: Profile, answer: AgentAnswer, entity: dict) -> str | None:
+    """Interpret one answer. Returns an error message if the model failed (answer is still kept)."""
+    raw = answer.raw or {}
+    question = answer.question or {}
+    entity_id = answer.entity_id
+    is_item = entity_id not in ("personal", "skills")
+    item_uuid = uuid.UUID(entity_id) if is_item else None
+    dims = {t.key: t for t in progress.topics(db, profile.id, entity_id)}
+
+    picked = [l for l in raw.get("labels", []) if l not in question.get("skip_labels", [])]
+    text = (raw.get("text") or "").strip()
+    number = raw.get("number")
+    said = " ".join(filter(None, [text, " ".join(picked), str(number) if number is not None else "",
+                                  raw.get("unit") or ""]))
     said_words = _words(said)
-    # Free text can be about any item, not only this round's.
-    allowed_items = round_items | (set(all_items) if free_text else set())
 
-    recorded: list[dict] = []
-    conflicts: list[str] = []
-    followups: list[dict] = []
+    # Idempotency: an earlier attempt's facts for this answer are replaced, not duplicated.
+    if is_item:
+        db.execute(delete(ItemFact).where(ItemFact.answer_id == answer.id))
 
-    # ── Tools: the only way the model can change anything ───────────
-    def record_fact(item_id: str, field: str | None, value, from_option: bool) -> str:
-        values = value if isinstance(value, list) else [value]
-        values = [str(v).strip() for v in values if v is not None and str(v).strip()]
-        if item_id not in allowed_items:
-            return "rejected: item not part of this round"
-        if not values:
-            return "rejected: empty value"
-        if from_option:
-            if not set(values) <= picked_by_item.get(item_id, set()):
-                return "rejected: value must be exactly picked option label(s) for that item"
-        else:
-            words = _words(" ".join(values))
-            if not words or len(words & said_words) / len(words) < 0.5:
+    facts: list[dict] = []
+    dim_updates: dict[str, str] = {}
+
+    def grounded(values: list[str]) -> bool:
+        words = _words(" ".join(values))
+        return bool(words) and len(words & said_words) / len(words) >= 0.5
+
+    def run(c: ToolCall) -> str:
+        values = c.value if isinstance(c.value, list) else ([c.value] if c.value is not None else [])
+        values = [str(v).strip() for v in values if str(v).strip()]
+        if c.tool == "update_dimension":
+            if c.dimension not in dims or c.state is None:
+                return "rejected: unknown dimension"
+            if not said_words:
+                return "rejected: empty answer covers nothing"
+            dim_updates[c.dimension] = c.state
+            return "ok"
+        if c.tool == "record_fact":
+            if not is_item:
+                return "rejected: record_fact is only for projects, experience, education etc."
+            dimension = c.dimension if c.dimension in dims else question.get("topic_key")
+            if not values:
+                return "rejected: empty value"
+            if c.from_option and not set(values) <= set(picked):
+                return "rejected: from_option values must be exactly picked labels"
+            if not c.from_option and not grounded(values):
                 return "rejected: use the student's own words"
-        recorded.append({"item_id": item_id, "field": _field(field or "detail"),
-                         "value": values if len(values) > 1 else values[0],
-                         "source": "mcq" if from_option else "note"})
-        return "saved"
-
-    def flag_conflict(item_id: str, note: str | None) -> str:
-        if item_id in allowed_items and note:
-            conflicts.append(f"{item_id}: {note}")
-            return "noted"
+            facts.append({"field": f"{dimension}.{_key(c.name or 'detail') or 'detail'}",
+                          "value": values if len(values) > 1 else values[0],
+                          "source": "mcq" if c.from_option else "note"})
+            return "ok"
+        if c.tool == "add_skill":
+            if entity_id != "skills" or not values or not grounded(values):
+                return "rejected"
+            have = {s.name.lower() for s in profile.skills}
+            for v in values:
+                if v.lower() not in have:
+                    profile.skills.append(Skill(name=v, source="note"))
+            return "ok"
+        if c.tool == "set_basic":
+            if entity_id != "personal" or c.field not in BASIC_FIELDS or not values or not grounded(values):
+                return "rejected"
+            if c.field == "link":
+                profile.links = list(dict.fromkeys([*(profile.links or []), *values]))
+            else:
+                setattr(profile, c.field, values[0])
+            return "ok"
         return "rejected"
-
-    def ask_followup(item_id: str, topic: str | None, reason: str | None) -> str:
-        if item_id in round_items and topic and len(followups) < 3:
-            followups.append({"item_id": item_id, "topic": topic, "reason": reason or ""})
-            return "queued"
-        return "rejected"
-
-    def run(call: ToolCall) -> str:
-        if call.tool == "record_fact":
-            return record_fact(call.item_id, call.field, call.value, call.from_option)
-        if call.tool == "flag_conflict":
-            return flag_conflict(call.item_id, call.note)
-        return ask_followup(call.item_id, call.topic, call.reason)
 
     payload = {
-        "answers": [
-            {"n": q["n"], "item_id": q["item_id"], "item": q["item_title"], "kind": q["kind"],
-             "question": q["text"], "picked": q["picked"], "skipped": q["skipped"], "note": q["note"]}
-            for q in resolved
-        ],
-        "free_text": free_text,
-        "items": [{"item_id": i, "title": t, "facts": facts_by_item.get(i, [])}
-                  for i, t in all_items.items() if i in allowed_items],
+        "entity": {"id": entity_id, "type": entity["type"], "title": entity["title"]},
+        "dimensions": [{"key": k, "label": t.label, "state": t.info_state} for k, t in dims.items()],
+        "question": {"topic": question.get("topic_key"), "kind": question.get("kind"), "text": question.get("text"),
+                     "options": [o["label"] for o in question.get("options", [])]},
+        "answer": {"picked": picked, "text": text, "number": number, "unit": raw.get("unit")},
     }
-    try:
-        result = complete_json(settings.model_interpreter, INTERPRETER_PROMPT,
-                               json.dumps(payload, default=str), ToolPlan, reasoning_effort="low")
-        rejected = [(c, r) for c in result.calls if (r := run(c)).startswith("rejected")]
-        if rejected:  # one repair round, showing the model why
-            fix = complete_json(
-                settings.model_interpreter, INTERPRETER_PROMPT,
-                json.dumps({**payload, "rejected_calls": [{"call": c.model_dump(), "why": r} for c, r in rejected],
-                            "instruction": "Return corrected calls for the rejected ones only."}, default=str),
-                ToolPlan, reasoning_effort="low")
-            for c in fix.calls:
-                run(c)
-    except LLMError as err:
-        log.warning("Interpreter model failed, saving answers directly: %s", err)
+    error = None
+    if said_words:
+        try:
+            plan = complete_json(settings.model_interpreter, INTERPRETER_PROMPT,
+                                 json.dumps(payload, default=str), ToolPlan, reasoning_effort="low")
+            rejected = [(c, r) for c in plan.calls if (r := run(c)).startswith("rejected")]
+            if rejected:
+                fix = complete_json(
+                    settings.model_interpreter, INTERPRETER_PROMPT,
+                    json.dumps({**payload, "rejected_calls": [{"call": c.model_dump(), "why": r} for c, r in rejected],
+                                "instruction": "Return corrected calls for the rejected ones only."}, default=str),
+                    ToolPlan, reasoning_effort="low")
+                for c in fix.calls:
+                    run(c)
+        except LLMError as err:
+            error = str(err)
+            log.warning("Interpreter failed for answer %s: %s", answer.id, err)
 
-    # ── Safety net: the user's input is never lost ─────────────────
-    for q in resolved:
-        if q["picked"] and q["kind"] == "mcq" and not any(
-                r["item_id"] == q["item_id"] and r["source"] == "mcq"
-                and set(r["value"] if isinstance(r["value"], list) else [r["value"]]) & set(q["picked"])
-                for r in recorded):
-            recorded.append({"item_id": q["item_id"], "field": _field(q["topic"]),
-                             "value": q["picked"] if q["multi"] else q["picked"][0], "source": "mcq"})
-        if q["note"] and not _covered(q["note"], recorded):
-            recorded.append({"item_id": q["item_id"], "field": "detail", "value": q["note"], "source": "note"})
+    # Safety net: an item answer always leaves a trace, even if the model failed or skipped it.
+    topic_key = question.get("topic_key")
+    if is_item and said_words and not facts:
+        value = text or (picked if len(picked) > 1 else (picked[0] if picked else str(number)))
+        facts.append({"field": f"{topic_key}.detail", "value": value, "source": "mcq" if picked and not text else "note"})
+    if said_words and topic_key in dims and topic_key not in dim_updates:
+        dim_updates[topic_key] = "PARTIAL"  # something was said about the topic itself
 
-    for sentence in re.split(r"(?<=[.!?;])\s+|\n+", free_text or ""):
-        if sentence.strip() and not _covered(sentence, recorded):
-            target = next((i for i, t in all_items.items() if t.lower() in sentence.lower()), resolved[0]["item_id"])
-            recorded.append({"item_id": target, "field": "detail", "value": sentence.strip(), "source": "note"})
+    for f in facts:
+        db.add(ItemFact(item_id=item_uuid, field=f["field"], value=f["value"], source=f["source"],
+                        prompt_version=PROMPT_VERSION, answer_id=answer.id))
+    for key, state in dim_updates.items():
+        progress.set_info(db, profile.id, entity_id, key, state)
 
-    for r in recorded:
-        db.add(ItemFact(item_id=uuid.UUID(r["item_id"]), field=r["field"], value=r["value"],
-                        source=r["source"], prompt_version=PROMPT_VERSION))
+    answer.attempts += 1
+    answer.status = "failed" if error else "interpreted"
+    answer.error = error
+    answer.interpreted_at = datetime.now(timezone.utc)
     db.commit()
-    return {"recorded": recorded, "conflicts": conflicts, "followups": followups}
-
-
-def _covered(text: str, recorded: list[dict]) -> bool:
-    """True if saved notes already carry most of this text's meaningful words."""
-    words = {w for w in _words(text) if len(w) > 3}
-    if not words:
-        return True
-    noted = set().union(*(_words(str(r["value"])) for r in recorded if r["source"] == "note")) if recorded else set()
-    return len(words & noted) / len(words) >= 0.4
+    return error
