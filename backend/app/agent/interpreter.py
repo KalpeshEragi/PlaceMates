@@ -61,6 +61,24 @@ Return every tool call you need in "calls":
 - "Not sure" / "Prefer not to answer" / empty answers: no calls."""
 
 
+URL = re.compile(r"(?<![@\w.])(?:https?://)?(?:[\w-]+\.)+[a-z]{2,}(?:/[^\s,;)]*)?", re.I)
+# Real web domain endings only, so "Node.js" or "next.config" never become links.
+TLDS = {"com", "in", "dev", "io", "me", "org", "net", "app", "co", "ai", "xyz", "tech", "site", "page",
+        "edu", "info", "live", "vercel", "pages", "online", "blog"}
+
+
+def extract_urls(text: str) -> list[str]:
+    """'github.com/x and linkedin.com/in/y' -> ['https://github.com/x', 'https://linkedin.com/in/y']."""
+    urls = []
+    for m in URL.findall(text or ""):
+        url = m.rstrip(".")
+        host = re.sub(r"^https?://", "", url, flags=re.I).split("/")[0]
+        if host.rsplit(".", 1)[-1].lower() not in TLDS:
+            continue
+        urls.append(url if url.lower().startswith("http") else f"https://{url}")
+    return list(dict.fromkeys(urls))
+
+
 def _words(text: str) -> set[str]:
     return set(WORD.findall(text.lower()))
 
@@ -132,7 +150,10 @@ def interpret(db: Session, profile: Profile, answer: AgentAnswer, entity: dict) 
             if entity_id != "personal" or c.field not in BASIC_FIELDS or not values or not grounded(values):
                 return "rejected"
             if c.field == "link":
-                profile.links = list(dict.fromkeys([*(profile.links or []), *values]))
+                urls = [u for v in values for u in extract_urls(v)]
+                if not urls:
+                    return "rejected: no link found in the value"
+                profile.links = list(dict.fromkeys([*(profile.links or []), *urls]))
             else:
                 setattr(profile, c.field, values[0])
             return "ok"
@@ -162,6 +183,12 @@ def interpret(db: Session, profile: Profile, answer: AgentAnswer, entity: dict) 
         except LLMError as err:
             error = str(err)
             log.warning("Interpreter failed for answer %s: %s", answer.id, err)
+
+    # Links are too important to leave to the model: pull them out of personal answers in code.
+    if entity_id == "personal" and (urls := extract_urls(text)):
+        profile.links = list(dict.fromkeys([*(profile.links or []), *urls]))
+        if "professional_links" in dims:
+            dim_updates.setdefault("professional_links", "COMPLETE")
 
     # Safety net: an item answer always leaves a trace, even if the model failed or skipped it.
     topic_key = question.get("topic_key")
