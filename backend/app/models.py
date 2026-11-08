@@ -133,6 +133,44 @@ class AgentSession(Base):
     created_at: Mapped[datetime] = _created()
 
 
+# ── Jobs ──────────────────────────────────────────────────────────────
+
+
+class Job(Base):
+    """One job posting, normalized across sources. The same role seen on two sources is one row."""
+
+    __tablename__ = "jobs"
+
+    id: Mapped[uuid.UUID] = _id()
+    source: Mapped[str] = mapped_column(String)            # greenhouse | lever | ashby | adzuna | jsearch
+    source_id: Mapped[str] = mapped_column(String)         # the posting id at that source
+    dedupe_key: Mapped[str] = mapped_column(String, unique=True)  # company|title|city, normalized
+    company: Mapped[str] = mapped_column(String, index=True)
+    title: Mapped[str] = mapped_column(String)
+    location: Mapped[str | None] = mapped_column(String)
+    remote: Mapped[bool] = mapped_column(default=False)
+    seniority: Mapped[str] = mapped_column(String, default="unknown")  # intern | entry | mid | senior | unknown
+    employment_type: Mapped[str | None] = mapped_column(String)
+    description: Mapped[str] = mapped_column(Text)
+    apply_url: Mapped[str] = mapped_column(String)
+    posted_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
+    first_seen_at: Mapped[datetime] = _created()
+    last_seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    raw: Mapped[dict] = mapped_column(JSONB)  # original posting, for debugging and re-parsing
+
+
+class JobFetchRun(Base):
+    """One run of the daily fetcher: what each source returned and what failed."""
+
+    __tablename__ = "job_fetch_runs"
+
+    id: Mapped[uuid.UUID] = _id()
+    started_at: Mapped[datetime] = _created()
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    stats: Mapped[dict | None] = mapped_column(JSONB)    # per source: fetched, kept, new
+    errors: Mapped[list | None] = mapped_column(JSONB)   # [{source, board, error}]
+
+
 # ── Permanent progress (separate from LangGraph checkpoints) ──────────
 # entity_id is a profile item UUID as text, or "personal" / "skills".
 
