@@ -5,7 +5,7 @@
 3. merge_into_profile adds what's new and never overwrites user edits.
 """
 
-import fitz  # PyMuPDF
+import pymupdf
 from sqlalchemy.orm import Session
 
 from app.config import settings
@@ -20,7 +20,7 @@ class ResumeReadError(Exception):
 
 def extract_pdf(data: bytes) -> tuple[str, list[str]]:
     try:
-        doc = fitz.open(stream=data, filetype="pdf")
+        doc = pymupdf.open(stream=data, filetype="pdf")
     except Exception as err:
         raise ResumeReadError("Not a readable PDF") from err
 
