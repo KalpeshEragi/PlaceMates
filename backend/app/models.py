@@ -100,6 +100,20 @@ class ItemFact(Base):
     item: Mapped[ProfileItem] = relationship(back_populates="facts")
 
 
+class QuestionBatch(Base):
+    """One round of multiple-choice questions shown to the user."""
+
+    __tablename__ = "question_batches"
+
+    id: Mapped[uuid.UUID] = _id()
+    profile_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("profiles.id", ondelete="CASCADE"), index=True)
+    # [{n, item_id, item_title, field, text, multi, options: [{key, label}], skip_key}]
+    questions: Mapped[list] = mapped_column(JSONB)
+    status: Mapped[str] = mapped_column(String, default="open")  # open | answered
+    answers: Mapped[list | None] = mapped_column(JSONB)
+    created_at: Mapped[datetime] = _created()
+
+
 class Skill(Base):
     __tablename__ = "skills"
     __table_args__ = (UniqueConstraint("profile_id", "name"),)
