@@ -40,6 +40,7 @@ class Posting:
     posted_at: datetime
     employment_type: str | None = None
     remote_flag: bool = False
+    seniority_hint: str | None = None  # from the source's own experience field, when it has one
     raw: dict = field(default_factory=dict)
 
 

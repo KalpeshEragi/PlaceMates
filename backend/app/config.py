@@ -23,6 +23,8 @@ class Settings(BaseSettings):
     adzuna_app_id: str = ""
     adzuna_app_key: str = ""
     jsearch_api_key: str = ""
+    apify_api_key: str = ""               # env name is case-insensitive (Apify_API_KEY works)
+    apify_monthly_budget_usd: float = 4.5  # stay under Apify's $5 free monthly credit
 
     groq_api_key: str = ""
     groq_base_url: str = "https://api.groq.com/openai/v1"

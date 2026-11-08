@@ -1,5 +1,7 @@
 """One async fetch function per source. Each returns normalized Postings (no filtering here)."""
 
+import asyncio
+import re
 from datetime import datetime, timezone
 
 import httpx
@@ -99,3 +101,100 @@ async def jsearch(client: httpx.AsyncClient, query: str) -> list[Posting]:
         posted_at=_iso(j["job_posted_at_datetime_utc"]), employment_type=j.get("job_employment_type"),
         remote_flag=bool(j.get("job_is_remote")), raw={"job_id": j["job_id"]},
     ) for j in r.json().get("data", []) if j.get("job_posted_at_datetime_utc")]
+
+
+# ── Apify scrapers (LinkedIn + Naukri) ────────────────────────────────
+# valig's actors, chosen 2026-11-09: ~$0.40 per 1,000 results on the free plan, full LinkedIn
+# descriptions, Naukri experience ranges. Usage of each run is collected for the budget guard.
+
+APIFY_LINKEDIN = "valig~linkedin-jobs-scraper"
+APIFY_NAUKRI = "valig~naukri-jobs-scraper"
+LINKEDIN_QUERIES = ["software engineer", "software developer", "frontend developer", "backend developer",
+                    "full stack developer", "data analyst", "machine learning engineer", "devops engineer"]
+NAUKRI_QUERIES = ["software developer", "software engineer fresher", "data analyst", "web developer"]
+LINKEDIN_PER_QUERY = 30
+NAUKRI_PER_QUERY = 25
+# Skipped by the scraper itself, so we never pay for roles PlaceMates' users can't apply to.
+SENIOR_TITLES = ["senior", "sr", "lead", "staff", "principal", "manager", "director", "head", "architect", "iii"]
+APIFY_USAGE: list[float] = []  # USD per run in the current fetch (reset by the fetcher)
+# The free plan allows 5 actor runs at once; stay below it.
+APIFY_CONCURRENCY = 4
+_apify_slots: asyncio.Semaphore | None = None
+
+
+def reset_apify(concurrency: int = APIFY_CONCURRENCY) -> None:
+    """Call at the start of each fetch (inside its event loop)."""
+    global _apify_slots
+    _apify_slots = asyncio.Semaphore(concurrency)
+    APIFY_USAGE.clear()
+
+LINKEDIN_LEVEL = {"Internship": "intern", "Entry level": "entry", "Associate": "entry",
+                  "Mid-Senior level": "mid", "Director": "senior", "Executive": "senior"}
+
+
+async def _run_actor(client: httpx.AsyncClient, actor: str, payload: dict) -> list[dict]:
+    async with _apify_slots or asyncio.Semaphore(1):
+        return await _run_actor_now(client, actor, payload)
+
+
+async def _run_actor_now(client: httpx.AsyncClient, actor: str, payload: dict) -> list[dict]:
+    headers = {"Authorization": f"Bearer {settings.apify_api_key}"}
+    r = await client.post(f"https://api.apify.com/v2/acts/{actor}/runs", headers=headers, json=payload,
+                          params={"waitForFinish": 240}, timeout=300)
+    r.raise_for_status()
+    run = r.json()["data"]
+    APIFY_USAGE.append(float(run.get("usageTotalUsd") or 0))
+    if run["status"] != "SUCCEEDED":
+        raise RuntimeError(f"Apify run {run['id']} ended {run['status']}")
+    items = await client.get(f"https://api.apify.com/v2/datasets/{run['defaultDatasetId']}/items",
+                             headers=headers, timeout=60)
+    items.raise_for_status()
+    return items.json()
+
+
+async def apify_linkedin(client: httpx.AsyncClient, query: str) -> list[Posting]:
+    items = await _run_actor(client, APIFY_LINKEDIN, {
+        "keywords": query, "location": "India", "datePosted": "r86400",  # last 24 hours
+        "limit": LINKEDIN_PER_QUERY, "titleExclude": SENIOR_TITLES})
+    return [Posting(
+        source="linkedin", source_id=str(j["id"]), company=j.get("companyName") or "Unknown",
+        title=j["title"], location=j.get("location") or "",
+        description=j.get("description") or html_to_text(j.get("descriptionHtml")),
+        apply_url=j.get("applyUrl") or j["url"], posted_at=_iso(j["postedDate"]),
+        employment_type=j.get("contractType"), seniority_hint=LINKEDIN_LEVEL.get(j.get("experienceLevel")),
+        raw={k: j.get(k) for k in ("id", "url", "experienceLevel", "postedDate", "applicationsCount", "workType")},
+    ) for j in items if j.get("title") and j.get("postedDate")]
+
+
+def _naukri_level(exp: dict | None, title: str) -> str | None:
+    try:
+        low = int((exp or {}).get("minimum"))
+    except (TypeError, ValueError):
+        return None
+    if re.search(r"\bintern", title, re.I):
+        return "intern"
+    return "entry" if low <= 1 else "mid" if low <= 4 else "senior"
+
+
+async def apify_naukri(client: httpx.AsyncClient, query: str) -> list[Posting]:
+    items = await _run_actor(client, APIFY_NAUKRI, {
+        "keywords": query, "jobAge": "1", "experience": 1, "sort": "f", "limit": NAUKRI_PER_QUERY})
+    out = []
+    for j in items:
+        if not (j.get("title") and j.get("createdDate")):
+            continue
+        skills = j.get("skills") or {}
+        skill_list = [*(skills.get("preferred") or []), *(skills.get("other") or [])]
+        desc = j.get("description")
+        description = html_to_text(desc.get("full") or desc.get("short") if isinstance(desc, dict) else desc)
+        if skill_list:  # Naukri descriptions can be short; skills help matching later
+            description += "\n\nSkills: " + ", ".join(skill_list)
+        out.append(Posting(
+            source="naukri", source_id=str(j["id"]), company=(j.get("company") or {}).get("name") or "Unknown",
+            title=j["title"], location=", ".join(l.get("label", "") for l in j.get("locations") or []) or "India",
+            description=description, apply_url=j["url"],
+            posted_at=datetime.fromtimestamp(j["createdDate"] / 1000, tz=timezone.utc),
+            employment_type=j.get("employmentType"), seniority_hint=_naukri_level(j.get("experience"), j["title"]),
+            raw={k: j.get(k) for k in ("id", "url", "experience", "createdDateText", "roleCategory")},
+        ))
+    return out
