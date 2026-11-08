@@ -3,6 +3,7 @@ import uuid
 from fastapi import APIRouter, Depends, HTTPException, UploadFile
 from sqlalchemy.orm import Session
 
+from app.agent import analyst
 from app.db import get_db
 from app.services import resume_import
 from app.services.llm import LLMError
@@ -29,6 +30,18 @@ def _own_item(db: Session, profile: Profile, item_id: uuid.UUID) -> ProfileItem:
 @router.get("", response_model=ProfileOut)
 def get_profile(user: User = Depends(current_user)):
     return _profile(user)
+
+
+@router.get("/brief")
+def get_profile_brief(user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """The analyst's view of the profile: summary, strength with reasons, per-item notes."""
+    profile = _profile(user)
+    if not profile.items:
+        return None
+    try:
+        return analyst.get_brief(db, profile).model_dump()
+    except LLMError as err:
+        raise HTTPException(502, f"Could not analyse the profile right now: {err}")
 
 
 @router.post("/resume", response_model=ProfileOut)

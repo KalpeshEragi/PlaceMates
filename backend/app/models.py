@@ -102,6 +102,21 @@ class ItemFact(Base):
     item: Mapped[ProfileItem] = relationship(back_populates="facts")
 
 
+class ProfileBrief(Base):
+    """The analyst's cached understanding of a profile. Rebuilt when the profile changes."""
+
+    __tablename__ = "profile_briefs"
+
+    id: Mapped[uuid.UUID] = _id()
+    profile_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("profiles.id", ondelete="CASCADE"), unique=True)
+    profile_hash: Mapped[str] = mapped_column(String)
+    prompt_version: Mapped[str] = mapped_column(String)
+    brief: Mapped[dict] = mapped_column(JSONB)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
+
+
 class QuestionBatch(Base):
     """One round of multiple-choice questions shown to the user."""
 
