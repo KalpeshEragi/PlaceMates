@@ -1,3 +1,4 @@
+import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -8,6 +9,12 @@ from app import models  # noqa: F401  (registers tables)
 from app.config import settings
 from app.db import Base, engine
 from app.routers import auth, enrich, profile
+
+
+# Show our own logs (model calls, token use, rate-limit waits) next to uvicorn's.
+logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
+for noisy in ("httpx", "httpcore"):
+    logging.getLogger(noisy).setLevel(logging.WARNING)
 
 
 @asynccontextmanager
