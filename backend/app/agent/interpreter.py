@@ -50,7 +50,10 @@ Never add, assume or round up anything they did not say.
 
 Return every tool call you need in "calls":
 - record_fact(dimension, name, value, from_option): one per distinct piece of information.
-  dimension = the entity's dimension key it belongs to (not always the question's topic).
+  dimension = the dimension the information belongs to, NOT the question's topic by default.
+  Example: asked about architecture, the student also says "deployed on Render, used daily by
+  the canteen" -> deployment.platform = "Render" and scale_usage.users = "college canteen, daily",
+  plus update_dimension for architecture, deployment and scale_usage.
   name = short snake_case fact name. Keep distinct concepts distinct
   (e.g. active_backlog_count vs cleared_backlog_count).
   from_option=true only when value is exactly picked option label(s); otherwise use their words.
@@ -77,6 +80,24 @@ def extract_urls(text: str) -> list[str]:
             continue
         urls.append(url if url.lower().startswith("http") else f"https://{url}")
     return list(dict.fromkeys(urls))
+
+
+def _stems(text: str) -> set[str]:
+    """Whole words with plurals folded ('metrics' -> 'metric'); prefixes would confuse
+    'controllers' with 'contribution'."""
+    return {w[:-1] if w.endswith("s") and len(w) > 4 else w
+            for w in re.findall(r"[a-z]+", text.lower()) if len(w) > 3}
+
+
+def _dimension_for(name: str, dims: dict, current: str) -> str | None:
+    """'deployment_container' -> 'deployment', 'daily_usage' -> 'scale_usage' (if those dims exist)."""
+    name_stems = _stems(name.replace("_", " "))
+    if name_stems & _stems(current.replace("_", " ")):
+        return None  # the name fits the asked topic
+    for key in dims:
+        if key != current and name_stems & _stems(key.replace("_", " ")):
+            return key
+    return None
 
 
 def _words(text: str) -> set[str]:
@@ -128,6 +149,10 @@ def interpret(db: Session, profile: Profile, answer: AgentAnswer, entity: dict) 
             if not is_item:
                 return "rejected: record_fact is only for projects, experience, education etc."
             dimension = c.dimension if c.dimension in dims else question.get("topic_key")
+            # Models often file everything under the asked topic; re-file by the fact's own name.
+            if dimension == question.get("topic_key") and (better := _dimension_for(c.name or "", dims, dimension)):
+                dimension = better
+                dim_updates.setdefault(better, "PARTIAL")
             if not values:
                 return "rejected: empty value"
             if c.from_option and not set(values) <= set(picked):
