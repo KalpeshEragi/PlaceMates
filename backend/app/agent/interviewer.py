@@ -1,6 +1,7 @@
 """Interviewer: turns planned gaps into tap-to-answer questions."""
 
 import json
+import re
 import string
 from typing import Literal
 
@@ -10,6 +11,13 @@ from app.agent.domain import DOMAIN_CONTEXT
 from app.agent.planner import Gap
 from app.config import settings
 from app.services.llm import LLMError, complete_json
+
+
+# Options like "Reduced bugs by 10-20%" put made-up results in front of students.
+INVENTED_GAIN = re.compile(
+    r"\b(reduc|improv|increas|boost|cut|sav|decreas|grew|faster|slower)\w*\b.*\d|\d.*\b(faster|improvement|reduction|increase)\b",
+    re.I,
+)
 
 
 class DraftQuestion(BaseModel):
@@ -40,7 +48,7 @@ def write_questions(gaps: list[Gap], snapshot: dict, start_n: int = 1) -> list[d
     payload = [{"gap_index": n, **g.model_dump(), "item": items.get(g.item_id)} for n, g in enumerate(gaps)]
     try:
         drafts = {d.gap_index: d for d in complete_json(
-            settings.model_questions, INTERVIEWER_PROMPT, json.dumps(payload, default=str), Drafts,
+            settings.model_interviewer, INTERVIEWER_PROMPT, json.dumps(payload, default=str), Drafts,
             reasoning_effort="low").questions}
     except LLMError:
         drafts = {}
@@ -51,8 +59,8 @@ def write_questions(gaps: list[Gap], snapshot: dict, start_n: int = 1) -> list[d
         title = items[gap.item_id]["title"]
         if d and d.kind == "confirm":
             labels, multi = ["Yes", "No", "Not sure"], False
-        elif d and len(d.options) >= 2:
-            labels = [*d.options[:5], "Not measured" if d.numeric else "Not sure / skip"]
+        elif d and len(opts := [o for o in d.options if not INVENTED_GAIN.search(o)]) >= 2:
+            labels = [*opts[:5], "Not measured" if d.numeric else "Not sure / skip"]
             multi = d.multi
         else:
             # Model failed: ask in the user's own words instead.

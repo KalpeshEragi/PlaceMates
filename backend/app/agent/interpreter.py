@@ -16,17 +16,18 @@ from langchain_core.tools import tool
 from langchain_groq import ChatGroq
 from sqlalchemy.orm import Session
 
-from app.agent.domain import DOMAIN_CONTEXT, PROMPT_VERSION
+from app.agent.domain import PROMPT_VERSION
 from app.config import settings
 from app.models import ItemFact
 
 log = logging.getLogger(__name__)
-MAX_STEPS = 5
+MAX_STEPS = 3
 WORD = re.compile(r"[a-z0-9]+")
 
-INTERPRETER_PROMPT = f"""{DOMAIN_CONTEXT}
+INTERPRETER_PROMPT = """You record what a student said about their resume items as facts, using tools.
+Never add, assume or round up anything they did not say.
 
-Your job: record what the student told you as facts, using the tools.
+Make ALL your tool calls in a single response, then reply DONE on the next turn.
 - record_fact once per distinct piece of information. Use a short field name
   (e.g. scale, tech, role, outcome, dataset, metric, deployment, team_size, detail).
 - from_option=true when the value is exactly one or more picked option labels;
@@ -36,8 +37,7 @@ Your job: record what the student told you as facts, using the tools.
 - Split free text into separate facts ("handled refunds, ~2k a day" -> feature + scale).
 - flag_conflict if an answer contradicts an existing fact.
 - ask_followup only if an answer opens something clearly worth one more question.
-- Record nothing for skipped or "Not sure" answers. Never add anything they didn't say.
-When done, reply with the single word DONE."""
+- Record nothing for skipped or "Not sure" answers."""
 
 
 def _words(text: str) -> set[str]:
@@ -105,12 +105,30 @@ def interpret(db: Session, resolved: list[dict], free_text: str | None,
         "existing_facts": {i: facts_by_item.get(i, []) for i in allowed_items},
     }
 
+    def make_llm(model: str):
+        # This is extraction, not reasoning: switch thinking off (qwen) or keep it minimal (gpt-oss).
+        effort = "none" if model.startswith("qwen/") else "low"
+        return ChatGroq(model=model, api_key=settings.groq_api_key, temperature=0, max_retries=2,
+                        timeout=60, reasoning_effort=effort).bind_tools(list(tools.values()))
+
+    # Small models sometimes produce a malformed tool call; retry, then try a second model.
+    attempts = [settings.model_interpreter, settings.model_interpreter, settings.model_questions]
+
+    def invoke(messages):
+        for i, model in enumerate(attempts):
+            try:
+                return make_llm(model).invoke(messages)
+            except Exception as err:  # noqa: BLE001
+                if "tool_use_failed" not in str(err) or i == len(attempts) - 1:
+                    raise
+                log.info("Bad tool call from %s, retrying", model)
+
     try:
-        llm = ChatGroq(model=settings.model_interpreter, api_key=settings.groq_api_key, temperature=0,
-                       max_retries=2, timeout=60).bind_tools(list(tools.values()))
         messages = [SystemMessage(INTERPRETER_PROMPT), HumanMessage(json.dumps(payload, default=str))]
         for _ in range(MAX_STEPS):
-            ai = llm.invoke(messages)
+            ai = invoke(messages)
+            log.info("interpreter call: %s tool calls, tokens %s", len(ai.tool_calls),
+                     (ai.usage_metadata or {}).get("total_tokens"))
             messages.append(ai)
             if not ai.tool_calls:
                 break
@@ -131,10 +149,17 @@ def interpret(db: Session, resolved: list[dict], free_text: str | None,
                 and set(r["value"] if isinstance(r["value"], list) else [r["value"]]) & set(q["picked"])
                 for r in recorded)
             if not covered:
-                recorded.append({"item_id": q["item_id"], "field": q["topic"].replace(" ", "_")[:30],
-                                 "value": value, "source": "mcq"})
+                field = re.sub(r"[^a-z_]", "", q["topic"].lower().replace(" ", "_"))[:30] or "detail"
+                recorded.append({"item_id": q["item_id"], "field": field, "value": value, "source": "mcq"})
         if q["note"] and not any(r["source"] == "note" and r["item_id"] == q["item_id"] for r in recorded):
             recorded.append({"item_id": q["item_id"], "field": "detail", "value": q["note"], "source": "note"})
+
+    # Free text is never lost: if nothing came from it, keep it on the item it names.
+    if free_text and not any(r["source"] == "note" and _words(str(r["value"])) & _words(free_text)
+                             for r in recorded):
+        titles = {q["item_id"]: q["item_title"].lower() for q in resolved}
+        target = next((i for i, t in titles.items() if t in free_text.lower()), resolved[0]["item_id"])
+        recorded.append({"item_id": target, "field": "detail", "value": free_text, "source": "note"})
 
     for r in recorded:
         db.add(ItemFact(item_id=uuid.UUID(r["item_id"]), field=r["field"], value=r["value"],

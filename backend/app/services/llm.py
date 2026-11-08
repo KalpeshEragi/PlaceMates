@@ -1,12 +1,16 @@
 """Cheap-model calls (Groq). Gemini is reserved for resume drafting."""
 
 import json
+import logging
 import time
 
 import httpx
 from pydantic import BaseModel, ValidationError
 
 from app.config import settings
+
+
+log = logging.getLogger(__name__)
 
 
 class LLMError(Exception):
@@ -34,11 +38,15 @@ def _chat(model: str, messages: list[dict], reasoning_effort: str | None) -> str
         )
         if resp.status_code == 429 and attempt < 2:
             # Rate limited: Groq says how long to wait.
-            time.sleep(min(float(resp.headers.get("retry-after", "5")), 30))
+            wait = min(float(resp.headers.get("retry-after", "5")), 30)
+            log.warning("Rate limited on %s, waiting %.0fs", model, wait)
+            time.sleep(wait)
             continue
         if resp.status_code != 200:
             raise LLMError(f"Groq {resp.status_code}: {resp.text[:300]}")
-        return resp.json()["choices"][0]["message"]["content"]
+        data = resp.json()
+        log.info("%s: %s tokens", model, data.get("usage", {}).get("total_tokens"))
+        return data["choices"][0]["message"]["content"]
     raise LLMError("Groq rate limit: still limited after retries")
 
 

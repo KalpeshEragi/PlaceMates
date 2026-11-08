@@ -22,8 +22,11 @@ class Settings(BaseSettings):
     # Which model each cheap task uses. Change here, not in code.
     # Each model has its own Groq rate limit, so steps are spread across models.
     model_extract: str = "openai/gpt-oss-120b"      # resume extraction, analyst
-    model_questions: str = "openai/gpt-oss-20b"     # planner, interviewer
-    model_interpreter: str = "qwen/qwen3.8-27b"     # interpreter (tool calling)
+    model_questions: str = "openai/gpt-oss-20b"     # planner
+    model_interviewer: str = "openai/gpt-oss-120b"  # question writing
+    # Interpreter shares 120b with the analyst, which only runs at session start/end.
+    # (qwen3.8-27b was tried: frequent malformed tool calls on Groq.)
+    model_interpreter: str = "openai/gpt-oss-120b"
 
 
 settings = Settings()
