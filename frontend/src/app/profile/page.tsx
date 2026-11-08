@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import ImprovePanel from "@/components/ImprovePanel";
 import { api, ApiError, type Basics, type Fact, type Item, type ItemKind, type Profile } from "@/lib/api";
 
 const KINDS: ItemKind[] = ["experience", "project", "education", "certification", "award"];
@@ -64,6 +65,8 @@ export default function ProfilePage() {
 
       {error && <p className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
       {busy && <p className="text-sm text-zinc-500">Working…</p>}
+
+      <ImprovePanel key={profile.items.length} onSaved={() => api<Profile>("/profile").then(setProfile)} />
 
       <BasicsForm
         profile={profile}

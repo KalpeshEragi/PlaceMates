@@ -36,6 +36,22 @@ export interface Profile extends Basics {
   skills: { name: string; source: string }[];
 }
 
+export interface Question {
+  n: number;
+  item_id: string;
+  item_title: string;
+  field: string;
+  text: string;
+  multi: boolean;
+  options: { key: string; label: string }[];
+  skip_key: string;
+}
+
+export interface EnrichState {
+  strength: number;
+  batch: { id: string; questions: Question[] } | null;
+}
+
 export class ApiError extends Error {
   constructor(public status: number, message: string) {
     super(message);
