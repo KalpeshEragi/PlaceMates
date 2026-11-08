@@ -20,10 +20,38 @@ from app.services.jobs.normalize import Posting, dedupe_key, is_tech, seniority,
 
 log = logging.getLogger(__name__)
 JSEARCH_QUERIES_PER_DAY = 3  # free tier is small
+APIFY_PRICE_PER_RESULT = 0.0004  # valig actors, free plan (checked 2026-11-09)
+APIFY_PRICE_PER_RUN = 0.001
+
+
+def apify_plan(errors: list[dict]) -> list[tuple[str, str, object]]:
+    """Apify searches to run today, trimmed so this month's spend stays under the budget."""
+    if not settings.apify_api_key:
+        return []
+    try:
+        r = httpx.get("https://api.apify.com/v2/users/me/limits", timeout=20,
+                      headers={"Authorization": f"Bearer {settings.apify_api_key}"})
+        r.raise_for_status()
+        used = float(r.json()["data"]["current"].get("monthlyUsageUsd") or 0)
+    except Exception as err:  # noqa: BLE001 - can't see spend: don't risk spending
+        errors.append({"source": "apify", "board": "budget", "error": f"Could not read usage: {err}"[:300]})
+        return []
+    plan = [("linkedin", q, sources.apify_linkedin, sources.LINKEDIN_PER_QUERY) for q in sources.LINKEDIN_QUERIES]
+    plan += [("naukri", q, sources.apify_naukri, sources.NAUKRI_PER_QUERY) for q in sources.NAUKRI_QUERIES]
+    left = settings.apify_monthly_budget_usd - used
+    while plan and sum(n * APIFY_PRICE_PER_RESULT + APIFY_PRICE_PER_RUN for *_, n in plan) > left:
+        plan.pop()  # drop the least important searches first
+    if len(plan) < len(sources.LINKEDIN_QUERIES) + len(sources.NAUKRI_QUERIES):
+        errors.append({"source": "apify", "board": "budget",
+                       "error": f"Ran {len(plan)} searches: ${used:.2f} of ${settings.apify_monthly_budget_usd} used this month"})
+    return [(kind, q, fn) for kind, q, fn, _ in plan]
 
 
 async def _collect() -> tuple[list[tuple[str, list[Posting]]], list[dict]]:
     tasks: list[tuple[str, str, object]] = []
+    errors: list[dict] = []
+    sources.reset_apify()
+    tasks += apify_plan(errors)
     for kind, slugs in BOARDS.items():
         fn = getattr(sources, kind)
         tasks += [(kind, slug, fn) for slug in slugs]
@@ -37,9 +65,9 @@ async def _collect() -> tuple[list[tuple[str, list[Posting]]], list[dict]]:
                                  headers={"User-Agent": "PlaceMates job fetcher"}) as client:
         results = await asyncio.gather(*(fn(client, arg) for _, arg, fn in tasks), return_exceptions=True)
 
-    batches, errors = [], []
+    batches = []
     for (kind, arg, _), res in zip(tasks, results):
-        if isinstance(res, Exception):
+        if isinstance(res, BaseException):
             errors.append({"source": kind, "board": arg, "error": f"{type(res).__name__}: {res}"[:300]})
         else:
             batches.append((kind, res))
@@ -78,10 +106,13 @@ def run_fetch(db: Session) -> JobFetchRun:
                 db.add(job)
                 s["new"] += 1
             job.source, job.source_id, job.company, job.title = p.source, p.source_id, p.company, p.title
-            job.location, job.remote, job.seniority = p.location, remote, seniority(p.title)
+            job.location, job.remote = p.location, remote
+            job.seniority = p.seniority_hint or seniority(p.title)
             job.employment_type, job.description, job.apply_url = p.employment_type, p.description, p.apply_url
             job.posted_at, job.last_seen_at, job.raw = p.posted_at, now, p.raw
 
+    if sources.APIFY_USAGE:
+        stats["apify_cost_usd"] = round(sum(sources.APIFY_USAGE), 4)
     run.stats, run.errors, run.finished_at = stats, errors, datetime.now(timezone.utc)
     db.commit()
     log.info("Job fetch done: %s | %d board errors", stats, len(errors))
