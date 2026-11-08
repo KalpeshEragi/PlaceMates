@@ -20,8 +20,10 @@ class Settings(BaseSettings):
     groq_base_url: str = "https://api.groq.com/openai/v1"
 
     # Which model each cheap task uses. Change here, not in code.
-    model_extract: str = "openai/gpt-oss-120b"
-    model_questions: str = "openai/gpt-oss-20b"
+    # Each model has its own Groq rate limit, so steps are spread across models.
+    model_extract: str = "openai/gpt-oss-120b"      # resume extraction, analyst
+    model_questions: str = "openai/gpt-oss-20b"     # planner, interviewer
+    model_interpreter: str = "qwen/qwen3.8-27b"     # interpreter (tool calling)
 
 
 settings = Settings()
