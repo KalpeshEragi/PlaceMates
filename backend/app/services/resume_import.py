@@ -39,7 +39,8 @@ SYSTEM_PROMPT = """You convert resume text into structured data.
 Rules:
 - Copy facts only. Never invent, guess or improve wording.
 - One item per job, project, degree, certification or award.
-- kind is one of: experience, project, education, certification, award.
+- kind is one of: experience, project, education, research, certification, award, other.
+  research = academic or lab research work; other = relevant items that fit nowhere else.
 - bullets: each original bullet point, copied as written.
 - For education, put the grade as a bullet exactly as written (e.g. "CGPA 8.4", "87%").
 - tech: technologies named in that item only.

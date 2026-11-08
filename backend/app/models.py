@@ -97,6 +97,10 @@ class ItemFact(Base):
     confidence: Mapped[float] = mapped_column(Float, default=1.0)
     # Which agent prompt version recorded it (None for resume/manual facts).
     prompt_version: Mapped[str | None] = mapped_column(String)
+    # Evidence: the raw answer this fact was interpreted from (None for resume/manual).
+    answer_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("agent_answers.id", ondelete="SET NULL"), index=True
+    )
     created_at: Mapped[datetime] = _created()
 
     item: Mapped[ProfileItem] = relationship(back_populates="facts")
@@ -125,8 +129,71 @@ class AgentSession(Base):
     id: Mapped[uuid.UUID] = _id()
     profile_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("profiles.id", ondelete="CASCADE"), index=True)
     thread_id: Mapped[str] = mapped_column(String, unique=True)
-    status: Mapped[str] = mapped_column(String, default="active")  # active | done
+    status: Mapped[str] = mapped_column(String, default="active")  # active | paused | done
     created_at: Mapped[datetime] = _created()
+
+
+# ── Permanent progress (separate from LangGraph checkpoints) ──────────
+# entity_id is a profile item UUID as text, or "personal" / "skills".
+
+
+class EntityState(Base):
+    """The analyst's understanding of one entity, and where the student is with it."""
+
+    __tablename__ = "entity_states"
+    __table_args__ = (UniqueConstraint("profile_id", "entity_id"),)
+
+    id: Mapped[uuid.UUID] = _id()
+    profile_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("profiles.id", ondelete="CASCADE"), index=True)
+    entity_id: Mapped[str] = mapped_column(String)
+    section: Mapped[str] = mapped_column(String)
+    understanding: Mapped[str | None] = mapped_column(Text)
+    entity_hash: Mapped[str | None] = mapped_column(String)  # reassess when the entity changes
+    status: Mapped[str] = mapped_column(String, default="not_started")  # not_started | in_progress | finished | skipped
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
+
+
+class TopicState(Base):
+    """One information dimension of an entity: what we know (info_state) and
+    whether it was discussed (convo_state). The two are tracked separately."""
+
+    __tablename__ = "topic_states"
+    __table_args__ = (UniqueConstraint("profile_id", "entity_id", "key"),)
+
+    id: Mapped[uuid.UUID] = _id()
+    profile_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("profiles.id", ondelete="CASCADE"), index=True)
+    entity_id: Mapped[str] = mapped_column(String, index=True)
+    key: Mapped[str] = mapped_column(String)  # canonical dimension key, e.g. "evaluation"
+    label: Mapped[str] = mapped_column(String)
+    why: Mapped[str | None] = mapped_column(Text)  # why adding it could help, in friendly words
+    priority: Mapped[int] = mapped_column(Integer, default=3)
+    info_state: Mapped[str] = mapped_column(String, default="MISSING")
+    convo_state: Mapped[str] = mapped_column(String, default="NOT_EXPLORED")
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
+
+
+class AgentAnswer(Base):
+    """Every response, saved BEFORE any interpretation, so nothing is ever lost."""
+
+    __tablename__ = "agent_answers"
+
+    id: Mapped[uuid.UUID] = _id()
+    profile_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("profiles.id", ondelete="CASCADE"), index=True)
+    session_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("agent_sessions.id", ondelete="SET NULL"))
+    entity_id: Mapped[str] = mapped_column(String)
+    topic_key: Mapped[str] = mapped_column(String)
+    question: Mapped[dict] = mapped_column(JSONB)
+    raw: Mapped[dict] = mapped_column(JSONB)  # {keys, labels, text, number}
+    status: Mapped[str] = mapped_column(String, default="pending")  # pending | interpreted | failed | skipped
+    error: Mapped[str | None] = mapped_column(Text)
+    attempts: Mapped[int] = mapped_column(Integer, default=0)
+    prompt_version: Mapped[str] = mapped_column(String)
+    created_at: Mapped[datetime] = _created()
+    interpreted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
 class Skill(Base):

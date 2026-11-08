@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
-ItemKind = Literal["experience", "project", "education", "certification", "award"]
+ItemKind = Literal["experience", "project", "education", "research", "certification", "award", "other"]
 FactSource = Literal["resume", "mcq", "note", "manual"]
 
 
