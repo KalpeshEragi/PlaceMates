@@ -37,10 +37,14 @@ def topic(db: Session, profile_id: uuid.UUID, entity_id: str, key: str) -> Topic
                                               TopicState.entity_id == entity_id, TopicState.key == key))
 
 
-def suggestions(rows: list[TopicState], offset: int = 0) -> tuple[list[TopicState], bool]:
-    """Best open opportunities, a few at a time. Returns (page, more_available)."""
-    open_rows = [t for t in rows if t.info_state in OPEN_INFO and t.priority >= 3
-                 and t.convo_state not in ("SKIPPED", "EXPLORED")]
+def suggestions(rows: list[TopicState], offset: int = 0,
+                include_explored: bool = False) -> tuple[list[TopicState], bool]:
+    """Best open opportunities, a few at a time. Returns (page, more_available).
+    include_explored: when the student revisits an entity, offer topics discussed before
+    that still have room, plus ones they skipped earlier."""
+    closed = () if include_explored else ("SKIPPED", "EXPLORED")
+    info = OPEN_INFO + (("SKIPPED",) if include_explored else ())
+    open_rows = [t for t in rows if t.info_state in info and t.priority >= 3 and t.convo_state not in closed]
     # Highest priority first; MISSING before PARTIAL on ties.
     open_rows.sort(key=lambda t: (-t.priority, t.info_state != "MISSING"))
     page = open_rows[offset:offset + SUGGEST_LIMIT]
@@ -51,8 +55,8 @@ def set_convo(db: Session, profile_id: uuid.UUID, entity_id: str, key: str, stat
     row = topic(db, profile_id, entity_id, key)
     if not row:
         return
-    # Never move a finished conversation back to a weaker state by accident.
-    if row.convo_state in ("EXPLORED", "SKIPPED") and state in ("SUGGESTED", "SELECTED"):
+    # Showing a suggestion again never undoes an earlier "explored" or "skipped".
+    if row.convo_state in ("EXPLORED", "SKIPPED") and state == "SUGGESTED":
         return
     row.convo_state = state
     if state == "SKIPPED" and row.info_state == "MISSING":

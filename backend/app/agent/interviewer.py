@@ -1,4 +1,8 @@
-"""Interviewer: turns planned gaps into tap-to-answer questions."""
+"""Interviewer: decides whether one more question on a topic is worth asking, and writes it.
+
+One question at a time. The format fits the information: options for quick facts,
+free text for explanations (architecture, decisions, challenges).
+"""
 
 import json
 import re
@@ -8,10 +12,10 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 from app.agent.domain import DOMAIN_CONTEXT
-from app.agent.planner import Gap, _topic_words
 from app.config import settings
-from app.services.llm import LLMError, complete_json
+from app.services.llm import complete_json
 
+MAX_TURNS_PER_TOPIC = 3
 
 # Options like "Reduced bugs by 10-20%" put made-up results in front of students.
 INVENTED_GAIN = re.compile(
@@ -20,76 +24,60 @@ INVENTED_GAIN = re.compile(
 )
 
 
-class DraftQuestion(BaseModel):
-    gap_index: int
-    topic: str = Field(description="Copy the gap's topic exactly")
-    kind: Literal["mcq", "confirm"] = Field(description='"confirm" for yes/no checks of something likely true')
-    text: str
-    multi: bool = Field(description="True if several options can be true at once (e.g. technologies)")
-    numeric: bool = Field(description="True if it asks about a size, count or measurable result")
-    options: list[str] = Field(default=[], description="3-5 options for mcq; empty for confirm")
-
-
-class Drafts(BaseModel):
-    questions: list[DraftQuestion]
+class NextQuestion(BaseModel):
+    done: bool = Field(description="True if the topic is covered well enough, or another question isn't worth it")
+    lead_in: str = Field(default="", description="One friendly sentence acknowledging what you know and what you'd like to explore")
+    kind: Literal["single", "multi", "number", "short_text", "long_text"] = "short_text"
+    text: str = ""
+    options: list[str] = Field(default=[], description="2-5 options for single/multi; empty otherwise")
+    unit: str | None = Field(default=None, description="For number questions, e.g. 'users', 'ms'")
 
 
 INTERVIEWER_PROMPT = f"""{DOMAIN_CONTEXT}
 
-Your job: write one question per gap (use its gap_index and copy its topic).
-- Ask exactly about that gap's topic. Never ask about something already in the item's facts.
-- Mention the item by name. Under 20 words.
-- mcq: 3-5 options specific to that item's own facts and tech. No "Other" or "Skip".
-- Sizes as ranges, always with a modest option. Results as kinds of result, never
-  invented numbers or percentages.
-- confirm: only to check something strongly implied by the facts ("Did Shop API use MongoDB for orders?")."""
+You are a knowledgeable, friendly technical interviewer helping a student describe ONE topic
+of ONE profile entity. Decide whether ONE more question is genuinely worth asking.
+- done=true if the topic is already covered by the facts or the conversation, if the student
+  signalled they don't know or don't want to go deeper, or if more would be marginal.
+- Never ask about anything already in the facts or answered in the conversation, and don't
+  ask about other dimensions that are COMPLETE.
+- Choose the format that fits: single/multi for quick facts (2-5 specific options), number for a
+  single quantity, long_text for explanations (architecture, decisions, challenges, methodology),
+  short_text for a name or phrase.
+- Options: specific to this entity; sizes as ranges with a modest option; never invented
+  results or percentages. Don't include "Other", "Not sure" or "Skip" (added automatically).
+- lead_in: e.g. "I understand the overall architecture. It would help to know how the agents
+  coordinate." Never "Question 3 of 10", never "you must".
+- text: one clear question, under 25 words."""
 
 
-def write_questions(gaps: list[Gap], snapshot: dict, start_n: int = 1) -> list[dict]:
-    items = {i["item_id"]: i for i in snapshot["items"]}
-    payload = [{"gap_index": n, **g.model_dump(), "item": items.get(g.item_id)} for n, g in enumerate(gaps)]
-    try:
-        returned = complete_json(settings.model_interviewer, INTERVIEWER_PROMPT,
-                                 json.dumps(payload, default=str), Drafts, reasoning_effort="low").questions
-    except LLMError:
-        returned = []
-    # Match drafts to gaps by the topic they echo, not by position (small models mix up indexes).
-    by_topic = {d.topic.strip().lower(): d for d in returned}
+def next_question(entity: dict, understanding: str | None, topic: dict, dimensions: list[dict],
+                  history: list[dict], turn: int) -> dict | None:
+    """Returns a question dict, or None when the topic is done."""
+    if turn >= MAX_TURNS_PER_TOPIC:
+        return None
+    payload = {
+        "entity": {"type": entity["type"], "title": entity["title"], "data": entity["data"]},
+        "what_is_already_clear": understanding,
+        "topic": topic,
+        "all_dimensions": dimensions,
+        "conversation_on_this_topic": history,
+    }
+    q = complete_json(settings.model_interviewer, INTERVIEWER_PROMPT, json.dumps(payload, default=str),
+                      NextQuestion, reasoning_effort="low")
+    if q.done or not q.text.strip():
+        return None
 
-    questions = []
-    for gap in gaps:
-        d = by_topic.get(gap.topic.strip().lower())
-        title = items[gap.item_id]["title"]
-        if d and not _fits(d.text, gap, items[gap.item_id]):
-            d = None  # off-topic or already answered: ask in the user's own words instead
-        if d and d.kind == "confirm":
-            labels, multi = ["Yes", "No", "Not sure"], False
-        elif d and len(opts := [o for o in d.options if not INVENTED_GAIN.search(o)]) >= 2:
-            labels = [*opts[:5], "Not measured" if d.numeric else "Not sure / skip"]
-            multi = d.multi
-        else:
-            # Model failed: ask in the user's own words instead.
-            labels, multi = ["Skip"], False
-        options = [{"key": k, "label": label} for k, label in zip(string.ascii_lowercase, labels)]
-        questions.append({
-            "n": start_n + len(questions),
-            "item_id": gap.item_id, "item_title": title, "topic": gap.topic,
-            "kind": d.kind if d and len(labels) > 1 else "text",
-            "text": d.text if d else f"{title}: tell us about the {gap.topic}.",
-            "multi": multi, "options": options, "skip_key": options[-1]["key"],
-        })
-    return questions
-
-
-def _fits(text: str, gap: Gap, item: dict) -> bool:
-    """A draft must be about the planned gap, and not about something the item already has."""
-    words = _topic_words(text) - _topic_words(item["title"])
-    if not words & _topic_words(f"{gap.topic} {gap.reason}"):
-        return False
-    known = set()
-    for f in item["facts"]:
-        if f["field"] != "bullet":
-            known |= _topic_words(f["field"])
-            values = f["value"] if isinstance(f["value"], list) else [str(f["value"])]
-            known |= {w for v in values for w in _topic_words(v) if len(w) > 3}
-    return not (words & known)
+    kind = q.kind
+    labels = [o for o in q.options if not INVENTED_GAIN.search(o)][:5] if kind in ("single", "multi") else []
+    if kind in ("single", "multi") and len(labels) < 2:
+        kind = "short_text"  # options were unusable: ask openly instead
+        labels = []
+    extras = ["Not sure", "Prefer not to answer"] if labels else []
+    options = [{"key": k, "label": label} for k, label in zip(string.ascii_lowercase, labels + extras)]
+    return {
+        "topic_key": topic["key"], "topic_label": topic["label"],
+        "lead_in": q.lead_in.strip(), "kind": kind, "text": q.text.strip(),
+        "options": options, "allow_other": bool(labels), "unit": q.unit if kind == "number" else None,
+        "skip_labels": extras,
+    }
