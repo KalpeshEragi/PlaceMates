@@ -12,4 +12,3 @@ cryptography>=44
 pymupdf>=1.25
 langgraph>=1.2
 langgraph-checkpoint-postgres>=3.2
-langchain-groq>=1.1

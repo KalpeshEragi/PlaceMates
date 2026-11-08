@@ -78,7 +78,8 @@ def interpret(state: AgentState) -> dict:
     with SessionLocal() as db:
         snapshot = profile_snapshot(_profile(db, state))
         facts = {i["item_id"]: i["facts"] for i in snapshot["items"]}
-        result = interpreter.interpret(db, resolved, reply.free_text, facts)
+        titles = {i["item_id"]: i["title"] for i in snapshot["items"]}
+        result = interpreter.interpret(db, resolved, reply.free_text, facts, titles)
     return {
         "asked": [f"{q['item_id']}:{q['topic']}".lower() for q in state["questions"]],
         "asked_count": state.get("asked_count", 0) + len(state["questions"]),

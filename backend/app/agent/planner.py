@@ -41,7 +41,10 @@ Your job: pick the most valuable missing details to ask the student about next.
 
 GENERIC = {"and", "or", "the", "of", "your", "used", "use", "details", "detail", "info", "stack", "type",
            "environment", "source", "count", "number", "level"}
-SYNONYMS = {"technologies": "tech", "technology": "tech", "tools": "tech", "framework": "tech"}
+SYNONYMS = {"technologies": "tech", "technology": "tech", "tools": "tech", "framework": "tech",
+            "storage": "database", "db": "database", "datastore": "database",
+            "deployed": "deployment", "hosting": "deployment", "hosted": "deployment",
+            "accuracy": "metric", "metrics": "metric", "users": "users", "usage": "users"}
 
 
 def _topic_words(text: str) -> set[str]:
