@@ -40,7 +40,8 @@ export interface Question {
   n: number;
   item_id: string;
   item_title: string;
-  field: string;
+  topic: string;
+  kind: "mcq" | "confirm" | "text";
   text: string;
   multi: boolean;
   options: { key: string; label: string }[];
@@ -49,7 +50,12 @@ export interface Question {
 
 export interface EnrichState {
   strength: number;
-  batch: { id: string; questions: Question[] } | null;
+  strength_reasons: string[];
+  summary: string | null;
+  status: "idle" | "asking" | "done";
+  questions: Question[];
+  last_recorded: { item_id: string; field: string; value: unknown; source: string }[];
+  conflicts: string[];
 }
 
 export class ApiError extends Error {
