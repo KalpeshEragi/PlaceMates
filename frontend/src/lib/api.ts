@@ -1,6 +1,6 @@
 export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8000";
 
-export type ItemKind = "experience" | "project" | "education" | "certification" | "award";
+export type ItemKind = "experience" | "project" | "education" | "research" | "certification" | "award" | "other";
 
 export interface Fact {
   id: string;
@@ -36,26 +36,73 @@ export interface Profile extends Basics {
   skills: { name: string; source: string }[];
 }
 
-export interface Question {
-  n: number;
-  item_id: string;
-  item_title: string;
-  topic: string;
-  kind: "mcq" | "confirm" | "text";
-  text: string;
-  multi: boolean;
-  options: { key: string; label: string }[];
-  skip_key: string;
+export interface Entity {
+  id: string;
+  title: string;
+  section: string;
+  section_label: string;
+  section_index: number;
+  sections_total: number;
+  type: string;
 }
 
-export interface EnrichState {
-  strength: number;
-  strength_reasons: string[];
-  summary: string | null;
-  status: "idle" | "asking" | "done";
-  questions: Question[];
-  last_recorded: { item_id: string; field: string; value: unknown; source: string }[];
-  conflicts: string[];
+export interface Option {
+  key: string;
+  label: string;
+}
+
+export interface AgentQuestion {
+  topic_key: string;
+  topic_label: string;
+  lead_in: string;
+  kind: "single" | "multi" | "number" | "short_text" | "long_text";
+  text: string;
+  options: Option[];
+  allow_other: boolean;
+  unit: string | null;
+}
+
+export type Screen =
+  | {
+      screen: "topics";
+      entity: Entity;
+      understanding: string | null;
+      topics: { key: string; label: string; why: string | null; info_state: string }[];
+      more_available: boolean;
+      notices: string[];
+      completeness: { complete: number; total: number };
+    }
+  | {
+      screen: "question";
+      entity: Entity;
+      question: AgentQuestion;
+      history: { q: string; a: string }[];
+      notices: string[];
+      selected_topics: { key: string; label: string; current: boolean }[];
+    }
+  | {
+      screen: "summary";
+      entity: Entity;
+      saved: string[];
+      discussed: string[];
+      skipped: string[];
+      unexplored: string[];
+      next_title: string | null;
+      notices: string[];
+    }
+  | { screen: "done"; notices: string[] };
+
+export interface SectionView {
+  key: string;
+  label: string;
+  entities: { id: string; title: string; status: string; complete: number; total: number }[];
+}
+
+export interface EnrichView {
+  header: { strength: number; reasons: string[]; summary: string } | null;
+  session: { status: "none" | "active" | "paused" | "done"; screen: Screen | null };
+  sections: SectionView[];
+  failed_answers: number;
 }
 
 export class ApiError extends Error {

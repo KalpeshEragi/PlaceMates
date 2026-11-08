@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import ImprovePanel from "@/components/ImprovePanel";
 import { api, ApiError, type Basics, type Fact, type Item, type ItemKind, type Profile } from "@/lib/api";
 
-const KINDS: ItemKind[] = ["experience", "project", "education", "certification", "award"];
+const KINDS: ItemKind[] = ["project", "experience", "research", "education", "certification", "award", "other"];
 const SOURCE_STYLE: Record<Fact["source"], string> = {
   resume: "bg-zinc-100 text-zinc-600",
   mcq: "bg-emerald-50 text-emerald-700",
@@ -24,6 +24,7 @@ export default function ProfilePage() {
   const router = useRouter();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [busy, setBusy] = useState(false);
+  const [focus, setFocus] = useState<{ id: string; nonce: number } | null>(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -66,7 +67,7 @@ export default function ProfilePage() {
       {error && <p className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
       {busy && <p className="text-sm text-zinc-500">Working…</p>}
 
-      <ImprovePanel key={profile.items.length} onSaved={() => api<Profile>("/profile").then(setProfile)} />
+      <ImprovePanel focus={focus} onSaved={() => api<Profile>("/profile").then(setProfile)} />
 
       <BasicsForm
         profile={profile}
@@ -87,6 +88,10 @@ export default function ProfilePage() {
           <ItemCard
             key={item.id}
             item={item}
+            onDiscuss={() => {
+              setFocus({ id: item.id, nonce: Date.now() });
+              document.getElementById("assistant")?.scrollIntoView({ behavior: "smooth" });
+            }}
             onDelete={() => run(() => api(`/profile/items/${item.id}`, { method: "DELETE" }))}
             onDeleteFact={(id) => run(() => api(`/profile/facts/${id}`, { method: "DELETE" }))}
             onAddFact={(field, value) =>
@@ -186,11 +191,13 @@ function SkillsEditor({ skills, onSave }: { skills: string[]; onSave: (names: st
 
 function ItemCard({
   item,
+  onDiscuss,
   onDelete,
   onDeleteFact,
   onAddFact,
 }: {
   item: Item;
+  onDiscuss: () => void;
   onDelete: () => void;
   onDeleteFact: (id: string) => void;
   onAddFact: (field: string, value: string) => void;
@@ -210,9 +217,14 @@ function ItemCard({
           </h3>
           {dates && <p className="text-sm text-zinc-500">{dates}</p>}
         </div>
-        <button onClick={onDelete} className="text-sm text-zinc-400 hover:text-red-600">
-          Delete
-        </button>
+        <div className="flex gap-3">
+          <button onClick={onDiscuss} className="text-sm text-emerald-700 hover:text-emerald-900">
+            Discuss
+          </button>
+          <button onClick={onDelete} className="text-sm text-zinc-400 hover:text-red-600">
+            Delete
+          </button>
+        </div>
       </div>
 
       <ul className="space-y-1.5">

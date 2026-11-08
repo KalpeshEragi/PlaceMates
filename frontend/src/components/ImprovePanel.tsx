@@ -1,40 +1,37 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { api, type EnrichState, type Question } from "@/lib/api";
+import { api, type AgentQuestion, type EnrichView, type Screen, type SectionView } from "@/lib/api";
 
-type Picks = Record<number, string[]>;
-type Notes = Record<number, string>;
+const primary =
+  "rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50";
+const quiet = "rounded-md px-3 py-1.5 text-sm text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 disabled:opacity-50";
+const input = "w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-zinc-900 focus:outline-none";
 
-function show(value: unknown) {
-  return Array.isArray(value) ? value.join(", ") : String(value);
-}
+const STATUS_DOT: Record<string, string> = {
+  finished: "bg-emerald-500",
+  in_progress: "bg-amber-400",
+  skipped: "bg-zinc-300",
+  not_started: "bg-zinc-200",
+};
 
-export default function ImprovePanel({ onSaved }: { onSaved: () => void }) {
-  const [state, setState] = useState<EnrichState | null>(null);
-  const [picks, setPicks] = useState<Picks>({});
-  const [notes, setNotes] = useState<Notes>({});
-  const [shorthand, setShorthand] = useState("");
-  const [freeText, setFreeText] = useState("");
-  const [busy, setBusy] = useState<string>("");
+/** Profile assistant: guided topics, one question at a time, student always in control. */
+export default function ImprovePanel({
+  onSaved,
+  focus,
+}: {
+  onSaved: () => void;
+  focus: { id: string; nonce: number } | null;
+}) {
+  const [view, setView] = useState<EnrichView | null>(null);
+  const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    api<EnrichState>("/enrich")
-      .then(setState)
-      .catch((e) => setError(e.message));
-  }, []);
 
   async function call(label: string, path: string, body?: object) {
     setBusy(label);
     setError("");
     try {
-      const next = await api<EnrichState>(path, { method: "POST", body: body ? JSON.stringify(body) : undefined });
-      setState(next);
-      setPicks({});
-      setNotes({});
-      setShorthand("");
-      setFreeText("");
+      setView(await api<EnrichView>(path, { method: path === "/enrich" ? "GET" : "POST", body: body ? JSON.stringify(body) : undefined }));
       onSaved();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Something went wrong");
@@ -43,160 +40,339 @@ export default function ImprovePanel({ onSaved }: { onSaved: () => void }) {
     }
   }
 
-  function toggle(q: Question, key: string) {
-    setPicks((prev) => {
-      const current = prev[q.n] ?? [];
-      if (!q.multi || key === q.skip_key) return { ...prev, [q.n]: current[0] === key ? [] : [key] };
-      const rest = current.filter((k) => k !== q.skip_key);
-      return { ...prev, [q.n]: rest.includes(key) ? rest.filter((k) => k !== key) : [...rest, key] };
-    });
-  }
+  useEffect(() => {
+    api<EnrichView>("/enrich").then(setView).catch((e) => setError(e.message));
+  }, []);
 
-  function submit() {
-    if (!state) return;
-    const free_text = freeText.trim() || null;
-    const body = shorthand.trim()
-      ? { reply: shorthand, free_text }
-      : {
-          free_text,
-          answers: state.questions.map((q) => ({ n: q.n, keys: picks[q.n] ?? [], note: notes[q.n]?.trim() || null })),
-        };
-    call("Reading your answers and picking the next questions…", "/enrich/answer", body);
-  }
+  // "Discuss" on a profile item opens the assistant on that item.
+  useEffect(() => {
+    if (focus) call("Reading this item…", "/enrich/start", { entity_id: focus.id });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focus?.nonce]);
 
-  if (!state) return error ? <p className="text-sm text-red-700">{error}</p> : null;
-  const asking = state.status === "asking";
+  if (!view) return error ? <p className="text-sm text-red-700">{error}</p> : null;
+  const { header, session, sections, failed_answers } = view;
+  const screen = session.screen;
+  const live = session.status === "active" && screen && screen.screen !== "done";
+  const act = (type: string, label: string, keys: string[] = []) => call(label, "/enrich/action", { type, keys });
 
   return (
-    <section className="space-y-4 rounded-xl border border-emerald-200 bg-emerald-50/40 p-5">
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1">
-          <h2 className="text-lg font-semibold">Profile strength: {state.strength}%</h2>
+    <section id="assistant" className="space-y-4 rounded-xl border border-emerald-200 bg-emerald-50/40 p-5">
+      {header && (
+        <div>
+          <h2 className="text-lg font-semibold">Profile strength: {header.strength}%</h2>
           <div className="mt-2 h-2 rounded-full bg-zinc-200">
-            <div className="h-2 rounded-full bg-emerald-500 transition-all" style={{ width: `${state.strength}%` }} />
+            <div className="h-2 rounded-full bg-emerald-500 transition-all" style={{ width: `${header.strength}%` }} />
           </div>
-          {state.summary && <p className="mt-3 text-sm text-zinc-700">{state.summary}</p>}
-          {state.strength_reasons.length > 0 && (
-            <ul className="mt-2 list-disc space-y-0.5 pl-5 text-sm text-zinc-600">
-              {state.strength_reasons.map((r) => (
-                <li key={r}>{r}</li>
-              ))}
-            </ul>
-          )}
+          <p className="mt-3 text-sm text-zinc-700">{header.summary}</p>
         </div>
-        {asking ? (
-          <button
-            onClick={() => call("Stopping…", "/enrich/stop")}
-            disabled={!!busy}
-            className="text-sm text-zinc-500 hover:text-zinc-900 disabled:opacity-50"
-          >
-            Stop for now
+      )}
+
+      {failed_answers > 0 && (
+        <div className="flex items-center justify-between rounded-md bg-amber-50 px-3 py-2 text-sm text-amber-800">
+          <span>
+            {failed_answers} answer{failed_answers > 1 ? "s are" : " is"} saved but not fully processed yet.
+          </span>
+          <button className={quiet} disabled={!!busy} onClick={() => call("Processing saved answers…", "/enrich/retry")}>
+            Try again
           </button>
-        ) : (
-          <button
-            onClick={() => call("Reading your profile and choosing questions…", "/enrich/start")}
-            disabled={!!busy}
-            className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50"
-          >
-            {state.status === "done" ? "Ask me more" : "Improve my profile"}
-          </button>
-        )}
-      </div>
+        </div>
+      )}
 
       {busy && <p className="animate-pulse text-sm text-emerald-700">{busy}</p>}
       {error && <p className="text-sm text-red-700">{error}</p>}
 
-      {state.last_recorded.length > 0 && (
-        <div className="rounded-lg bg-white p-3 text-sm">
-          <p className="mb-1 font-medium text-zinc-700">Saved from your last answers</p>
-          <ul className="space-y-0.5 text-zinc-600">
-            {state.last_recorded.map((r, i) => (
-              <li key={i}>
-                <span className="text-zinc-400">{r.field}:</span> {show(r.value)}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {state.conflicts.length > 0 && (
-        <div className="rounded-md bg-amber-50 px-3 py-2 text-sm text-amber-800">
-          <p className="font-medium">These didn&apos;t match earlier answers. Fix the facts below if needed:</p>
-          <ul className="list-disc pl-5">
-            {state.conflicts.map((c, i) => (
-              <li key={i}>{c.split(": ").slice(1).join(": ") || c}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {!asking && state.status === "done" && !busy && (
-        <p className="text-sm text-zinc-600">That&apos;s everything worth asking for now. Nice work.</p>
-      )}
-
-      {asking && !busy && (
-        <div className="space-y-5">
-          <p className="text-sm text-zinc-600">
-            Tap your answers, or type shorthand like <code className="rounded bg-white px-1">1c 2a 3abd + also added Redis</code>.
+      {!live && !busy && (
+        <div className="flex flex-wrap items-center gap-3 rounded-lg bg-white p-4">
+          <p className="flex-1 text-sm text-zinc-700">
+            {session.status === "paused"
+              ? "You paused here. Everything you shared is saved."
+              : session.status === "done" || screen?.screen === "done"
+                ? "You're all set for now. You can revisit any item below whenever you like."
+                : "I've read your profile. Want to see where a few details could make it stronger? It only takes a few minutes, and you can skip anything."}
           </p>
-
-          {state.questions.map((q) => (
-            <div key={q.n} className="space-y-2 rounded-lg bg-white p-4 shadow-sm">
-              <p className="text-xs uppercase tracking-wide text-zinc-500">{q.item_title}</p>
-              <p className="font-medium">
-                {q.n}. {q.text}
-                {q.multi && <span className="ml-2 text-xs font-normal text-zinc-500">(pick any)</span>}
-              </p>
-              {q.kind !== "text" && (
-                <div className="flex flex-wrap gap-2">
-                  {q.options.map((o) => {
-                    const on = (picks[q.n] ?? []).includes(o.key);
-                    return (
-                      <button
-                        key={o.key}
-                        onClick={() => toggle(q, o.key)}
-                        className={`rounded-full border px-3 py-1.5 text-sm transition ${
-                          on ? "border-emerald-600 bg-emerald-600 text-white" : "border-zinc-300 bg-white hover:border-zinc-500"
-                        } ${o.key === q.skip_key && !on ? "text-zinc-500" : ""}`}
-                      >
-                        <span className="mr-1 font-mono text-xs opacity-60">{o.key}</span>
-                        {o.label}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-              <input
-                value={notes[q.n] ?? ""}
-                onChange={(e) => setNotes({ ...notes, [q.n]: e.target.value })}
-                placeholder={q.kind === "text" ? "Your answer" : "Anything to add? (optional)"}
-                className="w-full rounded-md border border-zinc-200 px-3 py-1.5 text-sm focus:border-zinc-900 focus:outline-none"
-              />
-            </div>
-          ))}
-
-          <textarea
-            value={freeText}
-            onChange={(e) => setFreeText(e.target.value)}
-            rows={2}
-            placeholder="Or just tell me in your own words, e.g. “Shop API is live on Render and our canteen uses it”"
-            className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-zinc-900 focus:outline-none"
-          />
-          <div className="flex gap-2">
-            <input
-              value={shorthand}
-              onChange={(e) => setShorthand(e.target.value)}
-              placeholder="Shorthand: 1c 2a 3abd + note"
-              className="flex-1 rounded-md border border-zinc-300 bg-white px-3 py-2 font-mono text-sm focus:border-zinc-900 focus:outline-none"
-            />
-            <button
-              onClick={submit}
-              className="rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700"
-            >
-              Save answers
-            </button>
-          </div>
+          <button className={primary} onClick={() => call("Getting things ready…", "/enrich/start", {})}>
+            {session.status === "paused" ? "Resume" : session.status === "done" ? "Start again" : "Let's go"}
+          </button>
         </div>
       )}
+
+      {screen?.screen === "done" && screen.notices.length > 0 && <Notices notices={screen.notices} />}
+
+      {live && !busy && screen && (
+        <div className="space-y-4 rounded-lg bg-white p-4 shadow-sm">
+          {"entity" in screen && (
+            <div className="flex items-center justify-between text-xs uppercase tracking-wide text-zinc-500">
+              <span>
+                {screen.entity.section_label} · {screen.entity.title}
+              </span>
+              <button className={quiet} onClick={() => call("Pausing…", "/enrich/pause")}>
+                Pause
+              </button>
+            </div>
+          )}
+          <Notices notices={screen.notices} />
+          {screen.screen === "topics" && <Topics screen={screen} act={act} />}
+          {screen.screen === "question" && (
+            <Question
+              key={screen.question.text}
+              screen={screen}
+              act={act}
+              answer={(body) => call("Saving your answer…", "/enrich/answer", body)}
+            />
+          )}
+          {screen.screen === "summary" && <Summary screen={screen} act={act} />}
+        </div>
+      )}
+
+      <Sections sections={sections} disabled={!!busy} onDiscuss={(id) => call("Reading this item…", "/enrich/start", { entity_id: id })} />
     </section>
+  );
+}
+
+function Notices({ notices }: { notices: string[] }) {
+  if (!notices.length) return null;
+  return (
+    <ul className="space-y-1 text-sm text-zinc-500">
+      {notices.map((n, i) => (
+        <li key={i}>• {n}</li>
+      ))}
+    </ul>
+  );
+}
+
+type Act = (type: string, label: string, keys?: string[]) => void;
+
+function Topics({ screen, act }: { screen: Extract<Screen, { screen: "topics" }>; act: Act }) {
+  const [picked, setPicked] = useState<string[]>([]);
+  const toggle = (k: string) => setPicked((p) => (p.includes(k) ? p.filter((x) => x !== k) : [...p, k]));
+
+  return (
+    <div className="space-y-4">
+      {screen.understanding && <p className="rounded-lg bg-zinc-50 p-3 text-sm text-zinc-800">{screen.understanding}</p>}
+      {screen.topics.length > 0 ? (
+        <>
+          <p className="text-sm text-zinc-700">A few details could make this stronger. Pick any you&apos;d like to talk about:</p>
+          <div className="space-y-2">
+            {screen.topics.map((t) => (
+              <label
+                key={t.key}
+                className={`flex cursor-pointer gap-3 rounded-lg border p-3 transition ${
+                  picked.includes(t.key) ? "border-emerald-500 bg-emerald-50" : "border-zinc-200 hover:border-zinc-400"
+                }`}
+              >
+                <input type="checkbox" className="mt-1" checked={picked.includes(t.key)} onChange={() => toggle(t.key)} />
+                <span>
+                  <span className="block text-sm font-medium">{t.label}</span>
+                  {t.why && <span className="block text-sm text-zinc-600">{t.why}</span>}
+                </span>
+              </label>
+            ))}
+          </div>
+        </>
+      ) : (
+        <p className="text-sm text-zinc-700">This already looks clear. Nothing important to add right now.</p>
+      )}
+      <div className="flex flex-wrap gap-2">
+        {screen.topics.length > 0 && (
+          <button className={primary} disabled={!picked.length} onClick={() => act("select", "Thinking of a good first question…", picked)}>
+            Explore {picked.length > 1 ? `${picked.length} topics` : "this"}
+          </button>
+        )}
+        {screen.more_available && (
+          <button className={quiet} onClick={() => act("more", "Finding other ideas…")}>
+            Suggest other topics
+          </button>
+        )}
+        <button className={quiet} onClick={() => act("skip_entity", "Saving…")}>
+          {screen.topics.length ? "Skip for now" : "Continue"}
+        </button>
+        <button className={quiet} onClick={() => act("finish_section", "Saving…")}>
+          Finish {screen.entity.section_label.toLowerCase()}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Question({
+  screen,
+  act,
+  answer,
+}: {
+  screen: Extract<Screen, { screen: "question" }>;
+  act: Act;
+  answer: (body: { keys: string[]; text: string | null; number: number | null }) => void;
+}) {
+  const q: AgentQuestion = screen.question;
+  const [keys, setKeys] = useState<string[]>([]);
+  const [text, setText] = useState("");
+  const [num, setNum] = useState("");
+  const hasOptions = q.options.length > 0;
+
+  function toggle(k: string) {
+    setKeys((prev) => {
+      if (q.kind === "single") return prev[0] === k ? [] : [k];
+      return prev.includes(k) ? prev.filter((x) => x !== k) : [...prev, k];
+    });
+  }
+  const canSend = keys.length > 0 || text.trim() !== "" || num.trim() !== "";
+  const send = () => answer({ keys, text: text.trim() || null, number: num.trim() ? Number(num) : null });
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap gap-1.5">
+        {screen.selected_topics.map((t) => (
+          <span
+            key={t.key}
+            className={`rounded-full px-2.5 py-0.5 text-xs ${t.current ? "bg-emerald-600 text-white" : "bg-zinc-100 text-zinc-600"}`}
+          >
+            {t.label}
+          </span>
+        ))}
+      </div>
+
+      {screen.history.map((h, i) => (
+        <div key={i} className="space-y-1 text-sm">
+          <p className="text-zinc-500">{h.q}</p>
+          <p className="ml-6 rounded-lg bg-emerald-50 px-3 py-2 text-zinc-800">{h.a}</p>
+        </div>
+      ))}
+
+      <div className="space-y-1">
+        {q.lead_in && <p className="text-sm text-zinc-600">{q.lead_in}</p>}
+        <p className="font-medium">{q.text}</p>
+        {q.kind === "multi" && <p className="text-xs text-zinc-500">Pick any that apply.</p>}
+      </div>
+
+      {hasOptions && (
+        <div className="flex flex-wrap gap-2">
+          {q.options.map((o) => (
+            <button
+              key={o.key}
+              onClick={() => toggle(o.key)}
+              className={`rounded-full border px-3 py-1.5 text-sm transition ${
+                keys.includes(o.key) ? "border-emerald-600 bg-emerald-600 text-white" : "border-zinc-300 bg-white hover:border-zinc-500"
+              }`}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {q.kind === "number" && (
+        <div className="flex items-center gap-2">
+          <input type="number" className={`${input} w-40`} value={num} onChange={(e) => setNum(e.target.value)} />
+          {q.unit && <span className="text-sm text-zinc-500">{q.unit}</span>}
+        </div>
+      )}
+      {q.kind === "long_text" ? (
+        <textarea className={input} rows={4} value={text} onChange={(e) => setText(e.target.value)} placeholder="In your own words…" />
+      ) : (
+        <input
+          className={input}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && canSend && send()}
+          placeholder={hasOptions ? "Other, or add a note (shorthand like “ab + note” works too)" : q.kind === "number" ? "Or describe it" : "Your answer"}
+        />
+      )}
+
+      <div className="flex flex-wrap items-center gap-2">
+        <button className={primary} disabled={!canSend} onClick={send}>
+          Send
+        </button>
+        <button className={quiet} onClick={() => act("skip_question", "Moving on…")}>
+          Skip question
+        </button>
+        <button className={quiet} onClick={() => act("skip_topic", "Moving on…")}>
+          Skip topic
+        </button>
+        <button className={quiet} onClick={() => act("finish_topic", "Saving…")}>
+          Done with this topic
+        </button>
+        <button className={quiet} onClick={() => act("finish_entity", "Saving…")}>
+          Finish {screen.entity.title} for now
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Summary({ screen, act }: { screen: Extract<Screen, { screen: "summary" }>; act: Act }) {
+  const list = (title: string, items: string[]) =>
+    items.length > 0 && (
+      <div>
+        <p className="text-sm font-medium text-zinc-700">{title}</p>
+        <ul className="ml-5 list-disc text-sm text-zinc-600">
+          {items.map((x, i) => (
+            <li key={i}>{x}</li>
+          ))}
+        </ul>
+      </div>
+    );
+
+  return (
+    <div className="space-y-3">
+      <p className="font-medium">
+        {screen.saved.length ? `Your ${screen.entity.title} details are saved.` : `Nothing changed for ${screen.entity.title}, and that's fine.`}
+      </p>
+      {list("Saved", screen.saved)}
+      {list("We talked about", screen.discussed)}
+      {list("You skipped", screen.skipped)}
+      {screen.unexplored.length > 0 && (
+        <p className="text-sm text-zinc-600">
+          Not explored yet: {screen.unexplored.join(", ")}. You can come back to these anytime.
+        </p>
+      )}
+      <div className="flex flex-wrap gap-2">
+        <button className={primary} onClick={() => act("continue", screen.next_title ? `Looking at ${screen.next_title}…` : "Wrapping up…")}>
+          {screen.next_title ? `Next: ${screen.next_title}` : "Finish"}
+        </button>
+        <button className={quiet} onClick={() => act("back_to_topics", "Loading topics…")}>
+          Explore more here
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Sections({
+  sections,
+  disabled,
+  onDiscuss,
+}: {
+  sections: SectionView[];
+  disabled: boolean;
+  onDiscuss: (id: string) => void;
+}) {
+  return (
+    <details className="rounded-lg bg-white p-3 text-sm">
+      <summary className="cursor-pointer font-medium text-zinc-700">Sections and progress</summary>
+      <div className="mt-3 space-y-3">
+        {sections.map((s) => (
+          <div key={s.key}>
+            <p className="text-xs uppercase tracking-wide text-zinc-500">{s.label}</p>
+            <ul className="mt-1 space-y-1">
+              {s.entities.map((e) => (
+                <li key={e.id} className="flex items-center gap-2">
+                  <span className={`h-2 w-2 rounded-full ${STATUS_DOT[e.status] ?? "bg-zinc-200"}`} title={e.status.replace("_", " ")} />
+                  <span className="flex-1">{e.title}</span>
+                  {e.total > 0 && (
+                    <span className="text-xs text-zinc-400">
+                      {e.complete}/{e.total} clear
+                    </span>
+                  )}
+                  <button className={quiet} disabled={disabled} onClick={() => onDiscuss(e.id)}>
+                    Discuss
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </details>
   );
 }
