@@ -7,7 +7,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from app import models  # noqa: F401  (registers tables)
 from app.config import settings
 from app.db import Base, engine
-from app.routers import auth, profile
+from app.routers import auth, enrich, profile
 
 
 @asynccontextmanager
@@ -31,6 +31,7 @@ app.add_middleware(SessionMiddleware, secret_key=settings.session_secret)
 
 app.include_router(auth.router)
 app.include_router(profile.router)
+app.include_router(enrich.router)
 
 
 @app.get("/health")
