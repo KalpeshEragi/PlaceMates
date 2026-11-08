@@ -86,7 +86,8 @@ def merge_into_profile(db: Session, profile: Profile, parsed: ParsedResume) -> N
             profile.items.append(item)
 
         have_facts = {(f.field, str(f.value)) for f in item.facts}
-        new_facts = [("bullet", b) for b in p.bullets] + ([("tech", p.tech)] if p.tech else [])
+        bullets = [b.strip().lstrip("-•*·▪– ").strip() for b in p.bullets]
+        new_facts = [("bullet", b) for b in bullets if b] + ([("tech", p.tech)] if p.tech else [])
         for field, value in new_facts:
             if (field, str(value)) not in have_facts:
                 item.facts.append(ItemFact(field=field, value=value, source="resume"))
