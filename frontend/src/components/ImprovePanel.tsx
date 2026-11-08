@@ -144,8 +144,14 @@ function Notices({ notices }: { notices: string[] }) {
 type Act = (type: string, label: string, keys?: string[]) => void;
 
 function Topics({ screen, act }: { screen: Extract<Screen, { screen: "topics" }>; act: Act }) {
+  // Picks survive "Suggest other topics", so earlier choices aren't lost when paging.
   const [picked, setPicked] = useState<string[]>([]);
-  const toggle = (k: string) => setPicked((p) => (p.includes(k) ? p.filter((x) => x !== k) : [...p, k]));
+  const [labels, setLabels] = useState<Record<string, string>>({});
+  const toggle = (k: string, label: string) => {
+    setLabels((l) => ({ ...l, [k]: label }));
+    setPicked((p) => (p.includes(k) ? p.filter((x) => x !== k) : [...p, k]));
+  };
+  const earlier = picked.filter((k) => !screen.topics.some((t) => t.key === k));
 
   return (
     <div className="space-y-4">
@@ -161,7 +167,7 @@ function Topics({ screen, act }: { screen: Extract<Screen, { screen: "topics" }>
                   picked.includes(t.key) ? "border-emerald-500 bg-emerald-50" : "border-zinc-200 hover:border-zinc-400"
                 }`}
               >
-                <input type="checkbox" className="mt-1" checked={picked.includes(t.key)} onChange={() => toggle(t.key)} />
+                <input type="checkbox" className="mt-1" checked={picked.includes(t.key)} onChange={() => toggle(t.key, t.label)} />
                 <span>
                   <span className="block text-sm font-medium">{t.label}</span>
                   {t.why && <span className="block text-sm text-zinc-600">{t.why}</span>}
@@ -169,6 +175,9 @@ function Topics({ screen, act }: { screen: Extract<Screen, { screen: "topics" }>
               </label>
             ))}
           </div>
+          {earlier.length > 0 && (
+            <p className="text-sm text-zinc-600">Also chosen: {earlier.map((k) => labels[k] ?? k).join(", ")}</p>
+          )}
         </>
       ) : (
         <p className="text-sm text-zinc-700">This already looks clear. Nothing important to add right now.</p>
