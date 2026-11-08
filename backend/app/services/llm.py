@@ -2,6 +2,7 @@
 
 import json
 import logging
+import re
 import time
 
 import httpx
@@ -29,16 +30,20 @@ def _chat(model: str, messages: list[dict], reasoning_effort: str | None) -> str
     if reasoning_effort:
         body["reasoning_effort"] = reasoning_effort
 
-    for attempt in range(3):
+    attempts = 5
+    for attempt in range(attempts):
         resp = httpx.post(
             f"{settings.groq_base_url}/chat/completions",
             headers={"Authorization": f"Bearer {settings.groq_api_key}"},
             json=body,
             timeout=90,
         )
-        if resp.status_code == 429 and attempt < 2:
-            # Rate limited: Groq says how long to wait.
-            wait = min(float(resp.headers.get("retry-after", "5")), 30)
+        if resp.status_code == 429 and attempt < attempts - 1:
+            # Rate limited: use Groq's "try again in Xs/Xms" hint, else the retry-after header.
+            hint = re.search(r"try again in ([\d.]+)(ms|s)", resp.text)
+            wait = (float(hint.group(1)) / (1000 if hint.group(2) == "ms" else 1) + 0.5) if hint \
+                else float(resp.headers.get("retry-after", "5"))
+            wait = min(wait, 30)
             log.warning("Rate limited on %s, waiting %.0fs", model, wait)
             time.sleep(wait)
             continue
