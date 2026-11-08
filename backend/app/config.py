@@ -16,6 +16,14 @@ class Settings(BaseSettings):
     google_client_id: str = ""
     google_client_secret: str = ""
 
+    # Jobs: keyless company boards always run; these extra sources run only when keys are set.
+    jobs_fresh_days: int = 3
+    jobs_daily_fetch: bool = False        # run the fetcher every day inside the API process
+    jobs_daily_fetch_hour_ist: int = 6
+    adzuna_app_id: str = ""
+    adzuna_app_key: str = ""
+    jsearch_api_key: str = ""
+
     groq_api_key: str = ""
     groq_base_url: str = "https://api.groq.com/openai/v1"
 
