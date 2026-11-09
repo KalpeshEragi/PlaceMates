@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ImprovePanel from "@/components/ImprovePanel";
@@ -54,14 +55,19 @@ export default function ProfilePage() {
     <main className="mx-auto max-w-3xl space-y-8 px-6 py-10">
       <header className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Your profile</h1>
-        <ResumeUpload
+        <div className="flex items-center gap-3">
+          <Link href="/matches" className="text-sm font-medium text-emerald-700 hover:text-emerald-900">
+            Today&apos;s job matches →
+          </Link>
+          <ResumeUpload
           busy={busy}
           onUpload={(file) => {
             const form = new FormData();
             form.append("file", file);
             return run(() => api<Profile>("/profile/resume", { method: "POST", body: form }));
           }}
-        />
+          />
+        </div>
       </header>
 
       {error && <p className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}

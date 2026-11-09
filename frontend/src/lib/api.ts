@@ -124,3 +124,32 @@ export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
   }
   return (res.status === 204 ? undefined : await res.json()) as T;
 }
+
+export interface Preferences {
+  target_roles: string[];
+  locations: string[];
+  remote_ok: boolean;
+  experience_level: "intern" | "entry" | "mid";
+  job_types: ("full_time" | "internship")[];
+  min_salary_lpa: number | null;
+}
+
+export interface Match {
+  id: string;
+  rank: number;
+  score: number;
+  reasons: string[];
+  status: "shortlisted" | "applied" | "dismissed" | "sent";
+  job: {
+    id: string;
+    title: string;
+    company: string;
+    location: string | null;
+    remote: boolean;
+    seniority: string;
+    source: string;
+    posted_at: string;
+    apply_url: string;
+    description: string;
+  };
+}
