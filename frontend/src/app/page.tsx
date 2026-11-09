@@ -25,12 +25,12 @@ const PATHS = {
   hand: <><path d="M8 12V6.5a1.5 1.5 0 013 0V11M11 10V5.5a1.5 1.5 0 013 0V11M14 10V7a1.5 1.5 0 013 0v6c0 4-2.5 7-6 7s-5.5-2-6.5-4.5L3 12.5a1.5 1.5 0 012.6-1.5L8 14" /></>,
 };
 
-function Logo({ light = false }: { light?: boolean }) {
+function Logo({ light = false, large = false }: { light?: boolean; large?: boolean }) {
   return (
-    <span className={`flex items-center gap-2 font-display text-lg font-semibold ${light ? "text-white" : "text-ink"}`}>
-      <span className="relative h-6 w-8" aria-hidden="true">
-        <span className="absolute left-0 top-0 h-6 w-6 rounded-full bg-powder-deep/80" />
-        <span className="absolute right-0 top-0 h-6 w-6 rounded-full bg-peach/90 mix-blend-multiply" />
+    <span className={`flex items-center gap-2.5 font-display font-semibold ${large ? "text-[1.4rem]" : "text-lg"} ${light ? "text-white" : "text-ink"}`}>
+      <span className={`relative ${large ? "h-8 w-11" : "h-6 w-8"}`} aria-hidden="true">
+        <span className={`absolute left-0 top-0 rounded-full bg-powder-deep/80 ${large ? "h-8 w-8" : "h-6 w-6"}`} />
+        <span className={`absolute right-0 top-0 rounded-full bg-peach/90 mix-blend-multiply ${large ? "h-8 w-8" : "h-6 w-6"}`} />
       </span>
       PlaceMates
     </span>
@@ -56,16 +56,16 @@ export default function Home() {
 
 function Nav() {
   return (
-    <nav className="glass-light mx-auto flex w-full max-w-6xl items-center justify-between rounded-2xl py-2.5 pl-5 pr-2.5">
-      <Logo />
-      <div className="hidden items-center gap-8 text-sm font-medium text-ink md:flex">
+    <nav className="glass-light flex w-full items-center justify-between gap-3 rounded-[1.4rem] py-2.5 pl-4 pr-2.5 sm:py-3.5 sm:pl-7 sm:pr-3.5">
+      <Logo large />
+      <div className="hidden items-center gap-10 text-[0.95rem] font-medium text-ink lg:flex">
         <a href="#how" className="hover:text-violet">How it works</a>
         <a href="#features" className="hover:text-violet">Features</a>
         <a href="#resume" className="hover:text-violet">Resume Intelligence</a>
       </div>
-      <div className="flex items-center gap-4">
-        <a href={LOGIN} className="hidden text-sm font-medium text-ink hover:text-violet sm:block">Sign in</a>
-        <a href={LOGIN} className="inline-flex items-center gap-2 rounded-xl bg-violet px-4 py-2.5 text-sm font-semibold text-white hover:bg-violet-deep">
+      <div className="flex items-center gap-6">
+        <a href={LOGIN} className="hidden text-[0.95rem] font-medium text-ink hover:text-violet sm:block">Sign in</a>
+        <a href={LOGIN} className="inline-flex items-center gap-2 whitespace-nowrap rounded-2xl bg-violet px-4 py-2.5 text-sm font-semibold text-white shadow-[0_10px_26px_-10px_rgb(90_72_198/0.8)] hover:bg-violet-deep sm:px-6 sm:py-3.5 sm:text-[0.95rem]">
           Get started <Icon name="arrow" className="h-4 w-4" />
         </a>
       </div>
@@ -73,11 +73,12 @@ function Nav() {
   );
 }
 
-/* The hero artwork fills the screen; nav, headline and buttons sit on it over a soft violet shade. */
+/* The hero artwork fills the screen. Text hugs the left edge and scales with the screen,
+   so it stays clear of the path illustrated on the right. */
 function Hero() {
   const art = ["hero.jpg", "hero.png", "hero.webp"].find((f) => existsSync(join(process.cwd(), "public", f)));
   return (
-    <section className="relative isolate flex min-h-[100svh] flex-col overflow-hidden px-4 pb-16 pt-5 sm:px-8">
+    <section className="relative isolate flex min-h-[100svh] flex-col overflow-hidden px-4 pb-14 pt-5 sm:px-8 lg:px-14">
       {art ? (
         <Image src={`/${art}`} alt="" fill priority sizes="100vw" className="-z-20 object-cover object-[0%_center]" />
       ) : (
@@ -86,25 +87,32 @@ function Hero() {
       <div className="hero-shade -z-10" aria-hidden="true" />
 
       <Nav />
-      <div className="mx-auto mt-14 w-full max-w-6xl sm:mt-20">
-        <div className="max-w-[27rem]">
-          <h1 className="rise text-balance font-display text-[2.5rem] font-semibold leading-[1.05] tracking-tight text-white drop-shadow-[0_2px_20px_rgb(20_16_70/0.45)] sm:text-[3.25rem]">
-            Your next opportunity starts with what you&apos;ve already done.
+      <div className="flex flex-1 items-center py-12">
+        <div className="max-w-[36rem]">
+          <p className="rise flex items-center gap-4 text-xs font-semibold uppercase tracking-[0.32em] text-white/85">
+            Your AI placement companion <span className="h-px w-16 bg-white/60" aria-hidden="true" />
+          </p>
+          <h1 className="rise mt-6 font-display text-[clamp(3.4rem,6.2vw,6.6rem)] font-semibold leading-[0.95] tracking-[-0.03em] text-white drop-shadow-[0_4px_30px_rgb(20_16_70/0.45)]">
+            Build.
+            <br />
+            Apply.
+            <br />
+            <span className="bg-gradient-to-r from-[#d9d0ff] via-[#c5b3ff] to-peach bg-clip-text text-transparent">Get placed.</span>
           </h1>
-          <p className="rise rise-2 mt-6 text-lg leading-relaxed text-white/90 drop-shadow-[0_1px_8px_rgb(20_16_70/0.5)]">
-            Find roles that match your skills, turn your real experience into tailored resumes, and know where you
-            stand before you apply.
+          <p className="rise rise-2 mt-7 max-w-md text-lg leading-relaxed text-white/90 drop-shadow-[0_1px_10px_rgb(20_16_70/0.55)] sm:text-xl">
+            Jobs that fit what you&apos;ve really done, and a tailored resume for each one.
           </p>
-          <p className="rise rise-2 mt-3 text-white/80 drop-shadow-[0_1px_8px_rgb(20_16_70/0.5)]">
-            Your projects, internships and skills deserve more than a generic resume.
-          </p>
-          <div className="rise rise-3 mt-8 flex flex-col items-start gap-3">
+          <div className="rise rise-3 mt-9 flex flex-wrap items-center gap-3">
             <a href={LOGIN}
-              className="inline-flex items-center gap-2 rounded-xl bg-white px-7 py-3.5 text-sm font-semibold text-violet shadow-[0_14px_34px_-12px_rgb(20_16_70/0.6)] transition-colors hover:bg-mist focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+              className="inline-flex items-center gap-2 rounded-2xl bg-white px-7 py-4 text-[0.95rem] font-semibold text-violet shadow-[0_16px_40px_-14px_rgb(20_16_70/0.7)] transition-colors hover:bg-mist focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
               Get started <Icon name="arrow" className="h-4 w-4" />
             </a>
-            <p className="text-sm text-white/80">Start with the resume you already have.</p>
+            <a href="#how"
+              className="inline-flex items-center rounded-2xl border border-white/40 bg-white/10 px-7 py-4 text-[0.95rem] font-semibold text-white backdrop-blur-md transition-colors hover:bg-white/20">
+              See how it works
+            </a>
           </div>
+          <p className="rise rise-3 mt-4 text-sm text-white/75">Start with the resume you already have.</p>
         </div>
       </div>
     </section>
