@@ -194,6 +194,21 @@ class ProfileEmbedding(Base):
     embedding: Mapped[list[float]] = mapped_column(Vector(EMBED_DIM))
 
 
+class TailoredResume(Base):
+    """A resume the crew wrote for one matched job: content, score and how it got there."""
+
+    __tablename__ = "tailored_resumes"
+
+    id: Mapped[uuid.UUID] = _id()
+    match_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("job_matches.id", ondelete="CASCADE"), unique=True)
+    profile_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("profiles.id", ondelete="CASCADE"), index=True)
+    status: Mapped[str] = mapped_column(String, default="ready")  # ready | failed
+    score: Mapped[int | None] = mapped_column(Integer)
+    result: Mapped[dict] = mapped_column(JSONB)  # brief, selection, draft, critic, score parts, dropped bullets, rounds
+    error: Mapped[str | None] = mapped_column(Text)
+    created_at: Mapped[datetime] = _created()
+
+
 class ExemplarBullet(Base):
     """A bullet from a real resume that passed a screen (see corpus/metadata.json).
     The resume writer uses these for style only, never for content."""

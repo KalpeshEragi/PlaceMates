@@ -10,9 +10,10 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.db import get_db
-from app.models import JobMatch, JobPreferences, Profile, User
+from app.models import JobMatch, JobPreferences, Profile, TailoredResume, User
 from app.security import current_user
 from app.services.matching.matcher import todays_shortlist
+from app.services.resume.service import generate
 
 router = APIRouter(tags=["matches"])
 
@@ -96,3 +97,34 @@ def set_status(match_id: uuid.UUID, body: StatusIn, user: User = Depends(current
     m.status = body.status
     db.commit()
     return _match_out(m)
+
+
+def _resume_out(r: TailoredResume | None) -> dict | None:
+    if not r:
+        return None
+    return {"status": r.status, "score": r.score, "error": r.error, "created_at": r.created_at,
+            "draft": r.result.get("draft"), "score_parts": r.result.get("score"),
+            "critic": r.result.get("critic"), "dropped_for_truth": r.result.get("dropped_for_truth", []),
+            "brief": r.result.get("brief"), "seconds": r.result.get("seconds"),
+            "ask_student": r.result.get("ask_student", [])}
+
+
+def _own_match(db: Session, user: User, match_id: uuid.UUID) -> tuple[Profile, JobMatch]:
+    profile = _profile(user)
+    m = db.get(JobMatch, match_id)
+    if not m or m.profile_id != profile.id:
+        raise HTTPException(404, "Match not found")
+    return profile, m
+
+
+@router.post("/matches/{match_id}/resume")
+def create_resume(match_id: uuid.UUID, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Write a tailored resume for this job (takes about a minute)."""
+    profile, m = _own_match(db, user, match_id)
+    return _resume_out(generate(db, profile, m))
+
+
+@router.get("/matches/{match_id}/resume")
+def get_resume(match_id: uuid.UUID, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    _, m = _own_match(db, user, match_id)
+    return _resume_out(db.scalar(select(TailoredResume).where(TailoredResume.match_id == m.id)))
