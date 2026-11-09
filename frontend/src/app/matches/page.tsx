@@ -53,7 +53,7 @@ export default function MatchesPage() {
         setEditing(!p);
         if (p) loadMatches();
       })
-      .catch((e) => (e instanceof ApiError && e.status === 401 ? router.push("/") : setError(e.message)));
+      .catch((e) => (e instanceof ApiError && e.status === 401 ? router.push("/login") : setError(e.message)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -1,9 +1,10 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import Image from "next/image";
-import { BACKEND_URL } from "@/lib/api";
+import Logo from "@/components/Logo";
 
-const LOGIN = `${BACKEND_URL}/auth/google/login`;
+/* Every sign-in and get-started button opens the login page. */
+const LOGIN = "/login";
 
 /* Small line icons, drawn once and reused. */
 function Icon({ name, className = "h-5 w-5" }: { name: keyof typeof PATHS; className?: string }) {
@@ -24,18 +25,6 @@ const PATHS = {
   shield: <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z" />,
   hand: <><path d="M8 12V6.5a1.5 1.5 0 013 0V11M11 10V5.5a1.5 1.5 0 013 0V11M14 10V7a1.5 1.5 0 013 0v6c0 4-2.5 7-6 7s-5.5-2-6.5-4.5L3 12.5a1.5 1.5 0 012.6-1.5L8 14" /></>,
 };
-
-function Logo({ light = false, large = false }: { light?: boolean; large?: boolean }) {
-  return (
-    <span className={`flex items-center gap-2.5 font-display font-semibold ${large ? "text-[1.4rem]" : "text-lg"} ${light ? "text-white" : "text-ink"}`}>
-      <span className={`relative ${large ? "h-8 w-11" : "h-6 w-8"}`} aria-hidden="true">
-        <span className={`absolute left-0 top-0 rounded-full bg-powder-deep/80 ${large ? "h-8 w-8" : "h-6 w-6"}`} />
-        <span className={`absolute right-0 top-0 rounded-full bg-peach/90 mix-blend-multiply ${large ? "h-8 w-8" : "h-6 w-6"}`} />
-      </span>
-      PlaceMates
-    </span>
-  );
-}
 
 const primaryBtn =
   "inline-flex items-center gap-2 rounded-xl bg-violet px-6 py-3.5 text-sm font-semibold text-white shadow-[0_12px_30px_-10px_rgb(90_72_198/0.7)] transition-colors hover:bg-violet-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";

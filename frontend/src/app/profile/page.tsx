@@ -31,7 +31,7 @@ export default function ProfilePage() {
   useEffect(() => {
     api<Profile>("/profile")
       .then(setProfile)
-      .catch((e) => (e instanceof ApiError && e.status === 401 ? router.push("/") : setError(e.message)));
+      .catch((e) => (e instanceof ApiError && e.status === 401 ? router.push("/login") : setError(e.message)));
   }, [router]);
 
   // Calls that return the full profile update it directly; any other call refetches it.
