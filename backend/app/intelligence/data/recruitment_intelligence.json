@@ -1,0 +1,4178 @@
+{
+  "metadata": {
+    "knowledge_base_name": "Recruitment Intelligence Knowledge Base for Indian Fresher Tech Resumes",
+    "version": "1.0.0",
+    "research_period": {
+      "start": "2024-01-01",
+      "end": "2026-11-09",
+      "priority": "2026 > 2025 > 2024"
+    },
+    "research_generation_date": "2026-11-09",
+    "total_sources": 43,
+    "total_intelligence_entries": 46,
+    "total_cross_source_patterns": 7,
+    "total_conflicts": 7,
+    "source_distribution_by_year": {
+      "2024": 9,
+      "2025": 8,
+      "2025-26 season": 12,
+      "2026": 14
+    },
+    "source_distribution_note": "'2025-26 season' = IIT Kanpur SPO Insights documents for the 2025-26 placement/internship season (experiences from Aug-Dec 2025); exact upload dates are not stated, so they are not counted as 2026 publications.",
+    "source_distribution_by_geography": {
+      "International (US, UK, EU respondents)": 1,
+      "United States": 13,
+      "India": 20,
+      "International": 4,
+      "Mostly US/Canada; some India-origin international students": 1,
+      "International (US, UK, EU, India respondents)": 1,
+      "International (online freelance platform)": 1,
+      "United States (mostly)": 1,
+      "India/Global (Amazon)": 1
+    },
+    "source_distribution_by_credibility": {
+      "High": 13,
+      "Medium": 21,
+      "Low": 9
+    },
+    "evidence_strength_definitions": {
+      "High": "Official recruiter/hiring-manager/employer guidance or research, or repeated findings across multiple credible independent sources.",
+      "Medium": "Detailed first-hand candidate or interviewer experience with identifiable recruitment context, or a few consistent sources.",
+      "Low": "Individual opinions, anonymous discussions or limited supporting evidence."
+    },
+    "confidence_score_method": "base(High=0.80, Medium=0.60, Low=0.40) + 0.04 per additional independent source group, capped at 0.95. Sources by the same author/organisation/survey form one group.",
+    "causality_caveats": [
+      "Being shortlisted does not prove a resume technique caused the shortlist.",
+      "Interviews are not offers.",
+      "Single experiences are not universal rules.",
+      "No statistics were invented; numbers are quoted only as reported by sources."
+    ],
+    "usage_guidance": {
+      "retrieval": "Retrieve by applicable_job_roles, category and retrieval_tags; do not load the whole file per request.",
+      "precedence": "Verified candidate information always overrides recruitment intelligence.",
+      "prohibited": [
+        "Inventing achievements",
+        "Fabricating numerical improvements",
+        "Claiming unused technologies",
+        "Exaggerating contributions",
+        "Generating technically indefensible statements"
+      ]
+    },
+    "privacy_note": "Candidate names, roll numbers and contact details from source documents are intentionally excluded.",
+    "source_catalogue_file": "research_sources.json"
+  },
+  "sources": [
+    {
+      "id": "SRC-001",
+      "platform": "The Pragmatic Engineer (newsletter)",
+      "title": "Tech jobs market in 2026, part 3: hiring managers & job seekers",
+      "url": "https://newsletter.pragmaticengineer.com/p/tech-jobs-market-in-2026-part-3-hiring",
+      "author": "Gergely Orosz",
+      "publication_date": "2026-07-07",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2026",
+      "geography": "International (US, UK, EU respondents)",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Interviews with 50+ hiring managers and job seekers compiled by an established engineering journalist. Free portion only (rest paywalled)."
+      },
+      "evidence_type": "aggregated_hiring_manager_interviews",
+      "access_notes": "Partially paywalled; only free section used.",
+      "independence_group": "pragmatic_engineer"
+    },
+    {
+      "id": "SRC-002",
+      "platform": "NACE (naceweb.org)",
+      "title": "The high-impact skills college students should showcase on their resumes",
+      "url": "https://naceweb.org/about-us/press/2026/the-high-impact-skills-college-students-should-showcase-on-their-resumes",
+      "author": "National Association of Colleges and Employers",
+      "publication_date": "2026-04-23",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2026",
+      "geography": "United States",
+      "source_category": "industry_report",
+      "relevant_roles": [
+        "All entry-level"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Employer survey (Job Outlook 2026 Spring Update, n=185 employers, Feb-Mar 2026). Per-skill percentages are in an image not available in text."
+      },
+      "evidence_type": "employer_survey",
+      "access_notes": "Public press release.",
+      "independence_group": "nace_job_outlook_2026"
+    },
+    {
+      "id": "SRC-003",
+      "platform": "NACE (naceweb.org)",
+      "title": "How new grad job seekers can stand out with potential employers",
+      "url": "https://naceweb.org/about-us/press/2026/how-new-grad-job-seekers-can-stand-out-with-potential-employers",
+      "author": "National Association of Colleges and Employers",
+      "publication_date": "2026-04-10",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2025",
+      "geography": "United States",
+      "source_category": "industry_report",
+      "relevant_roles": [
+        "All entry-level"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Job Outlook 2026 employer survey (n=183, Aug-Sep 2025) plus 2025 student survey (n=13,684)."
+      },
+      "evidence_type": "employer_survey",
+      "access_notes": "Public press release.",
+      "independence_group": "nace_job_outlook_2026"
+    },
+    {
+      "id": "SRC-004",
+      "platform": "NACE (naceweb.org)",
+      "title": "Internship Experience Often the Deciding Factor Between Equal Candidates",
+      "url": "https://naceweb.org/talent-acquisition/candidate-selection/internship-experience-often-the-deciding-factor-between-equal-candidates",
+      "author": "Kevin Gray, NACE",
+      "publication_date": "2026-02-09",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2025",
+      "geography": "United States",
+      "source_category": "industry_report",
+      "relevant_roles": [
+        "All entry-level"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Job Outlook 2026 employer survey (n=183). Full ranking in an image not available in text."
+      },
+      "evidence_type": "employer_survey",
+      "access_notes": "Public article.",
+      "independence_group": "nace_job_outlook_2026"
+    },
+    {
+      "id": "SRC-005",
+      "platform": "Careers360 (reporting TeamLease EdTech report)",
+      "title": "AI, data and digital skills reshape fresher hiring as firms prioritise skills-first recruitment: Report",
+      "url": "https://news.careers360.com/ai-data-digital-skills-fresher-hiring-degree-screening-proof-of-work-adaptability-teamlease-edtech-report-india",
+      "author": "Aatif Ammad (Careers360), reporting TeamLease EdTech Career Outlook HY1 2026",
+      "publication_date": "2026-05-25",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2025-2026",
+      "geography": "India",
+      "source_category": "industry_report",
+      "relevant_roles": [
+        "All entry-level",
+        "Data Analyst",
+        "Cloud/DevOps"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Survey of 1,051 Indian employers (Nov 2025-Jan 2026); secondary news reporting of the report, no per-skill figures."
+      },
+      "evidence_type": "employer_survey_secondary_report",
+      "access_notes": "Public news article.",
+      "independence_group": "SRC-005"
+    },
+    {
+      "id": "SRC-006",
+      "platform": "System Design One newsletter (Issue #139)",
+      "title": "Treat your resume like a product: lessons from rejecting thousands at Meta",
+      "url": "https://the-pm-archive.vercel.app/articles/2026-04-27-treat-your-resume-like-a-product-lessons-from-rejecting-thousands-at-meta",
+      "author": "Austen McDonald (ex-Meta, chaired mobile Hiring Committee) with Neo Kim",
+      "publication_date": "2026-04-15",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2016-2026 (career span)",
+      "geography": "United States",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "Mobile"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "First-hand hiring-committee experience at a large tech company; read via a repost archive dated 2026-04-27."
+      },
+      "evidence_type": "hiring_committee_first_hand",
+      "access_notes": "Read via public repost archive.",
+      "independence_group": "SRC-006"
+    },
+    {
+      "id": "SRC-007",
+      "platform": "Personal blog (swizec.com)",
+      "title": "Put scope on your resume",
+      "url": "https://swizec.com/blog/put-scope-on-your-resume/",
+      "author": "Swizec Teller (engineer, author; currently reviewing resumes)",
+      "publication_date": "2026-03-04",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2026",
+      "geography": "United States",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack"
+      ],
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Identifiable engineer actively screening resumes; single opinion, mostly experienced-hire focus."
+      },
+      "evidence_type": "hiring_manager_opinion",
+      "access_notes": "Public blog.",
+      "independence_group": "SRC-007"
+    },
+    {
+      "id": "SRC-008",
+      "platform": "Blog (tianpan.co)",
+      "title": "Hiring for LLM Engineering: What the Interview Actually Needs to Test",
+      "url": "https://tianpan.co/blog/2026-04-16-hiring-llm-engineers-interview-what-to-test",
+      "author": "Tian Pan",
+      "publication_date": "2026-04-16",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2026",
+      "geography": "International",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "AI/ML",
+        "LLM Engineer"
+      ],
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Practitioner guidance on what to test in LLM engineers; author's hiring role not explicitly stated."
+      },
+      "evidence_type": "practitioner_opinion",
+      "access_notes": "Public blog.",
+      "independence_group": "SRC-008"
+    },
+    {
+      "id": "SRC-009",
+      "platform": "Gauntlet AI Night School",
+      "title": "What Hiring Managers Actually Look For in AI Engineers",
+      "url": "https://gauntletai.com/night-school/what-hiring-managers-actually-look-for-in-ai-engineers",
+      "author": "Ash Tilawat, CTO, Gauntlet AI",
+      "publication_date": "2026-04-08",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2026",
+      "geography": "United States",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "AI/ML",
+        "AI Engineer",
+        "Full Stack"
+      ],
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Hiring CTO's first-hand numbers from his own postings; organisation runs an AI-engineer training programme (possible interest)."
+      },
+      "evidence_type": "hiring_manager_first_hand",
+      "access_notes": "Public lesson notes.",
+      "independence_group": "SRC-009"
+    },
+    {
+      "id": "SRC-010",
+      "platform": "Dice Insights",
+      "title": "6 Resume Screening Shifts That Will Raise the Bar in 2027",
+      "url": "https://www.dice.com/career-advice/6-resume-screening-shifts-that-will-raise-the-bar-in-2027",
+      "author": "Leslie Stevens-Huffman",
+      "publication_date": "2026-11-06",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2026",
+      "geography": "United States",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "SDE",
+        "All tech"
+      ],
+      "credibility": {
+        "level": "Low",
+        "rationale": "Quotes staffing-firm recruiters; mostly forecasts, few cited data."
+      },
+      "evidence_type": "recruiter_quotes_and_forecasts",
+      "access_notes": "Public article.",
+      "independence_group": "SRC-010"
+    },
+    {
+      "id": "SRC-011",
+      "platform": "DEV Community",
+      "title": "I have reviewed over 400 resumes for tech roles, here is what actually gets you the phone screen",
+      "url": "https://dev.to/emilywoodsnyc/i-have-reviewed-over-400-resumes-for-tech-roles-here-is-what-actually-gets-you-the-phone-screen-ddh",
+      "author": "Emily Woods (self-described resume reviewer/hiring-loop participant)",
+      "publication_date": "2026-05-30",
+      "publication_date_precision": "day (year inferred from author profile)",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "unknown",
+      "geography": "United States",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "SDE",
+        "Full Stack"
+      ],
+      "credibility": {
+        "level": "Low",
+        "rationale": "Claims 400+ reviews but no verifiable title; year inferred."
+      },
+      "evidence_type": "reviewer_opinion",
+      "access_notes": "Public post.",
+      "independence_group": "SRC-011"
+    },
+    {
+      "id": "SRC-012",
+      "platform": "Hacker News",
+      "title": "Ask HN: What signals do you look for when hiring?",
+      "url": "https://news.ycombinator.com/item?id=47409463",
+      "author": "Multiple HN commenters",
+      "publication_date": "2026-03",
+      "publication_date_precision": "month (approximate, derived from relative date)",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2026",
+      "geography": "International",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "SDE",
+        "All tech"
+      ],
+      "credibility": {
+        "level": "Low",
+        "rationale": "Anonymous discussion; most commenters' hiring roles implied, not stated. Read via hn.nuxt.dev mirror."
+      },
+      "evidence_type": "anonymous_discussion",
+      "access_notes": "Public.",
+      "independence_group": "SRC-012"
+    },
+    {
+      "id": "SRC-013",
+      "platform": "Reddit r/EngineeringResumes (wiki)",
+      "title": "Success stories index (2024-2026 entries)",
+      "url": "https://www.reddit.com/r/EngineeringResumes/wiki/success",
+      "author": "Subreddit moderators (index of member posts)",
+      "publication_date": "2026-07-20",
+      "publication_date_precision": "latest entry date in index",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2024-2026",
+      "geography": "Mostly US/Canada; some India-origin international students",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE",
+        "EE",
+        "MechE",
+        "Data"
+      ],
+      "credibility": {
+        "level": "Low",
+        "rationale": "Self-reported outcomes in post titles only; causal link to resume changes unproven. Read via public mirror."
+      },
+      "evidence_type": "self_reported_outcome_index",
+      "access_notes": "Public wiki; read via mirror rl.klein.ruhr.",
+      "independence_group": "SRC-013"
+    },
+    {
+      "id": "SRC-014",
+      "platform": "Reddit r/india",
+      "title": "Why most Indian freshers get 0 responses despite good resumes, the ATS blind spot nobody tells you about",
+      "url": "https://reddit.sentinel-team.org/posts/1tyu119/snapshots/2026-06-12T21%3A39%3A04.807621Z",
+      "author": "u/Tiny-Antelope-4432 and commenters",
+      "publication_date": "2026-01",
+      "publication_date_precision": "month (approximate, derived from snapshot)",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2025-2026",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "All entry-level"
+      ],
+      "credibility": {
+        "level": "Low",
+        "rationale": "Unsourced '75% ATS rejection' claim; commenters' roles unstated. Kept as an example of a contested claim."
+      },
+      "evidence_type": "anonymous_discussion",
+      "access_notes": "Public snapshot of Reddit post.",
+      "independence_group": "SRC-014"
+    },
+    {
+      "id": "SRC-015",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Placement Insights 2025-26: Microsoft India, Data Scientist (M.Tech CSE)",
+      "url": "https://drive.google.com/open?id=1C1AjTqpiW_RaxkzIgDIjhFNMiUqLRRUG",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "Data Science",
+        "AI/ML"
+      ],
+      "selection_context": "Selected: Microsoft India - Data Scientist (OA Nov 22 2025; 9 shortlisted, min CGPA 8.8; 2 offers)",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-015"
+    },
+    {
+      "id": "SRC-016",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Placement Insights 2025-26: Meesho, Software Development Engineer",
+      "url": "https://drive.google.com/open?id=1R74WTkpFYEe7fQZRnQIBiqDiZZD1MZtr",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE",
+        "Data Science",
+        "Product Analyst"
+      ],
+      "selection_context": "Selected: Meesho - SDE; also shortlisted GS, Capital One, AmEx DS/ML, Zomato PA",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-016"
+    },
+    {
+      "id": "SRC-017",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Internship Insights 2025-26: Atlassian SDE intern (plus GS, JPMC DS, Oracle, Zepto, NVIDIA, SRIB shortlists)",
+      "url": "https://drive.google.com/open?id=1BiLA3CamkIIKAs1u5vj6bYaxn0E7lVcD",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE",
+        "Data Science",
+        "AI/ML"
+      ],
+      "selection_context": "Selected: Atlassian - SDE Intern",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-017"
+    },
+    {
+      "id": "SRC-018",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Placement Insights 2025-26: Goldman Sachs, Engineering Analyst (SDE)",
+      "url": "https://drive.google.com/open?id=1sv82mCqygUVPlmiN7SWtdGnH5Hh6LmH_",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE"
+      ],
+      "selection_context": "Selected: Goldman Sachs - Engineering Analyst (SDE) and A&M Associate",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-018"
+    },
+    {
+      "id": "SRC-019",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Placement Insights 2025-26: Fractal Analytics, AI Engineer",
+      "url": "https://drive.google.com/open?id=15L_bbtdGZtIsSGBgAz4W3wZ2FyNlnm7s",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "AI/ML"
+      ],
+      "selection_context": "Selected: Fractal Analytics - AI Engineer",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-019"
+    },
+    {
+      "id": "SRC-020",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Internship Insights 2025-26: Roku, MLE Summer Intern (M.Tech CSE)",
+      "url": "https://drive.google.com/open?id=1aoEqfJvshStgz4dWZurEFATK6yb1pAUm",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "AI/ML",
+        "Backend"
+      ],
+      "selection_context": "Selected: Roku - MLE Summer Intern",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-020"
+    },
+    {
+      "id": "SRC-021",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Internship Insights 2025-26: Intuit, SDE Intern",
+      "url": "https://drive.google.com/open?id=1IiA6nFn8jalFLeGnftYP1UprOxHzDFSt",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE",
+        "Backend"
+      ],
+      "selection_context": "Selected: Intuit - SDE Intern",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-021"
+    },
+    {
+      "id": "SRC-022",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Placement Insights 2025-26: Quicksell, Backend Engineer",
+      "url": "https://drive.google.com/open?id=1ceT36h2cELv74Bf9gcDD3c4gkBGjnxrC",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "Backend",
+        "Full Stack"
+      ],
+      "selection_context": "Selected: Quicksell - Backend Engineer",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-022"
+    },
+    {
+      "id": "SRC-023",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Internship Insights 2025-26: Skan.AI, Data Science Intern",
+      "url": "https://drive.google.com/open?id=1fmQ-gxs58Q-Ol8m2viXBzXTwCBeF_gey",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "Data Science",
+        "AI/ML"
+      ],
+      "selection_context": "Selected: Skan.AI - Data Science Intern",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-023"
+    },
+    {
+      "id": "SRC-024",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Placement Insights 2025-26: Google India, Software Engineer, University Graduate 2026",
+      "url": "https://drive.google.com/open?id=1hJYGGN2RlusDaX9d9eyEVwCqSHVZVW-t",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE"
+      ],
+      "selection_context": "Selected: Google India - SWE University Graduate 2026",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-024"
+    },
+    {
+      "id": "SRC-025",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Internship Insights 2025-26: Google India, SWE Intern Summer 2026",
+      "url": "https://drive.google.com/open?id=1oIPmv9dGHaYatg7iCHiDEec5V_4VA_NS",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE"
+      ],
+      "selection_context": "Selected: Google India - SWE Intern (Summer 2026)",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-025"
+    },
+    {
+      "id": "SRC-026",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Placement Insights 2025-26: HiLabs, Software Development Engineer",
+      "url": "https://drive.google.com/open?id=1jae78YI4wPhKxee561CyzuCri9JS77ZB",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE",
+        "Backend",
+        "AI/ML"
+      ],
+      "selection_context": "Selected: HiLabs - SDE",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. Very brief document."
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-026"
+    },
+    {
+      "id": "SRC-027",
+      "platform": "The Pragmatic Engineer (newsletter)",
+      "title": "State of the software engineering jobs market, 2025: what hiring managers see",
+      "url": "https://newsletter.pragmaticengineer.com/p/state-of-the-tech-market-in-2025-hiring-managers",
+      "author": "Gergely Orosz",
+      "publication_date": "2025-10-07",
+      "publication_date_precision": "day",
+      "year_bucket": "2025",
+      "recruitment_experience_year": "2025",
+      "geography": "International (US, UK, EU, India respondents)",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Many named-context hiring managers and recruiters incl. Indian startup and Indian EM. Partially paywalled."
+      },
+      "evidence_type": "aggregated_hiring_manager_interviews",
+      "access_notes": "Free section only.",
+      "independence_group": "pragmatic_engineer"
+    },
+    {
+      "id": "SRC-028",
+      "platform": "arXiv (econ.GN)",
+      "title": "Making Talk Cheap: Generative AI and Labor Market Signaling",
+      "url": "https://arxiv.org/abs/2511.08785",
+      "author": "Anais Galdin, Jesse Silbert",
+      "publication_date": "2025-11-11",
+      "publication_date_precision": "day",
+      "year_bucket": "2025",
+      "recruitment_experience_year": "pre- and post-LLM periods on Freelancer.com",
+      "geography": "International (online freelance platform)",
+      "source_category": "research",
+      "relevant_roles": [
+        "All"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Empirical economics working paper with structural model; preprint, not yet peer-reviewed; freelance setting, not campus hiring."
+      },
+      "evidence_type": "empirical_research_preprint",
+      "access_notes": "Open access.",
+      "independence_group": "SRC-028"
+    },
+    {
+      "id": "SRC-029",
+      "platform": "IT Brief UK (reporting Enhancv study)",
+      "title": "Study reveals ATS rarely auto-rejects CVs, debunks 75% myth",
+      "url": "https://itbrief.co.uk/story/study-reveals-ats-rarely-auto-rejects-cvs-debunks-75-myth",
+      "author": "Shannon Williams (IT Brief), study by Enhancv",
+      "publication_date": "2025-11-19",
+      "publication_date_precision": "day",
+      "year_bucket": "2025",
+      "recruitment_experience_year": "2025",
+      "geography": "United States",
+      "source_category": "research",
+      "relevant_roles": [
+        "All"
+      ],
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Interviews with 25 US recruiters by a resume-tool vendor; small, non-random sample."
+      },
+      "evidence_type": "small_recruiter_study",
+      "access_notes": "Public news article.",
+      "independence_group": "SRC-029"
+    },
+    {
+      "id": "SRC-030",
+      "platform": "Reddit r/cscareerquestions",
+      "title": "Hiring managers/recruiters, what are some things that make a candidate stand out?",
+      "url": "https://www.reddit.com/r/cscareerquestions/comments/1jt1tyd/",
+      "author": "Multiple commenters (few state hiring roles)",
+      "publication_date": "2025-04-06",
+      "publication_date_precision": "day",
+      "year_bucket": "2025",
+      "recruitment_experience_year": "2025",
+      "geography": "United States (mostly)",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "SDE"
+      ],
+      "credibility": {
+        "level": "Low",
+        "rationale": "Anonymous; only one commenter self-identifies as a hiring manager. Read via public mirror."
+      },
+      "evidence_type": "anonymous_discussion",
+      "access_notes": "Public; read via redlib mirror.",
+      "independence_group": "SRC-030"
+    },
+    {
+      "id": "SRC-031",
+      "platform": "Reddit r/developersIndia",
+      "title": "HashedIn by Deloitte - On-Campus Interview Experience (SDE Role)",
+      "url": "https://reddit.sentinel-team.org/posts/1qwdi65/snapshots/2026-02-06T06%3A20%3A15.39197Z",
+      "author": "u/dexter_ifti and commenters",
+      "publication_date": "2025-05",
+      "publication_date_precision": "month (approximate, derived from snapshot)",
+      "year_bucket": "2025",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE",
+        "Full Stack"
+      ],
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand campus process with funnel numbers; candidate was not selected; single campus."
+      },
+      "evidence_type": "first_hand_candidate_experience",
+      "access_notes": "Public snapshot of Reddit post.",
+      "independence_group": "SRC-031"
+    },
+    {
+      "id": "SRC-032",
+      "platform": "Reddit r/developersIndia",
+      "title": "Review my resume ... why am I not getting shortlisted for data analyst role as a fresher",
+      "url": "https://reddit.sentinel-team.org/posts/1q87vqd/snapshots/2026-01-09T17%3A10%3A08.514575Z",
+      "author": "u/desimemes_69 and commenters",
+      "publication_date": "2025-03",
+      "publication_date_precision": "month (approximate)",
+      "year_bucket": "2025",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "Data Analyst"
+      ],
+      "credibility": {
+        "level": "Low",
+        "rationale": "Peer feedback; no commenter states hiring credentials."
+      },
+      "evidence_type": "peer_resume_review",
+      "access_notes": "Public snapshot.",
+      "independence_group": "SRC-032"
+    },
+    {
+      "id": "SRC-033",
+      "platform": "Reddit r/analytics",
+      "title": "Current Data Analyst interview trends need real insights",
+      "url": "https://reddit.sentinel-team.org/posts/1pt984v/snapshots/2025-12-24T03%3A50%3A07.755888Z",
+      "author": "Multiple commenters incl. a self-described hiring leader",
+      "publication_date": "2025-02",
+      "publication_date_precision": "month (approximate)",
+      "year_bucket": "2025",
+      "recruitment_experience_year": "2025",
+      "geography": "International",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "Data Analyst",
+        "Data Science"
+      ],
+      "credibility": {
+        "level": "Low",
+        "rationale": "Anonymous; mixed practitioner and hiring-side views."
+      },
+      "evidence_type": "anonymous_discussion",
+      "access_notes": "Public snapshot.",
+      "independence_group": "SRC-033"
+    },
+    {
+      "id": "SRC-034",
+      "platform": "University of Maryland, Clark School of Engineering career services",
+      "title": "Engineering Resume Handout (Fall 2025)",
+      "url": "https://eng.umd.edu/sites/clark.umd.edu/files/Resume%20Handout%20FA25.pdf",
+      "author": "UMD Engineering Career Services",
+      "publication_date": "2025-08",
+      "publication_date_precision": "semester (Fall 2025)",
+      "year_bucket": "2025",
+      "recruitment_experience_year": "2025",
+      "geography": "United States",
+      "source_category": "professional_guidance",
+      "relevant_roles": [
+        "All engineering"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Official university engineering career-centre guidance; includes explicit AI-use guidance."
+      },
+      "evidence_type": "university_career_centre_guidance",
+      "access_notes": "Public PDF.",
+      "independence_group": "SRC-034"
+    },
+    {
+      "id": "SRC-035",
+      "platform": "interviewing.io blog",
+      "title": "Are recruiters better than a coin flip at judging resumes?",
+      "url": "https://interviewing.io/blog/are-recruiters-better-than-a-coin-flip-at-judging-resumes",
+      "author": "Aline Lerner, Peter Bergman (with Learning Collider)",
+      "publication_date": "2024-05-01",
+      "publication_date_precision": "day (page metadata)",
+      "year_bucket": "2024",
+      "recruitment_experience_year": "2024",
+      "geography": "United States",
+      "source_category": "research",
+      "relevant_roles": [
+        "SDE"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "76 recruiters, ~2,200 evaluations, ground truth from mock-interview outcomes. Mock interview, not on-the-job performance."
+      },
+      "evidence_type": "empirical_study",
+      "access_notes": "Public.",
+      "independence_group": "SRC-035"
+    },
+    {
+      "id": "SRC-036",
+      "platform": "IIT Kanpur SPO Insights (web article)",
+      "title": "Placement Insights 2024: NVIDIA, Formal Verification Engineer",
+      "url": "https://spo.iitk.ac.in/insights/2024-placement-aditya-pratap-singh-nvidia",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": "2024-08-27",
+      "publication_date_precision": "day",
+      "year_bucket": "2024",
+      "recruitment_experience_year": "2024",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "Core/Hardware",
+        "SDE"
+      ],
+      "selection_context": "Selected: NVIDIA - Formal Verification (ASIC)",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur SPO public article; candidate named on source page, not copied into KB.",
+      "independence_group": "SRC-036"
+    },
+    {
+      "id": "SRC-037",
+      "platform": "IIT Kanpur SPO Insights (web article)",
+      "title": "Placement Insights 2024: Sprinklr, Product Engineer",
+      "url": "https://spo.iitk.ac.in/insights/2024-placement-aryash-pateria-sprinklr",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": "2024-08-27",
+      "publication_date_precision": "day",
+      "year_bucket": "2024",
+      "recruitment_experience_year": "2024",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE"
+      ],
+      "selection_context": "Selected: Sprinklr - Product Engineer",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur SPO public article; candidate named on source page, not copied into KB.",
+      "independence_group": "SRC-037"
+    },
+    {
+      "id": "SRC-038",
+      "platform": "IIT Kanpur SPO Insights (web article)",
+      "title": "Placement Insights 2024: Glean, Software Engineer",
+      "url": "https://spo.iitk.ac.in/insights/2024-placement-aditya-tanwar-glean",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": "2024-08-27",
+      "publication_date_precision": "day",
+      "year_bucket": "2024",
+      "recruitment_experience_year": "2024",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE"
+      ],
+      "selection_context": "Selected: Glean - Software Engineer",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur SPO public article; candidate named on source page, not copied into KB.",
+      "independence_group": "SRC-038"
+    },
+    {
+      "id": "SRC-039",
+      "platform": "IIT Kanpur SPO Insights (web article)",
+      "title": "Placement Insights 2024: Microsoft India, SDE (M.Tech CSE)",
+      "url": "https://spo.iitk.ac.in/insights/2024-placement-taneya-soni-microsoft-india",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": "2024-08-27",
+      "publication_date_precision": "day",
+      "year_bucket": "2024",
+      "recruitment_experience_year": "2024",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE",
+        "AI/ML"
+      ],
+      "selection_context": "Selected: Microsoft India - SDE",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. Brief on resume content."
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur SPO public article; candidate named on source page, not copied into KB.",
+      "independence_group": "SRC-039"
+    },
+    {
+      "id": "SRC-040",
+      "platform": "Amazon India (aboutamazon.in)",
+      "title": "Resume tips from Amazon recruiters",
+      "url": "https://www.aboutamazon.in/news/workplace/amazon-india-job-resume-tips",
+      "author": "Brittany Bunch (Amazon) quoting four Amazon recruiters",
+      "publication_date": "2024-04-08",
+      "publication_date_precision": "day",
+      "year_bucket": "2024",
+      "recruitment_experience_year": "2024",
+      "geography": "India/Global (Amazon)",
+      "source_category": "professional_guidance",
+      "relevant_roles": [
+        "All"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Official company careers content quoting named recruiters."
+      },
+      "evidence_type": "official_company_recruiter_guidance",
+      "access_notes": "Public.",
+      "independence_group": "SRC-040"
+    },
+    {
+      "id": "SRC-041",
+      "platform": "Personal blog (eugeneyan.com)",
+      "title": "How to Interview and Hire ML/AI Engineers",
+      "url": "https://eugeneyan.com/writing/how-to-interview/",
+      "author": "Eugene Yan (led ML/AI teams at Amazon, Alibaba, Lazada)",
+      "publication_date": "2024-07-07",
+      "publication_date_precision": "day",
+      "year_bucket": "2024",
+      "recruitment_experience_year": "2024",
+      "geography": "International",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "AI/ML",
+        "Data Science"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Experienced ML hiring leader describing his own interview rubric."
+      },
+      "evidence_type": "hiring_manager_first_hand",
+      "access_notes": "Public.",
+      "independence_group": "SRC-041"
+    },
+    {
+      "id": "SRC-042",
+      "platform": "Johns Hopkins University, Office of Undergraduate Research (HOUR)",
+      "title": "HOUR Tips: Resume Best Practices",
+      "url": "https://hour.jhu.edu/wp-content/uploads/2024/07/HOUR-tips-Resume-Best-Practices_7-2024.pdf",
+      "author": "JHU HOUR",
+      "publication_date": "2024-07",
+      "publication_date_precision": "month",
+      "year_bucket": "2024",
+      "recruitment_experience_year": "2024",
+      "geography": "United States",
+      "source_category": "professional_guidance",
+      "relevant_roles": [
+        "Research",
+        "AI/ML",
+        "All"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Official university guidance specific to research experience and publications."
+      },
+      "evidence_type": "university_career_centre_guidance",
+      "access_notes": "Public PDF.",
+      "independence_group": "SRC-042"
+    },
+    {
+      "id": "SRC-043",
+      "platform": "Reddit r/EngineeringResumes",
+      "title": "[0 YoE] May 2024 new grad, refactored resume based on feedback",
+      "url": "https://www.reddit.com/r/EngineeringResumes/comments/1f4bfqf/",
+      "author": "u/DepresionSonriente and commenters",
+      "publication_date": "2024-08-29",
+      "publication_date_precision": "day",
+      "year_bucket": "2024",
+      "recruitment_experience_year": "2024",
+      "geography": "United States",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE",
+        "Full Stack"
+      ],
+      "credibility": {
+        "level": "Low",
+        "rationale": "Peer review thread; useful concrete bullet critiques; no outcome reported. Read via mirror."
+      },
+      "evidence_type": "peer_resume_review",
+      "access_notes": "Public; read via mirror.",
+      "independence_group": "SRC-043"
+    }
+  ],
+  "intelligence": [
+    {
+      "id": "INT-001",
+      "category": "resume_screening",
+      "principle": "Show evidence of skills, not a list of claimed skills",
+      "original_observation_paraphrased": "NACE's 2026 employer surveys report 70% of employers use skills-based hiring and that employers 'want to see examples' of skills. TeamLease's HY1 2026 India survey (1,051 employers) describes a shift from degree and resume filters to proof-of-work: internships, projects, portfolios, hackathons. Amazon recruiters ask for accomplishments, not responsibilities.",
+      "actionable_rule": "Every skill the resume asserts should be traceable to at least one concrete experience (project, internship, research, competition) where it was used.",
+      "agent_instruction": "Before generating bullets, build a skill-to-evidence map from verified candidate data. Drop or flag any skill with no supporting experience; ask the candidate where they used it instead of inventing context.",
+      "rationale": "Employers in both US and Indian surveys explicitly prefer demonstrated skills; unsupported lists carry little signal and AI makes lists cheap.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "All fresher resumes, especially skills-based or off-campus applications.",
+      "exceptions": "Mandatory compliance/qualification filters (degree, authorisation) still apply regardless of evidence.",
+      "common_mistakes": [
+        "Long skill lists with no project that uses them",
+        "Certificates listed as proof of proficiency"
+      ],
+      "supporting_source_ids": [
+        "SRC-002",
+        "SRC-003",
+        "SRC-005",
+        "SRC-040",
+        "SRC-011"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "skills",
+        "evidence",
+        "screening",
+        "skills-based-hiring"
+      ],
+      "independent_supporting_sources": 4,
+      "confidence_score": 0.92,
+      "supporting_source_years": [
+        "2024",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "India",
+        "India/Global (Amazon)",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-002",
+      "category": "resume_screening",
+      "principle": "Internships are the strongest experience signal for freshers",
+      "original_observation_paraphrased": "NACE (Feb 2026) reports that an internship with the employer or in the industry are the attributes with the most influence when choosing between otherwise equal candidates, ahead of GPA. An IIT Kanpur Meesho SDE selectee (2025-26) said his previous Amazon internship and CPI were what stood out most, and one interview round was a full internship deep-dive. TeamLease lists internships first among proof-of-work signals.",
+      "actionable_rule": "Place relevant internships prominently (above projects) and give them the most specific, outcome-oriented bullets.",
+      "agent_instruction": "Experience Analysis Agent: extract every internship detail (problem, system, own contribution, result, stack). Strategy Agent: order internships before projects when they are relevant to the target role.",
+      "rationale": "Independent US survey data and Indian first-hand accounts agree that real work experience decides close calls.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Candidate has at least one internship, research assistantship or industry project.",
+      "exceptions": "Candidates without internships still get selected (see CON-006); an irrelevant internship should not outrank a highly relevant project.",
+      "common_mistakes": [
+        "Listing an internship with only responsibilities",
+        "Giving a 2-month internship more bullets than its substance supports"
+      ],
+      "supporting_source_ids": [
+        "SRC-004",
+        "SRC-016",
+        "SRC-005",
+        "SRC-018"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "internship",
+        "experience",
+        "ordering"
+      ],
+      "independent_supporting_sources": 4,
+      "confidence_score": 0.92,
+      "supporting_source_years": [
+        "2025-26 season",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "India",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-003",
+      "category": "resume_screening",
+      "principle": "In Indian campus hiring, academic cut-offs gate shortlists",
+      "original_observation_paraphrased": "IIT Kanpur 2025-26: all 9 Microsoft Data Scientist interviewees had CGPA of at least 8.8. A 2024 Glean selectee recalled a CPI cut-off around 9.3. A 2025 HashedIn on-campus drive required at least 75% in undergraduate studies. A Fractal AI Engineer selectee advised maintaining CPI. In contrast, NACE says US employers' reliance on GPA has dropped.",
+      "actionable_rule": "For Indian campus applications, show CGPA/percentage clearly in Education; for US/skills-based applications treat GPA as optional.",
+      "agent_instruction": "Resume Strategy Agent: if target geography is India campus or the JD/drive states a cut-off, always include CGPA as given by the candidate. Never round up or alter it. If below a stated cut-off, tell the candidate rather than hiding the field.",
+      "rationale": "Cut-offs are hard filters in Indian campus processes, so omitting CGPA can cause silent rejection.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Indian on-campus and many Indian off-campus fresher drives.",
+      "exceptions": "Off-campus product startups and US employers frequently screen on skills rather than GPA (CON-002).",
+      "common_mistakes": [
+        "Omitting CGPA in campus resumes",
+        "Reporting CGPA on a different scale without stating the scale"
+      ],
+      "supporting_source_ids": [
+        "SRC-015",
+        "SRC-038",
+        "SRC-031",
+        "SRC-019",
+        "SRC-003"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "education",
+        "cgpa",
+        "gpa",
+        "india",
+        "campus"
+      ],
+      "independent_supporting_sources": 5,
+      "confidence_score": 0.76,
+      "supporting_source_years": [
+        "2024",
+        "2025",
+        "2025-26 season",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "India",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-004",
+      "category": "resume_screening",
+      "principle": "Duty lists without outcomes are a common rejection reason",
+      "original_observation_paraphrased": "An ex-Meta hiring-committee chair lists duty lists without outcomes and buzzword-heavy summaries among common rejection causes. Amazon recruiters advise listing accomplishments rather than responsibilities. UMD Engineering advises against listing every job duty.",
+      "actionable_rule": "Every bullet must state what changed because of the candidate's work (a result, a delivered artefact, a measured effect) rather than what the role involved.",
+      "agent_instruction": "Resume Evaluation Agent: flag bullets that start with 'Responsible for', 'Worked on', 'Involved in' or contain no result. Generation Agent: ask the candidate what the outcome was before rewriting.",
+      "rationale": "Outcome statements give screeners evidence of contribution; duties do not.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)",
+        "experienced"
+      ],
+      "conditions": "All experience and project bullets.",
+      "exceptions": "When the outcome is unknown or confidential, describe the delivered artefact and its scope instead of inventing an effect.",
+      "common_mistakes": [
+        "'Responsible for developing APIs'",
+        "Copying the internship job description"
+      ],
+      "supporting_source_ids": [
+        "SRC-006",
+        "SRC-040",
+        "SRC-034",
+        "SRC-011"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "bullets",
+        "outcomes",
+        "rejection"
+      ],
+      "independent_supporting_sources": 4,
+      "confidence_score": 0.92,
+      "supporting_source_years": [
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "India/Global (Amazon)",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-005",
+      "category": "resume_screening",
+      "principle": "Keep layout simple and parser-friendly",
+      "original_observation_paraphrased": "The ex-Meta HC chair notes parsers struggle with tables, multi-column layouts, text boxes and nonstandard headings. UMD Engineering warns against columns, tables, text boxes, lines and symbols. Amazon recruiters recommend a simple, text-focused black-and-white layout. Dice (2026) reports recruiters see AI parsers misorder text in tables/columns.",
+      "actionable_rule": "Use a single-column layout, standard section headings (Education, Experience, Projects, Skills), real text (not images), and a PDF unless instructed otherwise.",
+      "agent_instruction": "Resume Generation Agent: output single-column structure with standard headings. Evaluation Agent: flag multi-column, icon-heavy, table-based or image-text designs.",
+      "rationale": "Parsing errors can misplace content even when no auto-rejection occurs (see CON-001).",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)",
+        "experienced"
+      ],
+      "conditions": "Applications through ATS portals (Workday, Greenhouse, campus portals).",
+      "exceptions": "Design roles or direct hand-offs to a hiring manager may tolerate more visual design.",
+      "common_mistakes": [
+        "Canva two-column templates",
+        "Skill bars and icons",
+        "Custom headings like 'My Journey'"
+      ],
+      "supporting_source_ids": [
+        "SRC-006",
+        "SRC-034",
+        "SRC-040",
+        "SRC-010"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "format",
+        "ats",
+        "layout"
+      ],
+      "independent_supporting_sources": 4,
+      "confidence_score": 0.92,
+      "supporting_source_years": [
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "India/Global (Amazon)",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-006",
+      "category": "resume_screening",
+      "principle": "Resume reviewers over-weight pedigree; the resume alone cannot guarantee a shortlist",
+      "original_observation_paraphrased": "interviewing.io's 2024 study (76 recruiters, ~2,200 evaluations) found recruiters' interview decisions were right 55% of the time, two recruiters agreed only 64% of the time, the median review took 31 seconds, and top-company experience was the strongest predictor of being selected. Pragmatic Engineer (2025, 2026) reports extreme inbound volume and referrals as the most reliable route.",
+      "actionable_rule": "Surface legitimately prestigious or highly relevant signals (named companies, competitive selections, rankings) early, and set realistic expectations about what a resume can achieve.",
+      "agent_instruction": "Resume Strategy Agent: place the candidate's strongest verified signals in the top third of page 1. Evaluation Agent: never predict shortlist probability or promise outcomes; note that referrals and direct outreach are separate levers.",
+      "rationale": "Screening is fast and noisy, so early placement of strong signals matters, but outcomes are not controllable by wording.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)",
+        "experienced"
+      ],
+      "conditions": "Cold applications with high inbound volume.",
+      "exceptions": "Campus drives with OA-first shortlisting (INT-040) depend less on resume first impressions.",
+      "common_mistakes": [
+        "Burying a top internship below coursework",
+        "Claiming that a rewrite will 'guarantee' interviews"
+      ],
+      "supporting_source_ids": [
+        "SRC-035",
+        "SRC-027",
+        "SRC-001",
+        "SRC-012"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "screening",
+        "pedigree",
+        "expectations",
+        "referrals"
+      ],
+      "independent_supporting_sources": 3,
+      "confidence_score": 0.88,
+      "supporting_source_years": [
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "International",
+        "International (US, UK, EU respondents)",
+        "International (US, UK, EU, India respondents)",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-007",
+      "category": "resume_screening",
+      "principle": "Cut content that is irrelevant to the target role",
+      "original_observation_paraphrased": "In a 2025 r/developersIndia review of a data-analyst fresher resume with 100+ unanswered applications, commenters advised removing the web-dev internship, deep learning project, C++ and Django and keeping only analyst-relevant work; Udemy courses were said to carry little weight. Pragmatic Engineer (2025) reports inbound rejections for poor role fit.",
+      "actionable_rule": "Select and order experiences by relevance to the target role; de-emphasise or remove unrelated items when space is limited.",
+      "agent_instruction": "Resume Strategy Agent: score each verified experience for relevance to the target role/JD and keep the highest-scoring items within one page. Ask the candidate before removing anything they consider important.",
+      "rationale": "Relevance makes a fit visible within a 30-second scan.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Single-page fresher resumes targeted at one role family.",
+      "exceptions": "An unrelated but impressive item (e.g., a strong internship at a known company) can still be worth keeping as one line.",
+      "common_mistakes": [
+        "One resume for SDE, DS and DA roles simultaneously",
+        "Listing many MOOC certificates"
+      ],
+      "supporting_source_ids": [
+        "SRC-032",
+        "SRC-027",
+        "SRC-034"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "relevance",
+        "tailoring",
+        "data-analyst"
+      ],
+      "independent_supporting_sources": 3,
+      "confidence_score": 0.68,
+      "supporting_source_years": [
+        "2025"
+      ],
+      "geography_of_evidence": [
+        "India",
+        "International (US, UK, EU, India respondents)",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-008",
+      "category": "resume_screening",
+      "principle": "For data roles, presentation errors read as carelessness",
+      "original_observation_paraphrased": "In a 2025 r/analytics thread a self-described hiring leader called the CV itself a work sample: typos, odd punctuation and inconsistent spacing were red flags because they suggest carelessness with data. UMD Engineering warns against relying on spell-check alone.",
+      "actionable_rule": "Proofread for typos, consistent date formats, punctuation and spacing before delivery.",
+      "agent_instruction": "Resume Evaluation Agent: run consistency checks (dates, tense, spacing, capitalisation of technologies) and report issues.",
+      "rationale": "Low-cost to fix; can disqualify detail-oriented roles.",
+      "applicable_job_roles": [
+        "Data Analyst",
+        "Data Science",
+        "SDE"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "All resumes; strongest for analyst roles.",
+      "exceptions": "None noted.",
+      "common_mistakes": [
+        "Mixed date formats",
+        "'Javascript' vs 'JavaScript' inconsistently"
+      ],
+      "supporting_source_ids": [
+        "SRC-033",
+        "SRC-034"
+      ],
+      "evidence_strength": "Low",
+      "retrieval_tags": [
+        "proofreading",
+        "data-analyst",
+        "format"
+      ],
+      "independent_supporting_sources": 2,
+      "confidence_score": 0.44,
+      "supporting_source_years": [
+        "2025"
+      ],
+      "geography_of_evidence": [
+        "International",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-009",
+      "category": "technical_projects",
+      "principle": "Fewer, deeper projects beat many shallow ones",
+      "original_observation_paraphrased": "An NVIDIA selectee (IITK 2024) said a project with substantial time invested helps in interviews and that the Verilog project drew most interviewer interest. A Google SWE intern selectee (IITK 2025-26) advised including well-done projects you can explain well. A Meesho selectee warned against listing complex projects you cannot defend.",
+      "actionable_rule": "Prefer 2-4 substantial projects with real depth over many small or tutorial-level ones.",
+      "agent_instruction": "Experience Analysis Agent: rank projects by depth (duration, original design decisions, difficulty, own contribution). Strategy Agent: keep the deepest relevant ones; ask follow-up questions to recover missing depth instead of padding with weak projects.",
+      "rationale": "Interviews in Indian campus processes pick one project and drill down; depth is what is tested.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Fresher resumes with more projects than space.",
+      "exceptions": "Hackathon wins may justify a short entry even if the project is small.",
+      "common_mistakes": [
+        "Six one-line projects",
+        "Including a project only because it uses a trendy technology"
+      ],
+      "supporting_source_ids": [
+        "SRC-036",
+        "SRC-025",
+        "SRC-016",
+        "SRC-018"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "projects",
+        "depth",
+        "selection"
+      ],
+      "independent_supporting_sources": 4,
+      "confidence_score": 0.72,
+      "supporting_source_years": [
+        "2024",
+        "2025-26 season"
+      ],
+      "geography_of_evidence": [
+        "India"
+      ]
+    },
+    {
+      "id": "INT-010",
+      "category": "technical_projects",
+      "principle": "Working, deployed or used projects outrank tutorial clones",
+      "original_observation_paraphrased": "The ex-Meta HC chair says side projects matter most for new grads and pivots, and GitHub helps only with deployed, documented, tested repos. A 2026 reviewer says tutorial or unshipped projects weaken resumes while real-world projects with users help. HN hiring commenters (2026) value production side projects with users. A 2025 r/india peer advised working, deployed projects linked on the resume.",
+      "actionable_rule": "Highlight evidence that a project works in the real world: deployment, real users, real data, tests, documentation.",
+      "agent_instruction": "Experience Analysis Agent: ask whether each project is deployed, has users/data, tests and a README. Generation Agent: mention these only when confirmed.",
+      "rationale": "These signals are hard to fake and separate engineering work from coursework.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Personal and academic projects.",
+      "exceptions": "Research projects and course projects with strong technical depth can be valuable without deployment.",
+      "common_mistakes": [
+        "Listing a to-do/clone app as a flagship project",
+        "Linking a GitHub profile with empty or broken repos"
+      ],
+      "supporting_source_ids": [
+        "SRC-006",
+        "SRC-011",
+        "SRC-012"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "projects",
+        "deployment",
+        "github"
+      ],
+      "independent_supporting_sources": 3,
+      "confidence_score": 0.68,
+      "supporting_source_years": [
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "International",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-011",
+      "category": "technical_projects",
+      "principle": "Expect implementation, design-choice and challenge questions on every project",
+      "original_observation_paraphrased": "Intuit SDE intern selectee (IITK 2025-26): project discussion revolved around implementation details, challenges faced, design choices and the tables/schemas used. Quicksell backend selectee: interviewers made him open the project, run it and explain the code live. SRIB interviews cross-examined resume projects. NVIDIA (2024): asked about difficulties faced and how team tasks were divided.",
+      "actionable_rule": "Each project entry should name the concrete design decisions and the hardest technical problem solved, because these are what interviewers ask about.",
+      "agent_instruction": "Experience Analysis Agent: for each project collect (a) architecture/components, (b) key design choice and alternative considered, (c) hardest problem and fix, (d) data model/schema if any. Generation Agent: express one of these in the bullets.",
+      "rationale": "Multiple independent selected candidates across companies report the same questioning pattern.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Projects and internships listed on the resume.",
+      "exceptions": "Pure DSA-only processes (e.g., Google SWE per INT-040) may ask little about projects.",
+      "common_mistakes": [
+        "Bullets that name the stack but no decisions",
+        "Being unable to run or show the project"
+      ],
+      "supporting_source_ids": [
+        "SRC-021",
+        "SRC-022",
+        "SRC-017",
+        "SRC-036",
+        "SRC-026"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "projects",
+        "interview",
+        "design-choices",
+        "defensibility"
+      ],
+      "independent_supporting_sources": 5,
+      "confidence_score": 0.95,
+      "supporting_source_years": [
+        "2024",
+        "2025-26 season"
+      ],
+      "geography_of_evidence": [
+        "India"
+      ]
+    },
+    {
+      "id": "INT-012",
+      "category": "technical_projects",
+      "principle": "State individual ownership in team work",
+      "original_observation_paraphrased": "Eugene Yan (2024) separates a candidate's own contributions from the team's and asks who made the hardest call; overstating or excessive modesty are warning signs. The NVIDIA selectee (IITK 2024) was asked how team tasks were divided and how disagreements were handled.",
+      "actionable_rule": "In team projects and internships, describe what the candidate personally designed, built, integrated or decided, distinct from the team outcome.",
+      "agent_instruction": "Experience Analysis Agent: for any team item ask 'What part did you personally own?' and record team size. Generation Agent: use verbs that match actual ownership (built vs contributed to) and never attribute team results solely to the candidate.",
+      "rationale": "Interviewers explicitly probe ownership; inflated ownership is detected and penalised.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)",
+        "experienced"
+      ],
+      "conditions": "Team projects, hackathons, internships.",
+      "exceptions": "Solo projects need no attribution split.",
+      "common_mistakes": [
+        "'Built a platform used by 10k users' when the candidate wrote one module"
+      ],
+      "supporting_source_ids": [
+        "SRC-041",
+        "SRC-036",
+        "SRC-001"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "ownership",
+        "team",
+        "defensibility"
+      ],
+      "independent_supporting_sources": 3,
+      "confidence_score": 0.68,
+      "supporting_source_years": [
+        "2024",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "India",
+        "International",
+        "International (US, UK, EU respondents)"
+      ]
+    },
+    {
+      "id": "INT-013",
+      "category": "technical_projects",
+      "principle": "ML projects must be explainable end-to-end: data, model, loss, metrics, choices",
+      "original_observation_paraphrased": "A Microsoft India Data Scientist selectee (IITK 2025-26) kept notes per project on datasets, preprocessing, architecture, techniques, training details, loss functions, evaluation metrics, reasons for design choices and problems faced; the interviewer interrupted his thesis walk-through to ask intuition at each step. Eugene Yan looks for how candidates evaluated the system, did error analysis and measured impact. Skan.AI DS intern selectee: know the maths behind the algorithms in your projects.",
+      "actionable_rule": "ML project entries should state the task, data, modelling approach, evaluation metric and result, and the candidate must be able to justify each choice.",
+      "agent_instruction": "Experience Analysis Agent (AI/ML, DS roles): collect dataset (size/source), baseline, model, metric, result vs baseline, error analysis, and deployment status. Generation Agent: include metric and baseline only if the candidate supplies them.",
+      "rationale": "Repeated across an ML hiring leader and multiple Indian selectees.",
+      "applicable_job_roles": [
+        "AI/ML",
+        "Data Science"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "ML/DL/NLP/CV projects and theses.",
+      "exceptions": "Exploratory analysis projects may not have a single metric; describe the decision informed instead.",
+      "common_mistakes": [
+        "'Built a CNN with 98% accuracy' with no dataset, baseline or split",
+        "Listing models the candidate cannot explain mathematically"
+      ],
+      "supporting_source_ids": [
+        "SRC-015",
+        "SRC-041",
+        "SRC-023",
+        "SRC-019",
+        "SRC-020"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "ai-ml",
+        "projects",
+        "evaluation",
+        "metrics"
+      ],
+      "independent_supporting_sources": 5,
+      "confidence_score": 0.95,
+      "supporting_source_years": [
+        "2024",
+        "2025-26 season"
+      ],
+      "geography_of_evidence": [
+        "India",
+        "International"
+      ]
+    },
+    {
+      "id": "INT-014",
+      "category": "technical_projects",
+      "principle": "LLM/GenAI projects stand out through evals, failure analysis and cost/latency reasoning",
+      "original_observation_paraphrased": "Gauntlet AI's CTO (2026) calls evals the main differentiator and advises adding evals to any RAG/agent portfolio project. Tian Pan (2026) says strong LLM engineers design evals, analyse failures and reason about token cost and latency, while weak ones have only used convenience wrappers. Pragmatic Engineer (2026) reports managers seeing RAG/evals/inference keywords with little supporting depth.",
+      "actionable_rule": "For LLM projects, describe how quality was measured (eval set, metric), what failure modes were found and fixed, and cost/latency trade-offs, rather than only naming the framework.",
+      "agent_instruction": "Experience Analysis Agent (LLM projects): ask for eval method, examples of failures fixed, model choice rationale, latency/cost. If none exist, do not imply them; suggest the candidate can add them to the project in reality.",
+      "rationale": "Hot keywords alone now read as noise; measured behaviour is the distinguishing signal.",
+      "applicable_job_roles": [
+        "AI/ML",
+        "LLM Engineer",
+        "Full Stack"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "RAG, agent, chatbot and fine-tuning projects.",
+      "exceptions": "Research-heavy ML roles may weigh model/theory depth more than product evals.",
+      "common_mistakes": [
+        "'Built a RAG chatbot using LangChain and OpenAI' with no evaluation",
+        "Listing 'Agentic AI' without a concrete system"
+      ],
+      "supporting_source_ids": [
+        "SRC-009",
+        "SRC-008",
+        "SRC-001"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "llm",
+        "genai",
+        "rag",
+        "evals",
+        "ai-ml"
+      ],
+      "independent_supporting_sources": 3,
+      "confidence_score": 0.68,
+      "supporting_source_years": [
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "International",
+        "International (US, UK, EU respondents)",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-015",
+      "category": "technical_projects",
+      "principle": "Backend projects should expose data-store, API and scaling decisions",
+      "original_observation_paraphrased": "Roku MLE intern selectee (IITK 2025-26) was asked to design a search system and justify Elasticsearch vs MySQL and hashmap vs sorted array. Intuit interviews asked about project tables/schemas. A 2025 HashedIn campus SDE round included API gateway, load balancer, database design and scaling, and the candidate identified requirement-driven system design as his gap. HiLabs SDE interviews touched Kafka and Docker.",
+      "actionable_rule": "Backend project entries should name the data model, storage choice and why, API design, and any concurrency/scaling or reliability handling actually implemented.",
+      "agent_instruction": "Experience Analysis Agent (Backend/SDE): ask about database choice and schema, API endpoints, queues/caching, load or data volume handled, and failure handling. Generation Agent: describe only what was built; do not upgrade a single-server app into a 'scalable distributed system'.",
+      "rationale": "Indian product companies increasingly ask freshers application-level design questions grounded in their projects.",
+      "applicable_job_roles": [
+        "Backend",
+        "SDE",
+        "Full Stack"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "API, web-app, data-pipeline projects.",
+      "exceptions": "Frontend-heavy roles emphasise UI architecture and performance instead.",
+      "common_mistakes": [
+        "Listing Kafka/Docker without describing their role",
+        "Claiming 'scalable' without load or design evidence"
+      ],
+      "supporting_source_ids": [
+        "SRC-020",
+        "SRC-021",
+        "SRC-031",
+        "SRC-026"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "backend",
+        "system-design",
+        "databases",
+        "projects"
+      ],
+      "independent_supporting_sources": 4,
+      "confidence_score": 0.72,
+      "supporting_source_years": [
+        "2025",
+        "2025-26 season"
+      ],
+      "geography_of_evidence": [
+        "India"
+      ]
+    },
+    {
+      "id": "INT-016",
+      "category": "technical_projects",
+      "principle": "Data-analyst projects should show a full pipeline tied to a real decision",
+      "original_observation_paraphrased": "In r/analytics (2025), commenters suggested projects covering data collection to visualisation tied to a real problem and domain, and said hiring managers want decisions influenced rather than tool lists; overly complex notebooks without a story fall flat. In r/developersIndia (2025), reviewers asked a DA fresher to describe the impact of each project.",
+      "actionable_rule": "Describe the business question, data source, analysis method and the insight or decision produced.",
+      "agent_instruction": "Generation Agent (Data Analyst): structure bullets as question -> method (SQL/Python/BI) -> insight/decision. Ask the candidate for the concrete insight if missing.",
+      "rationale": "Analyst value is in decisions, not tool usage.",
+      "applicable_job_roles": [
+        "Data Analyst",
+        "Data Science"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Analytics/dashboard projects.",
+      "exceptions": "Portfolio links are rarely opened per some reviewers (CON-003).",
+      "common_mistakes": [
+        "'Created dashboards using Power BI' with no question or insight"
+      ],
+      "supporting_source_ids": [
+        "SRC-033",
+        "SRC-032"
+      ],
+      "evidence_strength": "Low",
+      "retrieval_tags": [
+        "data-analyst",
+        "projects",
+        "impact"
+      ],
+      "independent_supporting_sources": 2,
+      "confidence_score": 0.44,
+      "supporting_source_years": [
+        "2025"
+      ],
+      "geography_of_evidence": [
+        "India",
+        "International"
+      ]
+    },
+    {
+      "id": "INT-017",
+      "category": "technical_projects",
+      "principle": "Keep public profiles consistent with resume claims",
+      "original_observation_paraphrased": "The ex-Meta HC chair says an inactive GitHub can hurt and only documented, tested, deployed repos help. Dice (Nov 2026) reports recruiters/AI tools compare resumes with repositories, commit histories and READMEs and treat mismatches as credibility problems. Gauntlet AI's CTO checks whether candidates can explain the project's file structure.",
+      "actionable_rule": "Link only repositories that are current and support the resume's claims.",
+      "agent_instruction": "Resume Evaluation Agent: if a GitHub/portfolio link is supplied, flag projects whose claims (tech, scale) cannot be checked against it; ask the candidate to confirm. Never add links the candidate did not provide.",
+      "rationale": "Cross-checking is growing as AI-written resumes reduce trust.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Resumes that include GitHub/portfolio links.",
+      "exceptions": "Private/confidential internship code cannot be linked; describe it in general terms.",
+      "common_mistakes": [
+        "Linking a GitHub with only forked repos",
+        "README missing for the flagship project"
+      ],
+      "supporting_source_ids": [
+        "SRC-006",
+        "SRC-010",
+        "SRC-009"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "github",
+        "portfolio",
+        "consistency"
+      ],
+      "independent_supporting_sources": 3,
+      "confidence_score": 0.68,
+      "supporting_source_years": [
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-018",
+      "category": "bullet_writing",
+      "principle": "Lead with the result, then the method (XYZ structure)",
+      "original_observation_paraphrased": "The ex-Meta HC chair advises leading with the result and then naming the technology or approach. r/EngineeringResumes reviewers (2024) told a new grad to use XYZ format and move impact to the front. Amazon recruiters reframe duties as measured outcomes. UMD's bullet formula asks what, how (tools), how much and impact.",
+      "actionable_rule": "Write bullets as: accomplished [X], measured by [Y], by doing [Z] using [tech]; put the result or scope near the start.",
+      "agent_instruction": "Resume Generation Agent: template = action verb + what was built/changed + how (key tech/decision) + verified result/scope. If no verified result, end with scope (data size, users, components) instead.",
+      "rationale": "Front-loaded results survive a seconds-long scan.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)",
+        "experienced"
+      ],
+      "conditions": "All bullets.",
+      "exceptions": "Research bullets may lead with the question or method when the result is pending.",
+      "common_mistakes": [
+        "Technology-first bullets ('Used React, Node, MongoDB to...')",
+        "Results buried at the end of a 3-line bullet"
+      ],
+      "supporting_source_ids": [
+        "SRC-006",
+        "SRC-043",
+        "SRC-040",
+        "SRC-034"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "bullets",
+        "xyz",
+        "structure"
+      ],
+      "independent_supporting_sources": 4,
+      "confidence_score": 0.92,
+      "supporting_source_years": [
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "India/Global (Amazon)",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-019",
+      "category": "bullet_writing",
+      "principle": "Quantify scope and impact only with verifiable numbers",
+      "original_observation_paraphrased": "The ex-Meta HC chair argues numbers (users, latency, timelines, team counts) signal difficulty. A 2026 reviewer accepts estimates if labelled as estimates. r/EngineeringResumes reviewers questioned an unclear '3x more bugs' claim and a '30% more page views' claim as hard to attribute. Swizec Teller asks for concrete scope rather than vague phrasing.",
+      "actionable_rule": "Use numbers the candidate can source or explain (measured, logged, or clearly labelled estimates); use scope numbers (dataset size, endpoints, users, team size) when impact numbers do not exist.",
+      "agent_instruction": "Resume Generation Agent: never create a number. Ask for metrics with a prompt (before/after values, how measured). If unknown, use non-numeric specificity or scope counts the candidate confirms, and mark estimates as '~' only if the candidate supplies the estimate.",
+      "rationale": "Numbers increase credibility only when they can be defended; fabricated or unattributable metrics invite scrutiny.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)",
+        "experienced"
+      ],
+      "conditions": "Bullets where measurement exists.",
+      "exceptions": "Academic projects often lack production metrics; model metrics vs baseline or data scale are acceptable substitutes.",
+      "common_mistakes": [
+        "Round-number improvements with no baseline ('improved performance by 30%')",
+        "Attributing business metrics to a change the candidate cannot isolate"
+      ],
+      "supporting_source_ids": [
+        "SRC-006",
+        "SRC-011",
+        "SRC-043",
+        "SRC-007"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "metrics",
+        "quantification",
+        "bullets",
+        "defensibility"
+      ],
+      "independent_supporting_sources": 4,
+      "confidence_score": 0.92,
+      "supporting_source_years": [
+        "2024",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-020",
+      "category": "bullet_writing",
+      "principle": "Match described scope to the candidate's level",
+      "original_observation_paraphrased": "A 2026 reviewer says mismatched scope (mid-level work described as staff-level) reduces credibility. Swizec Teller says individual contributors should show what they built and how. Pragmatic Engineer (2026) reports managers seeing high-quality CVs whose owners lacked the claimed depth.",
+      "actionable_rule": "Describe fresher work at fresher scope: features, modules, analyses and experiments owned, not organisation-wide transformation.",
+      "agent_instruction": "Generation Agent: avoid verbs like 'led', 'architected', 'spearheaded' unless the candidate confirms leading people or owning the overall design. Evaluation Agent: flag scope inflation.",
+      "rationale": "Overstated scope is easy to expose in interviews and lowers trust in the whole resume.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "All bullets.",
+      "exceptions": "Genuine leadership (club lead, hackathon team lead) can be stated with its real scope.",
+      "common_mistakes": [
+        "'Architected company-wide microservices platform' for an intern task"
+      ],
+      "supporting_source_ids": [
+        "SRC-011",
+        "SRC-007",
+        "SRC-001"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "scope",
+        "inflation",
+        "bullets"
+      ],
+      "independent_supporting_sources": 3,
+      "confidence_score": 0.68,
+      "supporting_source_years": [
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "International (US, UK, EU respondents)",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-021",
+      "category": "bullet_writing",
+      "principle": "Keep bullets short and the strongest bullet first",
+      "original_observation_paraphrased": "r/EngineeringResumes reviewers (2024) suggested roughly one bullet per month of internship (max ~6) and cut generic bullets like 'updated documentation' and 'worked in a team'. UMD advises 1-2 lines per bullet. The ex-Meta HC chair says to put the strongest bullet first in each role. JHU suggests 2-3 bullets per research position.",
+      "actionable_rule": "Use 1-2 line bullets, 2-4 per internship/project, ordered by relevance and strength.",
+      "agent_instruction": "Generation Agent: cap bullet length at ~2 lines; order bullets by relevance to target role; remove generic teamwork/documentation bullets unless they show a specific outcome.",
+      "rationale": "Short, prioritised bullets fit fast scans and leave depth for interviews.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "One-page fresher resumes.",
+      "exceptions": "Research CVs and longer academic CVs follow different length norms.",
+      "common_mistakes": [
+        "Five bullets for a 2-month internship",
+        "Paragraph-style bullets"
+      ],
+      "supporting_source_ids": [
+        "SRC-043",
+        "SRC-034",
+        "SRC-006",
+        "SRC-042"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "bullets",
+        "length",
+        "ordering"
+      ],
+      "independent_supporting_sources": 4,
+      "confidence_score": 0.72,
+      "supporting_source_years": [
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-022",
+      "category": "bullet_writing",
+      "principle": "Replace vague verbs and adjectives with specific actions",
+      "original_observation_paraphrased": "UMD Engineering warns against buzzwords or adjectives without evidence and subjective claims about learning. The ex-Meta HC chair lists buzzword-heavy summaries among rejection causes. Reviewers flagged generic bullets ('worked in a team').",
+      "actionable_rule": "Use specific past-tense verbs (implemented, designed, profiled, reduced, migrated) and remove unsupported adjectives (innovative, robust, cutting-edge).",
+      "agent_instruction": "Generation Agent: maintain a banned/flagged list (passionate, innovative, robust, leveraged, synergy, cutting-edge, various) and avoid them unless backed by evidence in the same bullet.",
+      "rationale": "Generic language is a marker of low-information and AI-generated text.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)",
+        "experienced"
+      ],
+      "conditions": "All text.",
+      "exceptions": "None.",
+      "common_mistakes": [
+        "'Leveraged cutting-edge AI to deliver robust solutions'"
+      ],
+      "supporting_source_ids": [
+        "SRC-034",
+        "SRC-006",
+        "SRC-043",
+        "SRC-001"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "language",
+        "verbs",
+        "ai-generated",
+        "bullets"
+      ],
+      "independent_supporting_sources": 4,
+      "confidence_score": 0.92,
+      "supporting_source_years": [
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "International (US, UK, EU respondents)",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-023",
+      "category": "bullet_writing",
+      "principle": "Write each bullet as if it will be questioned",
+      "original_observation_paraphrased": "The ex-Meta HC chair: write every bullet as if an interviewer will ask about it, because they will. A Goldman Sachs selectee (IITK 2025-26): be ready to explain every single point on the resume. Meesho selectee: never mislead the interviewer.",
+      "actionable_rule": "Only include statements the candidate can explain in detail, including the why behind each decision.",
+      "agent_instruction": "Generation Agent: for each generated bullet, store a 'defence note' (what was done, why, how measured) from candidate input; drop bullets without one. Evaluation Agent: generate 2-3 likely interview questions per bullet for the candidate.",
+      "rationale": "Resume-based interview rounds are standard in Indian campus processes.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)",
+        "experienced"
+      ],
+      "conditions": "All bullets.",
+      "exceptions": "None.",
+      "common_mistakes": [
+        "Accepting AI-suggested phrasing the candidate cannot explain"
+      ],
+      "supporting_source_ids": [
+        "SRC-006",
+        "SRC-018",
+        "SRC-016",
+        "SRC-037"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "defensibility",
+        "bullets",
+        "interview"
+      ],
+      "independent_supporting_sources": 4,
+      "confidence_score": 0.92,
+      "supporting_source_years": [
+        "2024",
+        "2025-26 season",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "India",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-024",
+      "category": "bullet_writing",
+      "principle": "Keep the skills list and bullets consistent",
+      "original_observation_paraphrased": "r/EngineeringResumes reviewers (2024) flagged C# appearing in bullets but C in skills, and tools used in bullets (Firestore, MySQL) missing from the skills list. The ex-Meta HC chair treats the skills section as a keyword index; UMD advises including only relevant skills, which reviewers expected to be visible in experience.",
+      "actionable_rule": "Every skill listed should appear in at least one bullet, and every key technology in bullets should appear in the skills section.",
+      "agent_instruction": "Evaluation Agent: cross-check skills section vs technologies mentioned in bullets and report mismatches.",
+      "rationale": "Consistency supports both keyword search and credibility.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "All resumes.",
+      "exceptions": "Widely assumed basics (e.g., Git) may appear only in skills.",
+      "common_mistakes": [
+        "Skill listed but never used anywhere",
+        "Wrong technology names"
+      ],
+      "supporting_source_ids": [
+        "SRC-043",
+        "SRC-006",
+        "SRC-034"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "skills",
+        "consistency",
+        "keywords"
+      ],
+      "independent_supporting_sources": 3,
+      "confidence_score": 0.68,
+      "supporting_source_years": [
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-025",
+      "category": "internships_experience",
+      "principle": "Describe internship work as what, how and impact",
+      "original_observation_paraphrased": "Meesho SDE selectee (IITK 2025-26): Round 2 was a deep-dive into the Amazon internship covering what he did, how he did it and what the impact was, and he was asked what feedback the internship company gave. Goldman Sachs selectee: rounds covered projects and the tech stack used. NACE: internships decide close calls.",
+      "actionable_rule": "For each internship, document the problem, the system/codebase touched, the candidate's own changes, the technical approach and the measurable or observable result.",
+      "agent_instruction": "Experience Analysis Agent: interview the candidate with structured questions (team/product, problem, own changes, stack, how tested, result, feedback). Generation Agent: produce 2-4 bullets from those answers only.",
+      "rationale": "Interviewers test internships in depth; specific internship bullets are both screening and interview assets.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Internships, PPO conversions, research internships.",
+      "exceptions": "Confidential projects: describe technology and approach in general terms without restricted details.",
+      "common_mistakes": [
+        "'Worked on backend services at X'",
+        "Inability to describe impact or feedback"
+      ],
+      "supporting_source_ids": [
+        "SRC-016",
+        "SRC-018",
+        "SRC-004"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "internship",
+        "deep-dive",
+        "bullets"
+      ],
+      "independent_supporting_sources": 3,
+      "confidence_score": 0.88,
+      "supporting_source_years": [
+        "2025-26 season",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "India",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-026",
+      "category": "internships_experience",
+      "principle": "Present research and theses with lab, method, contribution and output",
+      "original_observation_paraphrased": "JHU (2024) advises listing research positions with mentor and lab, 2-3 bullets on what was done, tools and impact, publications in citation format with the candidate's name bolded and submitted papers labelled as such. Microsoft India interviewers asked about image processing tied to an M.Tech candidate's thesis (IITK 2024); the 2025-26 Microsoft DS selectee spent ~10 minutes explaining his thesis under step-by-step questioning.",
+      "actionable_rule": "Treat research as experience: lab/advisor, question, method, own contribution, result; list publications correctly and label status (published, accepted, submitted).",
+      "agent_instruction": "Experience Analysis Agent: ask for advisor/lab, research question, own contribution vs group, methods, results and publication status. Generation Agent: never mark a paper as published/accepted unless the candidate confirms; preserve author order.",
+      "rationale": "Research is probed as deeply as internships and status misrepresentation is verifiable.",
+      "applicable_job_roles": [
+        "AI/ML",
+        "Data Science",
+        "SDE"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Theses, research internships, publications.",
+      "exceptions": "Industry SDE roles may value research mainly for the engineering it demonstrates.",
+      "common_mistakes": [
+        "Listing a submitted paper as 'published'",
+        "Omitting co-authors"
+      ],
+      "supporting_source_ids": [
+        "SRC-042",
+        "SRC-039",
+        "SRC-015"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "research",
+        "publications",
+        "thesis"
+      ],
+      "independent_supporting_sources": 3,
+      "confidence_score": 0.68,
+      "supporting_source_years": [
+        "2024",
+        "2025-26 season"
+      ],
+      "geography_of_evidence": [
+        "India",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-027",
+      "category": "internships_experience",
+      "principle": "With limited experience, treat substantial academic projects like jobs",
+      "original_observation_paraphrased": "UMD Engineering advises treating class projects like jobs: state role, contribution, tools and results. r/EngineeringResumes' 2024-2026 success index includes posts reporting first tech jobs or graduate offers without internships. A Sprinklr selectee (IITK 2024) said internships are not required and that skills and achievements can offset CPI/department.",
+      "actionable_rule": "When there is no internship, lead with the strongest projects, competitions or research, written with the same rigour as work experience.",
+      "agent_instruction": "Strategy Agent: if no internships, order Education > Projects > (Research/Achievements) > Skills, and allocate more bullets to the top 2 projects.",
+      "rationale": "Evidence of real work can come from non-employment contexts.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Candidates with no internship.",
+      "exceptions": "Do not label course or personal projects as 'internships' or 'experience' at a company.",
+      "common_mistakes": [
+        "Mislabelling a course project as industry experience",
+        "Leaving the page half empty instead of developing projects"
+      ],
+      "supporting_source_ids": [
+        "SRC-034",
+        "SRC-037",
+        "SRC-013"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "no-internship",
+        "projects",
+        "ordering"
+      ],
+      "independent_supporting_sources": 3,
+      "confidence_score": 0.68,
+      "supporting_source_years": [
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "India",
+        "Mostly US/Canada; some India-origin international students",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-028",
+      "category": "technical_skills",
+      "principle": "List only skills you can discuss in depth",
+      "original_observation_paraphrased": "The ex-Meta HC chair: list only what you can discuss in depth because interviewers may probe anything listed. Sprinklr selectee (IITK 2024) declined an SQL question because he lacked experience and advised saying so plainly. Roku MLE intern selectee: do not throw big or complex concepts without knowing them. Meesho selectee: do not put projects you cannot defend.",
+      "actionable_rule": "Exclude technologies used only briefly or in tutorials; keep those the candidate can answer questions about.",
+      "agent_instruction": "Experience Analysis Agent: ask the candidate to rate each technology (used in a project / can explain internals / only followed a tutorial). Generation Agent: include only the first two levels.",
+      "rationale": "Interviewers probe listed skills; bluffing costs more than omission.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)",
+        "experienced"
+      ],
+      "conditions": "Skills sections and bullets.",
+      "exceptions": "None.",
+      "common_mistakes": [
+        "Listing 15+ frameworks",
+        "Listing a language studied once in first year"
+      ],
+      "supporting_source_ids": [
+        "SRC-006",
+        "SRC-037",
+        "SRC-020",
+        "SRC-016"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "skills",
+        "defensibility",
+        "honesty"
+      ],
+      "independent_supporting_sources": 4,
+      "confidence_score": 0.92,
+      "supporting_source_years": [
+        "2024",
+        "2025-26 season",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "India",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-029",
+      "category": "technical_skills",
+      "principle": "Keyword-stuffing trendy AI terms now reads as a negative signal",
+      "original_observation_paraphrased": "Pragmatic Engineer (2026): a UK head of engineering described candidates listing RAG, evals and inference with little depth; a Berlin manager said 'CVs are high-quality, but the people behind them are not'. Pragmatic Engineer (2025): an Indian startup hiring manager closed inbound postings due to AI-tailored resumes claiming qualifications candidates lacked. Gauntlet AI's CTO estimated 88% of applications to one posting looked AI-generated with keywords matching the JD too precisely. Enhancv's recruiters found tailoring useful only without obvious stuffing.",
+      "actionable_rule": "Include a keyword only where a concrete experience demonstrates it; never insert JD terms that the candidate has not used.",
+      "agent_instruction": "Resume Generation Agent: a JD keyword may be inserted only if mapped to a verified experience; otherwise list it as a 'gap' for the candidate. Evaluation Agent: flag high keyword density without supporting detail.",
+      "rationale": "Hiring managers across US, UK, EU and India report AI keyword mirroring as a trust-destroying pattern.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)",
+        "experienced"
+      ],
+      "conditions": "JD tailoring, especially AI/LLM roles.",
+      "exceptions": "None.",
+      "common_mistakes": [
+        "Copying the JD's tech list into Skills",
+        "Adding 'Agentic AI, RAG, LLMOps' after one tutorial"
+      ],
+      "supporting_source_ids": [
+        "SRC-001",
+        "SRC-027",
+        "SRC-009",
+        "SRC-029"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "keywords",
+        "ai-generated",
+        "stuffing",
+        "jd-alignment"
+      ],
+      "independent_supporting_sources": 3,
+      "confidence_score": 0.88,
+      "supporting_source_years": [
+        "2025",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "International (US, UK, EU respondents)",
+        "International (US, UK, EU, India respondents)",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-030",
+      "category": "technical_skills",
+      "principle": "Group skills by category and order by relevance",
+      "original_observation_paraphrased": "UMD Engineering groups skills by category and includes only relevant ones, excluding soft skills. JHU suggests labelled categories on separate lines. r/EngineeringResumes reviewers (2024) said IDEs are not skills and libraries should not be labelled frameworks, and to trim the list to the most relevant items.",
+      "actionable_rule": "Use 3-5 labelled lines (e.g., Languages; Frameworks/Libraries; Databases; Tools/Cloud; ML) with the most role-relevant items first; omit soft skills and IDEs.",
+      "agent_instruction": "Generation Agent: build categorised skill lines from verified skills, ordered by target-role relevance; correct technology names/capitalisation.",
+      "rationale": "Scannable structure helps both keyword search and human reading.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Skills section.",
+      "exceptions": "UMD shows optional proficiency labels ('Proficient', 'Exposure'); use only if the candidate wants and they are honest.",
+      "common_mistakes": [
+        "'Soft skills: leadership, teamwork'",
+        "'VS Code, GitHub' as core skills"
+      ],
+      "supporting_source_ids": [
+        "SRC-034",
+        "SRC-042",
+        "SRC-043"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "skills",
+        "format",
+        "categories"
+      ],
+      "independent_supporting_sources": 3,
+      "confidence_score": 0.68,
+      "supporting_source_years": [
+        "2024",
+        "2025"
+      ],
+      "geography_of_evidence": [
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-031",
+      "category": "technical_skills",
+      "principle": "Role expectations in Indian fresher hiring (SDE vs DS/ML vs Analyst)",
+      "original_observation_paraphrased": "IITK 2025-26 selectees report: SDE interviews test DSA, OOP, DBMS and project/internship follow-ups (Meesho, Goldman Sachs, Intuit, Atlassian with OOP code structuring); DS/ML interviews test SQL, statistics, ML maths and Transformers (Microsoft DS, Fractal AI, Skan.AI), and JPMC DS still required an SDE/DSA threshold; Product/analyst roles tested SQL, guesstimates and root-cause analysis. The Meesho selectee noted more DS/ML roles than SDE roles for the 2026 batch.",
+      "actionable_rule": "Align the skills section and project emphasis with the role family's tested areas; for DS/ML include SQL and statistics evidence, not only model libraries.",
+      "agent_instruction": "Resume Strategy Agent: load role profile -> SDE: DSA/competitive programming achievements, OOP language, DBMS, backend projects; DS/ML: SQL, Python ML stack, statistics, ML projects with metrics; Analyst: SQL, BI, business problems. Ask for missing evidence (e.g., SQL usage) instead of asserting it.",
+      "rationale": "Repeated across multiple independent selectees in the same 2025-26 season.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Indian campus/early-career hiring.",
+      "exceptions": "Specialised roles (e.g., Apple low-level C++, hardware verification) have their own emphasis.",
+      "common_mistakes": [
+        "DS resume with no SQL evidence",
+        "SDE resume with no data structures/algorithms signal"
+      ],
+      "supporting_source_ids": [
+        "SRC-016",
+        "SRC-018",
+        "SRC-021",
+        "SRC-017",
+        "SRC-015",
+        "SRC-019",
+        "SRC-023"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "role-profile",
+        "india",
+        "sde",
+        "data-science",
+        "ai-ml",
+        "data-analyst"
+      ],
+      "independent_supporting_sources": 7,
+      "confidence_score": 0.95,
+      "supporting_source_years": [
+        "2025-26 season"
+      ],
+      "geography_of_evidence": [
+        "India"
+      ]
+    },
+    {
+      "id": "INT-032",
+      "category": "technical_skills",
+      "principle": "Competitive programming and DSA achievements matter for SDE shortlists in India",
+      "original_observation_paraphrased": "Google SWE UG 2026 and Google SWE intern selectees (IITK 2025-26) report OA plus DSA-only interviews at LeetCode medium-hard level; the UG selectee credits early competitive programming. Zepto and NVIDIA intern processes (per an Atlassian intern selectee) focused on DSA. A HashedIn campus OA filtered ~400 candidates to 40.",
+      "actionable_rule": "For SDE candidates, include verifiable coding achievements (contest ratings/ranks, ICPC/Codeforces/LeetCode milestones) if the candidate has them.",
+      "agent_instruction": "Experience Analysis Agent (SDE): ask about contest ratings, ranks, ICPC participation. Generation Agent: include with platform and exact rating/rank as supplied; never estimate.",
+      "rationale": "Coding ability is the primary filter in many Indian SDE pipelines; achievements give a resume-level proxy.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "SDE roles at product companies.",
+      "exceptions": "Ratings without context (e.g., very low ratings) may not help; candidate decides.",
+      "common_mistakes": [
+        "Inflating ratings",
+        "Listing number of problems solved only"
+      ],
+      "supporting_source_ids": [
+        "SRC-024",
+        "SRC-025",
+        "SRC-017",
+        "SRC-031"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "dsa",
+        "competitive-programming",
+        "sde",
+        "india"
+      ],
+      "independent_supporting_sources": 4,
+      "confidence_score": 0.72,
+      "supporting_source_years": [
+        "2025",
+        "2025-26 season"
+      ],
+      "geography_of_evidence": [
+        "India"
+      ]
+    },
+    {
+      "id": "INT-033",
+      "category": "technical_skills",
+      "principle": "AI fluency is becoming a baseline expectation in India",
+      "original_observation_paraphrased": "TeamLease HY1 2026 lists AI fluency first among skills demanded of Indian freshers, alongside cloud/DevOps, cybersecurity and data intelligence. The Meesho selectee advised SDE candidates to keep ML fundamentals and Transformers ready because DS/ML roles outnumbered SDE roles. Gauntlet AI's CTO says interviewers ask how candidates verify AI-generated code.",
+      "actionable_rule": "Where the candidate genuinely uses AI tools or builds with AI, describe the concrete use and how outputs were verified; do not present tool usage as a headline skill.",
+      "agent_instruction": "Generation Agent: describe AI usage as part of engineering work (e.g., 'evaluated', 'integrated', 'tested') only when confirmed. Strategy Agent: for SDE candidates with ML coursework/projects, keep one ML-related item if relevant.",
+      "rationale": "Employers expect AI literacy but reward demonstrated application, not tool lists.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "India 2026 hiring market.",
+      "exceptions": "Roles with strict no-AI policies or core systems roles may not value this.",
+      "common_mistakes": [
+        "'Proficient in ChatGPT' as a skill"
+      ],
+      "supporting_source_ids": [
+        "SRC-005",
+        "SRC-016",
+        "SRC-009"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "ai-fluency",
+        "india",
+        "skills"
+      ],
+      "independent_supporting_sources": 3,
+      "confidence_score": 0.68,
+      "supporting_source_years": [
+        "2025-26 season",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "India",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-034",
+      "category": "jd_alignment",
+      "principle": "Mirror the JD's terminology for skills the candidate actually has",
+      "original_observation_paraphrased": "Amazon recruiters advise mirroring keywords and priorities in Basic and Preferred Qualifications. NACE notes 80%+ of employers list key skills in job descriptions and advises tying your skills to them. A 2026 reviewer says resumes using the role's terminology get callbacks. A 2025 r/developersIndia review advised mirroring JD keywords in skills and projects.",
+      "actionable_rule": "Use the employer's exact term for an existing skill (e.g., 'REST APIs' if the JD says so) and prioritise experiences matching required qualifications.",
+      "agent_instruction": "Resume Strategy Agent: parse JD into must-have and preferred skills; map each to verified experiences; rename equivalent terms to the JD's wording; reorder bullets to surface must-haves.",
+      "rationale": "Terminology alignment improves both keyword search and human matching.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)",
+        "experienced"
+      ],
+      "conditions": "Targeted applications.",
+      "exceptions": "Do not mirror terms with no matching experience (INT-029).",
+      "common_mistakes": [
+        "Using internal jargon instead of standard terms",
+        "Ignoring preferred qualifications the candidate does meet"
+      ],
+      "supporting_source_ids": [
+        "SRC-040",
+        "SRC-003",
+        "SRC-011",
+        "SRC-032",
+        "SRC-034"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "jd-alignment",
+        "keywords",
+        "tailoring"
+      ],
+      "independent_supporting_sources": 5,
+      "confidence_score": 0.95,
+      "supporting_source_years": [
+        "2024",
+        "2025",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "India",
+        "India/Global (Amazon)",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-035",
+      "category": "jd_alignment",
+      "principle": "Tailor through evidence selection, not generic rewriting",
+      "original_observation_paraphrased": "Galdin & Silbert (2025) found that after LLMs, employers on Freelancer.com stopped paying a premium for applications tailored to the posting, and in their model top-ability workers are hired 19% less often. Pragmatic Engineer (2026): managers say AI-generated generic resumes and cover letters are uninformative. Pragmatic Engineer (2025): several managers said resumes look AI-tailored to mirror listings.",
+      "actionable_rule": "Make tailoring visible through which real experiences, details and results are chosen for the role, rather than through rephrased generic text.",
+      "agent_instruction": "Resume Strategy Agent: tailor by (1) selecting the most relevant verified experiences, (2) surfacing role-specific technical details and results, (3) using JD terminology for existing skills. Avoid producing near-identical text across applications that only swaps keywords.",
+      "rationale": "When text is cheap, specific verifiable detail is what still carries signal.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)",
+        "experienced"
+      ],
+      "conditions": "All tailored applications.",
+      "exceptions": "Evidence is from freelance markets and anecdotal manager reports; magnitude in campus hiring is unknown.",
+      "common_mistakes": [
+        "Auto-rewriting every bullet to echo the JD",
+        "Generic AI summaries"
+      ],
+      "supporting_source_ids": [
+        "SRC-028",
+        "SRC-001",
+        "SRC-027"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "tailoring",
+        "ai-generated",
+        "signal"
+      ],
+      "independent_supporting_sources": 2,
+      "confidence_score": 0.84,
+      "supporting_source_years": [
+        "2025",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "International (US, UK, EU respondents)",
+        "International (US, UK, EU, India respondents)",
+        "International (online freelance platform)"
+      ]
+    },
+    {
+      "id": "INT-036",
+      "category": "jd_alignment",
+      "principle": "Maintain a master resume and derive role-specific versions",
+      "original_observation_paraphrased": "r/EngineeringResumes reviewers (2024) recommended a master resume with all experience and a tailored version per posting. JHU advises keeping full history in a master document. UMD advises putting the most relevant experience near the top and saving details for interviews.",
+      "actionable_rule": "Keep a complete, verified experience record; generate one-page variants per role family.",
+      "agent_instruction": "Experience Analysis Agent: store all verified experiences with structured fields in a master profile. Strategy Agent: produce variants from it; never write content into a variant that is not in the master profile.",
+      "rationale": "Separates truthful data collection from per-role presentation.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Candidates applying to more than one role family.",
+      "exceptions": "None.",
+      "common_mistakes": [
+        "Editing old variants and losing facts"
+      ],
+      "supporting_source_ids": [
+        "SRC-043",
+        "SRC-042",
+        "SRC-034"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "master-resume",
+        "tailoring",
+        "workflow"
+      ],
+      "independent_supporting_sources": 3,
+      "confidence_score": 0.68,
+      "supporting_source_years": [
+        "2024",
+        "2025"
+      ],
+      "geography_of_evidence": [
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-037",
+      "category": "jd_alignment",
+      "principle": "Separate must-haves from wish-list items in a JD",
+      "original_observation_paraphrased": "In r/cscareerquestions (2025) a self-identified hiring manager noted that few candidates meet every listed requirement and well-written postings separate must-haves from extras.",
+      "actionable_rule": "Prioritise matching must-have qualifications; do not treat missing nice-to-haves as disqualifying.",
+      "agent_instruction": "Strategy Agent: classify JD items into required vs preferred; show the candidate which required items lack evidence and ask about them.",
+      "rationale": "Avoids both over-claiming and self-rejection.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "JD analysis.",
+      "exceptions": "Hard filters (degree, year of graduation, location, CGPA) are non-negotiable.",
+      "common_mistakes": [
+        "Stuffing every JD item into the resume"
+      ],
+      "supporting_source_ids": [
+        "SRC-030",
+        "SRC-040"
+      ],
+      "evidence_strength": "Low",
+      "retrieval_tags": [
+        "jd-alignment",
+        "requirements"
+      ],
+      "independent_supporting_sources": 2,
+      "confidence_score": 0.44,
+      "supporting_source_years": [
+        "2024",
+        "2025"
+      ],
+      "geography_of_evidence": [
+        "India/Global (Amazon)",
+        "United States (mostly)"
+      ]
+    },
+    {
+      "id": "INT-038",
+      "category": "interview_defensibility",
+      "principle": "Interviewers verify claims with technical follow-ups",
+      "original_observation_paraphrased": "Pragmatic Engineer (2026): managers verify claims by asking for technical specifics; a 'cloud architect' answered with standups and sprint planning. Eugene Yan: vague answers, rambling and weak data literacy indicate shallow understanding. Dice (2026): AI screening interviews ask follow-ups to verify claimed skills. The Microsoft DS interviewer interrupted a thesis explanation at multiple points to ask intuition.",
+      "actionable_rule": "Each claim should be backed by technical detail the candidate can produce on demand (why this design, how it works, what failed).",
+      "agent_instruction": "Evaluation Agent: for every bullet, produce likely follow-up questions and check the candidate's stored defence notes can answer them; flag bullets the candidate cannot support.",
+      "rationale": "Verification by follow-up questions is the common mechanism across US, EU and Indian interviews.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)",
+        "experienced"
+      ],
+      "conditions": "All resumes going to interview.",
+      "exceptions": "None.",
+      "common_mistakes": [
+        "Process vocabulary instead of technical depth",
+        "Memorised definitions without project grounding"
+      ],
+      "supporting_source_ids": [
+        "SRC-001",
+        "SRC-041",
+        "SRC-010",
+        "SRC-015"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "defensibility",
+        "verification",
+        "interview"
+      ],
+      "independent_supporting_sources": 4,
+      "confidence_score": 0.92,
+      "supporting_source_years": [
+        "2024",
+        "2025-26 season",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "India",
+        "International",
+        "International (US, UK, EU respondents)",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-039",
+      "category": "interview_defensibility",
+      "principle": "Honesty about gaps beats bluffing; misleading answers are penalised",
+      "original_observation_paraphrased": "Sprinklr selectee (IITK 2024): if asked about something you lack experience in, say so plainly. Skan.AI DS intern selectee: misleading answers create a bad impression. Meesho selectee: never attempt to mislead the interviewer. Roku MLE intern selectee: never cheat in a virtual interview; you will likely be caught. Pragmatic Engineer (2026) reports interviewers detecting AI-assisted answers and proxy candidates.",
+      "actionable_rule": "Never add content the candidate cannot honestly support; prepare the candidate to acknowledge gaps.",
+      "agent_instruction": "All agents: hard constraint - no invented achievements, metrics, technologies, roles or outcomes. Evaluation Agent: list any statement whose source is not candidate-verified.",
+      "rationale": "Repeated by multiple independent Indian selectees and international managers.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)",
+        "experienced"
+      ],
+      "conditions": "Always.",
+      "exceptions": "None.",
+      "common_mistakes": [
+        "Embellishing to match JD",
+        "Claiming team results as personal"
+      ],
+      "supporting_source_ids": [
+        "SRC-037",
+        "SRC-023",
+        "SRC-016",
+        "SRC-020",
+        "SRC-001"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "honesty",
+        "defensibility",
+        "guardrail"
+      ],
+      "independent_supporting_sources": 5,
+      "confidence_score": 0.95,
+      "supporting_source_years": [
+        "2024",
+        "2025-26 season",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "India",
+        "International (US, UK, EU respondents)"
+      ]
+    },
+    {
+      "id": "INT-040",
+      "category": "interview_defensibility",
+      "principle": "Prepare a project brief and self-introduction from the resume",
+      "original_observation_paraphrased": "Microsoft DS selectee (IITK 2025-26) prepared notes per project covering data, model, training, metrics and design reasons. Meesho selectee scripted a self-introduction and concise project briefing. Google SWE intern selectee: list projects well before making the resume, include only projects you can explain, and have seniors verify it.",
+      "actionable_rule": "Alongside the resume, produce a talking-point brief per project/internship.",
+      "agent_instruction": "Resume Generation Agent: output an optional 'interview brief' per item (problem, approach, key decision, result, limitations) built only from candidate data.",
+      "rationale": "Resume rounds reward structured recall; the same data improves bullets.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Interview preparation.",
+      "exceptions": "None.",
+      "common_mistakes": [
+        "Unable to summarise a project in 60 seconds"
+      ],
+      "supporting_source_ids": [
+        "SRC-015",
+        "SRC-016",
+        "SRC-025"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "interview-prep",
+        "projects",
+        "self-introduction"
+      ],
+      "independent_supporting_sources": 3,
+      "confidence_score": 0.68,
+      "supporting_source_years": [
+        "2025-26 season"
+      ],
+      "geography_of_evidence": [
+        "India"
+      ]
+    },
+    {
+      "id": "INT-041",
+      "category": "interview_defensibility",
+      "principle": "Be able to explain AI-assisted code and how it was verified",
+      "original_observation_paraphrased": "Gauntlet AI's CTO: candidates should explain the project's file structure and how they verified AI-generated code (tests, acceptance criteria, review); not being able to explain the codebase is a red flag. Quicksell backend selectee (IITK 2025-26) had to run his project live and explain the code. A Roku MLE intern selectee advised using LLMs but always questioning their choices.",
+      "actionable_rule": "Projects built with AI assistance are acceptable only if the candidate understands and can demonstrate them.",
+      "agent_instruction": "Experience Analysis Agent: ask whether AI tools were used and what the candidate personally designed/verified; describe the candidate's own engineering. Evaluation Agent: flag projects the candidate cannot walk through.",
+      "rationale": "Live code walkthroughs make unexplained AI-generated projects a liability.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Projects built with coding assistants.",
+      "exceptions": "None.",
+      "common_mistakes": [
+        "Listing a generated app the candidate cannot run or explain"
+      ],
+      "supporting_source_ids": [
+        "SRC-009",
+        "SRC-022",
+        "SRC-020"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "ai-assisted-code",
+        "defensibility",
+        "projects"
+      ],
+      "independent_supporting_sources": 3,
+      "confidence_score": 0.68,
+      "supporting_source_years": [
+        "2025-26 season",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "India",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-042",
+      "category": "interview_defensibility",
+      "principle": "Expect identity and consistency checks to increase",
+      "original_observation_paraphrased": "Pragmatic Engineer (2025, 2026) reports fake and proxy candidates in remote hiring and interviewers detecting AI-fed answers. Dice (2026) reports earlier reference checks and cross-platform consistency checks between resume, LinkedIn and code profiles.",
+      "actionable_rule": "Keep resume, LinkedIn and portfolio facts consistent (dates, titles, projects).",
+      "agent_instruction": "Evaluation Agent: if the candidate provides LinkedIn/portfolio text, compare dates, titles and project names and report mismatches.",
+      "rationale": "Inconsistency increasingly triggers suspicion under fraud-aware screening.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)",
+        "experienced"
+      ],
+      "conditions": "Remote and off-campus applications.",
+      "exceptions": "On-campus processes with institutional verification are less affected.",
+      "common_mistakes": [
+        "Different internship dates on LinkedIn and resume"
+      ],
+      "supporting_source_ids": [
+        "SRC-001",
+        "SRC-027",
+        "SRC-010"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "consistency",
+        "fraud",
+        "verification"
+      ],
+      "independent_supporting_sources": 2,
+      "confidence_score": 0.64,
+      "supporting_source_years": [
+        "2025",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "International (US, UK, EU respondents)",
+        "International (US, UK, EU, India respondents)",
+        "United States"
+      ]
+    },
+    {
+      "id": "INT-043",
+      "category": "successful_candidate_patterns",
+      "principle": "Many Indian campus shortlists are decided by online assessments, not resumes",
+      "original_observation_paraphrased": "Sprinklr (IITK 2024) had no resume shortlist; candidates solving nearly all OA problems moved on. Meesho selectee (2025-26): the OA was the critical filter for interview shortlisting. Google SWE processes started with an OA. HashedIn (2025): 400+ took the OA and 40 advanced. Others (Glean 2024, Roku 2025-26, and A&M and Deutsche Bank per a Goldman Sachs selectee) used resume shortlists.",
+      "actionable_rule": "Treat the resume as both a shortlisting document (for resume-shortlisted roles) and an interview script (for OA-first roles).",
+      "agent_instruction": "Resume Strategy Agent: when the target process is OA-first, prioritise defensibility and interview depth; when resume-shortlisted, prioritise top-third signals and relevance.",
+      "rationale": "The resume's main function differs by process; agents should not overstate its role in OA-first funnels.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Indian campus processes.",
+      "exceptions": "Off-campus applications usually involve resume screening first.",
+      "common_mistakes": [
+        "Assuming resume polish compensates for weak OA preparation"
+      ],
+      "supporting_source_ids": [
+        "SRC-037",
+        "SRC-016",
+        "SRC-024",
+        "SRC-031",
+        "SRC-038",
+        "SRC-020",
+        "SRC-018"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "campus",
+        "process",
+        "india",
+        "oa"
+      ],
+      "independent_supporting_sources": 7,
+      "confidence_score": 0.84,
+      "supporting_source_years": [
+        "2024",
+        "2025",
+        "2025-26 season"
+      ],
+      "geography_of_evidence": [
+        "India"
+      ]
+    },
+    {
+      "id": "INT-044",
+      "category": "successful_candidate_patterns",
+      "principle": "Resume deep-dive rounds are standard in selected candidates' processes",
+      "original_observation_paraphrased": "Across 2025-26 IITK selectees: Goldman Sachs rounds covered projects, tech stack and resume; Meesho had an internship deep-dive; Intuit, SRIB, Skan.AI and Roku included project discussions; Quicksell required a live project demo; Deutsche Bank asked extensively about past projects and internships. The 2024 NVIDIA and Microsoft India selectees reported resume/thesis questioning.",
+      "actionable_rule": "Optimise every resume item for the follow-up conversation as well as the first scan.",
+      "agent_instruction": "Evaluation Agent: score each item on 'interview depth available' (candidate has defence notes) and recommend dropping items with low depth.",
+      "rationale": "This is the most frequent pattern across independent selected-candidate accounts.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Indian campus and early-career hiring.",
+      "exceptions": "Google SWE (2025-26) interviews were DSA-only.",
+      "common_mistakes": [
+        "Listing items copied from friends' or senior's resumes"
+      ],
+      "supporting_source_ids": [
+        "SRC-018",
+        "SRC-016",
+        "SRC-021",
+        "SRC-017",
+        "SRC-023",
+        "SRC-022",
+        "SRC-036",
+        "SRC-039"
+      ],
+      "evidence_strength": "High",
+      "retrieval_tags": [
+        "interview",
+        "resume-deep-dive",
+        "india",
+        "pattern"
+      ],
+      "independent_supporting_sources": 8,
+      "confidence_score": 0.95,
+      "supporting_source_years": [
+        "2024",
+        "2025-26 season"
+      ],
+      "geography_of_evidence": [
+        "India"
+      ]
+    },
+    {
+      "id": "INT-045",
+      "category": "successful_candidate_patterns",
+      "principle": "Selected candidates had seniors review their resumes and ran mock interviews",
+      "original_observation_paraphrased": "Fractal AI selectee: have seniors placed at target companies review CVs or run mocks. Goldman Sachs selectee: connect with seniors and schedule mock interviews. Google SWE intern selectee: have seniors verify the resume and check for mistakes.",
+      "actionable_rule": "Recommend human review of the final resume by someone familiar with the target role.",
+      "agent_instruction": "Evaluation Agent: after generation, suggest a review checklist the candidate can give a senior/mentor; do not present the AI evaluation as a substitute for human review.",
+      "rationale": "Repeated advice from selected candidates; it is advice, not proof of causation.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)"
+      ],
+      "conditions": "Final review stage.",
+      "exceptions": "None.",
+      "common_mistakes": [
+        "Submitting without any human review"
+      ],
+      "supporting_source_ids": [
+        "SRC-019",
+        "SRC-018",
+        "SRC-025"
+      ],
+      "evidence_strength": "Medium",
+      "retrieval_tags": [
+        "review",
+        "mentorship",
+        "pattern"
+      ],
+      "independent_supporting_sources": 3,
+      "confidence_score": 0.68,
+      "supporting_source_years": [
+        "2025-26 season"
+      ],
+      "geography_of_evidence": [
+        "India"
+      ]
+    },
+    {
+      "id": "INT-046",
+      "category": "successful_candidate_patterns",
+      "principle": "Resume rewrites are often followed by more interviews, but causation is unproven",
+      "original_observation_paraphrased": "r/EngineeringResumes' success index lists many 2024-2026 posts reporting more interviews or offers after resume rewrites, often alongside 100-1,000+ applications; one 2024 poster said the resume mattered less than expected. interviewing.io's study shows resume judgements are noisy and pedigree-driven.",
+      "actionable_rule": "Present resume improvements as increasing clarity and evidence, not as guaranteeing callbacks.",
+      "agent_instruction": "Evaluation Agent: report improvements in clarity, relevance, specificity and defensibility; never quote expected callback rates.",
+      "rationale": "Self-reported success stories cannot isolate the resume's effect from timing, volume or networking.",
+      "applicable_job_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML",
+        "Data Science",
+        "Data Analyst"
+      ],
+      "applicable_experience_levels": [
+        "student",
+        "intern",
+        "fresher (0-2 yrs)",
+        "experienced"
+      ],
+      "conditions": "Communicating evaluation results.",
+      "exceptions": "None.",
+      "common_mistakes": [
+        "Promising interview rates after edits"
+      ],
+      "supporting_source_ids": [
+        "SRC-013",
+        "SRC-035"
+      ],
+      "evidence_strength": "Low",
+      "retrieval_tags": [
+        "expectations",
+        "evaluation",
+        "pattern"
+      ],
+      "independent_supporting_sources": 2,
+      "confidence_score": 0.44,
+      "supporting_source_years": [
+        "2024",
+        "2026"
+      ],
+      "geography_of_evidence": [
+        "Mostly US/Canada; some India-origin international students",
+        "United States"
+      ]
+    }
+  ],
+  "cross_source_patterns": [
+    {
+      "id": "PAT-001",
+      "pattern": "Evidence beats assertion: employers and interviewers want concrete examples behind every skill and claim.",
+      "insight_ids": [
+        "INT-001",
+        "INT-004",
+        "INT-028",
+        "INT-034"
+      ],
+      "source_ids": [
+        "SRC-002",
+        "SRC-003",
+        "SRC-005",
+        "SRC-040",
+        "SRC-006",
+        "SRC-034"
+      ],
+      "geographies": [
+        "United States",
+        "India"
+      ],
+      "note": "Holds across US employer surveys, an Indian employer survey, official company guidance and a hiring-committee chair."
+    },
+    {
+      "id": "PAT-002",
+      "pattern": "Every resume item is interview material: selected candidates across companies report project, internship and thesis deep-dives.",
+      "insight_ids": [
+        "INT-011",
+        "INT-023",
+        "INT-025",
+        "INT-038",
+        "INT-044"
+      ],
+      "source_ids": [
+        "SRC-015",
+        "SRC-016",
+        "SRC-017",
+        "SRC-018",
+        "SRC-021",
+        "SRC-022",
+        "SRC-023",
+        "SRC-036",
+        "SRC-001",
+        "SRC-041"
+      ],
+      "geographies": [
+        "India",
+        "International"
+      ],
+      "note": "Most frequently repeated pattern in first-hand Indian 2025-26 accounts."
+    },
+    {
+      "id": "PAT-003",
+      "pattern": "AI-written, keyword-mirrored resumes have reduced trust in resume text; specificity, verification and consistency now carry the signal.",
+      "insight_ids": [
+        "INT-029",
+        "INT-035",
+        "INT-017",
+        "INT-042"
+      ],
+      "source_ids": [
+        "SRC-001",
+        "SRC-027",
+        "SRC-028",
+        "SRC-009",
+        "SRC-010"
+      ],
+      "geographies": [
+        "United States",
+        "United Kingdom",
+        "European Union",
+        "India"
+      ],
+      "note": "Backed by one empirical study (freelance market) plus many hiring-manager reports."
+    },
+    {
+      "id": "PAT-004",
+      "pattern": "Honesty about limits is rewarded; bluffing, misleading answers and interview cheating are penalised.",
+      "insight_ids": [
+        "INT-039",
+        "INT-028",
+        "INT-012"
+      ],
+      "source_ids": [
+        "SRC-037",
+        "SRC-023",
+        "SRC-016",
+        "SRC-020",
+        "SRC-001",
+        "SRC-041"
+      ],
+      "geographies": [
+        "India",
+        "International"
+      ],
+      "note": "Stated independently by four Indian selectees and international hiring managers."
+    },
+    {
+      "id": "PAT-005",
+      "pattern": "Internships and real work experience are the strongest fresher differentiators, but strong projects/research can substitute.",
+      "insight_ids": [
+        "INT-002",
+        "INT-025",
+        "INT-027"
+      ],
+      "source_ids": [
+        "SRC-004",
+        "SRC-016",
+        "SRC-005",
+        "SRC-037",
+        "SRC-013"
+      ],
+      "geographies": [
+        "United States",
+        "India"
+      ],
+      "note": "See CON-006 for the substitution nuance."
+    },
+    {
+      "id": "PAT-006",
+      "pattern": "Role-specific depth: SDE = DSA/OOP/DBMS + projects; DS/ML = SQL, statistics, ML maths, evaluation; LLM roles = evals and failure analysis; Analyst = SQL + business decisions.",
+      "insight_ids": [
+        "INT-031",
+        "INT-013",
+        "INT-014",
+        "INT-015",
+        "INT-016",
+        "INT-032"
+      ],
+      "source_ids": [
+        "SRC-016",
+        "SRC-015",
+        "SRC-019",
+        "SRC-023",
+        "SRC-017",
+        "SRC-008",
+        "SRC-009",
+        "SRC-041",
+        "SRC-033"
+      ],
+      "geographies": [
+        "India",
+        "International"
+      ],
+      "note": "Use for contextual retrieval by role."
+    },
+    {
+      "id": "PAT-007",
+      "pattern": "Simple, single-column, parser-friendly formatting with outcome-first bullets.",
+      "insight_ids": [
+        "INT-005",
+        "INT-018",
+        "INT-021"
+      ],
+      "source_ids": [
+        "SRC-006",
+        "SRC-034",
+        "SRC-040",
+        "SRC-043",
+        "SRC-010"
+      ],
+      "geographies": [
+        "United States",
+        "India/Global"
+      ],
+      "note": "Format guidance is consistent; the size of ATS auto-rejection is disputed (CON-001)."
+    }
+  ],
+  "conflicting_recommendations": [
+    {
+      "id": "CON-001",
+      "topic": "Do ATS systems auto-reject resumes?",
+      "position_a": {
+        "claim": "Most resumes are rejected by ATS before a human sees them (e.g., '75%'); formatting/keyword mismatch causes silent rejection.",
+        "source_ids": [
+          "SRC-014"
+        ],
+        "evidence": "Unsourced Reddit claim (Low)."
+      },
+      "position_b": {
+        "claim": "ATS rarely auto-rejects; 92% of 25 interviewed US recruiters said no auto-rejection on format/keywords; filters target compliance items; screening is largely manual.",
+        "source_ids": [
+          "SRC-029"
+        ],
+        "evidence": "Small vendor-run recruiter study (Medium)."
+      },
+      "common_ground": "Parsers can misread complex layouts (SRC-006, SRC-034, SRC-010) and recruiters search by keyword, so simple formatting and accurate terminology are worth it either way.",
+      "agent_guidance": "Recommend simple formats and JD terminology for real skills; do not justify keyword stuffing with ATS fear; do not claim specific auto-rejection rates."
+    },
+    {
+      "id": "CON-002",
+      "topic": "How much does GPA/CGPA matter?",
+      "position_a": {
+        "claim": "Indian campus processes use hard CGPA/percentage cut-offs (e.g., min 8.8 for an MS DS shortlist, ~9.3 recalled at Glean, 75% at HashedIn).",
+        "source_ids": [
+          "SRC-015",
+          "SRC-038",
+          "SRC-031",
+          "SRC-019"
+        ],
+        "evidence": "Multiple first-hand Indian accounts (Medium)."
+      },
+      "position_b": {
+        "claim": "US employers have sharply reduced reliance on GPA and moved to skills-based hiring; GPA 3.0+ ranks below internships, work experience and leadership as a tie-breaker.",
+        "source_ids": [
+          "SRC-003",
+          "SRC-004"
+        ],
+        "evidence": "NACE employer surveys (High)."
+      },
+      "common_ground": "Both apply, in different markets.",
+      "agent_guidance": "Condition on geography and process: include CGPA for Indian campus/drive applications; treat as optional for US/skills-based applications if the candidate prefers."
+    },
+    {
+      "id": "CON-003",
+      "topic": "Are portfolios/GitHub reviewed?",
+      "position_a": {
+        "claim": "GitHub/portfolios and deployed projects are high-signal, especially for new grads and AI engineers.",
+        "source_ids": [
+          "SRC-009",
+          "SRC-006",
+          "SRC-012"
+        ],
+        "evidence": "Hiring CTO and HC chair (Medium-High)."
+      },
+      "position_b": {
+        "claim": "Hiring managers rarely open portfolios given volume; the resume itself must carry impact (data analyst context). Some HN hirers would not penalise a missing portfolio.",
+        "source_ids": [
+          "SRC-033",
+          "SRC-012"
+        ],
+        "evidence": "Anonymous discussions (Low)."
+      },
+      "common_ground": "Links help only when the resume already makes the project's value clear and the repo is in good shape; an inactive profile can hurt.",
+      "agent_guidance": "Never rely on a link to carry information; put the key evidence in the bullet and add links only to well-maintained repos."
+    },
+    {
+      "id": "CON-004",
+      "topic": "Should resumes be tailored to each JD?",
+      "position_a": {
+        "claim": "Tailor to each role: mirror JD keywords and priorities.",
+        "source_ids": [
+          "SRC-040",
+          "SRC-034",
+          "SRC-011",
+          "SRC-029"
+        ],
+        "evidence": "Official recruiter guidance, university guidance (High)."
+      },
+      "position_b": {
+        "claim": "AI-tailored resumes that mirror listings are now distrusted, and on one platform tailoring stopped earning an employer premium after LLMs.",
+        "source_ids": [
+          "SRC-028",
+          "SRC-027",
+          "SRC-001"
+        ],
+        "evidence": "Empirical preprint plus manager reports (High)."
+      },
+      "common_ground": "Tailoring by choosing real relevant evidence still helps; cosmetic keyword mirroring does not.",
+      "agent_guidance": "Apply INT-034 and INT-035 together: rename and reorder real evidence; never add unsupported JD terms."
+    },
+    {
+      "id": "CON-005",
+      "topic": "Should every bullet be quantified?",
+      "position_a": {
+        "claim": "Quantify outcomes and scope; numbers signal difficulty.",
+        "source_ids": [
+          "SRC-006",
+          "SRC-040"
+        ],
+        "evidence": "HC chair, Amazon recruiters (High)."
+      },
+      "position_b": {
+        "claim": "Unclear or unattributable metrics are challenged; estimates must be labelled.",
+        "source_ids": [
+          "SRC-043",
+          "SRC-011"
+        ],
+        "evidence": "Peer reviewers and a reviewer (Low)."
+      },
+      "common_ground": "Quantify when the number is real and explainable; otherwise use concrete scope or qualitative specificity.",
+      "agent_guidance": "Never fabricate; ask for measurements; prefer honest scope numbers over invented impact percentages."
+    },
+    {
+      "id": "CON-006",
+      "topic": "Are internships necessary for freshers?",
+      "position_a": {
+        "claim": "Internships are the most influential tie-breaker between equal candidates.",
+        "source_ids": [
+          "SRC-004",
+          "SRC-016"
+        ],
+        "evidence": "NACE survey (High), Indian selectee (Medium)."
+      },
+      "position_b": {
+        "claim": "Internships are not required; skills and achievements can offset; many self-reported offers came without internships.",
+        "source_ids": [
+          "SRC-037",
+          "SRC-013"
+        ],
+        "evidence": "Indian selectee (Medium), self-reported index (Low)."
+      },
+      "common_ground": "Internships help most, but candidates without them can compete with deep projects, research and coding achievements.",
+      "agent_guidance": "Never imply an internship exists; for candidates without one, apply INT-027 and INT-009."
+    },
+    {
+      "id": "CON-007",
+      "topic": "Do referrals and networks matter more than resume quality?",
+      "position_a": {
+        "claim": "Referrals and networks are the most reliable route; inbound resumes are mostly noise.",
+        "source_ids": [
+          "SRC-001",
+          "SRC-027",
+          "SRC-011"
+        ],
+        "evidence": "Hiring managers (High)."
+      },
+      "position_b": {
+        "claim": "Referrals did not visibly help some strong engineers, and some managers treat inbound normally.",
+        "source_ids": [
+          "SRC-012",
+          "SRC-030"
+        ],
+        "evidence": "Anonymous discussions (Low)."
+      },
+      "common_ground": "Channel matters a lot in cold off-campus markets; the resume still has to hold up once seen.",
+      "agent_guidance": "Out of scope for resume text; Evaluation Agent may mention channel as context but must not promise outcomes."
+    }
+  ],
+  "agent_knowledge_mapping": {
+    "Experience Analysis Agent": {
+      "purpose": "Extract complete, verified facts from the candidate and identify valuable contributions and gaps.",
+      "insight_ids": [
+        "INT-001",
+        "INT-002",
+        "INT-009",
+        "INT-010",
+        "INT-011",
+        "INT-012",
+        "INT-013",
+        "INT-014",
+        "INT-015",
+        "INT-016",
+        "INT-019",
+        "INT-025",
+        "INT-026",
+        "INT-028",
+        "INT-032",
+        "INT-036",
+        "INT-041"
+      ],
+      "follow_up_question_bank": [
+        "What problem did this project/internship solve, and for whom?",
+        "Which part did you personally design or build? How big was the team?",
+        "What was the hardest technical problem, and how did you fix it?",
+        "What alternatives did you consider for the key design choice, and why did you reject them?",
+        "Is it deployed or used? By how many users or on how much data?",
+        "How did you measure the result? What was the baseline?",
+        "(ML) Dataset, split, metric, baseline, error analysis?",
+        "(LLM) How did you evaluate output quality? What failures did you find?",
+        "(Backend) Which database and why? Schema? APIs? Queues/caching?",
+        "Did you use AI coding tools? What did you verify and how?",
+        "Which technologies could you explain internals of, versus only having followed a tutorial?"
+      ]
+    },
+    "Resume Strategy Agent": {
+      "purpose": "Decide what to emphasise, order and tailor for the target role, geography and process.",
+      "insight_ids": [
+        "INT-002",
+        "INT-003",
+        "INT-006",
+        "INT-007",
+        "INT-009",
+        "INT-027",
+        "INT-031",
+        "INT-033",
+        "INT-034",
+        "INT-035",
+        "INT-036",
+        "INT-037",
+        "INT-043"
+      ],
+      "decision_inputs": [
+        "target_role_family",
+        "target_geography",
+        "process_type (campus OA-first / resume-shortlisted / off-campus)",
+        "JD must-haves vs preferred",
+        "verified experience inventory"
+      ]
+    },
+    "Resume Generation Agent": {
+      "purpose": "Write bullets and sections from verified facts.",
+      "insight_ids": [
+        "INT-004",
+        "INT-005",
+        "INT-012",
+        "INT-013",
+        "INT-014",
+        "INT-015",
+        "INT-016",
+        "INT-018",
+        "INT-019",
+        "INT-020",
+        "INT-021",
+        "INT-022",
+        "INT-023",
+        "INT-024",
+        "INT-026",
+        "INT-029",
+        "INT-030",
+        "INT-033",
+        "INT-040"
+      ],
+      "hard_constraints": [
+        "Never invent achievements, metrics, technologies, roles, publications or outcomes.",
+        "Every bullet must map to candidate-verified facts and carry a defence note.",
+        "Recruitment intelligence never overrides verified candidate information."
+      ]
+    },
+    "Resume Evaluation Agent": {
+      "purpose": "Assess credibility, relevance, technical depth and defensibility; generate likely interview questions.",
+      "insight_ids": [
+        "INT-004",
+        "INT-005",
+        "INT-006",
+        "INT-008",
+        "INT-017",
+        "INT-019",
+        "INT-020",
+        "INT-022",
+        "INT-023",
+        "INT-024",
+        "INT-028",
+        "INT-029",
+        "INT-038",
+        "INT-039",
+        "INT-042",
+        "INT-044",
+        "INT-045",
+        "INT-046"
+      ],
+      "checks": [
+        "outcome present",
+        "verifiable metric",
+        "ownership clarity",
+        "scope matches level",
+        "skills-bullets consistency",
+        "keyword without evidence",
+        "format/parsing risk",
+        "proofreading",
+        "link/profile consistency",
+        "interview questions answerable"
+      ]
+    }
+  },
+  "retrieval_indexes": {
+    "by_role": {
+      "SDE": [
+        "INT-001",
+        "INT-002",
+        "INT-003",
+        "INT-004",
+        "INT-005",
+        "INT-006",
+        "INT-007",
+        "INT-008",
+        "INT-009",
+        "INT-010",
+        "INT-011",
+        "INT-012",
+        "INT-015",
+        "INT-017",
+        "INT-018",
+        "INT-019",
+        "INT-020",
+        "INT-021",
+        "INT-022",
+        "INT-023",
+        "INT-024",
+        "INT-025",
+        "INT-026",
+        "INT-027",
+        "INT-028",
+        "INT-029",
+        "INT-030",
+        "INT-031",
+        "INT-032",
+        "INT-033",
+        "INT-034",
+        "INT-035",
+        "INT-036",
+        "INT-037",
+        "INT-038",
+        "INT-039",
+        "INT-040",
+        "INT-041",
+        "INT-042",
+        "INT-043",
+        "INT-044",
+        "INT-045",
+        "INT-046"
+      ],
+      "Backend": [
+        "INT-001",
+        "INT-002",
+        "INT-003",
+        "INT-004",
+        "INT-005",
+        "INT-006",
+        "INT-007",
+        "INT-009",
+        "INT-010",
+        "INT-011",
+        "INT-012",
+        "INT-015",
+        "INT-017",
+        "INT-018",
+        "INT-019",
+        "INT-020",
+        "INT-021",
+        "INT-022",
+        "INT-023",
+        "INT-024",
+        "INT-025",
+        "INT-027",
+        "INT-028",
+        "INT-029",
+        "INT-030",
+        "INT-031",
+        "INT-032",
+        "INT-033",
+        "INT-034",
+        "INT-035",
+        "INT-036",
+        "INT-037",
+        "INT-038",
+        "INT-039",
+        "INT-040",
+        "INT-041",
+        "INT-042",
+        "INT-043",
+        "INT-044",
+        "INT-045",
+        "INT-046"
+      ],
+      "Full Stack": [
+        "INT-001",
+        "INT-002",
+        "INT-003",
+        "INT-004",
+        "INT-005",
+        "INT-006",
+        "INT-007",
+        "INT-009",
+        "INT-010",
+        "INT-011",
+        "INT-012",
+        "INT-014",
+        "INT-015",
+        "INT-017",
+        "INT-018",
+        "INT-019",
+        "INT-020",
+        "INT-021",
+        "INT-022",
+        "INT-023",
+        "INT-024",
+        "INT-025",
+        "INT-027",
+        "INT-028",
+        "INT-029",
+        "INT-030",
+        "INT-031",
+        "INT-032",
+        "INT-033",
+        "INT-034",
+        "INT-035",
+        "INT-036",
+        "INT-037",
+        "INT-038",
+        "INT-039",
+        "INT-040",
+        "INT-041",
+        "INT-042",
+        "INT-043",
+        "INT-044",
+        "INT-045",
+        "INT-046"
+      ],
+      "AI/ML": [
+        "INT-001",
+        "INT-002",
+        "INT-003",
+        "INT-004",
+        "INT-005",
+        "INT-006",
+        "INT-007",
+        "INT-009",
+        "INT-010",
+        "INT-011",
+        "INT-012",
+        "INT-013",
+        "INT-014",
+        "INT-017",
+        "INT-018",
+        "INT-019",
+        "INT-020",
+        "INT-021",
+        "INT-022",
+        "INT-023",
+        "INT-024",
+        "INT-025",
+        "INT-026",
+        "INT-027",
+        "INT-028",
+        "INT-029",
+        "INT-030",
+        "INT-031",
+        "INT-033",
+        "INT-034",
+        "INT-035",
+        "INT-036",
+        "INT-037",
+        "INT-038",
+        "INT-039",
+        "INT-040",
+        "INT-041",
+        "INT-042",
+        "INT-043",
+        "INT-044",
+        "INT-045",
+        "INT-046"
+      ],
+      "Data Science": [
+        "INT-001",
+        "INT-002",
+        "INT-003",
+        "INT-004",
+        "INT-005",
+        "INT-006",
+        "INT-007",
+        "INT-008",
+        "INT-009",
+        "INT-011",
+        "INT-012",
+        "INT-013",
+        "INT-016",
+        "INT-018",
+        "INT-019",
+        "INT-020",
+        "INT-021",
+        "INT-022",
+        "INT-023",
+        "INT-024",
+        "INT-025",
+        "INT-026",
+        "INT-027",
+        "INT-028",
+        "INT-029",
+        "INT-030",
+        "INT-031",
+        "INT-033",
+        "INT-034",
+        "INT-035",
+        "INT-036",
+        "INT-037",
+        "INT-038",
+        "INT-039",
+        "INT-040",
+        "INT-042",
+        "INT-043",
+        "INT-044",
+        "INT-045",
+        "INT-046"
+      ],
+      "Data Analyst": [
+        "INT-001",
+        "INT-002",
+        "INT-003",
+        "INT-004",
+        "INT-005",
+        "INT-006",
+        "INT-007",
+        "INT-008",
+        "INT-009",
+        "INT-011",
+        "INT-012",
+        "INT-016",
+        "INT-018",
+        "INT-019",
+        "INT-020",
+        "INT-021",
+        "INT-022",
+        "INT-023",
+        "INT-024",
+        "INT-025",
+        "INT-027",
+        "INT-028",
+        "INT-029",
+        "INT-030",
+        "INT-031",
+        "INT-033",
+        "INT-034",
+        "INT-035",
+        "INT-036",
+        "INT-037",
+        "INT-038",
+        "INT-039",
+        "INT-040",
+        "INT-042",
+        "INT-043",
+        "INT-044",
+        "INT-045",
+        "INT-046"
+      ],
+      "LLM Engineer": [
+        "INT-014"
+      ]
+    },
+    "by_category": {
+      "resume_screening": [
+        "INT-001",
+        "INT-002",
+        "INT-003",
+        "INT-004",
+        "INT-005",
+        "INT-006",
+        "INT-007",
+        "INT-008"
+      ],
+      "technical_projects": [
+        "INT-009",
+        "INT-010",
+        "INT-011",
+        "INT-012",
+        "INT-013",
+        "INT-014",
+        "INT-015",
+        "INT-016",
+        "INT-017"
+      ],
+      "bullet_writing": [
+        "INT-018",
+        "INT-019",
+        "INT-020",
+        "INT-021",
+        "INT-022",
+        "INT-023",
+        "INT-024"
+      ],
+      "internships_experience": [
+        "INT-025",
+        "INT-026",
+        "INT-027"
+      ],
+      "technical_skills": [
+        "INT-028",
+        "INT-029",
+        "INT-030",
+        "INT-031",
+        "INT-032",
+        "INT-033"
+      ],
+      "jd_alignment": [
+        "INT-034",
+        "INT-035",
+        "INT-036",
+        "INT-037"
+      ],
+      "interview_defensibility": [
+        "INT-038",
+        "INT-039",
+        "INT-040",
+        "INT-041",
+        "INT-042"
+      ],
+      "successful_candidate_patterns": [
+        "INT-043",
+        "INT-044",
+        "INT-045",
+        "INT-046"
+      ]
+    }
+  }
+}

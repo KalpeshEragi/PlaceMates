@@ -1,0 +1,1099 @@
+{
+  "catalogue_name": "Research Source Catalogue",
+  "version": "1.0.0",
+  "generated": "2026-11-09",
+  "total_sources": 43,
+  "distribution_by_year": {
+    "2024": 9,
+    "2025": 8,
+    "2025-26 season": 12,
+    "2026": 14
+  },
+  "distribution_by_platform": {
+    "The Pragmatic Engineer": 2,
+    "NACE": 3,
+    "Careers360": 1,
+    "System Design One newsletter": 1,
+    "Personal blog": 2,
+    "Blog": 1,
+    "Gauntlet AI Night School": 1,
+    "Dice Insights": 1,
+    "DEV Community": 1,
+    "Hacker News": 1,
+    "Reddit r/EngineeringResumes": 2,
+    "Reddit r/india": 1,
+    "IIT Kanpur SPO Insights": 16,
+    "arXiv": 1,
+    "IT Brief UK": 1,
+    "Reddit r/cscareerquestions": 1,
+    "Reddit r/developersIndia": 2,
+    "Reddit r/analytics": 1,
+    "University of Maryland, Clark School of Engineering career services": 1,
+    "interviewing.io blog": 1,
+    "Amazon India": 1,
+    "Johns Hopkins University, Office of Undergraduate Research": 1
+  },
+  "distribution_by_geography": {
+    "International (US, UK, EU respondents)": 1,
+    "United States": 13,
+    "India": 20,
+    "International": 4,
+    "Mostly US/Canada; some India-origin international students": 1,
+    "International (US, UK, EU, India respondents)": 1,
+    "International (online freelance platform)": 1,
+    "United States (mostly)": 1,
+    "India/Global (Amazon)": 1
+  },
+  "distribution_by_credibility": {
+    "High": 13,
+    "Medium": 21,
+    "Low": 9
+  },
+  "sources": [
+    {
+      "id": "SRC-001",
+      "platform": "The Pragmatic Engineer (newsletter)",
+      "title": "Tech jobs market in 2026, part 3: hiring managers & job seekers",
+      "url": "https://newsletter.pragmaticengineer.com/p/tech-jobs-market-in-2026-part-3-hiring",
+      "author": "Gergely Orosz",
+      "publication_date": "2026-07-07",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2026",
+      "geography": "International (US, UK, EU respondents)",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "AI/ML"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Interviews with 50+ hiring managers and job seekers compiled by an established engineering journalist. Free portion only (rest paywalled)."
+      },
+      "evidence_type": "aggregated_hiring_manager_interviews",
+      "access_notes": "Partially paywalled; only free section used.",
+      "independence_group": "pragmatic_engineer"
+    },
+    {
+      "id": "SRC-002",
+      "platform": "NACE (naceweb.org)",
+      "title": "The high-impact skills college students should showcase on their resumes",
+      "url": "https://naceweb.org/about-us/press/2026/the-high-impact-skills-college-students-should-showcase-on-their-resumes",
+      "author": "National Association of Colleges and Employers",
+      "publication_date": "2026-04-23",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2026",
+      "geography": "United States",
+      "source_category": "industry_report",
+      "relevant_roles": [
+        "All entry-level"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Employer survey (Job Outlook 2026 Spring Update, n=185 employers, Feb-Mar 2026). Per-skill percentages are in an image not available in text."
+      },
+      "evidence_type": "employer_survey",
+      "access_notes": "Public press release.",
+      "independence_group": "nace_job_outlook_2026"
+    },
+    {
+      "id": "SRC-003",
+      "platform": "NACE (naceweb.org)",
+      "title": "How new grad job seekers can stand out with potential employers",
+      "url": "https://naceweb.org/about-us/press/2026/how-new-grad-job-seekers-can-stand-out-with-potential-employers",
+      "author": "National Association of Colleges and Employers",
+      "publication_date": "2026-04-10",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2025",
+      "geography": "United States",
+      "source_category": "industry_report",
+      "relevant_roles": [
+        "All entry-level"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Job Outlook 2026 employer survey (n=183, Aug-Sep 2025) plus 2025 student survey (n=13,684)."
+      },
+      "evidence_type": "employer_survey",
+      "access_notes": "Public press release.",
+      "independence_group": "nace_job_outlook_2026"
+    },
+    {
+      "id": "SRC-004",
+      "platform": "NACE (naceweb.org)",
+      "title": "Internship Experience Often the Deciding Factor Between Equal Candidates",
+      "url": "https://naceweb.org/talent-acquisition/candidate-selection/internship-experience-often-the-deciding-factor-between-equal-candidates",
+      "author": "Kevin Gray, NACE",
+      "publication_date": "2026-02-09",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2025",
+      "geography": "United States",
+      "source_category": "industry_report",
+      "relevant_roles": [
+        "All entry-level"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Job Outlook 2026 employer survey (n=183). Full ranking in an image not available in text."
+      },
+      "evidence_type": "employer_survey",
+      "access_notes": "Public article.",
+      "independence_group": "nace_job_outlook_2026"
+    },
+    {
+      "id": "SRC-005",
+      "platform": "Careers360 (reporting TeamLease EdTech report)",
+      "title": "AI, data and digital skills reshape fresher hiring as firms prioritise skills-first recruitment: Report",
+      "url": "https://news.careers360.com/ai-data-digital-skills-fresher-hiring-degree-screening-proof-of-work-adaptability-teamlease-edtech-report-india",
+      "author": "Aatif Ammad (Careers360), reporting TeamLease EdTech Career Outlook HY1 2026",
+      "publication_date": "2026-05-25",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2025-2026",
+      "geography": "India",
+      "source_category": "industry_report",
+      "relevant_roles": [
+        "All entry-level",
+        "Data Analyst",
+        "Cloud/DevOps"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Survey of 1,051 Indian employers (Nov 2025-Jan 2026); secondary news reporting of the report, no per-skill figures."
+      },
+      "evidence_type": "employer_survey_secondary_report",
+      "access_notes": "Public news article.",
+      "independence_group": "SRC-005"
+    },
+    {
+      "id": "SRC-006",
+      "platform": "System Design One newsletter (Issue #139)",
+      "title": "Treat your resume like a product: lessons from rejecting thousands at Meta",
+      "url": "https://the-pm-archive.vercel.app/articles/2026-04-27-treat-your-resume-like-a-product-lessons-from-rejecting-thousands-at-meta",
+      "author": "Austen McDonald (ex-Meta, chaired mobile Hiring Committee) with Neo Kim",
+      "publication_date": "2026-04-15",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2016-2026 (career span)",
+      "geography": "United States",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack",
+        "Mobile"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "First-hand hiring-committee experience at a large tech company; read via a repost archive dated 2026-04-27."
+      },
+      "evidence_type": "hiring_committee_first_hand",
+      "access_notes": "Read via public repost archive.",
+      "independence_group": "SRC-006"
+    },
+    {
+      "id": "SRC-007",
+      "platform": "Personal blog (swizec.com)",
+      "title": "Put scope on your resume",
+      "url": "https://swizec.com/blog/put-scope-on-your-resume/",
+      "author": "Swizec Teller (engineer, author; currently reviewing resumes)",
+      "publication_date": "2026-03-04",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2026",
+      "geography": "United States",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack"
+      ],
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Identifiable engineer actively screening resumes; single opinion, mostly experienced-hire focus."
+      },
+      "evidence_type": "hiring_manager_opinion",
+      "access_notes": "Public blog.",
+      "independence_group": "SRC-007"
+    },
+    {
+      "id": "SRC-008",
+      "platform": "Blog (tianpan.co)",
+      "title": "Hiring for LLM Engineering: What the Interview Actually Needs to Test",
+      "url": "https://tianpan.co/blog/2026-04-16-hiring-llm-engineers-interview-what-to-test",
+      "author": "Tian Pan",
+      "publication_date": "2026-04-16",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2026",
+      "geography": "International",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "AI/ML",
+        "LLM Engineer"
+      ],
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Practitioner guidance on what to test in LLM engineers; author's hiring role not explicitly stated."
+      },
+      "evidence_type": "practitioner_opinion",
+      "access_notes": "Public blog.",
+      "independence_group": "SRC-008"
+    },
+    {
+      "id": "SRC-009",
+      "platform": "Gauntlet AI Night School",
+      "title": "What Hiring Managers Actually Look For in AI Engineers",
+      "url": "https://gauntletai.com/night-school/what-hiring-managers-actually-look-for-in-ai-engineers",
+      "author": "Ash Tilawat, CTO, Gauntlet AI",
+      "publication_date": "2026-04-08",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2026",
+      "geography": "United States",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "AI/ML",
+        "AI Engineer",
+        "Full Stack"
+      ],
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Hiring CTO's first-hand numbers from his own postings; organisation runs an AI-engineer training programme (possible interest)."
+      },
+      "evidence_type": "hiring_manager_first_hand",
+      "access_notes": "Public lesson notes.",
+      "independence_group": "SRC-009"
+    },
+    {
+      "id": "SRC-010",
+      "platform": "Dice Insights",
+      "title": "6 Resume Screening Shifts That Will Raise the Bar in 2027",
+      "url": "https://www.dice.com/career-advice/6-resume-screening-shifts-that-will-raise-the-bar-in-2027",
+      "author": "Leslie Stevens-Huffman",
+      "publication_date": "2026-11-06",
+      "publication_date_precision": "day",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2026",
+      "geography": "United States",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "SDE",
+        "All tech"
+      ],
+      "credibility": {
+        "level": "Low",
+        "rationale": "Quotes staffing-firm recruiters; mostly forecasts, few cited data."
+      },
+      "evidence_type": "recruiter_quotes_and_forecasts",
+      "access_notes": "Public article.",
+      "independence_group": "SRC-010"
+    },
+    {
+      "id": "SRC-011",
+      "platform": "DEV Community",
+      "title": "I have reviewed over 400 resumes for tech roles, here is what actually gets you the phone screen",
+      "url": "https://dev.to/emilywoodsnyc/i-have-reviewed-over-400-resumes-for-tech-roles-here-is-what-actually-gets-you-the-phone-screen-ddh",
+      "author": "Emily Woods (self-described resume reviewer/hiring-loop participant)",
+      "publication_date": "2026-05-30",
+      "publication_date_precision": "day (year inferred from author profile)",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "unknown",
+      "geography": "United States",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "SDE",
+        "Full Stack"
+      ],
+      "credibility": {
+        "level": "Low",
+        "rationale": "Claims 400+ reviews but no verifiable title; year inferred."
+      },
+      "evidence_type": "reviewer_opinion",
+      "access_notes": "Public post.",
+      "independence_group": "SRC-011"
+    },
+    {
+      "id": "SRC-012",
+      "platform": "Hacker News",
+      "title": "Ask HN: What signals do you look for when hiring?",
+      "url": "https://news.ycombinator.com/item?id=47409463",
+      "author": "Multiple HN commenters",
+      "publication_date": "2026-03",
+      "publication_date_precision": "month (approximate, derived from relative date)",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2026",
+      "geography": "International",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "SDE",
+        "All tech"
+      ],
+      "credibility": {
+        "level": "Low",
+        "rationale": "Anonymous discussion; most commenters' hiring roles implied, not stated. Read via hn.nuxt.dev mirror."
+      },
+      "evidence_type": "anonymous_discussion",
+      "access_notes": "Public.",
+      "independence_group": "SRC-012"
+    },
+    {
+      "id": "SRC-013",
+      "platform": "Reddit r/EngineeringResumes (wiki)",
+      "title": "Success stories index (2024-2026 entries)",
+      "url": "https://www.reddit.com/r/EngineeringResumes/wiki/success",
+      "author": "Subreddit moderators (index of member posts)",
+      "publication_date": "2026-07-20",
+      "publication_date_precision": "latest entry date in index",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2024-2026",
+      "geography": "Mostly US/Canada; some India-origin international students",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE",
+        "EE",
+        "MechE",
+        "Data"
+      ],
+      "credibility": {
+        "level": "Low",
+        "rationale": "Self-reported outcomes in post titles only; causal link to resume changes unproven. Read via public mirror."
+      },
+      "evidence_type": "self_reported_outcome_index",
+      "access_notes": "Public wiki; read via mirror rl.klein.ruhr.",
+      "independence_group": "SRC-013"
+    },
+    {
+      "id": "SRC-014",
+      "platform": "Reddit r/india",
+      "title": "Why most Indian freshers get 0 responses despite good resumes, the ATS blind spot nobody tells you about",
+      "url": "https://reddit.sentinel-team.org/posts/1tyu119/snapshots/2026-06-12T21%3A39%3A04.807621Z",
+      "author": "u/Tiny-Antelope-4432 and commenters",
+      "publication_date": "2026-01",
+      "publication_date_precision": "month (approximate, derived from snapshot)",
+      "year_bucket": "2026",
+      "recruitment_experience_year": "2025-2026",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "All entry-level"
+      ],
+      "credibility": {
+        "level": "Low",
+        "rationale": "Unsourced '75% ATS rejection' claim; commenters' roles unstated. Kept as an example of a contested claim."
+      },
+      "evidence_type": "anonymous_discussion",
+      "access_notes": "Public snapshot of Reddit post.",
+      "independence_group": "SRC-014"
+    },
+    {
+      "id": "SRC-015",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Placement Insights 2025-26: Microsoft India, Data Scientist (M.Tech CSE)",
+      "url": "https://drive.google.com/open?id=1C1AjTqpiW_RaxkzIgDIjhFNMiUqLRRUG",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "Data Science",
+        "AI/ML"
+      ],
+      "selection_context": "Selected: Microsoft India - Data Scientist (OA Nov 22 2025; 9 shortlisted, min CGPA 8.8; 2 offers)",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-015"
+    },
+    {
+      "id": "SRC-016",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Placement Insights 2025-26: Meesho, Software Development Engineer",
+      "url": "https://drive.google.com/open?id=1R74WTkpFYEe7fQZRnQIBiqDiZZD1MZtr",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE",
+        "Data Science",
+        "Product Analyst"
+      ],
+      "selection_context": "Selected: Meesho - SDE; also shortlisted GS, Capital One, AmEx DS/ML, Zomato PA",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-016"
+    },
+    {
+      "id": "SRC-017",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Internship Insights 2025-26: Atlassian SDE intern (plus GS, JPMC DS, Oracle, Zepto, NVIDIA, SRIB shortlists)",
+      "url": "https://drive.google.com/open?id=1BiLA3CamkIIKAs1u5vj6bYaxn0E7lVcD",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE",
+        "Data Science",
+        "AI/ML"
+      ],
+      "selection_context": "Selected: Atlassian - SDE Intern",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-017"
+    },
+    {
+      "id": "SRC-018",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Placement Insights 2025-26: Goldman Sachs, Engineering Analyst (SDE)",
+      "url": "https://drive.google.com/open?id=1sv82mCqygUVPlmiN7SWtdGnH5Hh6LmH_",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE"
+      ],
+      "selection_context": "Selected: Goldman Sachs - Engineering Analyst (SDE) and A&M Associate",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-018"
+    },
+    {
+      "id": "SRC-019",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Placement Insights 2025-26: Fractal Analytics, AI Engineer",
+      "url": "https://drive.google.com/open?id=15L_bbtdGZtIsSGBgAz4W3wZ2FyNlnm7s",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "AI/ML"
+      ],
+      "selection_context": "Selected: Fractal Analytics - AI Engineer",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-019"
+    },
+    {
+      "id": "SRC-020",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Internship Insights 2025-26: Roku, MLE Summer Intern (M.Tech CSE)",
+      "url": "https://drive.google.com/open?id=1aoEqfJvshStgz4dWZurEFATK6yb1pAUm",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "AI/ML",
+        "Backend"
+      ],
+      "selection_context": "Selected: Roku - MLE Summer Intern",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-020"
+    },
+    {
+      "id": "SRC-021",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Internship Insights 2025-26: Intuit, SDE Intern",
+      "url": "https://drive.google.com/open?id=1IiA6nFn8jalFLeGnftYP1UprOxHzDFSt",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE",
+        "Backend"
+      ],
+      "selection_context": "Selected: Intuit - SDE Intern",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-021"
+    },
+    {
+      "id": "SRC-022",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Placement Insights 2025-26: Quicksell, Backend Engineer",
+      "url": "https://drive.google.com/open?id=1ceT36h2cELv74Bf9gcDD3c4gkBGjnxrC",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "Backend",
+        "Full Stack"
+      ],
+      "selection_context": "Selected: Quicksell - Backend Engineer",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-022"
+    },
+    {
+      "id": "SRC-023",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Internship Insights 2025-26: Skan.AI, Data Science Intern",
+      "url": "https://drive.google.com/open?id=1fmQ-gxs58Q-Ol8m2viXBzXTwCBeF_gey",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "Data Science",
+        "AI/ML"
+      ],
+      "selection_context": "Selected: Skan.AI - Data Science Intern",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-023"
+    },
+    {
+      "id": "SRC-024",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Placement Insights 2025-26: Google India, Software Engineer, University Graduate 2026",
+      "url": "https://drive.google.com/open?id=1hJYGGN2RlusDaX9d9eyEVwCqSHVZVW-t",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE"
+      ],
+      "selection_context": "Selected: Google India - SWE University Graduate 2026",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-024"
+    },
+    {
+      "id": "SRC-025",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Internship Insights 2025-26: Google India, SWE Intern Summer 2026",
+      "url": "https://drive.google.com/open?id=1oIPmv9dGHaYatg7iCHiDEec5V_4VA_NS",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE"
+      ],
+      "selection_context": "Selected: Google India - SWE Intern (Summer 2026)",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-025"
+    },
+    {
+      "id": "SRC-026",
+      "platform": "IIT Kanpur SPO Insights (Google Drive document)",
+      "title": "Placement Insights 2025-26: HiLabs, Software Development Engineer",
+      "url": "https://drive.google.com/open?id=1jae78YI4wPhKxee561CyzuCri9JS77ZB",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": null,
+      "publication_date_precision": "season (2025-26); exact upload date not stated",
+      "year_bucket": "2025-26 season",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE",
+        "Backend",
+        "AI/ML"
+      ],
+      "selection_context": "Selected: HiLabs - SDE",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. Very brief document."
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur Students' Placement Office 'Insights 2025-26' document, written by the selected candidate with signed consent for publication. Hosted as a public Google Drive file linked from https://spo.iitk.ac.in/insights. Candidate names/roll numbers deliberately not copied into this KB.",
+      "independence_group": "SRC-026"
+    },
+    {
+      "id": "SRC-027",
+      "platform": "The Pragmatic Engineer (newsletter)",
+      "title": "State of the software engineering jobs market, 2025: what hiring managers see",
+      "url": "https://newsletter.pragmaticengineer.com/p/state-of-the-tech-market-in-2025-hiring-managers",
+      "author": "Gergely Orosz",
+      "publication_date": "2025-10-07",
+      "publication_date_precision": "day",
+      "year_bucket": "2025",
+      "recruitment_experience_year": "2025",
+      "geography": "International (US, UK, EU, India respondents)",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "SDE",
+        "Backend",
+        "Full Stack"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Many named-context hiring managers and recruiters incl. Indian startup and Indian EM. Partially paywalled."
+      },
+      "evidence_type": "aggregated_hiring_manager_interviews",
+      "access_notes": "Free section only.",
+      "independence_group": "pragmatic_engineer"
+    },
+    {
+      "id": "SRC-028",
+      "platform": "arXiv (econ.GN)",
+      "title": "Making Talk Cheap: Generative AI and Labor Market Signaling",
+      "url": "https://arxiv.org/abs/2511.08785",
+      "author": "Anais Galdin, Jesse Silbert",
+      "publication_date": "2025-11-11",
+      "publication_date_precision": "day",
+      "year_bucket": "2025",
+      "recruitment_experience_year": "pre- and post-LLM periods on Freelancer.com",
+      "geography": "International (online freelance platform)",
+      "source_category": "research",
+      "relevant_roles": [
+        "All"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Empirical economics working paper with structural model; preprint, not yet peer-reviewed; freelance setting, not campus hiring."
+      },
+      "evidence_type": "empirical_research_preprint",
+      "access_notes": "Open access.",
+      "independence_group": "SRC-028"
+    },
+    {
+      "id": "SRC-029",
+      "platform": "IT Brief UK (reporting Enhancv study)",
+      "title": "Study reveals ATS rarely auto-rejects CVs, debunks 75% myth",
+      "url": "https://itbrief.co.uk/story/study-reveals-ats-rarely-auto-rejects-cvs-debunks-75-myth",
+      "author": "Shannon Williams (IT Brief), study by Enhancv",
+      "publication_date": "2025-11-19",
+      "publication_date_precision": "day",
+      "year_bucket": "2025",
+      "recruitment_experience_year": "2025",
+      "geography": "United States",
+      "source_category": "research",
+      "relevant_roles": [
+        "All"
+      ],
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Interviews with 25 US recruiters by a resume-tool vendor; small, non-random sample."
+      },
+      "evidence_type": "small_recruiter_study",
+      "access_notes": "Public news article.",
+      "independence_group": "SRC-029"
+    },
+    {
+      "id": "SRC-030",
+      "platform": "Reddit r/cscareerquestions",
+      "title": "Hiring managers/recruiters, what are some things that make a candidate stand out?",
+      "url": "https://www.reddit.com/r/cscareerquestions/comments/1jt1tyd/",
+      "author": "Multiple commenters (few state hiring roles)",
+      "publication_date": "2025-04-06",
+      "publication_date_precision": "day",
+      "year_bucket": "2025",
+      "recruitment_experience_year": "2025",
+      "geography": "United States (mostly)",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "SDE"
+      ],
+      "credibility": {
+        "level": "Low",
+        "rationale": "Anonymous; only one commenter self-identifies as a hiring manager. Read via public mirror."
+      },
+      "evidence_type": "anonymous_discussion",
+      "access_notes": "Public; read via redlib mirror.",
+      "independence_group": "SRC-030"
+    },
+    {
+      "id": "SRC-031",
+      "platform": "Reddit r/developersIndia",
+      "title": "HashedIn by Deloitte - On-Campus Interview Experience (SDE Role)",
+      "url": "https://reddit.sentinel-team.org/posts/1qwdi65/snapshots/2026-02-06T06%3A20%3A15.39197Z",
+      "author": "u/dexter_ifti and commenters",
+      "publication_date": "2025-05",
+      "publication_date_precision": "month (approximate, derived from snapshot)",
+      "year_bucket": "2025",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE",
+        "Full Stack"
+      ],
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand campus process with funnel numbers; candidate was not selected; single campus."
+      },
+      "evidence_type": "first_hand_candidate_experience",
+      "access_notes": "Public snapshot of Reddit post.",
+      "independence_group": "SRC-031"
+    },
+    {
+      "id": "SRC-032",
+      "platform": "Reddit r/developersIndia",
+      "title": "Review my resume ... why am I not getting shortlisted for data analyst role as a fresher",
+      "url": "https://reddit.sentinel-team.org/posts/1q87vqd/snapshots/2026-01-09T17%3A10%3A08.514575Z",
+      "author": "u/desimemes_69 and commenters",
+      "publication_date": "2025-03",
+      "publication_date_precision": "month (approximate)",
+      "year_bucket": "2025",
+      "recruitment_experience_year": "2025",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "Data Analyst"
+      ],
+      "credibility": {
+        "level": "Low",
+        "rationale": "Peer feedback; no commenter states hiring credentials."
+      },
+      "evidence_type": "peer_resume_review",
+      "access_notes": "Public snapshot.",
+      "independence_group": "SRC-032"
+    },
+    {
+      "id": "SRC-033",
+      "platform": "Reddit r/analytics",
+      "title": "Current Data Analyst interview trends need real insights",
+      "url": "https://reddit.sentinel-team.org/posts/1pt984v/snapshots/2025-12-24T03%3A50%3A07.755888Z",
+      "author": "Multiple commenters incl. a self-described hiring leader",
+      "publication_date": "2025-02",
+      "publication_date_precision": "month (approximate)",
+      "year_bucket": "2025",
+      "recruitment_experience_year": "2025",
+      "geography": "International",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "Data Analyst",
+        "Data Science"
+      ],
+      "credibility": {
+        "level": "Low",
+        "rationale": "Anonymous; mixed practitioner and hiring-side views."
+      },
+      "evidence_type": "anonymous_discussion",
+      "access_notes": "Public snapshot.",
+      "independence_group": "SRC-033"
+    },
+    {
+      "id": "SRC-034",
+      "platform": "University of Maryland, Clark School of Engineering career services",
+      "title": "Engineering Resume Handout (Fall 2025)",
+      "url": "https://eng.umd.edu/sites/clark.umd.edu/files/Resume%20Handout%20FA25.pdf",
+      "author": "UMD Engineering Career Services",
+      "publication_date": "2025-08",
+      "publication_date_precision": "semester (Fall 2025)",
+      "year_bucket": "2025",
+      "recruitment_experience_year": "2025",
+      "geography": "United States",
+      "source_category": "professional_guidance",
+      "relevant_roles": [
+        "All engineering"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Official university engineering career-centre guidance; includes explicit AI-use guidance."
+      },
+      "evidence_type": "university_career_centre_guidance",
+      "access_notes": "Public PDF.",
+      "independence_group": "SRC-034"
+    },
+    {
+      "id": "SRC-035",
+      "platform": "interviewing.io blog",
+      "title": "Are recruiters better than a coin flip at judging resumes?",
+      "url": "https://interviewing.io/blog/are-recruiters-better-than-a-coin-flip-at-judging-resumes",
+      "author": "Aline Lerner, Peter Bergman (with Learning Collider)",
+      "publication_date": "2024-05-01",
+      "publication_date_precision": "day (page metadata)",
+      "year_bucket": "2024",
+      "recruitment_experience_year": "2024",
+      "geography": "United States",
+      "source_category": "research",
+      "relevant_roles": [
+        "SDE"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "76 recruiters, ~2,200 evaluations, ground truth from mock-interview outcomes. Mock interview, not on-the-job performance."
+      },
+      "evidence_type": "empirical_study",
+      "access_notes": "Public.",
+      "independence_group": "SRC-035"
+    },
+    {
+      "id": "SRC-036",
+      "platform": "IIT Kanpur SPO Insights (web article)",
+      "title": "Placement Insights 2024: NVIDIA, Formal Verification Engineer",
+      "url": "https://spo.iitk.ac.in/insights/2024-placement-aditya-pratap-singh-nvidia",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": "2024-08-27",
+      "publication_date_precision": "day",
+      "year_bucket": "2024",
+      "recruitment_experience_year": "2024",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "Core/Hardware",
+        "SDE"
+      ],
+      "selection_context": "Selected: NVIDIA - Formal Verification (ASIC)",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur SPO public article; candidate named on source page, not copied into KB.",
+      "independence_group": "SRC-036"
+    },
+    {
+      "id": "SRC-037",
+      "platform": "IIT Kanpur SPO Insights (web article)",
+      "title": "Placement Insights 2024: Sprinklr, Product Engineer",
+      "url": "https://spo.iitk.ac.in/insights/2024-placement-aryash-pateria-sprinklr",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": "2024-08-27",
+      "publication_date_precision": "day",
+      "year_bucket": "2024",
+      "recruitment_experience_year": "2024",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE"
+      ],
+      "selection_context": "Selected: Sprinklr - Product Engineer",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur SPO public article; candidate named on source page, not copied into KB.",
+      "independence_group": "SRC-037"
+    },
+    {
+      "id": "SRC-038",
+      "platform": "IIT Kanpur SPO Insights (web article)",
+      "title": "Placement Insights 2024: Glean, Software Engineer",
+      "url": "https://spo.iitk.ac.in/insights/2024-placement-aditya-tanwar-glean",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": "2024-08-27",
+      "publication_date_precision": "day",
+      "year_bucket": "2024",
+      "recruitment_experience_year": "2024",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE"
+      ],
+      "selection_context": "Selected: Glean - Software Engineer",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. "
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur SPO public article; candidate named on source page, not copied into KB.",
+      "independence_group": "SRC-038"
+    },
+    {
+      "id": "SRC-039",
+      "platform": "IIT Kanpur SPO Insights (web article)",
+      "title": "Placement Insights 2024: Microsoft India, SDE (M.Tech CSE)",
+      "url": "https://spo.iitk.ac.in/insights/2024-placement-taneya-soni-microsoft-india",
+      "author": "Selected candidate, IIT Kanpur (identity withheld in KB)",
+      "publication_date": "2024-08-27",
+      "publication_date_precision": "day",
+      "year_bucket": "2024",
+      "recruitment_experience_year": "2024",
+      "geography": "India",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE",
+        "AI/ML"
+      ],
+      "selection_context": "Selected: Microsoft India - SDE",
+      "credibility": {
+        "level": "Medium",
+        "rationale": "Detailed first-hand account with identifiable company, role and process, published by an institutional placement office. Single candidate's view. Brief on resume content."
+      },
+      "evidence_type": "first_hand_selected_candidate_experience",
+      "access_notes": "Official IIT Kanpur SPO public article; candidate named on source page, not copied into KB.",
+      "independence_group": "SRC-039"
+    },
+    {
+      "id": "SRC-040",
+      "platform": "Amazon India (aboutamazon.in)",
+      "title": "Resume tips from Amazon recruiters",
+      "url": "https://www.aboutamazon.in/news/workplace/amazon-india-job-resume-tips",
+      "author": "Brittany Bunch (Amazon) quoting four Amazon recruiters",
+      "publication_date": "2024-04-08",
+      "publication_date_precision": "day",
+      "year_bucket": "2024",
+      "recruitment_experience_year": "2024",
+      "geography": "India/Global (Amazon)",
+      "source_category": "professional_guidance",
+      "relevant_roles": [
+        "All"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Official company careers content quoting named recruiters."
+      },
+      "evidence_type": "official_company_recruiter_guidance",
+      "access_notes": "Public.",
+      "independence_group": "SRC-040"
+    },
+    {
+      "id": "SRC-041",
+      "platform": "Personal blog (eugeneyan.com)",
+      "title": "How to Interview and Hire ML/AI Engineers",
+      "url": "https://eugeneyan.com/writing/how-to-interview/",
+      "author": "Eugene Yan (led ML/AI teams at Amazon, Alibaba, Lazada)",
+      "publication_date": "2024-07-07",
+      "publication_date_precision": "day",
+      "year_bucket": "2024",
+      "recruitment_experience_year": "2024",
+      "geography": "International",
+      "source_category": "recruiter_hiring_manager",
+      "relevant_roles": [
+        "AI/ML",
+        "Data Science"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Experienced ML hiring leader describing his own interview rubric."
+      },
+      "evidence_type": "hiring_manager_first_hand",
+      "access_notes": "Public.",
+      "independence_group": "SRC-041"
+    },
+    {
+      "id": "SRC-042",
+      "platform": "Johns Hopkins University, Office of Undergraduate Research (HOUR)",
+      "title": "HOUR Tips: Resume Best Practices",
+      "url": "https://hour.jhu.edu/wp-content/uploads/2024/07/HOUR-tips-Resume-Best-Practices_7-2024.pdf",
+      "author": "JHU HOUR",
+      "publication_date": "2024-07",
+      "publication_date_precision": "month",
+      "year_bucket": "2024",
+      "recruitment_experience_year": "2024",
+      "geography": "United States",
+      "source_category": "professional_guidance",
+      "relevant_roles": [
+        "Research",
+        "AI/ML",
+        "All"
+      ],
+      "credibility": {
+        "level": "High",
+        "rationale": "Official university guidance specific to research experience and publications."
+      },
+      "evidence_type": "university_career_centre_guidance",
+      "access_notes": "Public PDF.",
+      "independence_group": "SRC-042"
+    },
+    {
+      "id": "SRC-043",
+      "platform": "Reddit r/EngineeringResumes",
+      "title": "[0 YoE] May 2024 new grad, refactored resume based on feedback",
+      "url": "https://www.reddit.com/r/EngineeringResumes/comments/1f4bfqf/",
+      "author": "u/DepresionSonriente and commenters",
+      "publication_date": "2024-08-29",
+      "publication_date_precision": "day",
+      "year_bucket": "2024",
+      "recruitment_experience_year": "2024",
+      "geography": "United States",
+      "source_category": "candidate_experience",
+      "relevant_roles": [
+        "SDE",
+        "Full Stack"
+      ],
+      "credibility": {
+        "level": "Low",
+        "rationale": "Peer review thread; useful concrete bullet critiques; no outcome reported. Read via mirror."
+      },
+      "evidence_type": "peer_resume_review",
+      "access_notes": "Public; read via mirror.",
+      "independence_group": "SRC-043"
+    }
+  ]
+}
