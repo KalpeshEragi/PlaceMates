@@ -42,8 +42,8 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgb(36 32 88 / 0.55) 0%, rgb(36 32 88 / 0.25) 45%, rgb(36 32 88 / 0) 70%),
-    linear-gradient(0deg, rgb(36 32 88 / 0.45) 0%, rgb(36 32 88 / 0) 35%);
+    linear-gradient(90deg, rgb(32 26 92 / 0.78) 0%, rgb(32 26 92 / 0.5) 35%, rgb(32 26 92 / 0) 62%),
+    linear-gradient(180deg, rgb(32 26 92 / 0.35) 0%, rgb(32 26 92 / 0) 25%);
 }
 
 /* Brighter glass for cards that sit on the photo, as in the reference. */

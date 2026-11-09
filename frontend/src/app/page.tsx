@@ -73,41 +73,38 @@ function Nav() {
   );
 }
 
-/* Headline on a twilight sky that matches the artwork, then the artwork itself in a glowing frame. */
+/* The hero artwork fills the screen; nav, headline and buttons sit on it over a soft violet shade. */
 function Hero() {
   const art = ["hero.jpg", "hero.png", "hero.webp"].find((f) => existsSync(join(process.cwd(), "public", f)));
   return (
-    <section className="hero-sky relative overflow-hidden px-4 pb-20 pt-5 sm:px-8">
-      <Nav />
-      <div className="mx-auto mt-16 max-w-4xl text-center sm:mt-20">
-        <h1 className="rise text-balance font-display text-[2.6rem] font-semibold leading-[1.04] tracking-tight text-white sm:text-6xl lg:text-[4.25rem]">
-          Your next opportunity starts with what you&apos;ve already done.
-        </h1>
-        <p className="rise rise-2 mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/85">
-          Find roles that match your skills, turn your real experience into tailored resumes, and know where you stand
-          before you apply.
-        </p>
-        <p className="rise rise-2 mx-auto mt-3 max-w-2xl text-white/70">
-          Your projects, internships and skills deserve more than a generic resume.
-        </p>
-        <div className="rise rise-3 mt-9 flex flex-col items-center gap-3">
-          <a href={LOGIN}
-            className="inline-flex items-center gap-2 rounded-xl bg-white px-7 py-3.5 text-sm font-semibold text-violet shadow-[0_14px_34px_-12px_rgb(20_16_70/0.6)] transition-colors hover:bg-mist focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
-            Get started <Icon name="arrow" className="h-4 w-4" />
-          </a>
-          <p className="text-sm text-white/70">Start with the resume you already have.</p>
-        </div>
-      </div>
+    <section className="relative isolate flex min-h-[100svh] flex-col overflow-hidden px-4 pb-16 pt-5 sm:px-8">
+      {art ? (
+        <Image src={`/${art}`} alt="" fill priority sizes="100vw" className="-z-20 object-cover object-[0%_center]" />
+      ) : (
+        <div className="dusk-scene -z-20" aria-hidden="true" />
+      )}
+      <div className="hero-shade -z-10" aria-hidden="true" />
 
-      <div className="rise rise-3 relative mx-auto mt-14 max-w-6xl">
-        <div className="absolute -inset-6 rounded-[3rem] bg-peach/30 blur-3xl" aria-hidden="true" />
-        <div className="relative aspect-[16/9] overflow-hidden rounded-[2rem] border border-white/40 shadow-[0_40px_90px_-30px_rgb(20_16_70/0.8)]">
-          {art ? (
-            <Image src={`/${art}`} alt="A student with a laptop at sunset, looking out at the path from analysing a profile to getting placed"
-              fill priority sizes="(min-width: 1152px) 1152px, 100vw" className="object-cover" />
-          ) : (
-            <div className="dusk-scene" aria-hidden="true" />
-          )}
+      <Nav />
+      <div className="mx-auto mt-14 w-full max-w-6xl sm:mt-20">
+        <div className="max-w-[27rem]">
+          <h1 className="rise text-balance font-display text-[2.5rem] font-semibold leading-[1.05] tracking-tight text-white drop-shadow-[0_2px_20px_rgb(20_16_70/0.45)] sm:text-[3.25rem]">
+            Your next opportunity starts with what you&apos;ve already done.
+          </h1>
+          <p className="rise rise-2 mt-6 text-lg leading-relaxed text-white/90 drop-shadow-[0_1px_8px_rgb(20_16_70/0.5)]">
+            Find roles that match your skills, turn your real experience into tailored resumes, and know where you
+            stand before you apply.
+          </p>
+          <p className="rise rise-2 mt-3 text-white/80 drop-shadow-[0_1px_8px_rgb(20_16_70/0.5)]">
+            Your projects, internships and skills deserve more than a generic resume.
+          </p>
+          <div className="rise rise-3 mt-8 flex flex-col items-start gap-3">
+            <a href={LOGIN}
+              className="inline-flex items-center gap-2 rounded-xl bg-white px-7 py-3.5 text-sm font-semibold text-violet shadow-[0_14px_34px_-12px_rgb(20_16_70/0.6)] transition-colors hover:bg-mist focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+              Get started <Icon name="arrow" className="h-4 w-4" />
+            </a>
+            <p className="text-sm text-white/80">Start with the resume you already have.</p>
+          </div>
         </div>
       </div>
     </section>
