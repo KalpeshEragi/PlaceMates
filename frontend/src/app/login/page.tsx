@@ -19,40 +19,35 @@ function GoogleMark() {
 
 export default function LoginPage() {
   return (
-    <main className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden bg-[#e9ecfb] px-4 py-10 sm:px-8">
-      {/* Soft shapes behind the card, as in the design. */}
-      <div className="absolute -bottom-40 -left-20 -z-10 h-96 w-[36rem] rounded-full bg-lavender/80 blur-2xl" aria-hidden="true" />
-      <div className="absolute -right-24 bottom-16 -z-10 h-80 w-80 rounded-full bg-powder/50 blur-2xl" aria-hidden="true" />
+    <main className="grid min-h-[100svh] lg:grid-cols-2">
+      {/* Illustration: full right half on large screens, a banner on top on phones. */}
+      <section className="relative h-64 sm:h-80 lg:order-2 lg:h-auto lg:min-h-[100svh]">
+        <Image src="/login-art.jpg" alt="A student at a laptop, ticking off finding opportunities, tailoring a resume and preparing, with getting placed next"
+          fill priority sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover object-[center_35%]" />
+      </section>
 
-      <div className="relative w-full max-w-6xl">
-      <div className="absolute -left-10 -top-10 -z-10 h-36 w-36 rounded-full bg-gradient-to-br from-violet to-[#8b7cf0] sm:-left-14 sm:-top-14 sm:h-44 sm:w-44" aria-hidden="true" />
-      <div className="grid w-full overflow-hidden rounded-[2.5rem] bg-white shadow-[0_40px_100px_-40px_rgb(43_42_92/0.45)] lg:grid-cols-2">
-        <section className="flex flex-col items-center justify-center px-6 py-14 sm:px-14 lg:py-20">
+      <section className="relative isolate flex flex-col items-center justify-center overflow-hidden bg-white px-6 py-14 sm:px-14 lg:order-1">
+        <div className="absolute -left-24 -top-24 -z-10 h-72 w-72 rounded-full bg-lavender/70 blur-3xl" aria-hidden="true" />
+        <div className="absolute -bottom-32 -right-16 -z-10 h-80 w-80 rounded-full bg-peach/20 blur-3xl" aria-hidden="true" />
+
+        <div className="flex w-full max-w-md flex-col items-center">
           <Link href="/" aria-label="PlaceMates home"><Logo large /></Link>
-          <h1 className="mt-10 font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">Welcome back</h1>
-          <p className="mt-3 text-center text-lg text-ink-soft">Sign in to continue your placement journey</p>
+          <h1 className="mt-12 font-display text-5xl font-semibold tracking-tight text-ink lg:text-6xl">Welcome back</h1>
+          <p className="mt-4 text-center text-lg text-ink-soft">Sign in to continue your placement journey</p>
 
           <a href={`${BACKEND_URL}/auth/google/login`}
-            className="mt-10 flex w-full max-w-md items-center justify-center gap-3 rounded-2xl border border-lavender bg-mist px-6 py-4 text-base font-semibold text-ink shadow-[0_8px_20px_-14px_rgb(43_42_92/0.5)] transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet">
+            className="mt-12 flex w-full items-center justify-center gap-3 rounded-2xl border border-lavender bg-mist px-6 py-4 text-base font-semibold text-ink shadow-[0_8px_20px_-14px_rgb(43_42_92/0.5)] transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet">
             <GoogleMark /> Continue with Google
           </a>
 
-          <p className="mt-6 max-w-md text-center text-sm leading-relaxed text-ink-soft">
+          <p className="mt-6 text-center text-sm leading-relaxed text-ink-soft">
             PlaceMates uses your Google account so your daily jobs and tailored resumes arrive from your own Gmail, to
             you. New here? The same button creates your account.
           </p>
 
-          <p className="mt-10 text-sm text-ink-soft">
-            <Link href="/" className="font-semibold text-violet hover:underline">Back to home</Link>
-          </p>
-        </section>
-
-        <section className="relative hidden min-h-[36rem] lg:block">
-          <Image src="/login-art.jpg" alt="A student at a laptop, ticking off finding opportunities, tailoring a resume and preparing, with getting placed next"
-            fill priority sizes="(min-width: 1152px) 576px, 50vw" className="object-cover" />
-        </section>
-      </div>
-      </div>
+          <Link href="/" className="mt-12 text-sm font-semibold text-violet hover:underline">Back to home</Link>
+        </div>
+      </section>
     </main>
   );
 }
