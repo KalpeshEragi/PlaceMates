@@ -194,6 +194,24 @@ class ProfileEmbedding(Base):
     embedding: Mapped[list[float]] = mapped_column(Vector(EMBED_DIM))
 
 
+class ExemplarBullet(Base):
+    """A bullet from a real resume that passed a screen (see corpus/metadata.json).
+    The resume writer uses these for style only, never for content."""
+
+    __tablename__ = "exemplar_bullets"
+
+    id: Mapped[uuid.UUID] = _id()
+    text: Mapped[str] = mapped_column(Text, unique=True)
+    section: Mapped[str] = mapped_column(String, index=True)   # experience | project
+    role: Mapped[str] = mapped_column(String)                  # Software Engineer | Data Scientist
+    level: Mapped[str] = mapped_column(String)                 # Intern | New Grad | Full-Time ...
+    source_file: Mapped[str] = mapped_column(String)           # corpus file it came from
+    heading: Mapped[str | None] = mapped_column(String)        # the job/project line above it
+    quality: Mapped[float] = mapped_column(Float, index=True)  # 0-1, computed in code
+    parts: Mapped[dict] = mapped_column(JSONB)                 # {action, tech, metric, outcome, words, ...}
+    embedding: Mapped[list[float]] = mapped_column(Vector(EMBED_DIM))
+
+
 class JobMatch(Base):
     """A job picked for a student. One row per (profile, job): a job is never picked twice."""
 
