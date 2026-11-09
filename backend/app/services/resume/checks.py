@@ -1,4 +1,4 @@
-"""Code-level checks on a draft: truthfulness, keyword coverage, bullet quality, and the score.
+"""Code-level checks on a draft: truthfulness and bullet quality.
 
 The truth check is the honesty guarantee: a bullet may only mention numbers and technologies
 that exist in the student's saved facts and skills. Prompts ask for this; code enforces it.
@@ -7,11 +7,46 @@ that exist in the student's saved facts and skills. Prompts ask for this; code e
 import re
 
 from app.services.matching.exemplars import TECH, bullet_parts, bullet_quality
-from app.services.resume.schemas import JobBrief, ResumeDraft
+from app.services.resume.schemas import ResumeDraft
 
 NUM = re.compile(r"\d[\d,]*(?:\.\d+)?")
 # Describing an API as REST isn't claiming a new technology.
 GENERIC_TECH = {"rest", "restful"}
+# Result and quality words a writer tends to add on its own ("ensuring accurate settlement").
+# Flagged when the item's facts don't say anything like it (KB INT-019, INT-039).
+CLAIM = re.compile(
+    r"\b(ensur\w*|prevent\w*|reduc\w*|improv\w*|increas\w*|boost\w*|accelerat\w*|optimi[sz]\w*|scalab\w*|robust|"
+    r"reliab\w*|accura\w*|efficien\w*|seamless\w*|comprehensive|high[- ]performance|production[- ]grade|"
+    r"real[- ]time|across multiple|significant\w*|enhanc\w*|streamlin\w*|faster)\b", re.I)
+# A claim is supported when the facts say it in other words ("grew traffic by 20%" supports "increased").
+SAME_AS = {
+    "incre": ("incre", "grew", "grow", "rais", "boost", "improv", "%"),
+    "boost": ("boost", "incre", "grew", "grow", "improv", "%"),
+    "impro": ("impro", "incre", "grew", "boost", "better", "%"),
+    "reduc": ("reduc", "cut", "lower", "decre", "sav", "%"),
+    "accel": ("accel", "faster", "speed", "%"),
+    "faste": ("faste", "accel", "speed", "%"),
+    "accur": ("accur", "%"),
+}
+
+
+def _supported(word: str, known: str) -> bool:
+    stem = word.lower()[:5]
+    return any(s in known for s in SAME_AS.get(stem, (stem,)))
+
+
+def unsupported_claims(draft: ResumeDraft, items: dict[str, dict]) -> list[dict]:
+    """Bullets claiming a result or quality that the item's facts don't mention. Flagged, not dropped:
+    the student may confirm it."""
+    texts = facts_text(items, [])
+    out = []
+    for d in draft.items:
+        known = texts.get(d.item_id, "").lower()
+        for b in d.bullets:
+            words = sorted({m.lower() for m in CLAIM.findall(b.text) if not _supported(m, known)})
+            if words:
+                out.append({"item_id": d.item_id, "bullet": b.text, "words": words})
+    return out
 
 
 def _norm_num(n: str) -> str:
@@ -56,9 +91,9 @@ def enforce_truth(draft: ResumeDraft, items: dict[str, dict], skills: list[str])
     for d in draft.items:
         kept = []
         for b in d.bullets:
-            problems = truth_violations(b, texts.get(d.item_id, ""), texts["*"])
+            problems = truth_violations(b.text, texts.get(d.item_id, ""), texts["*"])
             if problems:
-                dropped.append({"item_id": d.item_id, "bullet": b, "problems": problems})
+                dropped.append({"item_id": d.item_id, "bullet": b.text, "problems": problems})
             else:
                 kept.append(b)
         d.bullets = kept
@@ -69,32 +104,9 @@ def enforce_truth(draft: ResumeDraft, items: dict[str, dict], skills: list[str])
 
 
 def resume_text(draft: ResumeDraft) -> str:
-    return "\n".join([draft.summary, ", ".join(draft.skills), *(b for d in draft.items for b in d.bullets)])
+    return "\n".join([draft.summary, ", ".join(draft.skills), *(b.text for d in draft.items for b in d.bullets)])
 
 
-def keyword_coverage(text: str, brief: JobBrief) -> dict:
-    low = text.lower()
-    def hit(term: str) -> bool:
-        return re.search(rf"(?<![\w.+#]){re.escape(term.lower())}(?![\w+#])", low) is not None
-    must = [t for t in brief.must_have if t.strip()]
-    # "Strong proficiency in React.js" -> look for "react.js"; phrases with no known tech are matched as written.
-    def present(phrase: str) -> bool:
-        terms = TECH.findall(phrase)
-        return any(hit(t) for t in terms) if terms else hit(phrase)
-    found = [t for t in must if present(t)]
-    return {"must_have_found": found, "must_have_missing": [t for t in must if t not in found],
-            "coverage": round(len(found) / len(must), 2) if must else 1.0}
-
-
-def score(draft: ResumeDraft, brief: JobBrief, dropped: list[dict]) -> dict:
-    """0-100, from parts anyone can check. Weights are a first version, to be calibrated on real outcomes."""
-    bullets = [b for d in draft.items for b in d.bullets]
-    qualities = [bullet_quality(bullet_parts(b)) for b in bullets]
-    cov = keyword_coverage(resume_text(draft), brief)
-    avg_quality = sum(qualities) / len(qualities) if qualities else 0
-    enough = min(len(bullets) / 8, 1.0)  # a fresher page has roughly 8-12 bullets
-    truth_penalty = min(len(dropped) * 0.05, 0.2)
-    total = 100 * max(0.45 * cov["coverage"] + 0.40 * avg_quality + 0.15 * enough - truth_penalty, 0)
-    return {"score": round(total), "keyword_coverage": cov, "avg_bullet_quality": round(avg_quality, 2),
-            "bullets": len(bullets), "dropped_for_truth": len(dropped),
-            "band": "Strong" if total >= 75 else "Good" if total >= 55 else "Needs work"}
+def avg_bullet_quality(draft: ResumeDraft) -> float:
+    q = [bullet_quality(bullet_parts(b.text)) for d in draft.items for b in d.bullets]
+    return round(sum(q) / len(q), 2) if q else 0.0

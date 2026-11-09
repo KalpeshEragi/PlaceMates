@@ -102,11 +102,13 @@ def set_status(match_id: uuid.UUID, body: StatusIn, user: User = Depends(current
 def _resume_out(r: TailoredResume | None) -> dict | None:
     if not r:
         return None
+    res, ev = r.result, r.result.get("evaluation", {})
     return {"status": r.status, "score": r.score, "error": r.error, "created_at": r.created_at,
-            "draft": r.result.get("draft"), "score_parts": r.result.get("score"),
-            "critic": r.result.get("critic"), "dropped_for_truth": r.result.get("dropped_for_truth", []),
-            "brief": r.result.get("brief"), "seconds": r.result.get("seconds"),
-            "ask_student": r.result.get("ask_student", [])}
+            "draft": res.get("draft"), "text": res.get("text"), "score_parts": res.get("score"),
+            "ats": ev.get("ats"), "panel": ev.get("panel"), "interview_prep": ev.get("interview_prep", []),
+            "analysis": res.get("analysis"), "strategy": res.get("strategy"), "market": res.get("market"),
+            "dropped_for_truth": res.get("dropped_for_truth", []), "ask_student": res.get("ask_student", []),
+            "seconds": res.get("seconds")}
 
 
 def _own_match(db: Session, user: User, match_id: uuid.UUID) -> tuple[Profile, JobMatch]:
@@ -119,7 +121,7 @@ def _own_match(db: Session, user: User, match_id: uuid.UUID) -> tuple[Profile, J
 
 @router.post("/matches/{match_id}/resume")
 def create_resume(match_id: uuid.UUID, user: User = Depends(current_user), db: Session = Depends(get_db)):
-    """Write a tailored resume for this job (takes about a minute)."""
+    """Write a tailored resume for this job (takes a few minutes)."""
     profile, m = _own_match(db, user, match_id)
     return _resume_out(generate(db, profile, m))
 
