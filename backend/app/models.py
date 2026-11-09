@@ -202,10 +202,26 @@ class TailoredResume(Base):
     id: Mapped[uuid.UUID] = _id()
     match_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("job_matches.id", ondelete="CASCADE"), unique=True)
     profile_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("profiles.id", ondelete="CASCADE"), index=True)
-    status: Mapped[str] = mapped_column(String, default="ready")  # ready | failed
+    status: Mapped[str] = mapped_column(String, default="ready")  # ready | failed | pending (AI daily limit)
     score: Mapped[int | None] = mapped_column(Integer)
-    result: Mapped[dict] = mapped_column(JSONB)  # brief, selection, draft, critic, score parts, dropped bullets, rounds
+    result: Mapped[dict] = mapped_column(JSONB)  # analysis, strategy, draft, evaluation, score, honesty checks
     error: Mapped[str | None] = mapped_column(Text)
+    created_at: Mapped[datetime] = _created()
+
+
+class DailyDigest(Base):
+    """One student's daily run: shortlist -> resumes for the top few -> email. One row per day."""
+
+    __tablename__ = "daily_digests"
+    __table_args__ = (UniqueConstraint("profile_id", "batch_date"),)
+
+    id: Mapped[uuid.UUID] = _id()
+    profile_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("profiles.id", ondelete="CASCADE"), index=True)
+    batch_date: Mapped[str] = mapped_column(String, index=True)
+    status: Mapped[str] = mapped_column(String, default="running")  # running | sent | failed | skipped
+    stats: Mapped[dict] = mapped_column(JSONB, default=dict)  # resumes ready/pending/failed, seconds
+    error: Mapped[str | None] = mapped_column(Text)
+    sent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = _created()
 
 

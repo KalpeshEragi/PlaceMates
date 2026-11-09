@@ -1,4 +1,4 @@
-"""Run the job fetcher once a day inside the API process (when JOBS_DAILY_FETCH=true).
+"""Once a day inside the API process (when JOBS_DAILY_FETCH=true): fetch jobs, then send daily digests.
 
 Deliberately simple: one daemon thread that sleeps until the next run time (IST).
 Fine for a single API process; with several workers, use an external cron instead
@@ -26,13 +26,15 @@ def _seconds_until_next(hour: int) -> float:
 
 def start_daily_fetch() -> None:
     from app.routers.jobs import fetch_in_background  # avoid an import cycle
+    from app.services.daily import run_for_all
 
     def loop():
         while True:
             wait = _seconds_until_next(settings.jobs_daily_fetch_hour_ist)
             log.info("Next job fetch in %.1f hours", wait / 3600)
             time.sleep(wait)
-            if not fetch_in_background():
+            # Fetch fresh jobs, then each student's shortlist, resumes and email.
+            if not fetch_in_background(then=run_for_all):
                 log.warning("Skipped daily job fetch: one is already running")
 
     threading.Thread(target=loop, daemon=True, name="job-fetch-schedule").start()

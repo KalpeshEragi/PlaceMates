@@ -26,6 +26,11 @@ class Settings(BaseSettings):
     apify_api_key: str = ""               # env name is case-insensitive (Apify_API_KEY works)
     apify_monthly_budget_usd: float = 4.5  # stay under Apify's $5 free monthly credit
 
+    # Daily digest: after the fetch, tailored resumes for the top N matches, then one Gmail email.
+    # Groq's free tier (200k tokens/day per model) covers about 3 full resumes a day.
+    resumes_per_day: int = 3
+    daily_email: bool = True
+
     groq_api_key: str = ""
     gemini_api_key: str = ""              # resume writer (falls back to Groq if unavailable)
     groq_base_url: str = "https://api.groq.com/openai/v1"

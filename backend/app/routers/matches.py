@@ -1,19 +1,23 @@
-"""Job preferences and the daily shortlist."""
+"""Job preferences, the daily shortlist, tailored resumes and the daily digest."""
 
+import re
+import threading
 import uuid
-from datetime import date
+from datetime import datetime
 from typing import Literal
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.db import get_db
-from app.models import JobMatch, JobPreferences, Profile, TailoredResume, User
+from app.db import SessionLocal, get_db
+from app.models import DailyDigest, JobMatch, JobPreferences, Profile, TailoredResume, User
 from app.security import current_user
+from app.services import daily
 from app.services.matching.matcher import todays_shortlist
-from app.services.resume.service import generate
+from app.services.resume.pdf import render_pdf
+from app.services.resume.service import generate, profile_inputs
 
 router = APIRouter(tags=["matches"])
 
@@ -43,9 +47,14 @@ def _prefs_out(p: JobPreferences | None) -> dict | None:
     return {k: getattr(p, k) for k in PreferencesIn.model_fields}
 
 
-def _match_out(m: JobMatch) -> dict:
+def _match_out(m: JobMatch, resume: TailoredResume | None = None) -> dict:
     j = m.job
+    brief = None
+    if resume:
+        brief = {"status": resume.status, "score": resume.score,
+                 "band": (resume.result or {}).get("score", {}).get("band")}
     return {"id": str(m.id), "rank": m.rank, "score": m.score, "reasons": m.reasons, "status": m.status,
+            "resume": brief,
             "job": {"id": str(j.id), "title": j.title, "company": j.company, "location": j.location,
                     "remote": j.remote, "seniority": j.seniority, "source": j.source,
                     "posted_at": j.posted_at, "apply_url": j.apply_url,
@@ -81,7 +90,11 @@ def matches_today(user: User = Depends(current_user), db: Session = Depends(get_
         raise HTTPException(400, "Set your job preferences first")
     if not profile.items:
         raise HTTPException(400, "Add your resume first")
-    return {"date": date.today().isoformat(), "matches": [_match_out(m) for m in todays_shortlist(db, profile, prefs)]}
+    matches = todays_shortlist(db, profile, prefs, today=datetime.now(daily.IST).date())
+    resumes = {r.match_id: r for r in db.scalars(select(TailoredResume).where(
+        TailoredResume.match_id.in_([m.id for m in matches])))}
+    return {"date": daily.today_ist(), "resumes_per_day": daily.settings.resumes_per_day,
+            "matches": [_match_out(m, resumes.get(m.id)) for m in matches]}
 
 
 class StatusIn(BaseModel):
@@ -119,14 +132,72 @@ def _own_match(db: Session, user: User, match_id: uuid.UUID) -> tuple[Profile, J
     return profile, m
 
 
-@router.post("/matches/{match_id}/resume")
+def _resume_row(db: Session, m: JobMatch) -> TailoredResume | None:
+    return db.scalar(select(TailoredResume).where(TailoredResume.match_id == m.id))
+
+
+def _write_in_background(profile_id: uuid.UUID, match_id: uuid.UUID) -> None:
+    def work():
+        with SessionLocal() as db:
+            generate(db, db.get(Profile, profile_id), db.get(JobMatch, match_id))
+    threading.Thread(target=work, daemon=True, name="resume-crew").start()
+
+
+@router.post("/matches/{match_id}/resume", status_code=202)
 def create_resume(match_id: uuid.UUID, user: User = Depends(current_user), db: Session = Depends(get_db)):
-    """Write a tailored resume for this job (takes a few minutes)."""
+    """Start writing a tailored resume for this job (2-5 minutes). Poll GET for the result."""
     profile, m = _own_match(db, user, match_id)
-    return _resume_out(generate(db, profile, m))
+    row = _resume_row(db, m) or TailoredResume(match_id=m.id, profile_id=profile.id, result={})
+    if row.status == "running":
+        raise HTTPException(409, "This resume is already being written")
+    row.status, row.error = "running", None
+    db.add(row)
+    db.commit()
+    _write_in_background(profile.id, m.id)
+    return _resume_out(row)
 
 
 @router.get("/matches/{match_id}/resume")
 def get_resume(match_id: uuid.UUID, user: User = Depends(current_user), db: Session = Depends(get_db)):
     _, m = _own_match(db, user, match_id)
-    return _resume_out(db.scalar(select(TailoredResume).where(TailoredResume.match_id == m.id)))
+    return _resume_out(_resume_row(db, m))
+
+
+@router.get("/matches/{match_id}/resume.pdf")
+def resume_pdf(match_id: uuid.UUID, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    profile, m = _own_match(db, user, match_id)
+    row = _resume_row(db, m)
+    if not row or row.status != "ready":
+        raise HTTPException(404, "No finished resume for this job yet")
+    items, _, education = profile_inputs(profile)
+    name = re.sub(r"[^A-Za-z0-9]+", "_", f"{profile.full_name or 'Resume'} {m.job.company}").strip("_")
+    return Response(render_pdf(profile, row.result["draft"], items, education), media_type="application/pdf",
+                    headers={"Content-Disposition": f'inline; filename="{name[:60]}.pdf"'})
+
+
+def _digest_out(d: DailyDigest | None) -> dict | None:
+    if not d:
+        return None
+    return {"date": d.batch_date, "status": d.status, "stats": d.stats, "error": d.error, "sent_at": d.sent_at}
+
+
+@router.get("/digest/today")
+def digest_today(user: User = Depends(current_user), db: Session = Depends(get_db)):
+    profile = _profile(user)
+    return _digest_out(db.scalar(select(DailyDigest).where(DailyDigest.profile_id == profile.id,
+                                                          DailyDigest.batch_date == daily.today_ist())))
+
+
+@router.post("/digest/run", status_code=202)
+def digest_run(force: bool = False, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """Run today's digest now (shortlist, top resumes, email) instead of waiting for the morning."""
+    profile = _profile(user)
+    if not _prefs(db, profile):
+        raise HTTPException(400, "Set your job preferences first")
+    pid = profile.id
+
+    def work():
+        with SessionLocal() as s:
+            daily.run_for_profile(s, s.get(Profile, pid), force=force)
+    threading.Thread(target=work, daemon=True, name="daily-digest").start()
+    return {"started": True}

@@ -15,8 +15,9 @@ router = APIRouter(prefix="/jobs", tags=["jobs"])
 _fetch_lock = threading.Lock()
 
 
-def fetch_in_background() -> bool:
-    """Start a fetch unless one is already running. Returns False if busy."""
+def fetch_in_background(then=None) -> bool:
+    """Start a fetch unless one is already running. Returns False if busy.
+    `then` runs in the same thread after the fetch (the scheduler passes the daily digest)."""
     if not _fetch_lock.acquire(blocking=False):
         return False
 
@@ -26,6 +27,8 @@ def fetch_in_background() -> bool:
                 run_fetch(db)
         finally:
             _fetch_lock.release()
+        if then:
+            then()
 
     threading.Thread(target=work, daemon=True, name="job-fetch").start()
     return True
