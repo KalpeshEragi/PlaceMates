@@ -15,6 +15,7 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.models import Job, JobFetchRun
 from app.services.jobs import sources
+from app.services.matching.embeddings import embed_missing_jobs
 from app.services.jobs.companies import BOARDS
 from app.services.jobs.normalize import Posting, dedupe_key, is_tech, not_genuine, seniority, where
 
@@ -126,5 +127,11 @@ def run_fetch(db: Session) -> JobFetchRun:
     stats["dropped_not_genuine"] = dropped
     run.stats, run.errors, run.finished_at = stats, errors, datetime.now(timezone.utc)
     db.commit()
+    try:  # embed new jobs right away so matching is ready; a failure here doesn't lose the jobs
+        stats["embedded"] = embed_missing_jobs(db)
+        run.stats = dict(stats)
+        db.commit()
+    except Exception as err:  # noqa: BLE001
+        log.warning("Embedding new jobs failed: %s", err)
     log.info("Job fetch done: %s | %d board errors", stats, len(errors))
     return run

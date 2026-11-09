@@ -3,12 +3,13 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 from starlette.middleware.sessions import SessionMiddleware
 
 from app import models  # noqa: F401  (registers tables)
 from app.config import settings
 from app.db import Base, engine
-from app.routers import auth, enrich, jobs, profile
+from app.routers import auth, enrich, jobs, matches, profile
 from app.services.jobs.schedule import start_daily_fetch
 
 
@@ -21,6 +22,8 @@ for noisy in ("httpx", "httpcore"):
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     # Creates missing tables. Replace with Alembic migrations once the schema settles.
+    with engine.begin() as conn:  # pgvector must exist before tables with vector columns
+        conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
     Base.metadata.create_all(engine)
     if settings.jobs_daily_fetch:
         start_daily_fetch()
@@ -43,6 +46,7 @@ app.include_router(auth.router)
 app.include_router(profile.router)
 app.include_router(enrich.router)
 app.include_router(jobs.router)
+app.include_router(matches.router)
 
 
 @app.get("/health")
