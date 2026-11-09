@@ -1,9 +1,100 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-heading);
+
+  /* Dusk palette: powder-blue sky, lavender-white light, sunset-peach horizon, indigo ink. */
+  --color-powder: #a9c8e8;
+  --color-powder-deep: #7fa6d3;
+  --color-lavender: #e6e1f7;
+  --color-mist: #f6f4fc;
+  --color-peach: #f4a988;
+  --color-peach-deep: #e2805c;
+  --color-ink: #2b2a5c;
+  --color-ink-soft: #5b5a86;
+  /* Dusk violet: the lavender pushed deeper, for primary actions on the photo hero. */
+  --color-violet: #5a48c6;
+  --color-violet-deep: #4636a9;
+}
+
+/* Hero background when there's no photo: a twilight sky with a peach horizon and dark ground. */
+.dusk-scene {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 35% at 72% 78%, rgb(255 196 160 / 0.9) 0%, rgb(255 196 160 / 0) 70%),
+    radial-gradient(40% 25% at 30% 82%, rgb(244 169 136 / 0.6) 0%, rgb(244 169 136 / 0) 70%),
+    radial-gradient(70% 45% at 85% 10%, rgb(169 200 232 / 0.7) 0%, rgb(169 200 232 / 0) 70%),
+    linear-gradient(180deg, #3b3a8c 0%, #5a55b8 28%, #8f7fd2 52%, #d9a7c0 72%, #f2b79c 80%, #3e3580 90%, #232052 100%);
+}
+
+/* Twilight sky sampled from the hero artwork: blue-violet above, lavender, a peach horizon glow. */
+.hero-sky {
+  background:
+    radial-gradient(70% 40% at 50% 100%, rgb(244 169 136 / 0.45) 0%, rgb(244 169 136 / 0) 70%),
+    radial-gradient(60% 50% at 85% 0%, rgb(169 200 232 / 0.35) 0%, rgb(169 200 232 / 0) 70%),
+    linear-gradient(180deg, #3f3fa8 0%, #5a4fc0 35%, #7b62c9 70%, #9a73c4 100%);
+}
+
+/* Shades the image's left side and bottom so white text and glass cards stay readable. */
+.hero-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgb(36 32 88 / 0.55) 0%, rgb(36 32 88 / 0.25) 45%, rgb(36 32 88 / 0) 70%),
+    linear-gradient(0deg, rgb(36 32 88 / 0.45) 0%, rgb(36 32 88 / 0) 35%);
+}
+
+/* Brighter glass for cards that sit on the photo, as in the reference. */
+.glass-light {
+  background: rgb(246 244 252 / 0.72);
+  border: 1px solid rgb(255 255 255 / 0.75);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  box-shadow: 0 24px 60px -24px rgb(30 28 70 / 0.5);
 }
 
 body {
   font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* The hero sky: powder blue at the top, lavender light, a peach glow on the horizon. */
+.dusk-sky {
+  background:
+    radial-gradient(120% 60% at 70% 105%, rgb(244 169 136 / 0.85) 0%, rgb(244 169 136 / 0) 60%),
+    radial-gradient(80% 50% at 15% 0%, rgb(255 255 255 / 0.55) 0%, rgb(255 255 255 / 0) 70%),
+    linear-gradient(180deg, #a9c8e8 0%, #c4d6ef 38%, #e3dcf3 68%, #f6cdb8 100%);
+}
+
+/* Frosted glass, as in the reference: translucent white, blur, a light hairline. */
+.glass {
+  background: rgb(255 255 255 / 0.55);
+  border: 1px solid rgb(255 255 255 / 0.7);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 18px 50px -20px rgb(43 42 92 / 0.35);
+}
+
+/* One page-load moment: the hero cards drift up into place. */
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .rise-2 {
+    animation-delay: 0.15s;
+  }
+  .rise-3 {
+    animation-delay: 0.3s;
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
