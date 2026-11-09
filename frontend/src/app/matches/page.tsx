@@ -1,14 +1,14 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api, ApiError, type Digest, type Match, type Preferences } from "@/lib/api";
+import AppShell from "@/components/AppShell";
 import ResumePanel from "@/components/ResumePanel";
 
-const input = "w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-zinc-900 focus:outline-none";
-const primary = "rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50";
-const quiet = "rounded-md px-3 py-1.5 text-sm text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900";
+const input = "w-full rounded-xl border border-lavender bg-white px-3 py-2 text-base focus:border-violet focus:outline-none";
+const primary = "rounded-xl bg-violet px-4 py-2 text-base font-medium text-white hover:bg-violet-deep disabled:opacity-50";
+const quiet = "rounded-xl px-3 py-1.5 text-base text-ink-soft hover:bg-lavender/60 hover:text-ink";
 
 const SOURCE_LABEL: Record<string, string> = {
   linkedin: "LinkedIn",
@@ -74,21 +74,22 @@ export default function MatchesPage() {
     setMatches((list) => list?.map((x) => (x.id === m.id ? updated : x)) ?? null);
   }
 
-  if (!prefs) return <main className="p-10 text-zinc-500">{error || "Loading…"}</main>;
+  if (!prefs)
+    return (
+      <AppShell title="Today's matches">
+        <p className="text-ink-soft">{error || "Loading…"}</p>
+      </AppShell>
+    );
 
   return (
-    <main className="mx-auto max-w-3xl space-y-6 px-6 py-10">
-      <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Today&apos;s matches</h1>
-        <Link href="/profile" className={quiet}>
-          ← Profile
-        </Link>
-      </header>
+    <AppShell title="Today's matches"
+      subtitle="Fresh jobs picked for what you've done, each with a resume you can tailor in a few minutes.">
+    <div className="space-y-6">
 
       {editing ? (
         <PreferencesForm initial={prefs} onSave={save} onCancel={prefs.target_roles.length ? () => setEditing(false) : undefined} />
       ) : (
-        <div className="flex items-start justify-between gap-4 rounded-xl border border-zinc-200 bg-white p-4 text-sm text-zinc-700">
+        <div className="flex items-start justify-between gap-4 rounded-3xl border border-lavender bg-white p-4 text-base text-ink/85">
           <p>
             {prefs.target_roles.join(", ") || "Any tech role"} · {prefs.experience_level} level ·{" "}
             {prefs.job_types.map((t) => (t === "full_time" ? "full-time" : "internship")).join(" & ")} ·{" "}
@@ -103,33 +104,33 @@ export default function MatchesPage() {
 
       {!editing && matches && matches.length > 0 && <DigestBar onDone={loadMatches} />}
 
-      {busy && <p className="animate-pulse text-sm text-zinc-500">{busy}</p>}
-      {error && <p className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
+      {busy && <p className="animate-pulse text-base text-ink-soft">{busy}</p>}
+      {error && <p className="rounded-xl bg-red-50 px-4 py-3 text-base text-red-700">{error}</p>}
 
       {matches && !busy && (
-        <section className="space-y-4">
+        <section className="grid items-start gap-6 xl:grid-cols-2">
           {matches.length === 0 && (
-            <p className="text-sm text-zinc-600">
+            <p className="text-base text-ink-soft xl:col-span-2">
               No new jobs match your preferences today. Try more cities, or allow remote or internships.
             </p>
           )}
           {matches.map((m) => (
             <article
               key={m.id}
-              className={`space-y-3 rounded-xl border bg-white p-5 ${m.status === "dismissed" ? "opacity-50" : "border-zinc-200"}`}
+              className={`space-y-3 rounded-3xl border bg-white p-6 sm:p-7 ${m.status === "dismissed" ? "opacity-50" : "border-lavender"}`}
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <h2 className="font-semibold">{m.job.title}</h2>
-                  <p className="text-sm text-zinc-600">
+                  <h2 className="font-display text-2xl font-semibold leading-tight">{m.job.title}</h2>
+                  <p className="text-base text-ink-soft">
                     {m.job.company} · {m.job.remote ? "Remote" : m.job.location}
                   </p>
                 </div>
-                <span className="shrink-0 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">
+                <span className="shrink-0 rounded-full bg-lavender px-2.5 py-0.5 text-sm font-medium text-violet">
                   {Math.round(m.score * 100)}% match
                 </span>
               </div>
-              <ul className="space-y-0.5 text-sm text-zinc-700">
+              <ul className="space-y-0.5 text-base text-ink/85">
                 {/* The location already shows under the title. */}
                 {m.reasons.filter((r) => r !== m.job.location && r !== "Remote").map((r) => (
                   <li key={r}>• {r}</li>
@@ -141,7 +142,7 @@ export default function MatchesPage() {
                   Apply on {SOURCE_LABEL[m.job.source] ?? "company site"}
                 </a>
                 {m.status === "applied" ? (
-                  <span className="text-sm text-emerald-700">Marked as applied</span>
+                  <span className="text-base text-violet">Marked as applied</span>
                 ) : (
                   <>
                     <button className={quiet} onClick={() => mark(m, "applied")}>
@@ -157,7 +158,8 @@ export default function MatchesPage() {
           ))}
         </section>
       )}
-    </main>
+    </div>
+    </AppShell>
   );
 }
 
@@ -178,17 +180,17 @@ function PreferencesForm({
     setP((x) => ({ ...x, job_types: x.job_types.includes(t) ? x.job_types.filter((y) => y !== t) : [...x.job_types, t] }));
 
   return (
-    <section className="space-y-4 rounded-xl border border-zinc-200 bg-white p-5">
-      <h2 className="text-lg font-semibold">What are you looking for?</h2>
-      <label className="block text-sm">
-        <span className="text-zinc-600">Roles (comma separated)</span>
+    <section className="space-y-4 rounded-3xl border border-lavender bg-white p-6 sm:p-7">
+      <h2 className="font-display text-2xl font-semibold">What are you looking for?</h2>
+      <label className="block text-base">
+        <span className="text-ink-soft">Roles (comma separated)</span>
         <input className={input} value={roles} onChange={(e) => setRoles(e.target.value)} placeholder="Backend developer, Data analyst" />
       </label>
-      <label className="block text-sm">
-        <span className="text-zinc-600">Cities (leave empty for anywhere in India)</span>
+      <label className="block text-base">
+        <span className="text-ink-soft">Cities (leave empty for anywhere in India)</span>
         <input className={input} value={cities} onChange={(e) => setCities(e.target.value)} placeholder="Bengaluru, Pune" />
       </label>
-      <div className="flex flex-wrap gap-6 text-sm">
+      <div className="flex flex-wrap gap-6 text-base">
         <label className="flex items-center gap-2">
           <input type="checkbox" checked={p.remote_ok} onChange={(e) => setP({ ...p, remote_ok: e.target.checked })} />
           Remote is fine
@@ -202,8 +204,8 @@ function PreferencesForm({
           Internship
         </label>
       </div>
-      <label className="block text-sm">
-        <span className="text-zinc-600">Experience</span>
+      <label className="block text-base">
+        <span className="text-ink-soft">Experience</span>
         <select
           className={input}
           value={p.experience_level}
@@ -286,7 +288,7 @@ function DigestBar({ onDone }: { onDone: () => void }) {
             : "Each morning you get these jobs by email, with tailored resumes for the top 3.";
 
   return (
-    <div className="flex items-center justify-between gap-4 rounded-xl border border-zinc-200 bg-white p-4 text-sm text-zinc-700">
+    <div className="flex items-center justify-between gap-4 rounded-3xl border border-lavender bg-white p-4 text-base text-ink/85">
       <p className={digest?.status === "running" ? "animate-pulse" : ""}>{error || label}</p>
       {digest?.status !== "running" && (
         <button className={quiet} onClick={run}>

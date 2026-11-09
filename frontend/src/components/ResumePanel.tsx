@@ -3,16 +3,16 @@
 import { useEffect, useState } from "react";
 import { api, type Match, type ResumeDetail } from "@/lib/api";
 
-const primary = "rounded-md bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50";
-const quiet = "rounded-md border border-zinc-300 px-3 py-1.5 text-sm text-zinc-700 hover:bg-zinc-50";
+const primary = "rounded-xl bg-violet px-3 py-1.5 text-base font-medium text-white hover:bg-violet-deep disabled:opacity-50";
+const quiet = "rounded-xl border border-lavender px-3 py-1.5 text-base text-ink/85 hover:bg-mist";
 
 const BAND_STYLE: Record<string, string> = {
-  Strong: "bg-emerald-50 text-emerald-700",
+  Strong: "bg-lavender text-violet",
   Good: "bg-sky-50 text-sky-700",
   "Needs work": "bg-amber-50 text-amber-700",
 };
 const DECISION_STYLE: Record<string, string> = {
-  shortlist: "text-emerald-700",
+  shortlist: "text-violet",
   maybe: "text-amber-700",
   reject: "text-red-700",
 };
@@ -60,22 +60,22 @@ export default function ResumePanel({ match }: { match: Match }) {
   const status = resume?.status;
 
   return (
-    <div className="space-y-2 rounded-lg bg-zinc-50 p-3 text-sm">
+    <div className="space-y-2 rounded-2xl bg-mist p-3 text-base">
       {!resume && (
         <div className="flex items-center justify-between gap-3">
-          <span className="text-zinc-600">No tailored resume yet.</span>
+          <span className="text-ink-soft">No tailored resume yet.</span>
           <button className={primary} onClick={write}>Write tailored resume</button>
         </div>
       )}
       {status === "running" && (
-        <p className="animate-pulse text-zinc-600">
+        <p className="animate-pulse text-ink-soft">
           Writing your resume: analysing the job, planning, writing, then an ATS check and an HR panel review. This
           takes 2–5 minutes.
         </p>
       )}
       {(status === "failed" || status === "pending") && (
         <div className="flex items-center justify-between gap-3">
-          <span className={status === "pending" ? "text-zinc-600" : "text-red-700"}>
+          <span className={status === "pending" ? "text-ink-soft" : "text-red-700"}>
             {status === "pending" ? resume?.error : "Writing the resume failed."}
           </span>
           <button className={quiet} onClick={write}>Try again</button>
@@ -85,10 +85,10 @@ export default function ResumePanel({ match }: { match: Match }) {
         <>
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-medium">Tailored resume</span>
-            <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${BAND_STYLE[resume.score_parts.band] ?? ""}`}>
+            <span className={`rounded-full px-2 py-0.5 text-sm font-medium ${BAND_STYLE[resume.score_parts.band] ?? ""}`}>
               {resume.score_parts.score} · {resume.score_parts.band}
             </span>
-            <span className="text-xs text-zinc-500">
+            <span className="text-sm text-ink-soft">
               ATS {resume.score_parts.ats} · HR panel {resume.score_parts.panel} (
               {resume.score_parts.shortlist_votes.shortlist ?? 0} shortlist, {resume.score_parts.shortlist_votes.maybe ?? 0}{" "}
               maybe, {resume.score_parts.shortlist_votes.reject ?? 0} reject)
@@ -105,8 +105,8 @@ export default function ResumePanel({ match }: { match: Match }) {
           </div>
           {resume.ask_student.length > 0 && (
             <div>
-              <p className="font-medium text-zinc-800">Check before sending</p>
-              <ul className="list-disc space-y-0.5 pl-5 text-zinc-700">
+              <p className="font-medium text-ink">Check before sending</p>
+              <ul className="list-disc space-y-0.5 pl-5 text-ink/85">
                 {resume.ask_student.slice(0, 4).map((q) => <li key={q}>{q}</li>)}
               </ul>
             </div>
@@ -121,18 +121,18 @@ export default function ResumePanel({ match }: { match: Match }) {
 
 function Details({ resume }: { resume: ResumeDetail }) {
   return (
-    <div className="space-y-3 border-t border-zinc-200 pt-3">
+    <div className="space-y-3 border-t border-lavender pt-3">
       {resume.ats && (
         <section>
           <p className="font-medium">
             ATS check: {resume.ats.tier} match, grade {resume.ats.grade} ({resume.ats.score}/100)
           </p>
-          <p className="text-xs text-zinc-500">{resume.ats.note}</p>
-          <p className="text-zinc-700">
+          <p className="text-sm text-ink-soft">{resume.ats.note}</p>
+          <p className="text-ink/85">
             {Object.entries(resume.ats.sub_scores).map(([k, v]) => `${k} ${Math.round(v * 100)}%`).join(" · ")}
           </p>
           {resume.ats.required_missing.length > 0 && (
-            <p className="text-zinc-700">Required but not on your resume: {resume.ats.required_missing.join(", ")}</p>
+            <p className="text-ink/85">Required but not on your resume: {resume.ats.required_missing.join(", ")}</p>
           )}
         </section>
       )}
@@ -142,14 +142,14 @@ function Details({ resume }: { resume: ResumeDetail }) {
           <ul className="space-y-1">
             {resume.panel.reviewers.map((r) => (
               <li key={r.id}>
-                <span className="text-zinc-500">{r.role}: </span>
+                <span className="text-ink-soft">{r.role}: </span>
                 {r.verdict ? (
                   <>
                     <span className={`font-medium ${DECISION_STYLE[r.verdict.decision]}`}>{r.verdict.decision}</span>
-                    <span className="text-zinc-700"> — {r.verdict.one_line}</span>
+                    <span className="text-ink/85"> — {r.verdict.one_line}</span>
                   </>
                 ) : (
-                  <span className="text-zinc-500">did not answer</span>
+                  <span className="text-ink-soft">did not answer</span>
                 )}
               </li>
             ))}
@@ -159,7 +159,7 @@ function Details({ resume }: { resume: ResumeDetail }) {
       {resume.interview_prep.length > 0 && (
         <section>
           <p className="font-medium">Questions to prepare for</p>
-          <ul className="list-disc space-y-0.5 pl-5 text-zinc-700">
+          <ul className="list-disc space-y-0.5 pl-5 text-ink/85">
             {resume.interview_prep.slice(0, 6).map((q) => <li key={q}>{q}</li>)}
           </ul>
         </section>
@@ -167,7 +167,7 @@ function Details({ resume }: { resume: ResumeDetail }) {
       {resume.text && (
         <section>
           <p className="font-medium">Resume text</p>
-          <pre className="whitespace-pre-wrap rounded-md bg-white p-3 font-sans text-xs text-zinc-800">{resume.text}</pre>
+          <pre className="whitespace-pre-wrap rounded-xl bg-white p-3 font-sans text-sm text-ink">{resume.text}</pre>
         </section>
       )}
     </div>

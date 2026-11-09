@@ -4,15 +4,15 @@ import { useEffect, useState } from "react";
 import { api, type AgentQuestion, type EnrichView, type Screen, type SectionView } from "@/lib/api";
 
 const primary =
-  "rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50";
-const quiet = "rounded-md px-3 py-1.5 text-sm text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 disabled:opacity-50";
-const input = "w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-zinc-900 focus:outline-none";
+  "rounded-xl bg-violet px-4 py-2 text-base font-medium text-white hover:bg-violet-deep disabled:opacity-50";
+const quiet = "rounded-xl px-3 py-1.5 text-base text-ink-soft hover:bg-lavender/60 hover:text-ink disabled:opacity-50";
+const input = "w-full rounded-xl border border-lavender bg-white px-3 py-2 text-base focus:border-violet focus:outline-none";
 
 const STATUS_DOT: Record<string, string> = {
-  finished: "bg-emerald-500",
+  finished: "bg-violet",
   in_progress: "bg-amber-400",
-  skipped: "bg-zinc-300",
-  not_started: "bg-zinc-200",
+  skipped: "bg-ink-soft/30",
+  not_started: "bg-lavender",
 };
 
 /** Profile assistant: guided topics, one question at a time, student always in control. */
@@ -50,26 +50,26 @@ export default function ImprovePanel({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [focus?.nonce]);
 
-  if (!view) return error ? <p className="text-sm text-red-700">{error}</p> : null;
+  if (!view) return error ? <p className="text-base text-red-700">{error}</p> : null;
   const { header, session, sections, failed_answers } = view;
   const screen = session.screen;
   const live = session.status === "active" && screen && screen.screen !== "done";
   const act = (type: string, label: string, keys: string[] = []) => call(label, "/enrich/action", { type, keys });
 
   return (
-    <section id="assistant" className="space-y-4 rounded-xl border border-emerald-200 bg-emerald-50/40 p-5">
+    <section id="assistant" className="space-y-4 rounded-3xl border border-lavender bg-lavender/40 p-5">
       {header && (
         <div>
-          <h2 className="text-lg font-semibold">Profile strength: {header.strength}%</h2>
-          <div className="mt-2 h-2 rounded-full bg-zinc-200">
-            <div className="h-2 rounded-full bg-emerald-500 transition-all" style={{ width: `${header.strength}%` }} />
+          <h2 className="font-display text-2xl font-semibold">Profile strength: {header.strength}%</h2>
+          <div className="mt-2 h-2 rounded-full bg-lavender">
+            <div className="h-2 rounded-full bg-violet transition-all" style={{ width: `${header.strength}%` }} />
           </div>
-          <p className="mt-3 text-sm text-zinc-700">{header.summary}</p>
+          <p className="mt-3 text-base text-ink/85">{header.summary}</p>
         </div>
       )}
 
       {failed_answers > 0 && (
-        <div className="flex items-center justify-between rounded-md bg-amber-50 px-3 py-2 text-sm text-amber-800">
+        <div className="flex items-center justify-between rounded-xl bg-amber-50 px-3 py-2 text-base text-amber-800">
           <span>
             {failed_answers} answer{failed_answers > 1 ? "s are" : " is"} saved but not fully processed yet.
           </span>
@@ -79,12 +79,12 @@ export default function ImprovePanel({
         </div>
       )}
 
-      {busy && <p className="animate-pulse text-sm text-emerald-700">{busy}</p>}
-      {error && <p className="text-sm text-red-700">{error}</p>}
+      {busy && <p className="animate-pulse text-base text-violet">{busy}</p>}
+      {error && <p className="text-base text-red-700">{error}</p>}
 
       {!live && !busy && (
-        <div className="flex flex-wrap items-center gap-3 rounded-lg bg-white p-4">
-          <p className="flex-1 text-sm text-zinc-700">
+        <div className="flex flex-wrap items-center gap-3 rounded-2xl bg-white p-4">
+          <p className="flex-1 text-base text-ink/85">
             {session.status === "paused"
               ? "You paused here. Everything you shared is saved."
               : session.status === "done" || screen?.screen === "done"
@@ -100,9 +100,9 @@ export default function ImprovePanel({
       {screen?.screen === "done" && screen.notices.length > 0 && <Notices notices={screen.notices} />}
 
       {live && !busy && screen && (
-        <div className="space-y-4 rounded-lg bg-white p-4 shadow-sm">
+        <div className="space-y-4 rounded-2xl bg-white p-4 shadow-sm">
           {"entity" in screen && (
-            <div className="flex items-center justify-between text-xs uppercase tracking-wide text-zinc-500">
+            <div className="flex items-center justify-between text-sm uppercase tracking-wide text-ink-soft">
               <span>
                 {screen.entity.section_label} · {screen.entity.title}
               </span>
@@ -133,7 +133,7 @@ export default function ImprovePanel({
 function Notices({ notices }: { notices: string[] }) {
   if (!notices.length) return null;
   return (
-    <ul className="space-y-1 text-sm text-zinc-500">
+    <ul className="space-y-1 text-base text-ink-soft">
       {notices.map((n, i) => (
         <li key={i}>• {n}</li>
       ))}
@@ -155,32 +155,32 @@ function Topics({ screen, act }: { screen: Extract<Screen, { screen: "topics" }>
 
   return (
     <div className="space-y-4">
-      {screen.understanding && <p className="rounded-lg bg-zinc-50 p-3 text-sm text-zinc-800">{screen.understanding}</p>}
+      {screen.understanding && <p className="rounded-2xl bg-mist p-3 text-base text-ink">{screen.understanding}</p>}
       {screen.topics.length > 0 ? (
         <>
-          <p className="text-sm text-zinc-700">A few details could make this stronger. Pick any you&apos;d like to talk about:</p>
+          <p className="text-base text-ink/85">A few details could make this stronger. Pick any you&apos;d like to talk about:</p>
           <div className="space-y-2">
             {screen.topics.map((t) => (
               <label
                 key={t.key}
-                className={`flex cursor-pointer gap-3 rounded-lg border p-3 transition ${
-                  picked.includes(t.key) ? "border-emerald-500 bg-emerald-50" : "border-zinc-200 hover:border-zinc-400"
+                className={`flex cursor-pointer gap-3 rounded-2xl border p-3 transition ${
+                  picked.includes(t.key) ? "border-violet bg-lavender" : "border-lavender hover:border-violet/50"
                 }`}
               >
                 <input type="checkbox" className="mt-1" checked={picked.includes(t.key)} onChange={() => toggle(t.key, t.label)} />
                 <span>
-                  <span className="block text-sm font-medium">{t.label}</span>
-                  {t.why && <span className="block text-sm text-zinc-600">{t.why}</span>}
+                  <span className="block text-base font-medium">{t.label}</span>
+                  {t.why && <span className="block text-base text-ink-soft">{t.why}</span>}
                 </span>
               </label>
             ))}
           </div>
           {earlier.length > 0 && (
-            <p className="text-sm text-zinc-600">Also chosen: {earlier.map((k) => labels[k] ?? k).join(", ")}</p>
+            <p className="text-base text-ink-soft">Also chosen: {earlier.map((k) => labels[k] ?? k).join(", ")}</p>
           )}
         </>
       ) : (
-        <p className="text-sm text-zinc-700">This already looks clear. Nothing important to add right now.</p>
+        <p className="text-base text-ink/85">This already looks clear. Nothing important to add right now.</p>
       )}
       <div className="flex flex-wrap gap-2">
         {screen.topics.length > 0 && (
@@ -234,7 +234,7 @@ function Question({
         {screen.selected_topics.map((t) => (
           <span
             key={t.key}
-            className={`rounded-full px-2.5 py-0.5 text-xs ${t.current ? "bg-emerald-600 text-white" : "bg-zinc-100 text-zinc-600"}`}
+            className={`rounded-full px-2.5 py-0.5 text-sm ${t.current ? "bg-violet text-white" : "bg-lavender/60 text-ink-soft"}`}
           >
             {t.label}
           </span>
@@ -242,16 +242,16 @@ function Question({
       </div>
 
       {screen.history.map((h, i) => (
-        <div key={i} className="space-y-1 text-sm">
-          <p className="text-zinc-500">{h.q}</p>
-          <p className="ml-6 rounded-lg bg-emerald-50 px-3 py-2 text-zinc-800">{h.a}</p>
+        <div key={i} className="space-y-1 text-base">
+          <p className="text-ink-soft">{h.q}</p>
+          <p className="ml-6 rounded-2xl bg-lavender px-3 py-2 text-ink">{h.a}</p>
         </div>
       ))}
 
       <div className="space-y-1">
-        {q.lead_in && <p className="text-sm text-zinc-600">{q.lead_in}</p>}
+        {q.lead_in && <p className="text-base text-ink-soft">{q.lead_in}</p>}
         <p className="font-medium">{q.text}</p>
-        {q.kind === "multi" && <p className="text-xs text-zinc-500">Pick any that apply.</p>}
+        {q.kind === "multi" && <p className="text-sm text-ink-soft">Pick any that apply.</p>}
       </div>
 
       {hasOptions && (
@@ -260,8 +260,8 @@ function Question({
             <button
               key={o.key}
               onClick={() => toggle(o.key)}
-              className={`rounded-full border px-3 py-1.5 text-sm transition ${
-                keys.includes(o.key) ? "border-emerald-600 bg-emerald-600 text-white" : "border-zinc-300 bg-white hover:border-zinc-500"
+              className={`rounded-full border px-3 py-1.5 text-base transition ${
+                keys.includes(o.key) ? "border-violet bg-violet text-white" : "border-lavender bg-white hover:border-violet/60"
               }`}
             >
               {o.label}
@@ -273,7 +273,7 @@ function Question({
       {q.kind === "number" && (
         <div className="flex items-center gap-2">
           <input type="number" className={`${input} w-40`} value={num} onChange={(e) => setNum(e.target.value)} />
-          {q.unit && <span className="text-sm text-zinc-500">{q.unit}</span>}
+          {q.unit && <span className="text-base text-ink-soft">{q.unit}</span>}
         </div>
       )}
       {q.kind === "long_text" ? (
@@ -313,8 +313,8 @@ function Summary({ screen, act }: { screen: Extract<Screen, { screen: "summary" 
   const list = (title: string, items: string[]) =>
     items.length > 0 && (
       <div>
-        <p className="text-sm font-medium text-zinc-700">{title}</p>
-        <ul className="ml-5 list-disc text-sm text-zinc-600">
+        <p className="text-base font-medium text-ink/85">{title}</p>
+        <ul className="ml-5 list-disc text-base text-ink-soft">
           {items.map((x, i) => (
             <li key={i}>{x}</li>
           ))}
@@ -331,7 +331,7 @@ function Summary({ screen, act }: { screen: Extract<Screen, { screen: "summary" 
       {list("We talked about", screen.discussed)}
       {list("You skipped", screen.skipped)}
       {screen.unexplored.length > 0 && (
-        <p className="text-sm text-zinc-600">
+        <p className="text-base text-ink-soft">
           Not explored yet: {screen.unexplored.join(", ")}. You can come back to these anytime.
         </p>
       )}
@@ -357,19 +357,19 @@ function Sections({
   onDiscuss: (id: string) => void;
 }) {
   return (
-    <details className="rounded-lg bg-white p-3 text-sm">
-      <summary className="cursor-pointer font-medium text-zinc-700">Sections and progress</summary>
+    <details className="rounded-2xl bg-white p-3 text-base">
+      <summary className="cursor-pointer font-medium text-ink/85">Sections and progress</summary>
       <div className="mt-3 space-y-3">
         {sections.map((s) => (
           <div key={s.key}>
-            <p className="text-xs uppercase tracking-wide text-zinc-500">{s.label}</p>
+            <p className="text-sm uppercase tracking-wide text-ink-soft">{s.label}</p>
             <ul className="mt-1 space-y-1">
               {s.entities.map((e) => (
                 <li key={e.id} className="flex items-center gap-2">
-                  <span className={`h-2 w-2 rounded-full ${STATUS_DOT[e.status] ?? "bg-zinc-200"}`} title={e.status.replace("_", " ")} />
+                  <span className={`h-2 w-2 rounded-full ${STATUS_DOT[e.status] ?? "bg-lavender"}`} title={e.status.replace("_", " ")} />
                   <span className="flex-1">{e.title}</span>
                   {e.total > 0 && (
-                    <span className="text-xs text-zinc-400">
+                    <span className="text-sm text-ink-soft/70">
                       {e.complete}/{e.total} clear
                     </span>
                   )}

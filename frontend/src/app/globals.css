@@ -46,6 +46,17 @@
     linear-gradient(180deg, rgb(32 26 92 / 0.35) 0%, rgb(32 26 92 / 0) 25%);
 }
 
+/* Signed-in pages: a soft dusk glow across the top of a lavender-white page. */
+.app-glow {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 32rem;
+  background:
+    radial-gradient(50% 80% at 15% 0%, rgb(169 200 232 / 0.55) 0%, rgb(169 200 232 / 0) 70%),
+    radial-gradient(45% 70% at 85% 0%, rgb(244 169 136 / 0.3) 0%, rgb(244 169 136 / 0) 70%),
+    linear-gradient(180deg, rgb(230 225 247 / 0.9) 0%, rgb(246 244 252 / 0) 100%);
+}
+
 /* Brighter glass for cards that sit on the photo, as in the reference. */
 .glass-light {
   background: rgb(246 244 252 / 0.72);
