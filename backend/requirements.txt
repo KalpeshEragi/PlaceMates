@@ -14,3 +14,5 @@ langgraph>=1.2
 langgraph-checkpoint-postgres>=3.2
 fastembed>=0.9
 pgvector>=0.5
+crewai>=1.15
+google-genai>=1.0

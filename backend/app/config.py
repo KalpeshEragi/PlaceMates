@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     apify_monthly_budget_usd: float = 4.5  # stay under Apify's $5 free monthly credit
 
     groq_api_key: str = ""
+    gemini_api_key: str = ""              # resume writer (falls back to Groq if unavailable)
     groq_base_url: str = "https://api.groq.com/openai/v1"
 
     # Which model each cheap task uses. Change here, not in code.
