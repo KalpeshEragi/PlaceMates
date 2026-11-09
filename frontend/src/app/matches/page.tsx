@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { api, ApiError, type Match, type Preferences } from "@/lib/api";
+import { api, ApiError, type Digest, type Match, type Preferences } from "@/lib/api";
+import ResumePanel from "@/components/ResumePanel";
 
 const input = "w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-zinc-900 focus:outline-none";
 const primary = "rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50";
@@ -100,6 +101,8 @@ export default function MatchesPage() {
         </div>
       )}
 
+      {!editing && matches && matches.length > 0 && <DigestBar onDone={loadMatches} />}
+
       {busy && <p className="animate-pulse text-sm text-zinc-500">{busy}</p>}
       {error && <p className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
 
@@ -132,6 +135,7 @@ export default function MatchesPage() {
                   <li key={r}>• {r}</li>
                 ))}
               </ul>
+              <ResumePanel match={m} />
               <div className="flex flex-wrap items-center gap-2">
                 <a href={m.job.apply_url} target="_blank" rel="noreferrer" className={primary}>
                   Apply on {SOURCE_LABEL[m.job.source] ?? "company site"}
@@ -229,5 +233,66 @@ function PreferencesForm({
         )}
       </div>
     </section>
+  );
+}
+
+/** Today's email: sent automatically each morning; can also be run now. */
+function DigestBar({ onDone }: { onDone: () => void }) {
+  const [digest, setDigest] = useState<Digest | null>(null);
+  const [error, setError] = useState("");
+
+  async function load() {
+    try {
+      setDigest(await api<Digest | null>("/digest/today"));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not load today's email status");
+    }
+  }
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  useEffect(() => {
+    if (digest?.status !== "running") return;
+    const t = setInterval(async () => {
+      const d = await api<Digest | null>("/digest/today").catch(() => null);
+      setDigest(d);
+      if (d && d.status !== "running") onDone();
+    }, 15000);
+    return () => clearInterval(t);
+  }, [digest?.status, onDone]);
+
+  async function run() {
+    setError("");
+    try {
+      await api("/digest/run?force=true", { method: "POST" });
+      setDigest({ date: "", status: "running", stats: {}, error: null, sent_at: null });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not start");
+    }
+  }
+
+  const s = digest?.stats ?? {};
+  const label =
+    digest?.status === "sent"
+      ? `Today's email was sent to your Gmail, with ${s.ready ?? 0} tailored resume${s.ready === 1 ? "" : "s"} attached.`
+      : digest?.status === "running"
+        ? "Preparing today's email: writing resumes for your top matches. This can take 10–15 minutes."
+        : digest?.status === "failed"
+          ? `Today's email failed: ${digest.error}`
+          : digest?.status === "skipped"
+            ? `No email today: ${digest.error}`
+            : "Each morning you get these jobs by email, with tailored resumes for the top 3.";
+
+  return (
+    <div className="flex items-center justify-between gap-4 rounded-xl border border-zinc-200 bg-white p-4 text-sm text-zinc-700">
+      <p className={digest?.status === "running" ? "animate-pulse" : ""}>{error || label}</p>
+      {digest?.status !== "running" && (
+        <button className={quiet} onClick={run}>
+          {digest?.status === "sent" ? "Send again" : "Email me now"}
+        </button>
+      )}
+    </div>
   );
 }

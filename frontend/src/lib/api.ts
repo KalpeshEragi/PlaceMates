@@ -140,6 +140,7 @@ export interface Match {
   score: number;
   reasons: string[];
   status: "shortlisted" | "applied" | "dismissed" | "sent";
+  resume: ResumeBrief | null;
   job: {
     id: string;
     title: string;
@@ -152,4 +153,58 @@ export interface Match {
     apply_url: string;
     description: string;
   };
+}
+
+export type ResumeStatus = "running" | "ready" | "failed" | "pending";
+
+export interface ResumeBrief {
+  status: ResumeStatus;
+  score: number | null;
+  band: string | null;
+}
+
+export interface Reviewer {
+  id: string;
+  role: string;
+  verdict?: {
+    decision: "shortlist" | "maybe" | "reject";
+    scores: Record<string, number>;
+    one_line: string;
+  };
+  error?: string;
+}
+
+export interface ResumeDetail {
+  status: ResumeStatus;
+  score: number | null;
+  error: string | null;
+  text: string | null;
+  score_parts: {
+    score: number;
+    band: string;
+    ats: number;
+    panel: number;
+    truth_penalty: number;
+    shortlist_votes: Record<string, number>;
+  } | null;
+  ats: {
+    score: number;
+    tier: string;
+    grade: string;
+    sub_scores: Record<string, number>;
+    required_missing: string[];
+    note: string;
+  } | null;
+  panel: { reviewers: Reviewer[]; votes: Record<string, number> } | null;
+  interview_prep: string[];
+  ask_student: string[];
+  seconds: number | null;
+}
+
+export interface Digest {
+  date: string;
+  status: "running" | "sent" | "failed" | "skipped";
+  stats: Record<string, number>;
+  error: string | null;
+  sent_at: string | null;
 }
