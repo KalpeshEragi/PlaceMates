@@ -10,9 +10,12 @@ from datetime import datetime
 
 from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, Text, UniqueConstraint, func
 from sqlalchemy.dialects.postgresql import JSONB, UUID
+from pgvector.sqlalchemy import Vector
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db import Base
+
+EMBED_DIM = 384  # BAAI/bge-small-en-v1.5
 
 
 def _id() -> Mapped[uuid.UUID]:
@@ -157,6 +160,57 @@ class Job(Base):
     first_seen_at: Mapped[datetime] = _created()
     last_seen_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     raw: Mapped[dict] = mapped_column(JSONB)  # original posting, for debugging and re-parsing
+    # bge-small (384 numbers) of title + description, for semantic matching. Filled after fetching.
+    embedding: Mapped[list[float] | None] = mapped_column(Vector(EMBED_DIM))
+
+
+class JobPreferences(Base):
+    """What a student is looking for. Hard filters: experience level, job types, location.
+    Ranking only: target roles, minimum salary."""
+
+    __tablename__ = "job_preferences"
+
+    id: Mapped[uuid.UUID] = _id()
+    profile_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("profiles.id", ondelete="CASCADE"), unique=True)
+    target_roles: Mapped[list] = mapped_column(JSONB, default=list)     # ["Backend developer", "Data analyst"]
+    locations: Mapped[list] = mapped_column(JSONB, default=list)        # ["Bengaluru", "Pune"]; empty = anywhere in India
+    remote_ok: Mapped[bool] = mapped_column(default=True)
+    experience_level: Mapped[str] = mapped_column(String, default="entry")  # intern | entry | mid
+    job_types: Mapped[list] = mapped_column(JSONB, default=lambda: ["full_time"])  # full_time | internship
+    min_salary_lpa: Mapped[float | None] = mapped_column(Float)          # ranking only; most posts omit salary
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
+
+
+class ProfileEmbedding(Base):
+    """Cached profile embedding; recomputed when the profile text changes."""
+
+    __tablename__ = "profile_embeddings"
+
+    id: Mapped[uuid.UUID] = _id()
+    profile_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("profiles.id", ondelete="CASCADE"), unique=True)
+    text_hash: Mapped[str] = mapped_column(String)
+    embedding: Mapped[list[float]] = mapped_column(Vector(EMBED_DIM))
+
+
+class JobMatch(Base):
+    """A job picked for a student. One row per (profile, job): a job is never picked twice."""
+
+    __tablename__ = "job_matches"
+    __table_args__ = (UniqueConstraint("profile_id", "job_id"),)
+
+    id: Mapped[uuid.UUID] = _id()
+    profile_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("profiles.id", ondelete="CASCADE"), index=True)
+    job_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("jobs.id", ondelete="CASCADE"))
+    batch_date: Mapped[str] = mapped_column(String, index=True)  # "2026-11-09": the day's shortlist
+    rank: Mapped[int] = mapped_column(Integer)
+    score: Mapped[float] = mapped_column(Float)
+    reasons: Mapped[list] = mapped_column(JSONB)  # short, human-readable "why this job"
+    status: Mapped[str] = mapped_column(String, default="shortlisted")  # shortlisted | sent | applied | dismissed
+    created_at: Mapped[datetime] = _created()
+
+    job: Mapped[Job] = relationship()
 
 
 class JobFetchRun(Base):

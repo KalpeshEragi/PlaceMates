@@ -12,3 +12,5 @@ cryptography>=44
 pymupdf>=1.25
 langgraph>=1.2
 langgraph-checkpoint-postgres>=3.2
+fastembed>=0.9
+pgvector>=0.5
