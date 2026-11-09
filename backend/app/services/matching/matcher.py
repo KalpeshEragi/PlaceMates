@@ -47,8 +47,9 @@ MAX_YEARS = {"intern": 0, "entry": 2, "mid": 5}
 
 
 def years_required(job: Job) -> int | None:
-    """Smallest 'N years' mentioned near experience wording, in the title or early description."""
-    text = f"{job.title}\n{job.description[:2500]}"
+    """Smallest 'N years' mentioned near experience wording, in the title or description.
+    The whole description: requirements often come after a long company intro."""
+    text = f"{job.title}\n{job.description}"
     found = []
     for m in YEARS.finditer(text):
         window = text[max(0, m.start() - 60): m.end() + 60].lower()
