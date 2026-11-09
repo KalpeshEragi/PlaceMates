@@ -7,6 +7,16 @@ class Settings(BaseSettings):
     database_url: str = "postgresql+psycopg://placemates:placemates@localhost:5432/placemates"
     frontend_url: str = "http://localhost:3000"
     backend_url: str = "http://localhost:8000"
+    # Where the browser reaches this API. In production the frontend proxies /api, so set it to
+    # "https://<frontend>/api": the Google callback then lands on the frontend's domain and the
+    # session cookie belongs to it. Empty = backend_url (local development).
+    public_api_url: str = ""
+    # Shared secret for POST /internal/daily (an external cron, for hosts that sleep). Empty = disabled.
+    cron_secret: str = ""
+
+    @property
+    def api_base(self) -> str:
+        return (self.public_api_url or self.backend_url).rstrip("/")
 
     jwt_secret: str = "change-me"
     session_secret: str = "change-me"

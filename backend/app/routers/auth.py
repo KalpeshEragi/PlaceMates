@@ -24,7 +24,7 @@ oauth.register(
 
 @router.get("/google/login")
 async def google_login(request: Request):
-    redirect_uri = f"{settings.backend_url}/auth/google/callback"
+    redirect_uri = f"{settings.api_base}/auth/google/callback"
     # offline + consent so Google returns a refresh token for later sends.
     return await oauth.google.authorize_redirect(
         request, redirect_uri, access_type="offline", prompt="consent"
@@ -56,7 +56,7 @@ async def google_callback(request: Request, db: Session = Depends(get_db)):
         create_token(user.id),
         httponly=True,
         samesite="lax",
-        secure=settings.backend_url.startswith("https"),
+        secure=settings.api_base.startswith("https"),
         max_age=settings.jwt_ttl_days * 86400,
     )
     return response

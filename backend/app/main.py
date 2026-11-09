@@ -1,7 +1,8 @@
+import hmac
 import logging
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from starlette.middleware.sessions import SessionMiddleware
@@ -57,3 +58,15 @@ app.include_router(matches.router)
 @app.get("/health")
 def health() -> dict:
     return {"status": "ok"}
+
+
+@app.post("/internal/daily", status_code=202, include_in_schema=False)
+def internal_daily(x_cron_secret: str = Header(default="")):
+    """For an external scheduler (e.g. GitHub Actions) on hosts that sleep: fetch jobs, then send digests."""
+    if not settings.cron_secret or not hmac.compare_digest(x_cron_secret, settings.cron_secret):
+        raise HTTPException(403, "Forbidden")
+    from app.routers.jobs import fetch_in_background
+    from app.services.daily import run_for_all
+    if not fetch_in_background(then=run_for_all):
+        raise HTTPException(409, "A run is already in progress")
+    return {"started": True}
