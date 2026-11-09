@@ -119,6 +119,10 @@ function Hero() {
   );
 }
 
+/* One content width for every section below the hero: wide enough to fill large screens. */
+const WRAP = "mx-auto w-full max-w-[120rem] px-5 sm:px-8 lg:px-14";
+const H2 = "font-display text-[clamp(2.4rem,4vw,4rem)] font-semibold leading-[1.05] tracking-[-0.02em]";
+
 function Forward() {
   const items = [
     { icon: "search", tone: "bg-powder/45 text-[#3d6a9e]", title: "Discover opportunities that fit",
@@ -129,16 +133,16 @@ function Forward() {
       text: "Get actionable feedback on your resume, identify skill gaps and understand how to strengthen your profile." },
   ] as const;
   return (
-    <section id="features" className="mx-auto max-w-6xl px-5 py-24 sm:px-10">
-      <h2 className="text-center font-display text-4xl font-semibold tracking-tight">A smarter way to move forward</h2>
-      <div className="mt-14 grid gap-5 md:grid-cols-3">
+    <section id="features" className={`${WRAP} py-20 lg:py-28`}>
+      <h2 className={H2}>A smarter way to move forward</h2>
+      <div className="mt-12 grid gap-6 md:grid-cols-3">
         {items.map((f) => (
-          <article key={f.title} className="rounded-3xl border border-lavender bg-white p-7">
-            <span className={`grid h-14 w-14 place-items-center rounded-2xl ${f.tone}`}>
-              <Icon name={f.icon} className="h-6 w-6" />
+          <article key={f.title} className="rounded-[2rem] border border-lavender bg-white p-8 lg:p-10">
+            <span className={`grid h-16 w-16 place-items-center rounded-2xl ${f.tone}`}>
+              <Icon name={f.icon} className="h-7 w-7" />
             </span>
-            <h3 className="mt-6 font-display text-xl font-semibold">{f.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-ink-soft">{f.text}</p>
+            <h3 className="mt-8 font-display text-2xl font-semibold lg:text-[1.75rem]">{f.title}</h3>
+            <p className="mt-3 text-base leading-relaxed text-ink-soft lg:text-lg">{f.text}</p>
           </article>
         ))}
       </div>
@@ -156,51 +160,28 @@ function YourStory() {
       text: "Review suggestions, answer questions and approve changes before using your resume." },
   ] as const;
   return (
-    <section id="resume" className="bg-white py-24">
-      <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 sm:px-10 lg:grid-cols-2">
-        <div>
-          <h2 className="font-display text-4xl font-semibold leading-tight tracking-tight">
-            Your experience. Your story. Your resume.
-          </h2>
-          <p className="mt-5 text-lg font-semibold text-violet">
+    <section id="resume" className="bg-white">
+      <div className={`${WRAP} grid gap-12 py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-20 lg:py-28`}>
+        <div className="lg:sticky lg:top-10 lg:self-start">
+          <h2 className={H2}>Your experience. Your story. Your resume.</h2>
+          <p className="mt-6 font-display text-2xl font-medium leading-snug text-violet lg:text-3xl">
             AI should make your experience clearer, not invent a better version of it.
           </p>
-          <p className="mt-2 text-ink-soft">PlaceMates builds on what you&apos;ve actually accomplished.</p>
-          <ul className="mt-8 space-y-6">
-            {points.map((p) => (
-              <li key={p.title} className="flex gap-4">
-                <span className="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-lavender text-violet">
-                  <Icon name={p.icon} className="h-5 w-5" />
-                </span>
-                <span>
-                  <span className="block font-semibold">{p.title}</span>
-                  <span className="mt-1 block text-sm leading-relaxed text-ink-soft">{p.text}</span>
-                </span>
-              </li>
-            ))}
-          </ul>
+          <p className="mt-4 text-lg text-ink-soft">PlaceMates builds on what you&apos;ve actually accomplished.</p>
         </div>
-        <div className="relative">
-          <div className="absolute inset-4 rounded-[3rem] bg-gradient-to-br from-powder/70 via-lavender to-peach/50 blur-2xl" aria-hidden="true" />
-          <div className="relative rounded-[2rem] border border-lavender bg-white p-6 shadow-[0_30px_60px_-30px_rgb(43_42_92/0.35)] sm:p-8">
-            <p className="font-display text-lg font-semibold">Research Intern</p>
-            <p className="text-sm text-ink-soft">Patent analysis project</p>
-            <ul className="mt-5 space-y-5 text-sm leading-relaxed">
-              <li>
-                <p>Built a two-stage NLP pipeline that judges patent novelty, reaching 92.67% accuracy on individual claims.</p>
-                <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-mist px-3 py-1 text-xs text-ink-soft">
-                  <Icon name="check" className="h-3.5 w-3.5 text-violet" /> From your answer: &ldquo;Evaluated on 25 real patents&rdquo;
-                </p>
-              </li>
-              <li>
-                <p>Added claim-level knowledge graphs, ensuring faster reviews for examiners.</p>
-                <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-peach/25 px-3 py-1 text-xs text-[#9a4a2b]">
-                  Not in your profile yet. Confirm it, or it stays off your resume.
-                </p>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <ul className="space-y-5">
+          {points.map((p) => (
+            <li key={p.title} className="flex gap-6 rounded-[2rem] border border-lavender bg-mist/60 p-8">
+              <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-lavender text-violet">
+                <Icon name={p.icon} className="h-6 w-6" />
+              </span>
+              <span>
+                <span className="block font-display text-2xl font-semibold">{p.title}</span>
+                <span className="mt-2 block text-base leading-relaxed text-ink-soft lg:text-lg">{p.text}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
@@ -218,19 +199,16 @@ function Journey() {
       text: "Get recruiter-style feedback, understand what's missing and make every application stronger." },
   ];
   return (
-    <section id="how" className="mx-auto max-w-6xl px-5 py-24 sm:px-10">
-      <h2 className="mx-auto max-w-2xl text-center font-display text-4xl font-semibold leading-tight tracking-tight">
-        From your first resume to your next opportunity.
-      </h2>
-      <ol className="relative mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+    <section id="how" className={`${WRAP} py-20 lg:py-28`}>
+      <h2 className={`${H2} max-w-3xl`}>From your first resume to your next opportunity.</h2>
+      <ol className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
         {steps.map((s, i) => (
-          <li key={s.title} className="relative rounded-3xl border border-lavender bg-white p-7">
-            <span className={`grid h-11 w-11 place-items-center rounded-full font-display text-base font-semibold ${i === 3
-              ? "bg-peach text-white" : "bg-lavender text-violet"}`}>
+          <li key={s.title} className="rounded-[2rem] border border-lavender bg-white p-8 lg:p-9">
+            <span className={`font-display text-5xl font-semibold ${i === 3 ? "text-peach-deep" : "text-violet/80"}`}>
               {String(i + 1).padStart(2, "0")}
             </span>
-            <h3 className="mt-5 font-display text-xl font-semibold">{s.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-ink-soft">{s.text}</p>
+            <h3 className="mt-6 font-display text-2xl font-semibold">{s.title}</h3>
+            <p className="mt-3 text-base leading-relaxed text-ink-soft lg:text-lg">{s.text}</p>
           </li>
         ))}
       </ol>
@@ -246,20 +224,20 @@ function Companion() {
     { icon: "chart", name: "Resume Review", text: "Identify weaknesses and improve your applications." },
   ] as const;
   return (
-    <section className="hero-sky py-24 text-white">
-      <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 sm:px-10 lg:grid-cols-[1fr_1.3fr]">
+    <section className="hero-sky text-white">
+      <div className={`${WRAP} grid items-center gap-12 py-20 lg:grid-cols-[1fr_1.4fr] lg:gap-20 lg:py-28`}>
         <div>
-          <h2 className="font-display text-4xl font-semibold leading-tight tracking-tight">More than a resume builder.</h2>
-          <p className="mt-3 text-xl text-white/80">Your personal placement companion.</p>
+          <h2 className={H2}>More than a resume builder.</h2>
+          <p className="mt-5 font-display text-2xl text-white/85 lg:text-3xl">Your personal placement companion.</p>
         </div>
-        <ul className="grid gap-4 sm:grid-cols-2">
+        <ul className="grid gap-5 sm:grid-cols-2">
           {rows.map((r) => (
-            <li key={r.name} className="glass-light rounded-3xl p-6 text-ink">
-              <span className="grid h-11 w-11 place-items-center rounded-xl bg-white/80 text-violet">
-                <Icon name={r.icon} className="h-5 w-5" />
+            <li key={r.name} className="glass-light rounded-[2rem] p-8 text-ink">
+              <span className="grid h-14 w-14 place-items-center rounded-2xl bg-white/80 text-violet">
+                <Icon name={r.icon} className="h-6 w-6" />
               </span>
-              <p className="mt-4 font-display text-lg font-semibold">{r.name}</p>
-              <p className="mt-1 text-sm leading-relaxed text-ink-soft">{r.text}</p>
+              <p className="mt-6 font-display text-2xl font-semibold">{r.name}</p>
+              <p className="mt-2 text-base leading-relaxed text-ink-soft lg:text-lg">{r.text}</p>
             </li>
           ))}
         </ul>
@@ -270,14 +248,16 @@ function Companion() {
 
 function Closing() {
   return (
-    <section className="px-5 py-24 text-center sm:px-10">
-      <h2 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">Make your next application count.</h2>
-      <p className="mx-auto mt-4 max-w-xl text-lg text-ink-soft">
+    <section className={`${WRAP} py-24 text-center lg:py-32`}>
+      <h2 className={`${H2} mx-auto max-w-4xl`}>Make your next application count.</h2>
+      <p className="mx-auto mt-5 max-w-2xl text-xl text-ink-soft">
         You already have the experience. Let&apos;s make sure the right opportunities see it.
       </p>
-      <div className="mt-9 flex flex-col items-center gap-3">
-        <a href={LOGIN} className={primaryBtn}>Get started with PlaceMates <Icon name="arrow" className="h-4 w-4" /></a>
-        <p className="text-sm text-ink-soft">Upload your resume. Build your profile. Find your next opportunity.</p>
+      <div className="mt-10 flex flex-col items-center gap-4">
+        <a href={LOGIN} className={`${primaryBtn} px-8 py-4 text-base`}>
+          Get started with PlaceMates <Icon name="arrow" className="h-4 w-4" />
+        </a>
+        <p className="text-base text-ink-soft">Upload your resume. Build your profile. Find your next opportunity.</p>
       </div>
     </section>
   );
@@ -286,7 +266,7 @@ function Closing() {
 function Footer() {
   return (
     <footer className="bg-ink text-white">
-      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:px-10 md:grid-cols-[2fr_1fr_1fr]">
+      <div className={`${WRAP} grid gap-10 py-16 md:grid-cols-[2fr_1fr_1fr]`}>
         <div>
           <Logo light />
           <p className="mt-4 font-semibold">Your AI-powered placement companion.</p>
