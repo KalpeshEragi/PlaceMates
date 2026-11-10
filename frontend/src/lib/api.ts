@@ -193,6 +193,9 @@ export interface ResumeDetail {
     grade: string;
     sub_scores: Record<string, number>;
     required_missing: string[];
+    required_found?: string[];
+    preferred_found?: string[];
+    preferred_missing?: string[];
     note: string;
   } | null;
   panel: { reviewers: Reviewer[]; votes: Record<string, number> } | null;

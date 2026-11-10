@@ -103,7 +103,12 @@ def resume_html(profile: Profile, draft: dict, items: dict[str, dict], education
 
 
 def render_pdf(profile: Profile, draft: dict, items: dict[str, dict], education: list[dict]) -> bytes:
-    story = fitz.Story(html=resume_html(profile, draft, items, education), user_css=CSS)
+    return html_to_pdf(resume_html(profile, draft, items, education), CSS)
+
+
+def html_to_pdf(html_body: str, css: str) -> bytes:
+    """A4 pages from HTML, flowing onto as many pages as needed."""
+    story = fitz.Story(html=html_body, user_css=css)
     buf = io.BytesIO()
     writer = fitz.DocumentWriter(buf)
     page = fitz.paper_rect("a4")

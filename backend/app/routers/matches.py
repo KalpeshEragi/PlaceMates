@@ -16,6 +16,7 @@ from app.security import current_user
 from app.services import daily, worker
 from app.services.matching.matcher import todays_shortlist
 from app.services.resume.pdf import render_pdf
+from app.services.resume.review_pdf import render_review_pdf
 from app.services.resume.service import profile_inputs
 
 router = APIRouter(tags=["matches"])
@@ -175,6 +176,19 @@ def resume_pdf(match_id: uuid.UUID, user: User = Depends(current_user), db: Sess
     name = re.sub(r"[^A-Za-z0-9]+", "_", f"{profile.full_name or 'Resume'} {m.job.company}").strip("_")
     return Response(render_pdf(profile, row.result["draft"], items, education), media_type="application/pdf",
                     headers={"Content-Disposition": f'inline; filename="{name[:60]}.pdf"'})
+
+
+@router.get("/matches/{match_id}/review.pdf")
+def review_pdf(match_id: uuid.UUID, user: User = Depends(current_user), db: Session = Depends(get_db)):
+    """The review that goes with the tailored resume: job match, recruiter views, what to confirm."""
+    profile, m = _own_match(db, user, match_id)
+    row = _resume_row(db, m)
+    if not row or row.status != "ready":
+        raise HTTPException(404, "No finished resume for this job yet")
+    name = re.sub(r"[^A-Za-z0-9]+", "_", f"{profile.full_name or 'Resume'} {m.job.company}").strip("_")
+    pdf = render_review_pdf(row.result, {"title": m.job.title, "company": m.job.company}, profile.full_name or "you")
+    return Response(pdf, media_type="application/pdf",
+                    headers={"Content-Disposition": f'inline; filename="{name[:60]}_review.pdf"'})
 
 
 def _digest_out(d: DailyDigest | None) -> dict | None:

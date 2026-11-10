@@ -95,7 +95,10 @@ export default function ResumePanel({ match }: { match: Match }) {
             </span>
             <span className="ml-auto flex gap-2">
               <a className={primary} href={`/api/matches/${match.id}/resume.pdf`} target="_blank" rel="noreferrer">
-                PDF
+                Resume PDF
+              </a>
+              <a className={quiet} href={`/api/matches/${match.id}/review.pdf`} target="_blank" rel="noreferrer">
+                Review PDF
               </a>
               <button className={quiet} onClick={() => setOpen(!open)}>{open ? "Hide details" : "Details"}</button>
               <button className={quiet} onClick={write} title="Write it again, e.g. after updating your profile">
@@ -103,6 +106,7 @@ export default function ResumePanel({ match }: { match: Match }) {
               </button>
             </span>
           </div>
+          {resume.ats && <JobMatch ats={resume.ats} />}
           {resume.ask_student.length > 0 && (
             <div>
               <p className="font-medium text-ink">Check before sending</p>
@@ -169,6 +173,33 @@ function Details({ resume }: { resume: ResumeDetail }) {
           <p className="font-medium">Resume text</p>
           <pre className="whitespace-pre-wrap rounded-xl bg-white p-3 font-sans text-sm text-ink">{resume.text}</pre>
         </section>
+      )}
+    </div>
+  );
+}
+
+/** What the job asks for: on the resume (violet) and missing (peach). */
+function JobMatch({ ats }: { ats: NonNullable<ResumeDetail["ats"]> }) {
+  const found = ats.required_found ?? [];
+  const missing = ats.required_missing;
+  const total = found.length + missing.length;
+  return (
+    <div className="space-y-2">
+      <p className="font-medium text-ink">
+        Job requirements on your resume: {found.length} of {total || "?"}
+      </p>
+      <div className="flex flex-wrap gap-1.5">
+        {found.map((s) => (
+          <span key={`f-${s}`} className="rounded-full bg-violet/10 px-2.5 py-0.5 text-sm font-medium text-violet">✓ {s}</span>
+        ))}
+        {missing.map((s) => (
+          <span key={`m-${s}`} className="rounded-full bg-peach/25 px-2.5 py-0.5 text-sm font-medium text-[#9a4a2b]">✗ {s}</span>
+        ))}
+      </div>
+      {missing.length > 0 && (
+        <p className="text-sm text-ink-soft">
+          Have any of the missing ones? Add where you used them to your profile, then Rewrite.
+        </p>
       )}
     </div>
   );

@@ -287,40 +287,47 @@ def _tailor(job: dict, items: dict[str, dict], skills: list[str], education: lis
                      "Questions that usually uncover missing detail:\n- " + "\n- ".join(kb.question_bank())),
         expected_output="An Analysis", agent=analyst, output_pydantic=Analysis)
     t_strategy = Task(
-        description=("Plan this one-page resume. Choose items by item_id: EVERY internship/experience and EVERY award "
-                     "(recruiters weigh them most for freshers; KB INT-002), plus the 2-3 projects most relevant to the "
-                     "job, internships first. Pick the skills to list (only skills with evidence, using the job's "
-                     "wording for the same skill), and the angle for each item. Cite the rule ids you followed.\n"
+        description=("Plan this resume. Include EVERY item in the student's profile (nothing they did is dropped), "
+                     "ordered by relevance to this job, internships first (KB INT-002). For each item give the angle "
+                     "to emphasise: the most relevant items get the most detail, the least relevant a single short "
+                     "line. Pick the skills to list (only skills with evidence, using the job's wording for the same "
+                     "skill). Cite the rule ids you followed.\n"
                      f"Market right now: {market.render(signals)}\nStudent profile:\n{profile}\n"
                      f"Where each skill was used: {json.dumps(evidence)}"),
         expected_output="A Strategy", agent=strategist, output_pydantic=Strategy, context=[t_analysis])
     t_write = Task(
-        description=("Write the resume content following the strategy. For each item, first call search_exemplars "
+        description=("Write the resume content following the strategy, for EVERY item it lists, in its order: 3-4 "
+                     "bullets for the most relevant items, 1-2 for the least relevant. Use all the details the "
+                     "student added (assistant answers, metrics, challenges), not only their original bullets, and "
+                     "improve the wording. For each item, first call search_exemplars "
                      "with a short description of it to see how strong real bullets are written. For every bullet, "
                      f"say in based_on which fact supports it. {HONESTY}\nStudent profile:\n{profile}"),
         expected_output="A ResumeDraft", agent=writer, output_pydantic=ResumeDraft, context=[t_analysis, t_strategy])
 
     Crew(agents=[analyst, strategist, writer], tasks=[t_analysis, t_strategy, t_write], verbose=False).kickoff()
     analysis, strategy, draft = t_analysis.output.pydantic, t_strategy.output.pydantic, t_write.output.pydantic
-    # Internships and awards always appear (KB INT-002), whatever the strategist picked.
-    always = {i for i, it in items.items() if it["kind"] in ("experience", "award", "certification")}
-    chosen = {i.item_id for i in strategy.items} | always
+    # Nothing the student did is dropped: every item appears, in the strategist's order of relevance.
+    order = [i.item_id for i in strategy.items if i.item_id in items]
+    order += [i for i in items if i not in order]
+    always = set(items)
+    chosen = always
 
     # Job terms the student really has (in their skills list): always listed (KB INT-034), first.
     wanted = analysis.job.must_have + analysis.job.nice_to_have
     owned = [s for s in skills if any(s.lower() == w.lower() or s.lower() in w.lower().split() for w in wanted)]
 
     def keep_planned(d: ResumeDraft) -> ResumeDraft:
-        d.items = [i for i in d.items if i.item_id in chosen] or d.items  # the strategy decides what's shown
-        # A must-show item the writer skipped gets the student's own bullets, word for word.
+        d.items = [i for i in d.items if i.item_id in chosen]
+        # An item the writer skipped gets the student's own bullets, word for word.
         written = {i.item_id for i in d.items}
-        for item_id in sorted(always - written, key=lambda i: list(items).index(i)):
+        for item_id in always - written:
             own = [str(f["value"]) for f in items[item_id]["facts"] if f["field"] in ("bullet", "detail")]
             if own:
                 d.items.append(DraftItem(item_id=item_id, bullets=[Bullet(text=t, based_on="your own words")
                                                                    for t in own[:3]]))
+        d.items.sort(key=lambda i: order.index(i.item_id))
         listed = {s.lower() for s in d.skills}
-        d.skills = ([s for s in owned if s.lower() not in listed] + d.skills)[:20]
+        d.skills = ([s for s in owned if s.lower() not in listed] + d.skills)[:30]
         return d
 
     def code_checks(d: ResumeDraft) -> dict:

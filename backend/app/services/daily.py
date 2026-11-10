@@ -23,6 +23,7 @@ from app.models import DailyDigest, JobMatch, JobPreferences, Profile, TailoredR
 from app.services import gmail
 from app.services.matching.matcher import todays_shortlist
 from app.services.resume.pdf import render_pdf
+from app.services.resume.review_pdf import render_review_pdf
 from app.services.resume.service import generate, profile_inputs
 
 log = logging.getLogger(__name__)
@@ -82,7 +83,7 @@ def build_email(profile: Profile, matches: list[JobMatch], resumes: dict) -> tup
         if r and r.status == "ready":
             s = r.result.get("score", {})
             votes = s.get("shortlist_votes", {})
-            resume = (f"<p style='margin:8px 0 4px;font-size:13px'><b>Tailored resume attached</b>: score "
+            resume = (f"<p style='margin:8px 0 4px;font-size:13px'><b>Tailored resume and review attached</b>: score "
                       f"{s.get('score')} ({s.get('band')}), HR panel {votes.get('shortlist', 0)} shortlist / "
                       f"{votes.get('maybe', 0)} maybe / {votes.get('reject', 0)} reject.</p>")
             confirm = r.result.get("ask_student", [])[:1]
@@ -141,8 +142,14 @@ def run_for_profile(db: Session, profile: Profile, force: bool = False) -> Daily
         else:
             resumes = {m.id: _resume(db, m) for m in matches}
             items, _, education = profile_inputs(profile)
-            files = [(_filename(profile, m), render_pdf(profile, r.result["draft"], items, education))
-                     for m in matches if (r := resumes.get(m.id)) and r.status == "ready"]
+            files = []
+            for m in matches:
+                r = resumes.get(m.id)
+                if r and r.status == "ready":
+                    job = {"title": m.job.title, "company": m.job.company}
+                    files.append((_filename(profile, m), render_pdf(profile, r.result["draft"], items, education)))
+                    files.append((_filename(profile, m).replace(".pdf", "_review.pdf"),
+                                  render_review_pdf(r.result, job, profile.full_name or "you")))
             subject, body, text = build_email(profile, matches, resumes)
             gmail.send(profile.user, subject, body, text, files)
             digest.status, digest.sent_at = "sent", datetime.now(timezone.utc)

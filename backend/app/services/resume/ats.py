@@ -74,5 +74,7 @@ def evaluate(resume_text: str, headings: str, brief: JobBrief, job_title: str, j
                    f"degree on profile: {'yes' if has_degree else 'no'}"])
     return {"score": round(total * 100), "tier": tier, "grade": grade,
             "sub_scores": {k: round(v, 2) for k, v in sub.items()}, "weights": WEIGHTS,
-            "required_missing": req_missing, "preferred_missing": pref_missing, "evidence": evidence,
+            "required_found": req_found, "required_missing": req_missing,
+            "preferred_found": pref_found, "preferred_missing": pref_missing, "evidence": evidence,
+            "years_asked": asked,
             "note": "Most ATSs rank rather than auto-reject; a low match moves you down the recruiter's list."}
