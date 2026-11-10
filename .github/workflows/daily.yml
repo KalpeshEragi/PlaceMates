@@ -1,0 +1,64 @@
+# The morning run: fetch jobs, then each student's shortlist, top 3 resumes and Gmail email.
+# Also started from the app ("Email me now") for a single student.
+name: Daily digest
+
+on:
+  schedule:
+    - cron: "30 0 * * *"   # 00:30 UTC = 06:00 IST (GitHub may start scheduled runs a few minutes late)
+  workflow_dispatch:
+    inputs:
+      profile_id:
+        description: "Only this student's digest (leave empty for everyone)"
+        required: false
+        default: ""
+      force:
+        description: "Send even if today's email already went out"
+        required: false
+        default: "false"
+
+concurrency:
+  group: daily-${{ inputs.profile_id || 'all' }}
+  cancel-in-progress: false
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+      TOKEN_ENCRYPTION_KEY: ${{ secrets.TOKEN_ENCRYPTION_KEY }}
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      APIFY_API_KEY: ${{ secrets.APIFY_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+      - uses: actions/cache@v4
+        with:
+          path: backend/.models
+          key: fastembed-bge-small-en-v1.5
+      - run: pip install -r requirements.txt
+      - name: Run
+        env:
+          PROFILE_ID: ${{ inputs.profile_id }}
+          FORCE: ${{ inputs.force }}
+        run: |
+          if [ -n "$PROFILE_ID" ]; then
+            if [ "$FORCE" = "true" ]; then
+              python -m scripts.daily --profile-id "$PROFILE_ID" --skip-fetch --force
+            else
+              python -m scripts.daily --profile-id "$PROFILE_ID" --skip-fetch
+            fi
+          else
+            python -m scripts.daily
+          fi
