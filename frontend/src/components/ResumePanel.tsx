@@ -70,7 +70,7 @@ export default function ResumePanel({ match }: { match: Match }) {
       {status === "running" && (
         <p className="animate-pulse text-ink-soft">
           Writing your resume: analysing the job, planning, writing, then an ATS check and an HR panel review. This
-          takes 2–5 minutes.
+          takes a few minutes; you can leave this page and come back.
         </p>
       )}
       {(status === "failed" || status === "pending") && (
