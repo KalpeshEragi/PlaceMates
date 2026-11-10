@@ -57,7 +57,7 @@ def _groq(model: str, temperature: float = 0.2, reasoning: str | None = None) ->
     # planners think "low"; the writer keeps the default.
     extra = {"reasoning_effort": reasoning} if reasoning else {}
     return LLM(model=f"openai/{model}", base_url=settings.groq_base_url, api_key=settings.groq_api_key,
-               temperature=temperature, max_tokens=6000, **extra)  # long structured output: avoid cut-off JSON
+               temperature=temperature, max_tokens=4000, **extra)  # Groq counts this in its 8k-per-minute cap
 
 
 # When Gemini reports its daily quota used up, skip it until this time (epoch seconds).
