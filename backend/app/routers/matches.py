@@ -1,9 +1,8 @@
 """Job preferences, the daily shortlist, tailored resumes and the daily digest."""
 
 import re
-import threading
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Response
@@ -11,13 +10,13 @@ from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.db import SessionLocal, get_db
+from app.db import get_db
 from app.models import DailyDigest, JobMatch, JobPreferences, Profile, TailoredResume, User
 from app.security import current_user
-from app.services import daily
+from app.services import daily, worker
 from app.services.matching.matcher import todays_shortlist
 from app.services.resume.pdf import render_pdf
-from app.services.resume.service import generate, profile_inputs
+from app.services.resume.service import profile_inputs
 
 router = APIRouter(tags=["matches"])
 
@@ -132,15 +131,13 @@ def _own_match(db: Session, user: User, match_id: uuid.UUID) -> tuple[Profile, J
     return profile, m
 
 
+def _stale(updated: datetime | None) -> bool:
+    """A run silent for 20 minutes has died (e.g. a GitHub Actions run that never started)."""
+    return updated is None or datetime.now(timezone.utc) - updated > timedelta(minutes=20)
+
+
 def _resume_row(db: Session, m: JobMatch) -> TailoredResume | None:
     return db.scalar(select(TailoredResume).where(TailoredResume.match_id == m.id))
-
-
-def _write_in_background(profile_id: uuid.UUID, match_id: uuid.UUID) -> None:
-    def work():
-        with SessionLocal() as db:
-            generate(db, db.get(Profile, profile_id), db.get(JobMatch, match_id))
-    threading.Thread(target=work, daemon=True, name="resume-crew").start()
 
 
 @router.post("/matches/{match_id}/resume", status_code=202)
@@ -148,12 +145,17 @@ def create_resume(match_id: uuid.UUID, user: User = Depends(current_user), db: S
     """Start writing a tailored resume for this job (2-5 minutes). Poll GET for the result."""
     profile, m = _own_match(db, user, match_id)
     row = _resume_row(db, m) or TailoredResume(match_id=m.id, profile_id=profile.id, result={})
-    if row.status == "running":
+    if row.status == "running" and not _stale(row.updated_at):
         raise HTTPException(409, "This resume is already being written")
     row.status, row.error = "running", None
     db.add(row)
     db.commit()
-    _write_in_background(profile.id, m.id)
+    try:
+        worker.write_resume(profile.id, m.id)
+    except worker.WorkerError as err:
+        row.status, row.error = "failed", str(err)[:500]
+        db.commit()
+        raise HTTPException(503, "Couldn't start the resume writer. Try again in a minute.") from err
     return _resume_out(row)
 
 
@@ -194,10 +196,8 @@ def digest_run(force: bool = False, user: User = Depends(current_user), db: Sess
     profile = _profile(user)
     if not _prefs(db, profile):
         raise HTTPException(400, "Set your job preferences first")
-    pid = profile.id
-
-    def work():
-        with SessionLocal() as s:
-            daily.run_for_profile(s, s.get(Profile, pid), force=force)
-    threading.Thread(target=work, daemon=True, name="daily-digest").start()
+    try:
+        worker.run_digest(profile.id, force)
+    except worker.WorkerError as err:
+        raise HTTPException(503, "Couldn't start today's email. Try again in a minute.") from err
     return {"started": True}

@@ -12,7 +12,7 @@ from app.config import settings
 
 @lru_cache
 def get_graph():
-    url = settings.database_url.replace("postgresql+psycopg://", "postgresql://")
+    url = settings.sqlalchemy_url.replace("postgresql+psycopg://", "postgresql://")
     conn = psycopg.connect(url, autocommit=True, prepare_threshold=0, row_factory=dict_row)
     saver = PostgresSaver(conn)
     saver.setup()  # creates the checkpoint tables if missing

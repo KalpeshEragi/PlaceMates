@@ -1,6 +1,13 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+def normalize_db_url(url: str) -> str:
+    for prefix in ("postgres://", "postgresql://"):
+        if url.startswith(prefix):
+            return "postgresql+psycopg://" + url[len(prefix):]
+    return url
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
@@ -13,6 +20,17 @@ class Settings(BaseSettings):
     public_api_url: str = ""
     # Shared secret for POST /internal/daily (an external cron, for hosts that sleep). Empty = disabled.
     cron_secret: str = ""
+    # Where heavy AI work runs. "local": a thread in this process (development).
+    # "github": a GitHub Actions run (production: the free web server has too little memory for CrewAI).
+    worker: str = "local"
+    github_repo: str = ""        # "owner/name"
+    github_token: str = ""       # fine-grained token with Actions read/write on that repo
+    github_ref: str = "main"
+
+    @property
+    def sqlalchemy_url(self) -> str:
+        """Hosts (Neon, Render) hand out postgres:// or postgresql:// URLs; SQLAlchemy needs the driver named."""
+        return normalize_db_url(self.database_url)
 
     @property
     def api_base(self) -> str:

@@ -26,11 +26,16 @@ async def lifespan(_: FastAPI):
     with engine.begin() as conn:  # pgvector must exist before tables with vector columns
         conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
     Base.metadata.create_all(engine)
-    with engine.begin() as conn:  # work that was running when the server stopped will never finish: release it
-        conn.execute(text("UPDATE tailored_resumes SET status = 'failed', error = 'Interrupted by a server restart' "
-                          "WHERE status = 'running'"))
-        conn.execute(text("UPDATE daily_digests SET status = 'failed', error = 'Interrupted by a server restart' "
-                          "WHERE status = 'running'"))
+    # Old databases: add columns that create_all doesn't add to existing tables.
+    with engine.begin() as conn:
+        conn.execute(text("ALTER TABLE tailored_resumes ADD COLUMN IF NOT EXISTS updated_at "
+                          "TIMESTAMPTZ DEFAULT now()"))
+    if settings.worker == "local":  # in-process work that was running when the server stopped will never finish
+        with engine.begin() as conn:
+            conn.execute(text("UPDATE tailored_resumes SET status = 'failed', "
+                              "error = 'Interrupted by a server restart' WHERE status = 'running'"))
+            conn.execute(text("UPDATE daily_digests SET status = 'failed', "
+                              "error = 'Interrupted by a server restart' WHERE status = 'running'"))
     if settings.jobs_daily_fetch:
         start_daily_fetch()
     yield

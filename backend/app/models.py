@@ -207,6 +207,8 @@ class TailoredResume(Base):
     result: Mapped[dict] = mapped_column(JSONB)  # analysis, strategy, draft, evaluation, score, honesty checks
     error: Mapped[str | None] = mapped_column(Text)
     created_at: Mapped[datetime] = _created()
+    updated_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 
 class DailyDigest(Base):
