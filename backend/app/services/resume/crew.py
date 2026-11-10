@@ -39,7 +39,8 @@ from app.services.matching import exemplars  # noqa: E402
 from app.services.resume import ats  # noqa: E402
 from app.services.resume.checks import (avg_bullet_quality, enforce_truth, facts_text, resume_text,  # noqa: E402
                                         unsupported_claims)
-from app.services.resume.schemas import Analysis, PersonaVerdict, ResumeDraft, Strategy  # noqa: E402
+from app.services.resume.schemas import (Analysis, Bullet, DraftItem, PersonaVerdict,  # noqa: E402
+                                         ResumeDraft, Strategy)
 
 log = logging.getLogger(__name__)
 MAX_REVISIONS = 1  # more rounds rarely help without new facts
@@ -286,9 +287,10 @@ def _tailor(job: dict, items: dict[str, dict], skills: list[str], education: lis
                      "Questions that usually uncover missing detail:\n- " + "\n- ".join(kb.question_bank())),
         expected_output="An Analysis", agent=analyst, output_pydantic=Analysis)
     t_strategy = Task(
-        description=("Plan this resume. Choose 3-5 items by item_id (internships first when relevant), the skills to "
-                     "list (only skills with evidence, using the job's wording for the same skill), and the angle for "
-                     "each item. Leave out unrelated items. Cite the rule ids you followed.\n"
+        description=("Plan this one-page resume. Choose items by item_id: EVERY internship/experience and EVERY award "
+                     "(recruiters weigh them most for freshers; KB INT-002), plus the 2-3 projects most relevant to the "
+                     "job, internships first. Pick the skills to list (only skills with evidence, using the job's "
+                     "wording for the same skill), and the angle for each item. Cite the rule ids you followed.\n"
                      f"Market right now: {market.render(signals)}\nStudent profile:\n{profile}\n"
                      f"Where each skill was used: {json.dumps(evidence)}"),
         expected_output="A Strategy", agent=strategist, output_pydantic=Strategy, context=[t_analysis])
@@ -300,7 +302,9 @@ def _tailor(job: dict, items: dict[str, dict], skills: list[str], education: lis
 
     Crew(agents=[analyst, strategist, writer], tasks=[t_analysis, t_strategy, t_write], verbose=False).kickoff()
     analysis, strategy, draft = t_analysis.output.pydantic, t_strategy.output.pydantic, t_write.output.pydantic
-    chosen = {i.item_id for i in strategy.items}
+    # Internships and awards always appear (KB INT-002), whatever the strategist picked.
+    always = {i for i, it in items.items() if it["kind"] in ("experience", "award", "certification")}
+    chosen = {i.item_id for i in strategy.items} | always
 
     # Job terms the student really has (in their skills list): always listed (KB INT-034), first.
     wanted = analysis.job.must_have + analysis.job.nice_to_have
@@ -308,8 +312,15 @@ def _tailor(job: dict, items: dict[str, dict], skills: list[str], education: lis
 
     def keep_planned(d: ResumeDraft) -> ResumeDraft:
         d.items = [i for i in d.items if i.item_id in chosen] or d.items  # the strategy decides what's shown
+        # A must-show item the writer skipped gets the student's own bullets, word for word.
+        written = {i.item_id for i in d.items}
+        for item_id in sorted(always - written, key=lambda i: list(items).index(i)):
+            own = [str(f["value"]) for f in items[item_id]["facts"] if f["field"] in ("bullet", "detail")]
+            if own:
+                d.items.append(DraftItem(item_id=item_id, bullets=[Bullet(text=t, based_on="your own words")
+                                                                   for t in own[:3]]))
         listed = {s.lower() for s in d.skills}
-        d.skills = ([s for s in owned if s.lower() not in listed] + d.skills)[:16]
+        d.skills = ([s for s in owned if s.lower() not in listed] + d.skills)[:20]
         return d
 
     def code_checks(d: ResumeDraft) -> dict:

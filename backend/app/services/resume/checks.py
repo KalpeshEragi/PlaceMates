@@ -70,10 +70,34 @@ def facts_text(items: dict[str, dict], skills: list[str]) -> dict[str, str]:
     return out
 
 
-def truth_violations(bullet: str, item_text: str, profile_text: str) -> list[str]:
+def _words(text: str) -> set[str]:
+    return {w for w in re.findall(r"[a-z0-9]+", text.lower()) if len(w) > 3}
+
+
+def _same_point(a: str, b: str) -> bool:
+    """Two bullets making the same point (most of their words shared)."""
+    wa, wb = _words(a), _words(b)
+    return bool(wa and wb) and len(wa & wb) / min(len(wa), len(wb)) > 0.6
+
+
+def known_numbers(text: str) -> set[str]:
+    """Numbers in the facts, plus percentages that follow from them: 600s before and 22s after
+    supports '96%' (a reduction) - arithmetic on the student's own numbers is not invention."""
+    nums = {_norm_num(n) for n in NUM.findall(text)}
+    values = sorted({float(n) for n in nums
+                     if n.replace(".", "", 1).isdigit() and float(n) > 0 and not 1900 <= float(n) <= 2100})  # not years
+    for big in values:
+        for small in values:
+            if small < big:
+                nums.add(str(round((big - small) / big * 100)))   # reduction, e.g. 600 -> 22 is 96%
+                nums.add(str(round((big - small) / small * 100)))  # increase, e.g. 50 -> 60 is 20%
+    return nums
+
+
+def truth_violations(bullet: str, item_text: str, profile_text: str, known_nums: set[str] | None = None) -> list[str]:
     """Numbers must come from the item's facts; technologies from the item or the student's skills."""
     problems = []
-    known_nums = {_norm_num(n) for n in NUM.findall(item_text)}
+    known_nums = known_numbers(item_text) if known_nums is None else known_nums
     for n in NUM.findall(bullet):
         if _norm_num(n) not in known_nums:
             problems.append(f"number '{n}' is not in your saved facts")
@@ -94,10 +118,23 @@ def enforce_truth(draft: ResumeDraft, items: dict[str, dict], skills: list[str])
             problems = truth_violations(b.text, texts.get(d.item_id, ""), texts["*"])
             if problems:
                 dropped.append({"item_id": d.item_id, "bullet": b.text, "problems": problems})
-            else:
+            elif not any(_same_point(b.text, k.text) for k in kept):  # the same point said twice
                 kept.append(b)
         d.bullets = kept
     draft.items = [d for d in draft.items if d.item_id in items and d.bullets]
+    # The summary is checked too: a sentence may only use numbers from some item's facts.
+    everything = " ".join(v for k, v in texts.items() if k != "*")
+    # A summary number must be in some item's facts, or follow from numbers within ONE item.
+    summary_nums = set().union(*(known_numbers(v) for k, v in texts.items() if k != "*"))
+    sentences = re.split(r"(?<=[.!?])\s+", draft.summary.strip())
+    keep = []
+    for s in sentences:
+        problems = truth_violations(s, everything, texts["*"], summary_nums)
+        if problems:
+            dropped.append({"item_id": "summary", "bullet": s, "problems": problems})
+        else:
+            keep.append(s)
+    draft.summary = " ".join(keep)
     known_skills = {s.lower() for s in skills} | {t.lower() for t in TECH.findall(" ".join(texts.values()))}
     draft.skills = [s for s in draft.skills if s.lower() in known_skills or s.lower() in " ".join(texts.values()).lower()]
     return draft, dropped

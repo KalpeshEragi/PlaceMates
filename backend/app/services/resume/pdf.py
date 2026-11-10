@@ -35,31 +35,43 @@ def _e(value) -> str:
     return html.escape(str(value)) if value else ""
 
 
+GRADE = re.compile(r"\b(c?gpa|cpi|sgpa|percentage)\b|\d+(\.\d+)?\s*(/\s*10|%)", re.I)
+
+
 def _grade(item: dict) -> str | None:
+    """CGPA or percentage, whether saved under its own field or as a line like 'CGPA 9.42/10'."""
     for f in item.get("facts", []):
+        value = str(f["value"])
         if f["field"].lower() in ("cgpa", "gpa", "grade", "percentage", "score"):
-            return str(f["value"])
+            return value if GRADE.search(value) else f"CGPA {value}"
+        if GRADE.search(value) and re.search(r"\d", value) and len(value) < 40:
+            return value
     return None
 
 
-def header_links(links: list[str]) -> list[str]:
-    """LinkedIn, the GitHub profile and one other site, shortened. Repo links belong next to their project,
-    and mailto:/tel: repeat the email and phone."""
+def header_links(links: list[str], mentioned: str = "") -> list[str]:
+    """LinkedIn, the GitHub profile and one personal site, shortened. Repo links belong next to their project,
+    mailto:/tel: repeat the email and phone, and a site named in the student's facts (a tool like v0.dev) is
+    something they used, not their own site."""
     clean = []
     for link in links or []:
         if not link or link.startswith(("mailto:", "tel:")):
             continue
-        short = re.sub(r"^https?://(www\.)?", "", link).rstrip("/")
+        short = re.sub(r"^https?://(www\.)?", "", link.strip()).rstrip("/")
         clean.append(short)
     linkedin = [c for c in clean if "linkedin.com/" in c][:1]
     github = [c for c in clean if re.fullmatch(r"github\.com/[^/]+", c)][:1]
-    other = [c for c in clean if "linkedin.com" not in c and "github.com" not in c][:1]
+    other = [c for c in clean if "linkedin.com" not in c and "github.com" not in c
+             and c.lower() not in mentioned.lower()][:1]
     return linkedin + github + other
 
 
 def resume_html(profile: Profile, draft: dict, items: dict[str, dict], education: list[dict]) -> str:
-    links = header_links(profile.links)
-    contact = " | ".join(_e(x) for x in (profile.email, profile.phone, profile.location, *links) if x)
+    mentioned = " ".join(str(f["value"]) for it in items.values() for f in it.get("facts", []))
+    links = header_links(profile.links, mentioned)
+    # Skip empty fields; keep each piece on one line so a link never breaks in the middle.
+    parts = [str(x).strip() for x in (profile.email, profile.phone, profile.location, *links) if x and str(x).strip()]
+    contact = " | ".join(f"<span style='white-space:nowrap'>{_e(x)}</span>" for x in parts)
     out = [f"<h1>{_e(profile.full_name) or 'Your name'}</h1>", f"<p class='contact'>{contact}</p>"]
     if draft.get("summary"):
         out += ["<h2>Summary</h2>", f"<p>{_e(draft['summary'])}</p>"]
@@ -69,7 +81,7 @@ def resume_html(profile: Profile, draft: dict, items: dict[str, dict], education
             meta = " | ".join(_e(x) for x in (ed.get("organization"), ed.get("dates")) if x)
             grade = _grade(ed)
             out.append(f"<p class='head'><span class='title'>{_e(ed.get('title'))}</span>"
-                       f"{' | ' + meta if meta else ''}{' | CGPA/Grade: ' + _e(grade) if grade else ''}</p>")
+                       f"{' | ' + meta if meta else ''}{' | ' + _e(grade) if grade else ''}</p>")
     if draft.get("skills"):
         out += ["<h2>Skills</h2>", f"<p>{', '.join(_e(s) for s in draft['skills'])}</p>"]
     by_kind = defaultdict(list)

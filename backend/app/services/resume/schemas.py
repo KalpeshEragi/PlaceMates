@@ -38,8 +38,8 @@ class PlannedItem(BaseModel):
 
 
 class Strategy(BaseModel):
-    items: list[PlannedItem] = Field(description="3-5 profile items to show, most relevant first")
-    skills: list[str] = Field(description="Up to 14 of the student's skills, most relevant first, using the job's "
+    items: list[PlannedItem] = Field(description="Every internship and award, plus the 2-3 most relevant projects")
+    skills: list[str] = Field(description="Up to 20 of the student's skills, most relevant first, using the job's "
                                           "wording where it names the same skill")
     leave_out: list[str] = Field(default=[], description="item_ids deliberately left out, with a short reason each")
     rule_ids: list[str] = Field(default=[], description="Knowledge-base rule ids (INT-xxx) this plan follows")
