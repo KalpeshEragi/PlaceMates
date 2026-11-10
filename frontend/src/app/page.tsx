@@ -276,6 +276,7 @@ function Footer() {
           <ul className="mt-3 space-y-2 text-white/70">
             <li><a href="https://github.com/KalpeshEragi/PlaceMates" target="_blank" rel="noreferrer" className="hover:text-white">GitHub</a></li>
             <li><a href={LOGIN} className="hover:text-white">Sign in</a></li>
+            <li><a href="/privacy" className="hover:text-white">Privacy</a></li>
           </ul>
         </div>
       </div>

@@ -42,7 +42,8 @@ export default function LoginPage() {
 
           <p className="mt-7 text-center text-base leading-relaxed text-ink-soft lg:text-[1.05rem]">
             PlaceMates uses your Google account so your daily jobs and tailored resumes arrive from your own Gmail, to
-            you. New here? The same button creates your account.
+            you. New here? The same button creates your account. See our{" "}
+            <Link href="/privacy" className="font-semibold text-violet hover:underline">privacy policy</Link>.
           </p>
 
           <Link href="/" className="mt-12 inline-flex items-center gap-2 text-base font-semibold text-violet hover:underline">
