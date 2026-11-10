@@ -179,12 +179,12 @@ def _norm(where: str) -> str:
 
 
 def evaluate(draft: ResumeDraft, items: dict, education: list[dict], analysis: Analysis, job: dict,
-             family: str) -> dict:
+             family: str, with_panel: bool = True) -> dict:
     text, headings = render(draft, items, education)
     stage1 = ats.evaluate(text, headings, analysis.job, job["title"], job["description"], bool(education))
     ats_line = f"{stage1['tier']} match, grade {stage1['grade']}, required skills not found: " \
                f"{', '.join(stage1['required_missing']) or 'none'}"
-    panel = panel_for(family)
+    panel = panel_for(family) if with_panel else []  # the evaluation benchmark skips the panel to save quota
     # Two Groq models have separate rate limits: split the panel across them and run both halves at once.
     models = [settings.model_questions, settings.model_extract]
     halves = [[(p, models[i % 2]) for i, p in enumerate(panel) if i % 2 == h] for h in (0, 1)]
@@ -194,7 +194,7 @@ def evaluate(draft: ResumeDraft, items: dict, education: list[dict], analysis: A
         return [_judge(p, m, text, job, brief_json, ats_line) for p, m in half]
 
     with ThreadPoolExecutor(max_workers=2) as pool:
-        results = [r for half in pool.map(run, halves) for r in half]
+        results = [r for half in pool.map(run, halves) for r in half] if panel else []
     results.sort(key=lambda r: r["id"])
     ok = [r for r in results if "verdict" in r]
 
@@ -271,7 +271,8 @@ def tailor(job: dict, items: dict[str, dict], skills: list[str], education: list
         return _tailor(job, items, skills, education, use_gemini=False)
 
 
-def _tailor(job: dict, items: dict[str, dict], skills: list[str], education: list[dict], use_gemini: bool) -> dict:
+def _tailor(job: dict, items: dict[str, dict], skills: list[str], education: list[dict], use_gemini: bool,
+            with_panel: bool = True) -> dict:
     started = time.time()
     family = kb.role_family(job["title"], job["description"])
     with SessionLocal() as db:
@@ -369,7 +370,7 @@ def _tailor(job: dict, items: dict[str, dict], skills: list[str], education: lis
             checked = revised
 
     draft, dropped, claims = checked["draft"], checked["dropped"], checked["claims"]
-    ev = evaluate(draft, items, education, analysis, job, family)
+    ev = evaluate(draft, items, education, analysis, job, family, with_panel)
 
     ask = [f"Is this true: \"{c['bullet']}\"? If so, add it to your profile; otherwise we'll remove "
            f"'{', '.join(c['words'])}'." for c in claims]
