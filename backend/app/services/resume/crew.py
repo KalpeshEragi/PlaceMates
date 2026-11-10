@@ -170,6 +170,26 @@ def _judge(p: Persona, model: str, resume: str, job: dict, brief_json: str, ats_
         return {"id": p.id, "role": p.role, "model": model, "error": str(err)[:200]}
 
 
+def _answer_in_error[T](err: Exception, schema: type[T]) -> T | None:
+    """gpt-oss sometimes returns its finished structured answer as a call to a tool named after the schema;
+    Groq rejects that call but includes the generation in the error. Recover the answer from it."""
+    seen = set()
+    while err is not None and id(err) not in seen:
+        seen.add(id(err))
+        body = getattr(err, "body", None)
+        failed = body.get("error", {}).get("failed_generation") if isinstance(body, dict) else None
+        if failed:
+            try:
+                call = json.loads(failed)
+                if call.get("name") == schema.__name__:
+                    log.warning("Recovered %s from a rejected tool call", schema.__name__)
+                    return schema.model_validate(call.get("arguments", {}))
+            except (ValueError, TypeError):
+                return None
+        err = err.__cause__ or err.__context__
+    return None
+
+
 def _needs_student(issue: dict) -> bool:
     return "ask the student" in f"{issue['fix']} {issue['problem']}".lower()
 
@@ -305,8 +325,18 @@ def _tailor(job: dict, items: dict[str, dict], skills: list[str], education: lis
                      f"say in based_on which fact supports it. {HONESTY}\nStudent profile:\n{profile}"),
         expected_output="A ResumeDraft", agent=writer, output_pydantic=ResumeDraft, context=[t_analysis, t_strategy])
 
-    Crew(agents=[analyst, strategist, writer], tasks=[t_analysis, t_strategy, t_write], verbose=False).kickoff()
-    analysis, strategy, draft = t_analysis.output.pydantic, t_strategy.output.pydantic, t_write.output.pydantic
+    try:
+        Crew(agents=[analyst, strategist, writer], tasks=[t_analysis, t_strategy, t_write], verbose=False).kickoff()
+        draft = t_write.output.pydantic
+    except Exception as err:  # noqa: BLE001
+        if t_strategy.output is None:
+            raise  # failed before writing: nothing to recover
+        draft = _answer_in_error(err, ResumeDraft)
+        if draft is None:  # one retry of the writer alone, with the analysis and strategy already done
+            log.warning("Writer failed (%s); retrying once", str(err)[:120])
+            Crew(agents=[writer], tasks=[t_write], verbose=False).kickoff()
+            draft = t_write.output.pydantic
+    analysis, strategy = t_analysis.output.pydantic, t_strategy.output.pydantic
     # Nothing the student did is dropped: every item appears, in the strategist's order of relevance.
     order = [i.item_id for i in strategy.items if i.item_id in items]
     order += [i for i in items if i not in order]
