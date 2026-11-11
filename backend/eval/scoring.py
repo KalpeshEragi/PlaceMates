@@ -16,7 +16,7 @@ from pydantic import BaseModel, Field
 from app.services.resume import ats
 from app.services.resume.checks import facts_text, truth_violations
 from app.services.resume.schemas import JobBrief
-from eval.models import judge
+from eval.models import judge_call
 
 LABELS = ("supported", "unsupported", "contradictory", "inaccurate")
 
@@ -30,7 +30,9 @@ class Claim(BaseModel):
 
 
 class Audit(BaseModel):
-    claims: list[Claim]
+    supported_count: int = Field(description="How many factual claims are supported")
+    problems: list[Claim] = Field(default=[], description="ONLY the claims that are unsupported, contradictory "
+                                                          "or inaccurate, each with its label")
 
 
 AUDIT_RULES = (
@@ -43,15 +45,17 @@ AUDIT_RULES = (
     "- unsupported: not in the original resume at all (new tools, numbers, outcomes, responsibilities, scale)\n"
     "- contradictory: conflicts with the original resume\n"
     "- inaccurate: based on an original fact but misstated (wrong number, inflated role or scope)\n"
-    "Be strict: a plausible-sounding addition that the original doesn't state is unsupported.")
+    "Be strict: a plausible-sounding addition that the original doesn't state is unsupported. Count the "
+    "supported claims, and list in detail only the problem claims. Keep each field short.")
 
 
-def audit(original: str, tailored: str) -> dict:
-    result, model = judge(AUDIT_RULES, f"ORIGINAL RESUME:\n{original}\n\nTAILORED RESUME:\n{tailored}", Audit)
-    claims = [c.model_dump() for c in result.claims]
+def audit(original: str, tailored: str, model: str) -> dict:
+    result = judge_call(model, AUDIT_RULES, f"ORIGINAL RESUME:\n{original}\n\nTAILORED RESUME:\n{tailored}", Audit)
+    claims = [c.model_dump() for c in result.problems if c.label != "supported"]
     counts = {label: sum(c["label"] == label for c in claims) for label in LABELS}
-    return {"judge": model, "claims": claims, "counts": counts, "total": len(claims),
-            "bad": counts["unsupported"] + counts["contradictory"] + counts["inaccurate"]}
+    counts["supported"] = result.supported_count
+    bad = len(claims)
+    return {"judge": model, "claims": claims, "counts": counts, "total": result.supported_count + bad, "bad": bad}
 
 
 def code_check(pair: dict, tailored: str) -> list[str]:
@@ -93,11 +97,11 @@ JUDGE_RULES = (
     "receive, and why in one or two sentences. Judge only what is on the page; length is not quality.")
 
 
-def blind_compare(pair: dict, baseline_text: str, placemates_text: str) -> dict:
+def blind_compare(pair: dict, baseline_text: str, placemates_text: str, model: str) -> dict:
     flip = random.Random(pair["id"]).random() < 0.5  # same order every run for the same pair
     a, b = (placemates_text, baseline_text) if flip else (baseline_text, placemates_text)
     job = pair["job"]
-    result, model = judge(JUDGE_RULES, f"JOB: {job['title']} at {job['company']}\n{job['description'][:3000]}\n\n"
+    result = judge_call(model, JUDGE_RULES, f"JOB: {job['title']} at {job['company']}\n{job['description'][:3000]}\n\n"
                                        f"RESUME A:\n{a}\n\nRESUME B:\n{b}", Comparison)
     pm, base = (result.resume_a, result.resume_b) if flip else (result.resume_b, result.resume_a)
     winner = {"tie": "tie", "A": "placemates" if flip else "baseline", "B": "baseline" if flip else "placemates"}

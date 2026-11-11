@@ -8,7 +8,8 @@ placemates   the full pipeline (analysis, strategy, generation with example bull
 
 from pydantic import BaseModel, Field
 
-from eval.models import generate
+from app.config import settings
+from eval.models import QuotaExhausted, call, daily_limit, exhausted
 
 BASELINE_PROMPT = ("Here is my resume and a job description. Rewrite my resume so it is tailored to this job and "
                    "gives me the best chance of being shortlisted.")
@@ -25,19 +26,31 @@ class BaselineResume(BaseModel):
     sections: list[Section]
 
 
-def baseline(pair: dict) -> dict:
-    out = generate("You are a helpful assistant.",
+def baseline(pair: dict, model: str) -> dict:
+    out = call(model, "You are a helpful assistant.",
                    f"{BASELINE_PROMPT}\n\nMY RESUME:\n{pair['resume_text']}\n\nJOB DESCRIPTION:\n"
                    f"{pair['job']['title']} at {pair['job']['company']}\n{pair['job']['description'][:4000]}",
                    BaselineResume)
     lines = ["SUMMARY", out.summary, "", "SKILLS", ", ".join(out.skills), ""]
     for s in out.sections:
         lines += [s.heading, *(f"- {b}" for b in s.bullets), ""]
-    return {"text": "\n".join(lines).strip(), "raw": out.model_dump()}
+    return {"text": "\n".join(lines).strip(), "raw": out.model_dump(), "model": model}
 
 
-def placemates(pair: dict) -> dict:
+def placemates(pair: dict, model: str) -> dict:
+    """Every agent in the pipeline runs on `model` for this pair."""
     from app.services.resume.crew import _tailor  # heavy import
-    r = _tailor(pair["job"], pair["items"], pair["skills"], pair["education"], use_gemini=False, with_panel=False)
+    saved = settings.model_extract, settings.model_questions
+    settings.model_extract = settings.model_questions = model
+    try:
+        r = _tailor(pair["job"], pair["items"], pair["skills"], pair["education"], use_gemini=False,
+                    with_panel=False)
+    except Exception as err:  # noqa: BLE001
+        if daily_limit(err):
+            exhausted.add(model)
+            raise QuotaExhausted(model, str(err)) from err
+        raise
+    finally:
+        settings.model_extract, settings.model_questions = saved
     return {"text": r["text"], "brief": r["analysis"]["job"], "dropped_for_truth": r["dropped_for_truth"],
-            "unsupported_claims": r["unsupported_claims"], "seconds": r["seconds"]}
+            "unsupported_claims": r["unsupported_claims"], "seconds": r["seconds"], "model": model}

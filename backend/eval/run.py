@@ -18,7 +18,7 @@ from pathlib import Path
 from app.db import SessionLocal
 from eval import pairs as pairs_mod
 from eval import scoring, systems
-from eval.models import GEN_MODEL, QuotaExhausted
+from eval.models import GEN_CHAIN, JUDGE_CHAIN, QuotaExhausted, exhausted, first_available
 
 OUT = Path(__file__).parent / "out"
 PILOT = {"Kalpesh Eragi": 3, "Riya Sharma": 2}
@@ -36,19 +36,59 @@ def _step(folder: Path, name: str, fn):
     return value
 
 
+GEN_FILES = ("placemates", "baseline", "code_check", "coverage")
+JUDGE_FILES = ("audit_placemates", "audit_baseline", "judge")
+
+
+def _saved_model(folder: Path, name: str, key: str = "model") -> str | None:
+    path = folder / f"{name}.json"
+    return json.loads(path.read_text(encoding="utf-8")).get(key) if path.exists() else None
+
+
+def _clear(folder: Path, names: tuple[str, ...]) -> None:
+    for n in names:
+        (folder / f"{n}.json").unlink(missing_ok=True)
+
+
 def run_pair(pair: dict) -> None:
+    """Both systems on one model, both resumes judged by one judge. If a daily quota runs out mid-pair,
+    that half of the pair is thrown away and redone on the next model in the chain."""
     folder = OUT / pair["id"]
     folder.mkdir(parents=True, exist_ok=True)
     _step(folder, "pair", lambda: {k: pair[k] for k in ("id", "student", "job", "resume_text")})
-    pm = _step(folder, "placemates", lambda: systems.placemates(pair))
-    base = _step(folder, "baseline", lambda: systems.baseline(pair))
-    _step(folder, "audit_placemates", lambda: scoring.audit(pair["resume_text"], pm["text"]))
-    _step(folder, "audit_baseline", lambda: scoring.audit(pair["resume_text"], base["text"]))
+
+    while True:  # generation
+        model = _saved_model(folder, "placemates")
+        if model is None or (model in exhausted and not (folder / "baseline.json").exists()):
+            _clear(folder, GEN_FILES + JUDGE_FILES)
+            model = first_available(GEN_CHAIN)
+            if model is None:
+                raise QuotaExhausted("all generation models", "every model's daily quota is used up")
+        try:
+            pm = _step(folder, "placemates", lambda: systems.placemates(pair, model))
+            base = _step(folder, "baseline", lambda: systems.baseline(pair, model))
+            break
+        except QuotaExhausted as err:
+            log.warning("%s: %s ran out; redoing this pair on the next model", pair["id"], err.model)
+            _clear(folder, GEN_FILES + JUDGE_FILES)
+
     _step(folder, "code_check", lambda: {"placemates": scoring.code_check(pair, pm["text"]),
                                          "baseline": scoring.code_check(pair, base["text"])})
     _step(folder, "coverage", lambda: {"placemates": scoring.coverage(pm["brief"], pm["text"]),
                                        "baseline": scoring.coverage(pm["brief"], base["text"])})
-    _step(folder, "judge", lambda: scoring.blind_compare(pair, base["text"], pm["text"]))
+
+    while True:  # judging
+        judge = _saved_model(folder, "audit_placemates", "judge") or first_available(JUDGE_CHAIN)
+        if judge is None:
+            raise QuotaExhausted("all judge models", "every judge's daily quota is used up")
+        try:
+            _step(folder, "audit_placemates", lambda: scoring.audit(pair["resume_text"], pm["text"], judge))
+            _step(folder, "audit_baseline", lambda: scoring.audit(pair["resume_text"], base["text"], judge))
+            _step(folder, "judge", lambda: scoring.blind_compare(pair, base["text"], pm["text"], judge))
+            return
+        except QuotaExhausted as err:
+            log.warning("%s: judge %s ran out; re-judging this pair on the next judge", pair["id"], err.model)
+            _clear(folder, JUDGE_FILES)
 
 
 def report() -> str:
@@ -56,15 +96,17 @@ def report() -> str:
     if not done:
         return "No finished pairs yet."
     load = lambda p, n: json.loads((p / f"{n}.json").read_text(encoding="utf-8"))  # noqa: E731
-    rows, claim_rows, judges = {"placemates": [], "baseline": []}, [], set()
+    rows, claim_rows, judges, gens = {"placemates": [], "baseline": []}, [], set(), {}
     prefs = {"placemates": 0, "baseline": 0, "tie": 0}
     for p in done:
         cov, code, jd = load(p, "coverage"), load(p, "code_check"), load(p, "judge")
+        gen = load(p, "placemates").get("model", "?")
+        gens[gen] = gens.get(gen, 0) + 1
         prefs[jd["preferred"]] += 1
-        judges.add(jd["judge"])
+        judges.add(jd.get("judge", "?"))
         for system in ("placemates", "baseline"):
             a = load(p, f"audit_{system}")
-            judges.add(a["judge"])
+            judges.add(a.get("judge", "?"))
             rows[system].append({"total": a["total"], "bad": a["bad"], "counts": a["counts"],
                                  "code": len(code[system]), "coverage": cov[system]["share"],
                                  "scores": jd[system]})
@@ -89,7 +131,8 @@ def report() -> str:
     lines = [
         f"# PlaceMates benchmark: {n} resume-job pairs",
         "",
-        f"Generation model for BOTH systems: `{GEN_MODEL}`. Judge(s): {', '.join(sorted(judges))}.",
+        "In every pair, the generic prompt and the PlaceMates pipeline ran on the same model. Pairs per model: "
+        + ", ".join(f"`{m}` {c}" for m, c in gens.items()) + f". Judge(s): {', '.join(sorted(judges))}.",
         "Baseline = a typical 'here is my resume and a job description, tailor it' prompt on the same model.",
         "",
         "| Metric | Generic LLM | PlaceMates |",

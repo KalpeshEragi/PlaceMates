@@ -18,13 +18,14 @@ class LLMError(Exception):
     pass
 
 
-def _chat(model: str, messages: list[dict], reasoning_effort: str | None) -> str:
+def _chat(model: str, messages: list[dict], reasoning_effort: str | None, max_tokens: int | None = None) -> str:
     if not settings.groq_api_key:
         raise LLMError("GROQ_API_KEY is not set")
     body: dict = {
         "model": model,
         "messages": messages,
         "temperature": 0,
+        **({"max_tokens": max_tokens} if max_tokens else {}),
         "response_format": {"type": "json_object"},
     }
     if reasoning_effort:
@@ -56,7 +57,8 @@ def _chat(model: str, messages: list[dict], reasoning_effort: str | None) -> str
 
 
 def complete_json[T: BaseModel](
-    model: str, system: str, user: str, schema: type[T], reasoning_effort: str | None = None
+    model: str, system: str, user: str, schema: type[T], reasoning_effort: str | None = None,
+    max_tokens: int | None = None,
 ) -> T:
     """Ask for JSON matching `schema`. Retries once, showing the model its error."""
     messages = [
@@ -64,7 +66,7 @@ def complete_json[T: BaseModel](
          f"{json.dumps(schema.model_json_schema())}"},
         {"role": "user", "content": user},
     ]
-    raw = _chat(model, messages, reasoning_effort)
+    raw = _chat(model, messages, reasoning_effort, max_tokens)
     try:
         return schema.model_validate_json(raw)
     except ValidationError as err:
@@ -73,6 +75,6 @@ def complete_json[T: BaseModel](
             {"role": "user", "content": f"That JSON was invalid: {err}. Return corrected JSON only."},
         ]
         try:
-            return schema.model_validate_json(_chat(model, messages, reasoning_effort))
+            return schema.model_validate_json(_chat(model, messages, reasoning_effort, max_tokens))
         except ValidationError as err2:
             raise LLMError(f"Model returned invalid JSON twice: {err2}") from err2
